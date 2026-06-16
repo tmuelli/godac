@@ -41,6 +41,9 @@ func getEffectiveStat(kind string, mon models.BattleMon) int {
 			return 0
 	}
 
+	fmt.Println("Base stat:", base)
+	fmt.Println("IV stat:", iv)
+	fmt.Println("EV stat:", ev)
 	// calculate effective stat
 	effStat := math.Abs((math.Abs((((2 * base) + iv + math.Abs(ev / 4)) * float64(mon.Level)) / 100) + 5) * nature)
 	return int(math.Floor(effStat))

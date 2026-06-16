@@ -11,6 +11,15 @@ import (
 )
 
 func main() {
+	// load data
+	data, err := models.NewData()
+	if err != nil {
+		log.Fatal("Failed to load data ", err)
+	}
+
+	// create new calculation
+	calculation := calc.NewCalc(data)
+
 	testAttackerData, err := os.ReadFile("test_attacker.json")
 	if err != nil {
 		log.Fatal("Error reading attacker test data", err)
@@ -34,11 +43,13 @@ func main() {
 
 	fmt.Println("Attacker mon:", attacker.Name)
 	fmt.Println("Defender mon:", defender.Name)
+	calculation.Atk = &attacker
+	calculation.Def = &defender
 
 	fmt.Println("Start calculation...")
 
 	var result models.BattleResult
-	result, err = calc.Calc(attacker, defender)
+	result, err = calculation.Calc()
 	if err != nil {
 		log.Fatal("Error while damage calculation")
 	}

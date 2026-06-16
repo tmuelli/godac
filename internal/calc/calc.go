@@ -7,49 +7,51 @@ import (
 	"github.com/tmuelli/godac/internal/models"
 )
 
-type calculation struct {
-	atk models.BattleMon
-	def models.BattleMon
+type Calculation struct {
+	data	*models.Data
+	Atk		*models.BattleMon
+	Def		*models.BattleMon
 }
 
-func Calc(attacker models.BattleMon, defender models.BattleMon) (models.BattleResult, error) {
-	calcResult := models.BattleResult{
-		Range: models.BattleResultRange{
-			Min: 0,
-			MinPerc: 0,
-			Max: 0,
-			MaxPerc: 0,
-		},
-		Possibilities: make([]int, 0),
+func NewCalc(data *models.Data) *Calculation {
+	return &Calculation{
+		data: data,
+		Atk: nil,
+		Def: nil,
 	}
-	
-	dmgCalc := calculation{
-		atk: attacker,
-		def: defender,
-	}
-	
+}
+
+func (c *Calculation) Calc() (models.BattleResult, error) {
 	// calculate base damage
-	baseDmg, err := dmgCalc.calcBaseDamage()
+	baseDmg, err := c.calcBaseDamage()
 	if err != nil {
 		return models.BattleResult{}, nil
 	}
 
 	// calculate conditional damage
-	condDmg, err := dmgCalc.calcConditionalDamage(baseDmg)
+	condDmg, err := c.calcConditionalDamage(baseDmg)
 	if err != nil {
 		return models.BattleResult{}, nil
 	}
 
 	// calcute modification damage
-	minDmg, maxDmg, err := dmgCalc.calcModificationDamage(condDmg)
+	minDmg, maxDmg, err := c.calcModificationDamage(condDmg)
 	if err != nil {
 		return models.BattleResult{}, nil
 	}
 
-	// populate possibilities array for result and set min and max values
 	// TODO: implement percent calculation
-	calcResult.Range.Min = minDmg
-	calcResult.Range.Max = maxDmg
+	calcResult := models.BattleResult{
+		Range: models.BattleResultRange{
+			Min: minDmg,
+			MinPerc: 0,
+			Max: maxDmg,
+			MaxPerc: 0,
+		},
+		Possibilities: make([]int, 0),
+	}
+
+	// populate possibilities array for result and set min and max values
 	// TODO: implement possibility calculation correct
 	for i := 0; i <= (calcResult.Range.Max - calcResult.Range.Min); i++ {
 		calcResult.Possibilities = append(calcResult.Possibilities, calcResult.Range.Min + i)
@@ -58,40 +60,41 @@ func Calc(attacker models.BattleMon, defender models.BattleMon) (models.BattleRe
 	return calcResult, nil
 }
 
-func (c *calculation) calcBaseDamage() (float64, error) {
+func (c *Calculation) calcBaseDamage() (float64, error) {
 	// TODO: use the chosen move from the user instead of the first one
-	if len(c.atk.Moves) == 0 {
+	if len(c.Atk.Moves) == 0 {
 		return 0, fmt.Errorf("No moves to attack with")
 	}
 	
-	// get attack and defense stat based on category
+	// get attack and Defense stat based on category
 	var attackStat int
-	var defenseStat int
+	var DefenseStat int
 	
 	// TODO: use move type instead
-	atkMove := c.atk.Moves[0]
-	switch (atkMove.Category) {
+	AtkMove := c.Atk.Moves[0]
+	switch (AtkMove.Category) {
 		case Physical:
 			// TODO: use embedded types instead of untyped structs
-			attackStat = getEffectiveStat("atk", c.atk)
-			defenseStat = getEffectiveStat("def", c.def)
-			fmt.Println("Effectice atk stat:", attackStat)
-			fmt.Println("Effective def stat:", defenseStat)
+			// TODO: use consistent base stat constants => "atk" vs "Atk"
+			attackStat = getEffectiveStat("atk", *c.Atk)
+			DefenseStat = getEffectiveStat("def", *c.Def)
+			fmt.Println("Effectice Atk stat:", attackStat)
+			fmt.Println("Effective Def stat:", DefenseStat)
 		case Special:
-			attackStat = getEffectiveStat("spa", c.atk)
-			defenseStat = getEffectiveStat("spd", c.def)
-			fmt.Println("Effectice sp atk stat:", attackStat)
-			fmt.Println("Effective sp def stat:", defenseStat)
+			attackStat = getEffectiveStat("spa", *c.Atk)
+			DefenseStat = getEffectiveStat("spd", *c.Def)
+			fmt.Println("Effectice sp Atk stat:", attackStat)
+			fmt.Println("Effective sp Def stat:", DefenseStat)
 		default:
 			return 0, fmt.Errorf("Invalid attack move category")
 	}
 	
-	dmg := ((((2 * float64(c.atk.Level)) / 5) + 2) * float64(atkMove.BasePower) * (float64(attackStat) / float64(defenseStat))) / 50
+	dmg := ((((2 * float64(c.Atk.Level)) / 5) + 2) * float64(AtkMove.BasePower) * (float64(attackStat) / float64(DefenseStat))) / 50
 	fmt.Println("Base damage:", dmg)
 	return float64(dmg), nil
 }
 
-func (c *calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
+func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 	burnMod := 1.0
 	screenMod := 1.0
 	targetsMod := 1.0
@@ -105,7 +108,7 @@ func (c *calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 	return dmg, nil
 }
 
-func (c *calculation) calcModificationDamage(condDmg float64) (int, int, error) {
+func (c *Calculation) calcModificationDamage(condDmg float64) (int, int, error) {
 	critMod := 1.0
 	itemMod := 1.0
 	firstMod := 1.0
@@ -121,12 +124,12 @@ func (c *calculation) calcModificationDamage(condDmg float64) (int, int, error) 
 	fmt.Println("Modifications not implemented yet")
 
 	// TODO: use selected move by user instead of first move
-	atkMove := c.atk.Moves[0]
-	if atkMove.Type.Name == c.atk.Types[0].Name {
+	AtkMove := c.Atk.Moves[0]
+	if AtkMove.Type.Name == c.Atk.Types[0].Name {
 		stabMod = 1.5
 	}
 
-	type1Mod = getTypeDamageModifier(atkMove.Type.Name, c.def.Types[0].Name)
+	type1Mod = getTypeDamageModifier(AtkMove.Type.Name, c.Def.Types[0].Name)
 
 
 	dmgMin := condDmg * critMod * itemMod * firstMod * 0.85 * stabMod * type1Mod * type2Mod * solidRockFilterMod * expertBeltMod * tintedLensMod * berryMod

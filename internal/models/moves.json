@@ -113,7 +113,9 @@
     "name": "Bonemerang",
     "flags": {},
     "type": "Ground",
-    "multihit": 2,
+    "multihit": [
+      2
+    ],
     "category": "Physical",
     "basePower": 50
   },
@@ -269,7 +271,9 @@
       "contact": 1
     },
     "type": "Fighting",
-    "multihit": 2,
+    "multihit": [
+      2
+    ],
     "category": "Physical",
     "basePower": 30
   },
@@ -966,7 +970,9 @@
     "name": "Twineedle",
     "flags": {},
     "type": "Bug",
-    "multihit": 2,
+    "multihit": [
+      2
+    ],
     "category": "Physical",
     "basePower": 25
   },
@@ -2135,7 +2141,9 @@
       "contact": 1
     },
     "type": "Fighting",
-    "multihit": 3,
+    "multihit": [
+      3
+    ],
     "multiaccuracy": true,
     "category": "Physical",
     "basePower": 10
@@ -3893,7 +3901,9 @@
       "contact": 1
     },
     "type": "Normal",
-    "multihit": 2,
+    "multihit": [
+      2
+    ],
     "category": "Physical",
     "basePower": 35
   },
