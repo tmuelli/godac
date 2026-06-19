@@ -1,0 +1,3 @@
+portfolio project godac golang damage calculator for pokemon gen 4
+
+will be updated later...
