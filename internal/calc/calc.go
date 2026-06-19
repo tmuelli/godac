@@ -7,18 +7,41 @@ import (
 	"github.com/tmuelli/godac/internal/models"
 )
 
-type Calculation struct {
-	data	*models.Data
-	Atk		*models.BattleMon
-	Def		*models.BattleMon
+type CalcData struct {
+	specie		*models.Specie
+	specieTypes	[]*models.Type
+	nature		*models.Nature
+	ability		*models.Ability
+	item		*models.Item
+	usedMove	*models.Move
+	ivs			*models.IvStats
+	evs			*models.EvStats
+	level		int
 }
 
-func NewCalc(data *models.Data) *Calculation {
+type Calculation struct {
+	data		*models.Data
+	attacker	*CalcData
+	defender	*CalcData
+}
+
+func NewCalc(data *models.Data, atkInput *models.UserInput, defInput *models.UserInput) (*Calculation, error) {
+	// validate inputs
+	attacker, err := validateInput(data, atkInput)
+	if err != nil {
+		return nil, fmt.Errorf("Invalid attack input")
+	}
+
+	defender, err := validateInput(data, defInput)
+	if err != nil {
+		return nil, fmt.Errorf("Invalid defender input")
+	}
+	
 	return &Calculation{
 		data: data,
-		Atk: nil,
-		Def: nil,
-	}
+		attacker: attacker,
+		defender: defender,
+	}, nil
 }
 
 func (c *Calculation) Calc() (models.BattleResult, error) {
@@ -62,34 +85,33 @@ func (c *Calculation) Calc() (models.BattleResult, error) {
 
 func (c *Calculation) calcBaseDamage() (float64, error) {
 	// TODO: use the chosen move from the user instead of the first one
-	if len(c.Atk.Moves) == 0 {
-		return 0, fmt.Errorf("No moves to attack with")
-	}
+	// if len(c.Atk.Moves) == 0 {
+	// 	return 0, fmt.Errorf("No moves to attack with")
+	// }
 	
 	// get attack and Defense stat based on category
 	var attackStat int
 	var DefenseStat int
 	
-	// TODO: use move type instead
-	AtkMove := c.Atk.Moves[0]
-	switch (AtkMove.Category) {
+	atkCategory := c.attacker.usedMove.Category
+	switch (atkCategory) {
 		case Physical:
 			// TODO: use embedded types instead of untyped structs
 			// TODO: use consistent base stat constants => "atk" vs "Atk"
-			attackStat = getEffectiveStat("atk", *c.Atk)
-			DefenseStat = getEffectiveStat("def", *c.Def)
+			attackStat = getEffectiveStat("atk", *c.attacker)
+			DefenseStat = getEffectiveStat("def", *c.defender)
 			fmt.Println("Effectice Atk stat:", attackStat)
 			fmt.Println("Effective Def stat:", DefenseStat)
 		case Special:
-			attackStat = getEffectiveStat("spa", *c.Atk)
-			DefenseStat = getEffectiveStat("spd", *c.Def)
+			attackStat = getEffectiveStat("spa", *c.attacker)
+			DefenseStat = getEffectiveStat("spd", *c.defender)
 			fmt.Println("Effectice sp Atk stat:", attackStat)
 			fmt.Println("Effective sp Def stat:", DefenseStat)
 		default:
 			return 0, fmt.Errorf("Invalid attack move category")
 	}
 	
-	dmg := ((((2 * float64(c.Atk.Level)) / 5) + 2) * float64(AtkMove.BasePower) * (float64(attackStat) / float64(DefenseStat))) / 50
+	dmg := ((((2 * float64(c.attacker.level)) / 5) + 2) * float64(c.attacker.usedMove.BasePower) * (float64(attackStat) / float64(DefenseStat))) / 50
 	fmt.Println("Base damage:", dmg)
 	return float64(dmg), nil
 }
@@ -123,13 +145,15 @@ func (c *Calculation) calcModificationDamage(condDmg float64) (int, int, error) 
 	// TODO: implement modifications
 	fmt.Println("Modifications not implemented yet")
 
-	// TODO: use selected move by user instead of first move
-	AtkMove := c.Atk.Moves[0]
-	if AtkMove.Type.Name == c.Atk.Types[0].Name {
-		stabMod = 1.5
+	mtAtkComb := MoveTypeComb{c.attacker.usedMove, c.attacker.specieTypes}
+	mtDefComb := MoveTypeComb{c.defender.usedMove, c.defender.specieTypes}
+
+	stabMod, err := getStabModifier(mtAtkComb)
+	if err != nil {
+		return 0, 0, err
 	}
 
-	type1Mod = getTypeDamageModifier(AtkMove.Type.Name, c.Def.Types[0].Name)
+	type1Mod = getTypeDamageModifier(mtAtkComb, mtDefComb)
 
 
 	dmgMin := condDmg * critMod * itemMod * firstMod * 0.85 * stabMod * type1Mod * type2Mod * solidRockFilterMod * expertBeltMod * tintedLensMod * berryMod

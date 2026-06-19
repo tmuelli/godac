@@ -1,64 +1,22 @@
 package models
 
-type BattleMon struct {
-	Name  string `json:"name"`
-	Types []struct {
-		Name string `json:"name"`
-	} `json:"types"`
-	Gender    string `json:"gender"`
-	Level     int    `json:"level"`
-	BaseStats struct {
-		Hp  int `json:"hp"`
-		Atk int `json:"atk"`
-		Def int `json:"def"`
-		Spa int `json:"spa"`
-		Spd int `json:"spd"`
-		Spe int `json:"spe"`
-	} `json:"baseStats"`
-	Ivs struct {
-		Hp  int `json:"hp"`
-		Atk int `json:"atk"`
-		Def int `json:"def"`
-		Spa int `json:"spa"`
-		Spd int `json:"spd"`
-		Spe int `json:"spe"`
-	} `json:"ivs"`
-	Evs struct {
-		Hp  int `json:"hp"`
-		Atk int `json:"atk"`
-		Def int `json:"def"`
-		Spa int `json:"spa"`
-		Spd int `json:"spd"`
-		Spe int `json:"spe"`
-	} `json:"evs"`
-	BattleMods struct {
-		Hp  int `json:"hp"`
-		Atk int `json:"atk"`
-		Def int `json:"def"`
-		Spa int `json:"spa"`
-		Spd int `json:"spd"`
-		Spe int `json:"spe"`
-	} `json:"battleMods"`
-	Nature    string      `json:"nature"`
-	Ability   string      `json:"ability"`
-	Item      interface{} `json:"item"`
-	Status    string      `json:"status"`
-	CurrentHp struct {
-		Hp   int `json:"hp"`
-		Perc int `json:"perc"`
-	} `json:"currentHp"`
-	Moves []struct {
-		Name      string `json:"name"`
-		BasePower int    `json:"basePower"`
-		Type      struct {
-			Name string `json:"name"`
-		} `json:"type"`
-		Category string `json:"category"`
-		IsCrit   bool   `json:"isCrit"`
-		Streak   int    `json:"streak"`
-	} `json:"moves"`
+/****************************/
+/* Types: user input/output */
+/****************************/
+
+/* User input */
+type UserInput struct {
+	Name          string   `json:"name"`
+	Level         int      `json:"level"`
+	Nature        string   `json:"nature"`
+	AttackMove    string   `json:"attackMove"`
+	Moves         []string `json:"moves"`
+	HealthPercent int      `json:"healthPercent"`
+	IvSetting     string   `json:"ivSetting"`
+	EvSetting     string   `json:"evSetting"`
 }
 
+/* Calculation result */
 type BattleResultRange struct {
 	Min		int
 	MinPerc	float64
@@ -83,6 +41,26 @@ type BaseStats struct {
 	Spa	int	`json:"spa"`
 	Spd	int	`json:"spd"`
 	Spe	int	`json:"spe"`
+}
+
+/* IvStats */
+type IvStats struct {
+	Hp	int
+	Atk	int
+	Def	int
+	Spa	int
+	Spd	int
+	Spe	int
+}
+
+/* EvStats */
+type EvStats struct {
+	Hp	int
+	Atk	int
+	Def	int
+	Spa	int
+	Spd	int
+	Spe	int
 }
 
 /* Ability */
@@ -185,6 +163,7 @@ type Specie struct {
 	Abilities		map[string]string	`json:"abilities"`
 }
 
+/* Data */
 type Data struct {
 	Abilities	[]Ability
 	Items		[]Item

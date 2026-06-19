@@ -17,21 +17,18 @@ func main() {
 		log.Fatal("Failed to load data ", err)
 	}
 
-	// create new calculation
-	calculation := calc.NewCalc(data)
-
-	testAttackerData, err := os.ReadFile("test_attacker.json")
+	testAttackerData, err := os.ReadFile("test_attacker_v2.json")
 	if err != nil {
 		log.Fatal("Error reading attacker test data", err)
 	}
 
-	testDefenderData, err := os.ReadFile("test_defender.json")
+	testDefenderData, err := os.ReadFile("test_defender_v2.json")
 	if err != nil {
 		log.Fatal("Error reading defender test data", err)
 	}
 
-	var attacker models.BattleMon
-	var defender models.BattleMon
+	var attacker models.UserInput
+	var defender models.UserInput
 
 	if err := json.Unmarshal(testAttackerData, &attacker); err != nil {
 		log.Fatal("Error while decoding attacker test data to json")
@@ -41,13 +38,13 @@ func main() {
 		log.Fatal("Error while decoding defender test data to json")
 	}
 
-	fmt.Println("Attacker mon:", attacker.Name)
-	fmt.Println("Defender mon:", defender.Name)
-	calculation.Atk = &attacker
-	calculation.Def = &defender
+	// create new calculation
+	calculation, err := calc.NewCalc(data, &attacker, &defender)
+	if err != nil {
+		log.Fatal("Error while initializing calculation data:", err)
+	}
 
 	fmt.Println("Start calculation...")
-
 	var result models.BattleResult
 	result, err = calculation.Calc()
 	if err != nil {

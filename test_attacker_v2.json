@@ -1,0 +1,15 @@
+{
+    "name": "Poochyena",
+    "level": 100,
+    "nature": "hardy",
+    "attackMove": "Bite",
+    "moves": [
+        "Bite",
+        "Leer",
+        "Tackle",
+        "Crunch"
+    ],
+    "healthPercent": 100,
+    "ivSetting": "optimal",
+    "evSetting": "worstCase"
+}
