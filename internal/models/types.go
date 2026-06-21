@@ -70,6 +70,10 @@ type Ability struct {
 	Name	string
 }
 
+func (a Ability) Key() string {
+	return a.Name
+}
+
 /* Item */
 type NaturalGiftItem struct {
 	BasePower int    `json:"basePower"`
@@ -82,6 +86,10 @@ type Item struct {
 	Name			string			`json:"name"`
 	IsBerry			bool			`json:"isBerry"`
 	NaturalGift		NaturalGiftItem	`json:"naturalGift"`
+}
+
+func (i Item) Key() string {
+	return i.Name
 }
 
 /* Move */
@@ -131,6 +139,10 @@ type Move struct {
 	BreaksProtect 	bool `json:"breaksProtect,omitempty"`
 }
 
+func (m Move) Key() string {
+	return m.Name
+}
+
 /* Nature */
 type Nature struct {
 	Kind  string `json:"kind"`
@@ -140,12 +152,20 @@ type Nature struct {
 	Minus string `json:"minus"`
 }
 
+func (n Nature) Key() string {
+	return n.Name
+}
+
 /* Type */
 type Type struct {
 	Kind  			string `json:"kind"`
 	ID    			string `json:"id"`
 	Name  			string `json:"name"`
 	Effectiveness	map[string]float64 `json:"effectiveness"`
+}
+
+func (t Type) Key() string {
+	return t.Name
 }
 
 /* Specie */
@@ -163,13 +183,17 @@ type Specie struct {
 	Abilities		map[string]string	`json:"abilities"`
 }
 
+func (s Specie) Key() string {
+	return s.Name
+}
+
 /* Data */
 type Data struct {
-	Abilities	[]Ability
-	Items		[]Item
-	Moves		[]Move
-	Natures		[]Nature
-	Types		[]Type
-	Species		[]Specie
+	Abilities	map[string]Ability
+	Items		map[string]Item
+	Moves		map[string]Move
+	Natures		map[string]Nature
+	Types		map[string]Type
+	Species		map[string]Specie
 }
 

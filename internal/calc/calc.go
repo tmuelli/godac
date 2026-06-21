@@ -17,6 +17,7 @@ type CalcData struct {
 	ivs			*models.IvStats
 	evs			*models.EvStats
 	level		int
+	health		int
 }
 
 type Calculation struct {
@@ -29,12 +30,12 @@ func NewCalc(data *models.Data, atkInput *models.UserInput, defInput *models.Use
 	// validate inputs
 	attacker, err := validateInput(data, atkInput)
 	if err != nil {
-		return nil, fmt.Errorf("Invalid attack input")
+		return nil, fmt.Errorf("Invalid attack input: %v", err)
 	}
 
 	defender, err := validateInput(data, defInput)
 	if err != nil {
-		return nil, fmt.Errorf("Invalid defender input")
+		return nil, fmt.Errorf("Invalid defender input: %v", err)
 	}
 	
 	return &Calculation{
@@ -48,19 +49,19 @@ func (c *Calculation) Calc() (models.BattleResult, error) {
 	// calculate base damage
 	baseDmg, err := c.calcBaseDamage()
 	if err != nil {
-		return models.BattleResult{}, nil
+		return models.BattleResult{}, err
 	}
 
 	// calculate conditional damage
 	condDmg, err := c.calcConditionalDamage(baseDmg)
 	if err != nil {
-		return models.BattleResult{}, nil
+		return models.BattleResult{}, err
 	}
 
 	// calcute modification damage
 	minDmg, maxDmg, err := c.calcModificationDamage(condDmg)
 	if err != nil {
-		return models.BattleResult{}, nil
+		return models.BattleResult{}, err
 	}
 
 	// TODO: implement percent calculation

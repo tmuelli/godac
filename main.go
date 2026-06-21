@@ -48,7 +48,7 @@ func main() {
 	var result models.BattleResult
 	result, err = calculation.Calc()
 	if err != nil {
-		log.Fatal("Error while damage calculation")
+		log.Fatal("Error while damage calculation: ", err)
 	}
 
 	fmt.Println("Damage result successfully calculated")

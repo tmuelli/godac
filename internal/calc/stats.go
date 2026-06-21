@@ -41,6 +41,7 @@ func (d *CalcData) effectiveStat(kind StatKind) int {
 	fmt.Println("Base stat:", base)
 	fmt.Println("IV stat:", iv)
 	fmt.Println("EV stat:", ev)
+	fmt.Println("Nature modifier:", nature)
 
 	// calculate effective stat
 	effStat := math.Abs((math.Abs((((2 * base) + iv + math.Abs(ev / 4)) * float64(d.level)) / 100) + 5) * nature)

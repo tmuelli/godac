@@ -1,7 +1,7 @@
 {
     "name": "Poochyena",
     "level": 100,
-    "nature": "hardy",
+    "nature": "Hardy",
     "attackMove": "Bite",
     "moves": [
         "Bite",

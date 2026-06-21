@@ -18,13 +18,9 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	
 	// specie
 	var specie *models.Specie
-	for i, s := range data.Species {
-		if s.Name != input.Name {
-			continue
-		}
 
-		specie = &data.Species[i]
-		break
+	if s, ok := data.Species[input.Name]; ok {
+		specie = &s
 	}
 
 	if specie == nil {
@@ -33,13 +29,9 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 
 	// nature
 	var nature *models.Nature
-	for i, n := range data.Natures {
-		if n.Name != input.Nature {
-			continue
-		}
 
-		nature = &data.Natures[i]
-		break
+	if n, ok := data.Natures[input.Nature]; ok {
+		nature = &n
 	}
 
 	if nature == nil {
@@ -60,23 +52,9 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	}
 
 	var usedMove *models.Move
-	for _, m := range input.Moves {
-		found := false
 
-		for j, d := range data.Moves {
-			if d.Name == m {
-				if d.Name == *move {
-					usedMove = &data.Moves[j]
-				}
-
-				found = true
-				break
-			}
-		}
-
-		if !found {
-			return nil, fmt.Errorf("Invalid moveset: Unknown move %s", m)
-		}
+	if m, ok := data.Moves[*move]; ok {
+		usedMove = &m
 	}
 
 	if usedMove == nil {
@@ -166,10 +144,11 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	fmt.Println("Invalid input: Item validation to be implemented")
 
 	// successful validation of user input
-	fmt.Println("DBG: Validation of user input successful")
 	calcData := CalcData{
 		specie: specie,
 		specieTypes: specieTypes,
+		level: input.Level,
+		health: input.HealthPercent,
 		nature: nature,
 		ability: ability,
 		item: nil,

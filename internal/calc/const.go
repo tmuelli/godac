@@ -7,8 +7,8 @@ type EvOption string
 
 const (
 	// move category
-	Physical	MoveCategory	= "physical"
-	Special		MoveCategory	= "special"
+	Physical	MoveCategory	= "Physical"
+	Special		MoveCategory	= "Special"
 
 	// stat kind
 	StatHp		StatKind		= "hp"
