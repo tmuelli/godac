@@ -12,16 +12,13 @@ type MoveTypeComb struct {
 }
 
 func getTypeDamageModifier(aComb MoveTypeComb, dComb MoveTypeComb) float64 {
-	// TODO: implement
-	fmt.Println("type damage modifier not yet implemented")
+	mod := 1.0
 
-	for _, t := range dComb.t {
-		if aComb.m.Type == t.Name {
-			return 0.5
-		}
+	for _, defType := range dComb.t {
+		mod *= defType.Effectiveness[aComb.m.Type]
 	}
 
-	return 1.0
+	return mod
 }
 
 func getStabModifier(comb MoveTypeComb) (float64, error) {

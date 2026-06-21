@@ -18,12 +18,12 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	
 	// specie
 	var specie *models.Specie
-	for _, s := range data.Species {
+	for i, s := range data.Species {
 		if s.Name != input.Name {
 			continue
 		}
 
-		specie = &s
+		specie = &data.Species[i]
 		break
 	}
 
@@ -33,12 +33,12 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 
 	// nature
 	var nature *models.Nature
-	for _, n := range data.Natures {
+	for i, n := range data.Natures {
 		if n.Name != input.Nature {
 			continue
 		}
 
-		nature = &n
+		nature = &data.Natures[i]
 		break
 	}
 
@@ -48,9 +48,9 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 
 	// moves
 	var move *string
-	for _, m := range input.Moves {
+	for i, m := range input.Moves {
 		if m == input.AttackMove {
-			move = &m
+			move = &input.Moves[i]
 			break
 		}
 	}
@@ -63,10 +63,10 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	for _, m := range input.Moves {
 		found := false
 
-		for _, d := range data.Moves {
+		for j, d := range data.Moves {
 			if d.Name == m {
 				if d.Name == *move {
-					usedMove = &d
+					usedMove = &data.Moves[j]
 				}
 
 				found = true
@@ -95,9 +95,8 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 
 	// iv settings
 	var ivSettings *models.IvStats
-	// TODO: improve IV possible values (e.g. enum)
-	switch (input.IvSetting) {
-	case "optiomal":
+	switch (IvOption(input.IvSetting)) {
+	case IvOptimal:
 		ivSettings = &models.IvStats{
 			Hp: 31,
 			Atk: 31,
@@ -106,7 +105,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 			Spd: 31,
 			Spe: 31,
 		}
-	case "worstCase":
+	case IvWorstCase:
 		ivSettings = &models.IvStats{
 			Hp: 0,
 			Atk: 0,
@@ -115,7 +114,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 			Spd: 0,
 			Spe: 0,
 		}
-	case "custom":
+	case IvCustom:
 		return nil, fmt.Errorf("Invalid input: Custom iv setting not supported yet")
 	default:
 		return nil, fmt.Errorf("Invalid input: Unknown iv setting")
@@ -123,9 +122,8 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 
 	// ev settings
 	var evSettings *models.EvStats
-	// TODO: improve EV possible values (e.g. enum)
-	switch (input.EvSetting) {
-	case "optiomal":
+	switch (EvOption(input.EvSetting)) {
+	case EvOptimal:
 		evSettings = &models.EvStats{
 			Hp: 31,
 			Atk: 31,
@@ -134,7 +132,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 			Spd: 31,
 			Spe: 31,
 		}
-	case "worstCase":
+	case EvWorstCase:
 		evSettings = &models.EvStats{
 			Hp: 0,
 			Atk: 0,
@@ -143,7 +141,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 			Spd: 0,
 			Spe: 0,
 		}
-	case "custom":
+	case EvCustom:
 		return nil, fmt.Errorf("Invalid input: Custom ev setting not supported yet")
 	default:
 		return nil, fmt.Errorf("Invalid input: Unknown ev setting")

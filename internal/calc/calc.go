@@ -94,17 +94,17 @@ func (c *Calculation) calcBaseDamage() (float64, error) {
 	var DefenseStat int
 	
 	atkCategory := c.attacker.usedMove.Category
-	switch (atkCategory) {
+	switch (MoveCategory(atkCategory)) {
 		case Physical:
 			// TODO: use embedded types instead of untyped structs
 			// TODO: use consistent base stat constants => "atk" vs "Atk"
-			attackStat = getEffectiveStat("atk", *c.attacker)
-			DefenseStat = getEffectiveStat("def", *c.defender)
+			attackStat = getEffectiveStat("atk", c.attacker)
+			DefenseStat = getEffectiveStat("def", c.defender)
 			fmt.Println("Effectice Atk stat:", attackStat)
 			fmt.Println("Effective Def stat:", DefenseStat)
 		case Special:
-			attackStat = getEffectiveStat("spa", *c.attacker)
-			DefenseStat = getEffectiveStat("spd", *c.defender)
+			attackStat = getEffectiveStat("spa", c.attacker)
+			DefenseStat = getEffectiveStat("spd", c.defender)
 			fmt.Println("Effectice sp Atk stat:", attackStat)
 			fmt.Println("Effective sp Def stat:", DefenseStat)
 		default:
@@ -139,8 +139,7 @@ func (c *Calculation) calcModificationDamage(condDmg float64) (int, int, error) 
 	tintedLensMod := 1.0
 	berryMod := 1.0
 	stabMod := 1.0
-	type1Mod := 1.0
-	type2Mod := 1.0
+	typeMod := 1.0
 
 	// TODO: implement modifications
 	fmt.Println("Modifications not implemented yet")
@@ -153,11 +152,10 @@ func (c *Calculation) calcModificationDamage(condDmg float64) (int, int, error) 
 		return 0, 0, err
 	}
 
-	type1Mod = getTypeDamageModifier(mtAtkComb, mtDefComb)
+	typeMod = getTypeDamageModifier(mtAtkComb, mtDefComb)
 
-
-	dmgMin := condDmg * critMod * itemMod * firstMod * 0.85 * stabMod * type1Mod * type2Mod * solidRockFilterMod * expertBeltMod * tintedLensMod * berryMod
-	dmgMax:= condDmg * critMod * itemMod * firstMod * 1.0 * stabMod * type1Mod * type2Mod * solidRockFilterMod * expertBeltMod * tintedLensMod * berryMod
+	dmgMin := condDmg * critMod * itemMod * firstMod * 0.85 * stabMod * typeMod * solidRockFilterMod * expertBeltMod * tintedLensMod * berryMod
+	dmgMax:= condDmg * critMod * itemMod * firstMod * 1.0 * stabMod * typeMod * solidRockFilterMod * expertBeltMod * tintedLensMod * berryMod
 
 	fmt.Println("Min damage:", dmgMin)
 	fmt.Println("Max damage:", dmgMax)

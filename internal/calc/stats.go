@@ -6,7 +6,7 @@ import (
 )
 
 // TODO: use embedded types instead of untyped structs
-func getEffectiveStat(kind string, data CalcData) int {
+func getEffectiveStat(kind StatKind, data *CalcData) int {
 	base := 0.0
 	iv := 0.0
 	ev := 0.0
@@ -15,26 +15,26 @@ func getEffectiveStat(kind string, data CalcData) int {
 	nature := getNatureModifier(kind, data.nature.Name)
 
 	switch (kind) {
-		case "hp":
+		case StatHp:
 			fmt.Println("Not implemented yet")
 			return 0
-		case "atk":
+		case StatAtk:
 			base = float64(data.specie.BaseStats.Atk)
 			iv = float64(data.ivs.Atk)
 			ev = float64(data.evs.Atk)
-		case "def":
+		case StatDef:
 			base = float64(data.specie.BaseStats.Def)
 			iv = float64(data.ivs.Def)
 			ev = float64(data.evs.Def)
-		case "spa":
+		case StatSpa:
 			base = float64(data.specie.BaseStats.Spa)
 			iv = float64(data.ivs.Spa)
 			ev = float64(data.evs.Spa)
-		case "spd":
+		case StatSpd:
 			base = float64(data.specie.BaseStats.Spd)
 			iv = float64(data.ivs.Spd)
 			ev = float64(data.evs.Spd)
-		case "spe":
+		case StatSpe:
 			fmt.Println("Not implemented yet")
 			return 0
 	}
