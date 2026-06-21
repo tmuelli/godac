@@ -15,7 +15,7 @@ func (d *CalcData) effectiveStat(kind StatKind) int {
 
 	switch (kind) {
 		case StatHp:
-			fmt.Println("Not implemented yet")
+			fmt.Println("[DEBUG]: Not implemented yet")
 			return 0
 		case StatAtk:
 			base = float64(d.specie.BaseStats.Atk)
@@ -34,14 +34,14 @@ func (d *CalcData) effectiveStat(kind StatKind) int {
 			iv = float64(d.ivs.Spd)
 			ev = float64(d.evs.Spd)
 		case StatSpe:
-			fmt.Println("Not implemented yet")
+			fmt.Println("[DEBUG]: Not implemented yet")
 			return 0
 	}
 
-	fmt.Println("Base stat:", base)
-	fmt.Println("IV stat:", iv)
-	fmt.Println("EV stat:", ev)
-	fmt.Println("Nature modifier:", nature)
+	fmt.Println("[DEBUG]: Base stat:", base)
+	fmt.Println("[DEBUG]: IV stat:", iv)
+	fmt.Println("[DEBUG]: EV stat:", ev)
+	fmt.Println("[DEBUG]: Nature modifier:", nature)
 
 	// calculate effective stat
 	effStat := math.Abs((math.Abs((((2 * base) + iv + math.Abs(ev / 4)) * float64(d.level)) / 100) + 5) * nature)

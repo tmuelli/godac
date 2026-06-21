@@ -29,7 +29,7 @@ func (d *CalcData) stabModifier() (float64, error) {
 
 func getTypesFromSpecie(data *models.Data, s *models.Specie) ([]*models.Type, error) {
 	if data == nil || s == nil {
-		return nil, fmt.Errorf("Invalid parameters: getTypeFromSpecie")
+		return nil, fmt.Errorf("invalid parameters: getTypeFromSpecie")
 	}
 	
 	var specieTypes []*models.Type

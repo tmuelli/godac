@@ -30,12 +30,12 @@ func NewCalc(data *models.Data, atkInput *models.UserInput, defInput *models.Use
 	// validate inputs
 	attacker, err := validateInput(data, atkInput)
 	if err != nil {
-		return nil, fmt.Errorf("Invalid attack input: %v", err)
+		return nil, fmt.Errorf("invalid attack input: %v", err)
 	}
 
 	defender, err := validateInput(data, defInput)
 	if err != nil {
-		return nil, fmt.Errorf("Invalid defender input: %v", err)
+		return nil, fmt.Errorf("invalid defender input: %v", err)
 	}
 	
 	return &Calculation{
@@ -94,19 +94,19 @@ func (c *Calculation) calcBaseDamage() (float64, error) {
 		case Physical:
 			attackStat = c.attacker.effectiveStat(StatAtk)
 			DefenseStat = c.defender.effectiveStat(StatDef)
-			fmt.Println("Effectice Atk stat:", attackStat)
-			fmt.Println("Effective Def stat:", DefenseStat)
+			fmt.Println("[DEBUG]: Effectice Atk stat:", attackStat)
+			fmt.Println("[DEBUG]: Effective Def stat:", DefenseStat)
 		case Special:
 			attackStat = c.attacker.effectiveStat(StatSpa)
 			DefenseStat = c.defender.effectiveStat(StatSpd)
-			fmt.Println("Effectice sp Atk stat:", attackStat)
-			fmt.Println("Effective sp Def stat:", DefenseStat)
+			fmt.Println("[DEBUG]: Effectice sp Atk stat:", attackStat)
+			fmt.Println("[DEBUG]: Effective sp Def stat:", DefenseStat)
 		default:
-			return 0, fmt.Errorf("Invalid attack move category")
+			return 0, fmt.Errorf("invalid attack move category")
 	}
 	
 	dmg := ((((2 * float64(c.attacker.level)) / 5) + 2) * float64(c.attacker.usedMove.BasePower) * (float64(attackStat) / float64(DefenseStat))) / 50
-	fmt.Println("Base damage:", dmg)
+	fmt.Println("[DEBUG]: Base damage:", dmg)
 	return float64(dmg), nil
 }
 
@@ -118,9 +118,8 @@ func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 	flashFireMod := 1.0
 	
 	// TODO: implement conditions
-	fmt.Println("Conditions not implemented yet")
 	dmg := (baseDmg * burnMod * screenMod * targetsMod * weatherMod * flashFireMod) + 2
-	fmt.Println("Conditional damage:", dmg)
+	fmt.Println("[DEBUG]: Conditional damage:", dmg)
 	return dmg, nil
 }
 
@@ -146,8 +145,8 @@ func (c *Calculation) calcModificationDamage(condDmg float64) (int, int, error) 
 	dmgMin := condDmg * critMod * itemMod * firstMod * 0.85 * stabMod * typeMod * solidRockFilterMod * expertBeltMod * tintedLensMod * berryMod
 	dmgMax:= condDmg * critMod * itemMod * firstMod * 1.0 * stabMod * typeMod * solidRockFilterMod * expertBeltMod * tintedLensMod * berryMod
 
-	fmt.Println("Min damage:", dmgMin)
-	fmt.Println("Max damage:", dmgMax)
+	fmt.Println("[DEBUG]: Min damage:", dmgMin)
+	fmt.Println("[DEBUG]: Max damage:", dmgMax)
 
 	return int(math.Floor(dmgMin)), int(math.Floor(dmgMax)), nil
 }

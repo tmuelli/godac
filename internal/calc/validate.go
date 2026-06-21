@@ -9,11 +9,11 @@ import (
 
 func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error) {
 	if data == nil {
-		return nil, fmt.Errorf("Internal error: Invalid base data")
+		return nil, fmt.Errorf("internal error: Invalid base data")
 	}
 
 	if input == nil {
-		return nil, fmt.Errorf("Internal error: Invalid pointer to user input")
+		return nil, fmt.Errorf("internal error: Invalid pointer to user input")
 	}
 	
 	// specie
@@ -24,7 +24,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	}
 
 	if specie == nil {
-		return nil, fmt.Errorf("Invalid input: Unknown specie %s", input.Name)
+		return nil, fmt.Errorf("invalid input: Unknown specie %s", input.Name)
 	}
 
 	// nature
@@ -35,7 +35,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	}
 
 	if nature == nil {
-		return nil, fmt.Errorf("Invalid input: Unknown nature %s", input.Nature)
+		return nil, fmt.Errorf("invalid input: Unknown nature %s", input.Nature)
 	}
 
 	// moves
@@ -48,7 +48,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	}
 
 	if move == nil {
-		return nil, fmt.Errorf("Invalid attack Move: Move is %s is not in moveset of attacker", input.AttackMove)
+		return nil, fmt.Errorf("invalid attack Move: Move is %s is not in moveset of attacker", input.AttackMove)
 	}
 
 	var usedMove *models.Move
@@ -58,17 +58,17 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	}
 
 	if usedMove == nil {
-		return nil, fmt.Errorf("Invalid move used: Unknown move")
+		return nil, fmt.Errorf("invalid move used: Unknown move")
 	}
 
 	// level
 	if input.Level < 1 || input.Level > 100 {
-		return nil, fmt.Errorf("Invalid input: Invalid level %d", input.Level)
+		return nil, fmt.Errorf("invalid input: Invalid level %d", input.Level)
 	}
 
 	// health
 	if input.HealthPercent < 1 || input.HealthPercent > 100 {
-		return nil, fmt.Errorf("Invalid input: Invalid health %d", input.HealthPercent)
+		return nil, fmt.Errorf("invalid input: Invalid health %d", input.HealthPercent)
 	}
 
 	// iv settings
@@ -93,9 +93,9 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 			Spe: 0,
 		}
 	case IvCustom:
-		return nil, fmt.Errorf("Invalid input: Custom iv setting not supported yet")
+		return nil, fmt.Errorf("invalid input: Custom iv setting not supported yet")
 	default:
-		return nil, fmt.Errorf("Invalid input: Unknown iv setting")
+		return nil, fmt.Errorf("invalid input: Unknown iv setting")
 	}
 
 	// ev settings
@@ -120,28 +120,28 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 			Spe: 0,
 		}
 	case EvCustom:
-		return nil, fmt.Errorf("Invalid input: Custom ev setting not supported yet")
+		return nil, fmt.Errorf("invalid input: Custom ev setting not supported yet")
 	default:
-		return nil, fmt.Errorf("Invalid input: Unknown ev setting")
+		return nil, fmt.Errorf("invalid input: Unknown ev setting")
 	}
 
 	// specie type
 	var specieTypes []*models.Type
 	specieTypes, err := getTypesFromSpecie(data, specie)
 	if err != nil {
-		return nil, fmt.Errorf("Internal error: Couldnt get type to specie")
+		return nil, fmt.Errorf("internal error: Couldnt get type to specie")
 	}
 
 	// specie ability
 	var ability *models.Ability
 	ability, err = getAbilityFromSpecie(data, specie)
 	if err != nil {
-		return nil, fmt.Errorf("Internal error: Couldnt get ability to specie")
+		return nil, fmt.Errorf("internal error: Couldnt get ability to specie")
 	}
 
 	// item
 	// TODO: to be implemented
-	fmt.Println("Invalid input: Item validation to be implemented")
+	fmt.Println("[DEBUG]: Item validation to be implemented")
 
 	// successful validation of user input
 	calcData := CalcData{
