@@ -84,11 +84,6 @@ func (c *Calculation) Calc() (models.BattleResult, error) {
 }
 
 func (c *Calculation) calcBaseDamage() (float64, error) {
-	// TODO: use the chosen move from the user instead of the first one
-	// if len(c.Atk.Moves) == 0 {
-	// 	return 0, fmt.Errorf("No moves to attack with")
-	// }
-	
 	// get attack and Defense stat based on category
 	var attackStat int
 	var DefenseStat int
@@ -96,15 +91,13 @@ func (c *Calculation) calcBaseDamage() (float64, error) {
 	atkCategory := c.attacker.usedMove.Category
 	switch (MoveCategory(atkCategory)) {
 		case Physical:
-			// TODO: use embedded types instead of untyped structs
-			// TODO: use consistent base stat constants => "atk" vs "Atk"
-			attackStat = getEffectiveStat("atk", c.attacker)
-			DefenseStat = getEffectiveStat("def", c.defender)
+			attackStat = c.attacker.effectiveStat(StatAtk)
+			DefenseStat = c.defender.effectiveStat(StatDef)
 			fmt.Println("Effectice Atk stat:", attackStat)
 			fmt.Println("Effective Def stat:", DefenseStat)
 		case Special:
-			attackStat = getEffectiveStat("spa", c.attacker)
-			DefenseStat = getEffectiveStat("spd", c.defender)
+			attackStat = c.attacker.effectiveStat(StatSpa)
+			DefenseStat = c.defender.effectiveStat(StatSpd)
 			fmt.Println("Effectice sp Atk stat:", attackStat)
 			fmt.Println("Effective sp Def stat:", DefenseStat)
 		default:
@@ -131,6 +124,7 @@ func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 }
 
 func (c *Calculation) calcModificationDamage(condDmg float64) (int, int, error) {
+	// TODO: implement modifications
 	critMod := 1.0
 	itemMod := 1.0
 	firstMod := 1.0
@@ -141,18 +135,12 @@ func (c *Calculation) calcModificationDamage(condDmg float64) (int, int, error) 
 	stabMod := 1.0
 	typeMod := 1.0
 
-	// TODO: implement modifications
-	fmt.Println("Modifications not implemented yet")
-
-	mtAtkComb := MoveTypeComb{c.attacker.usedMove, c.attacker.specieTypes}
-	mtDefComb := MoveTypeComb{c.defender.usedMove, c.defender.specieTypes}
-
-	stabMod, err := getStabModifier(mtAtkComb)
+	stabMod, err := c.attacker.stabModifier()
 	if err != nil {
 		return 0, 0, err
 	}
 
-	typeMod = getTypeDamageModifier(mtAtkComb, mtDefComb)
+	typeMod = c.typeDamageModifier()
 
 	dmgMin := condDmg * critMod * itemMod * firstMod * 0.85 * stabMod * typeMod * solidRockFilterMod * expertBeltMod * tintedLensMod * berryMod
 	dmgMax:= condDmg * critMod * itemMod * firstMod * 1.0 * stabMod * typeMod * solidRockFilterMod * expertBeltMod * tintedLensMod * berryMod

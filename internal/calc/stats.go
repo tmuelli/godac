@@ -5,35 +5,34 @@ import (
 	"math"
 )
 
-// TODO: use embedded types instead of untyped structs
-func getEffectiveStat(kind StatKind, data *CalcData) int {
+func (d *CalcData) effectiveStat(kind StatKind) int {
 	base := 0.0
 	iv := 0.0
 	ev := 0.0
 
 	// get nature modifier
-	nature := getNatureModifier(kind, data.nature.Name)
+	nature := getNatureModifier(kind, d.nature.Name)
 
 	switch (kind) {
 		case StatHp:
 			fmt.Println("Not implemented yet")
 			return 0
 		case StatAtk:
-			base = float64(data.specie.BaseStats.Atk)
-			iv = float64(data.ivs.Atk)
-			ev = float64(data.evs.Atk)
+			base = float64(d.specie.BaseStats.Atk)
+			iv = float64(d.ivs.Atk)
+			ev = float64(d.evs.Atk)
 		case StatDef:
-			base = float64(data.specie.BaseStats.Def)
-			iv = float64(data.ivs.Def)
-			ev = float64(data.evs.Def)
+			base = float64(d.specie.BaseStats.Def)
+			iv = float64(d.ivs.Def)
+			ev = float64(d.evs.Def)
 		case StatSpa:
-			base = float64(data.specie.BaseStats.Spa)
-			iv = float64(data.ivs.Spa)
-			ev = float64(data.evs.Spa)
+			base = float64(d.specie.BaseStats.Spa)
+			iv = float64(d.ivs.Spa)
+			ev = float64(d.evs.Spa)
 		case StatSpd:
-			base = float64(data.specie.BaseStats.Spd)
-			iv = float64(data.ivs.Spd)
-			ev = float64(data.evs.Spd)
+			base = float64(d.specie.BaseStats.Spd)
+			iv = float64(d.ivs.Spd)
+			ev = float64(d.evs.Spd)
 		case StatSpe:
 			fmt.Println("Not implemented yet")
 			return 0
@@ -44,6 +43,6 @@ func getEffectiveStat(kind StatKind, data *CalcData) int {
 	fmt.Println("EV stat:", ev)
 
 	// calculate effective stat
-	effStat := math.Abs((math.Abs((((2 * base) + iv + math.Abs(ev / 4)) * float64(data.level)) / 100) + 5) * nature)
+	effStat := math.Abs((math.Abs((((2 * base) + iv + math.Abs(ev / 4)) * float64(d.level)) / 100) + 5) * nature)
 	return int(math.Floor(effStat))
 }

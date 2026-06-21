@@ -6,23 +6,25 @@ import (
 	"github.com/tmuelli/godac/internal/models"
 )
 
-type MoveTypeComb struct {
-	m *models.Move
-	t []*models.Type
-}
-
-func getTypeDamageModifier(aComb MoveTypeComb, dComb MoveTypeComb) float64 {
+func (c *Calculation) typeDamageModifier() float64 {
 	mod := 1.0
 
-	for _, defType := range dComb.t {
-		mod *= defType.Effectiveness[aComb.m.Type]
+	for _, defType := range c.defender.specieTypes {
+		// TODO: check if type is in effectivness matrix => map: val, ok := map
+		mod *= defType.Effectiveness[c.attacker.usedMove.Type]
 	}
 
 	return mod
 }
 
-func getStabModifier(comb MoveTypeComb) (float64, error) {
-	return 0.0, nil
+func (d *CalcData) stabModifier() (float64, error) {
+	for _, t := range d.specieTypes {
+		if d.usedMove.Type == t.Name {
+			return 1.5, nil
+		}
+	}
+
+	return 1.0, nil
 }
 
 func getTypesFromSpecie(data *models.Data, s *models.Specie) ([]*models.Type, error) {
