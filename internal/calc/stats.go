@@ -11,7 +11,7 @@ func (d *CalcData) effectiveStat(kind StatKind) int {
 	ev := 0.0
 
 	// get nature modifier
-	nature := getNatureModifier(kind, d.nature.Name)
+	nature := getNatureModifier(kind, d.nature)
 
 	switch (kind) {
 		case StatHp:
