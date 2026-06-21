@@ -34,11 +34,12 @@ func getTypesFromSpecie(data *models.Data, s *models.Specie) ([]*models.Type, er
 	
 	var specieTypes []*models.Type
 	for _, st := range s.Types {
-		for _, dt := range data.Types {
-			if st == dt.Name {
-				specieTypes = append(specieTypes, &dt)
-			}
+		t, ok := data.Types[st]
+		if !ok {
+			return nil, fmt.Errorf("invalid type: %v", st)
 		}
+
+		specieTypes = append(specieTypes, &t)
 	}
 
 	return specieTypes, nil
