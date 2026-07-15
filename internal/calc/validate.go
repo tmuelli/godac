@@ -140,8 +140,17 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	}
 
 	// item
-	// TODO: to be implemented
-	fmt.Println("[DEBUG]: Item validation to be implemented")
+	var item *models.Item
+
+	if input.Item != nil {
+		if i, ok := data.Items[*input.Item]; ok {
+			item = &i
+		}
+
+		if item == nil {
+			return nil, fmt.Errorf("invalid input: Unknown item")
+		}
+	}
 
 	// successful validation of user input
 	calcData := CalcData{
@@ -151,7 +160,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 		health: input.HealthPercent,
 		nature: nature,
 		ability: ability,
-		item: nil,
+		item: item,
 		usedMove: usedMove,
 		ivs: ivSettings,
 		evs: evSettings,

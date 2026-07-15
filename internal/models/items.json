@@ -7,12 +7,22 @@
   {
     "kind": "Item",
     "id": "blackbelt",
-    "name": "Black Belt"
+    "name": "Black Belt",
+    "effect": "move",
+    "types": [
+      "Fighting"
+    ],
+    "multiplier": 1.2
   },
   {
     "kind": "Item",
     "id": "blackglasses",
-    "name": "Black Glasses"
+    "name": "Black Glasses",
+    "effect": "move",
+    "types": [
+      "Dark"
+    ],
+    "multiplier": 1.2
   },
   {
     "kind": "Item",
@@ -22,12 +32,22 @@
   {
     "kind": "Item",
     "id": "charcoal",
-    "name": "Charcoal"
+    "name": "Charcoal",
+    "effect": "move",
+    "types": [
+      "Fire"
+    ],
+    "multiplier": 1.2
   },
   {
     "kind": "Item",
     "id": "dragonfang",
-    "name": "Dragon Fang"
+    "name": "Dragon Fang",
+    "effect": "move",
+    "types": [
+      "Dragon"
+    ],
+    "multiplier": 1.2
   },
   {
     "kind": "Item",
@@ -62,7 +82,12 @@
   {
     "kind": "Item",
     "id": "hardstone",
-    "name": "Hard Stone"
+    "name": "Hard Stone",
+    "effect": "move",
+    "types": [
+      "Rock"
+    ],
+    "multiplier": 1.2
   },
   {
     "kind": "Item",
@@ -92,7 +117,18 @@
   {
     "kind": "Item",
     "id": "lightball",
-    "name": "Light Ball"
+    "name": "Light Ball",
+    "effect": "stat",
+    "stats": [
+      "spa",
+      "atk"
+    ],
+    "multiplier": 2,
+    "restrictions": {
+      "species": [
+        "pikachu"
+      ]
+    }
   },
   {
     "kind": "Item",
@@ -112,7 +148,12 @@
   {
     "kind": "Item",
     "id": "magnet",
-    "name": "Magnet"
+    "name": "Magnet",
+    "effect": "move",
+    "types": [
+      "Electric"
+    ],
+    "multiplier": 1.2
   },
   {
     "kind": "Item",
@@ -127,17 +168,40 @@
   {
     "kind": "Item",
     "id": "metalcoat",
-    "name": "Metal Coat"
+    "name": "Metal Coat",
+    "effect": "move",
+    "types": [
+      "Steel"
+    ],
+    "multiplier": 1.2
   },
   {
     "kind": "Item",
     "id": "metalpowder",
-    "name": "Metal Powder"
+    "name": "Metal Powder",
+    "effect": "stat",
+    "stats": [
+      "def"
+    ],
+    "multiplier": 2,
+    "restrictions": {
+      "species": [
+        "ditto"
+      ]
+    },
+    "condition": {
+      "notTransformed": true
+    }
   },
   {
     "kind": "Item",
     "id": "miracleseed",
-    "name": "Miracle Seed"
+    "name": "Miracle Seed",
+    "effect": "move",
+    "types": [
+      "Grass"
+    ],
+    "multiplier": 1.2
   },
   {
     "kind": "Item",
@@ -152,17 +216,32 @@
   {
     "kind": "Item",
     "id": "mysticwater",
-    "name": "Mystic Water"
+    "name": "Mystic Water",
+    "effect": "move",
+    "types": [
+      "Water"
+    ],
+    "multiplier": 1.2
   },
   {
     "kind": "Item",
     "id": "nevermeltice",
-    "name": "Never-Melt Ice"
+    "name": "Never-Melt Ice",
+    "effect": "move",
+    "types": [
+      "Ice"
+    ],
+    "multiplier": 1.2
   },
   {
     "kind": "Item",
     "id": "poisonbarb",
-    "name": "Poison Barb"
+    "name": "Poison Barb",
+    "effect": "move",
+    "types": [
+      "Poison"
+    ],
+    "multiplier": 1.2
   },
   {
     "kind": "Item",
@@ -187,22 +266,42 @@
   {
     "kind": "Item",
     "id": "sharpbeak",
-    "name": "Sharp Beak"
+    "name": "Sharp Beak",
+    "effect": "move",
+    "types": [
+      "Flying"
+    ],
+    "multiplier": 1.2
   },
   {
     "kind": "Item",
     "id": "silverpowder",
-    "name": "Silver Powder"
+    "name": "Silver Powder",
+    "effect": "move",
+    "types": [
+      "Bug"
+    ],
+    "multiplier": 1.2
   },
   {
     "kind": "Item",
     "id": "softsand",
-    "name": "Soft Sand"
+    "name": "Soft Sand",
+    "effect": "move",
+    "types": [
+      "Ground"
+    ],
+    "multiplier": 1.2
   },
   {
     "kind": "Item",
     "id": "spelltag",
-    "name": "Spell Tag"
+    "name": "Spell Tag",
+    "effect": "move",
+    "types": [
+      "Ghost"
+    ],
+    "multiplier": 1.2
   },
   {
     "kind": "Item",
@@ -222,7 +321,18 @@
   {
     "kind": "Item",
     "id": "thickclub",
-    "name": "Thick Club"
+    "name": "Thick Club",
+    "effect": "stat",
+    "stats": [
+      "atk"
+    ],
+    "multiplier": 2,
+    "restrictions": {
+      "species": [
+        "cubone",
+        "marowak"
+      ]
+    }
   },
   {
     "kind": "Item",
@@ -232,7 +342,12 @@
   {
     "kind": "Item",
     "id": "twistedspoon",
-    "name": "Twisted Spoon"
+    "name": "Twisted Spoon",
+    "effect": "move",
+    "types": [
+      "Psychic"
+    ],
+    "multiplier": 1.2
   },
   {
     "kind": "Item",
@@ -322,7 +437,12 @@
   {
     "kind": "Item",
     "id": "choiceband",
-    "name": "Choice Band"
+    "name": "Choice Band",
+    "effect": "stat",
+    "stats": [
+      "atk"
+    ],
+    "multiplier": 1.5
   },
   {
     "kind": "Item",
@@ -342,12 +462,32 @@
   {
     "kind": "Item",
     "id": "deepseascale",
-    "name": "Deep Sea Scale"
+    "name": "Deep Sea Scale",
+    "effect": "stat",
+    "stats": [
+      "spd"
+    ],
+    "multiplier": 2,
+    "restrictions": {
+      "species": [
+        "clamperl"
+      ]
+    }
   },
   {
     "kind": "Item",
     "id": "deepseatooth",
-    "name": "Deep Sea Tooth"
+    "name": "Deep Sea Tooth",
+    "effect": "stat",
+    "stats": [
+      "spa"
+    ],
+    "multiplier": 2,
+    "restrictions": {
+      "species": [
+        "clamperl"
+      ]
+    }
   },
   {
     "kind": "Item",
@@ -707,7 +847,12 @@
   {
     "kind": "Item",
     "id": "silkscarf",
-    "name": "Silk Scarf"
+    "name": "Silk Scarf",
+    "effect": "move",
+    "types": [
+      "Normal"
+    ],
+    "multiplier": 1.2
   },
   {
     "kind": "Item",
@@ -722,7 +867,19 @@
   {
     "kind": "Item",
     "id": "souldew",
-    "name": "Soul Dew"
+    "name": "Soul Dew",
+    "effect": "stat",
+    "stats": [
+      "spa",
+      "spd"
+    ],
+    "multiplier": 1.5,
+    "restrictions": {
+      "species": [
+        "latias",
+        "latios"
+      ]
+    }
   },
   {
     "kind": "Item",
@@ -797,7 +954,18 @@
   {
     "kind": "Item",
     "id": "adamantorb",
-    "name": "Adamant Orb"
+    "name": "Adamant Orb",
+    "effect": "move",
+    "types": [
+      "Dragon",
+      "Steel"
+    ],
+    "multiplier": 1.2,
+    "restrictions": {
+      "species": [
+        "dialga"
+      ]
+    }
   },
   {
     "kind": "Item",
@@ -812,6 +980,14 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Steel"
+    },
+    "effect": "damage",
+    "types": [
+      "Steel"
+    ],
+    "multiplier": 0.5,
+    "condition": {
+      "typeReduction": true
     }
   },
   {
@@ -847,17 +1023,35 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Normal"
+    },
+    "effect": "damage",
+    "types": [
+      "Normal"
+    ],
+    "multiplier": 0.5,
+    "condition": {
+      "typeReduction": true
     }
   },
   {
     "kind": "Item",
     "id": "choicescarf",
-    "name": "Choice Scarf"
+    "name": "Choice Scarf",
+    "effect": "stat",
+    "stats": [
+      "spe"
+    ],
+    "multiplier": 1.5
   },
   {
     "kind": "Item",
     "id": "choicespecs",
-    "name": "Choice Specs"
+    "name": "Choice Specs",
+    "effect": "stat",
+    "stats": [
+      "spa"
+    ],
+    "multiplier": 1.5
   },
   {
     "kind": "Item",
@@ -867,6 +1061,14 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Fighting"
+    },
+    "effect": "damage",
+    "types": [
+      "Fighting"
+    ],
+    "multiplier": 0.5,
+    "condition": {
+      "typeReduction": true
     }
   },
   {
@@ -877,6 +1079,14 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Flying"
+    },
+    "effect": "damage",
+    "types": [
+      "Flying"
+    ],
+    "multiplier": 0.5,
+    "condition": {
+      "typeReduction": true
     }
   },
   {
@@ -887,6 +1097,14 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Dark"
+    },
+    "effect": "damage",
+    "types": [
+      "Dark"
+    ],
+    "multiplier": 0.5,
+    "condition": {
+      "typeReduction": true
     }
   },
   {
@@ -952,7 +1170,12 @@
   {
     "kind": "Item",
     "id": "expertbelt",
-    "name": "Expert Belt"
+    "name": "Expert Belt",
+    "effect": "damage",
+    "multiplier": 1.2,
+    "condition": {
+      "superEffective": true
+    }
   },
   {
     "kind": "Item",
@@ -987,7 +1210,18 @@
   {
     "kind": "Item",
     "id": "griseousorb",
-    "name": "Griseous Orb"
+    "name": "Griseous Orb",
+    "effect": "move",
+    "types": [
+      "Dragon",
+      "Ghost"
+    ],
+    "multiplier": 1.2,
+    "restrictions": {
+      "species": [
+        "giratina"
+      ]
+    }
   },
   {
     "kind": "Item",
@@ -997,6 +1231,14 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Dragon"
+    },
+    "effect": "damage",
+    "types": [
+      "Dragon"
+    ],
+    "multiplier": 0.5,
+    "condition": {
+      "typeReduction": true
     }
   },
   {
@@ -1052,6 +1294,14 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Ghost"
+    },
+    "effect": "damage",
+    "types": [
+      "Ghost"
+    ],
+    "multiplier": 0.5,
+    "condition": {
+      "typeReduction": true
     }
   },
   {
@@ -1062,6 +1312,14 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Poison"
+    },
+    "effect": "damage",
+    "types": [
+      "Poison"
+    ],
+    "multiplier": 0.5,
+    "condition": {
+      "typeReduction": true
     }
   },
   {
@@ -1072,7 +1330,12 @@
   {
     "kind": "Item",
     "id": "lifeorb",
-    "name": "Life Orb"
+    "name": "Life Orb",
+    "effect": "damage",
+    "multiplier": 1.3,
+    "condition": {
+      "lifeOrb": true
+    }
   },
   {
     "kind": "Item",
@@ -1082,7 +1345,18 @@
   {
     "kind": "Item",
     "id": "lustrousorb",
-    "name": "Lustrous Orb"
+    "name": "Lustrous Orb",
+    "effect": "move",
+    "types": [
+      "Dragon",
+      "Water"
+    ],
+    "multiplier": 1.2,
+    "restrictions": {
+      "species": [
+        "palkia"
+      ]
+    }
   },
   {
     "kind": "Item",
@@ -1097,7 +1371,12 @@
   {
     "kind": "Item",
     "id": "metronome",
-    "name": "Metronome"
+    "name": "Metronome",
+    "effect": "damage",
+    "multiplier": 1,
+    "condition": {
+      "metronome": true
+    }
   },
   {
     "kind": "Item",
@@ -1117,7 +1396,12 @@
   {
     "kind": "Item",
     "id": "muscleband",
-    "name": "Muscle Band"
+    "name": "Muscle Band",
+    "effect": "move",
+    "multiplier": 1.1,
+    "condition": {
+      "physical": true
+    }
   },
   {
     "kind": "Item",
@@ -1127,6 +1411,14 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Fire"
+    },
+    "effect": "damage",
+    "types": [
+      "Fire"
+    ],
+    "multiplier": 0.5,
+    "condition": {
+      "typeReduction": true
     }
   },
   {
@@ -1152,6 +1444,14 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Water"
+    },
+    "effect": "damage",
+    "types": [
+      "Water"
+    ],
+    "multiplier": 0.5,
+    "condition": {
+      "typeReduction": true
     }
   },
   {
@@ -1162,6 +1462,14 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Psychic"
+    },
+    "effect": "damage",
+    "types": [
+      "Psychic"
+    ],
+    "multiplier": 0.5,
+    "condition": {
+      "typeReduction": true
     }
   },
   {
@@ -1212,7 +1520,20 @@
   {
     "kind": "Item",
     "id": "quickpowder",
-    "name": "Quick Powder"
+    "name": "Quick Powder",
+    "effect": "stat",
+    "stats": [
+      "spe"
+    ],
+    "multiplier": 2,
+    "restrictions": {
+      "species": [
+        "ditto"
+      ]
+    },
+    "condition": {
+      "notTransformed": true
+    }
   },
   {
     "kind": "Item",
@@ -1242,6 +1563,14 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Grass"
+    },
+    "effect": "damage",
+    "types": [
+      "Grass"
+    ],
+    "multiplier": 0.5,
+    "condition": {
+      "typeReduction": true
     }
   },
   {
@@ -1282,6 +1611,14 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Ground"
+    },
+    "effect": "damage",
+    "types": [
+      "Ground"
+    ],
+    "multiplier": 0.5,
+    "condition": {
+      "typeReduction": true
     }
   },
   {
@@ -1327,6 +1664,14 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Bug"
+    },
+    "effect": "damage",
+    "types": [
+      "Bug"
+    ],
+    "multiplier": 0.5,
+    "condition": {
+      "typeReduction": true
     }
   },
   {
@@ -1347,6 +1692,14 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Electric"
+    },
+    "effect": "damage",
+    "types": [
+      "Electric"
+    ],
+    "multiplier": 0.5,
+    "condition": {
+      "typeReduction": true
     }
   },
   {
@@ -1362,7 +1715,12 @@
   {
     "kind": "Item",
     "id": "wiseglasses",
-    "name": "Wise Glasses"
+    "name": "Wise Glasses",
+    "effect": "move",
+    "multiplier": 1.1,
+    "condition": {
+      "special": true
+    }
   },
   {
     "kind": "Item",
@@ -1372,6 +1730,14 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Ice"
+    },
+    "effect": "damage",
+    "types": [
+      "Ice"
+    ],
+    "multiplier": 0.5,
+    "condition": {
+      "typeReduction": true
     }
   },
   {

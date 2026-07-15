@@ -14,6 +14,7 @@ type UserInput struct {
 	HealthPercent int      `json:"healthPercent"`
 	IvSetting     string   `json:"ivSetting"`
 	EvSetting     string   `json:"evSetting"`
+	Item          *string  `json:"item"`
 }
 
 /* Calculation result */
@@ -75,21 +76,79 @@ func (a Ability) Key() string {
 }
 
 /* Item */
+type ItemEffect string
+type ItemConditionFlag uint16
+
+const (
+	StatEffect		ItemEffect	= "stat"
+	DamageEffect	ItemEffect	= "damage"
+	MoveEffect		ItemEffect	= "move"
+)
+
+const (
+	ItemConSuperEffective		ItemConditionFlag = 1 << iota
+	ItemConNotTransformed
+	ItemConPhysical
+	ItemConSpecial
+	ItemConMetronome
+	ItemConLifeOrb
+	ItemConTypeReduction
+)
+
 type NaturalGiftItem struct {
 	BasePower int    `json:"basePower"`
 	Type      string `json:"type"`
 }
 
+type ItemRestriction struct {
+	Species		[]string	`json:"species"`
+}
+
+type ItemCondition struct {
+	SuperEffective	bool
+	NotTransformed	bool
+	Physical		bool
+	Special			bool
+	Metronome		bool
+	LifeOrb			bool
+	TypeReduction	bool
+}
+
+type ItemModifierOptions struct {
+	MoveType	string
+	TypeMod		float64
+}
+
 type Item struct {
-	Kind			string			`json:"kind"`
-	Id				string			`json:"id"`
-	Name			string			`json:"name"`
-	IsBerry			bool			`json:"isBerry"`
-	NaturalGift		NaturalGiftItem	`json:"naturalGift"`
+	Kind			string				`json:"kind"`
+	Id				string				`json:"id"`
+	Name			string				`json:"name"`
+	IsBerry			bool				`json:"isBerry"`
+	NaturalGift		NaturalGiftItem		`json:"naturalGift"`
+	Effect			ItemEffect			`json:"effect"`
+	Stats			[]string			`json:"stats"`
+	Types			[]string			`json:"types"`
+	Multiplier		float64				`json:"multiplier"`
+	Restrictions	*ItemRestriction	`json:"restrictions"`
+	Condition		*ItemCondition		`json:"condition"`
 }
 
 func (i Item) Key() string {
 	return i.Name
+}
+
+func (c *ItemCondition) ToFlag() ItemConditionFlag {
+	var flag ItemConditionFlag
+
+	if c.SuperEffective { flag |= ItemConSuperEffective }
+	if c.NotTransformed { flag |= ItemConNotTransformed }
+	if c.Physical { flag |= ItemConPhysical }
+	if c.Special { flag |= ItemConSpecial }
+	if c.Metronome { flag |= ItemConMetronome }
+	if c.LifeOrb { flag |= ItemConLifeOrb }
+	if c.TypeReduction { flag |= ItemConTypeReduction }
+
+	return flag
 }
 
 /* Move */
@@ -197,3 +256,8 @@ type Data struct {
 	Species		map[string]Specie
 }
 
+
+/* Calculation context */
+type CalcContext struct {
+	SuperEffective		bool
+}

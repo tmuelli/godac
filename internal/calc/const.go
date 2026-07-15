@@ -4,6 +4,7 @@ type StatKind string
 type MoveCategory string
 type IvOption string
 type EvOption string
+type CalcDataType string
 
 const (
 	// move category
@@ -27,4 +28,8 @@ const (
 	EvOptimal	EvOption		= "optimal"
 	EvWorstCase	EvOption		= "worstCase"
 	EvCustom	EvOption		= "custom"
+
+	// calc data type
+	Attacker	CalcDataType	= "attacker"
+	Defender	CalcDataType	= "defender"
 )

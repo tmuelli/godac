@@ -1,15 +1,13 @@
 {
-    "name": "Poochyena",
+    "name": "Kadabra",
     "level": 100,
     "nature": "Hardy",
-    "attackMove": "Bite",
+    "attackMove": "Confusion",
     "moves": [
-        "Bite",
-        "Leer",
-        "Tackle",
-        "Crunch"
+        "Confusion"
     ],
     "healthPercent": 100,
     "ivSetting": "optimal",
-    "evSetting": "worstCase"
+    "evSetting": "worstCase",
+    "item": "Colbur Berry"
 }

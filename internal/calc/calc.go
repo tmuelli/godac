@@ -18,6 +18,7 @@ type CalcData struct {
 	evs			*models.EvStats
 	level		int
 	health		int
+	dataType	CalcDataType
 }
 
 type Calculation struct {
@@ -38,6 +39,9 @@ func NewCalc(data *models.Data, atkInput *models.UserInput, defInput *models.Use
 		return nil, fmt.Errorf("invalid defender input: %v", err)
 	}
 	
+	attacker.dataType = Attacker
+	defender.dataType = Defender
+
 	return &Calculation{
 		data: data,
 		attacker: attacker,
@@ -88,6 +92,7 @@ func (c *Calculation) calcBaseDamage() (float64, error) {
 	// get attack and Defense stat based on category
 	var attackStat int
 	var DefenseStat int
+	moveItemModifier := 1.0
 	
 	atkCategory := c.attacker.usedMove.Category
 	switch (MoveCategory(atkCategory)) {
@@ -96,16 +101,34 @@ func (c *Calculation) calcBaseDamage() (float64, error) {
 			DefenseStat = c.defender.effectiveStat(StatDef)
 			fmt.Println("[DEBUG]: Effectice Atk stat:", attackStat)
 			fmt.Println("[DEBUG]: Effective Def stat:", DefenseStat)
+
+			kind := StatAtk
+			mod, err := c.attacker.itemModifier(&kind, models.MoveEffect, nil)
+			if err != nil {
+				return 0, err
+			}
+			moveItemModifier = mod
 		case Special:
 			attackStat = c.attacker.effectiveStat(StatSpa)
 			DefenseStat = c.defender.effectiveStat(StatSpd)
 			fmt.Println("[DEBUG]: Effectice sp Atk stat:", attackStat)
 			fmt.Println("[DEBUG]: Effective sp Def stat:", DefenseStat)
+
+			kind := StatSpa
+			mod, err := c.attacker.itemModifier(&kind, models.MoveEffect, nil)
+			if err != nil {
+				return 0, err
+			}
+			moveItemModifier = mod
 		default:
 			return 0, fmt.Errorf("invalid attack move category")
 	}
 	
-	dmg := ((((2 * float64(c.attacker.level)) / 5) + 2) * float64(c.attacker.usedMove.BasePower) * (float64(attackStat) / float64(DefenseStat))) / 50
+	moveBP := c.attacker.usedMove.BasePower
+	movePower := float64(moveBP) * moveItemModifier
+
+	// TODO: change calculation to math.Floor every part
+	dmg := ((((2 * float64(c.attacker.level)) / 5) + 2) * movePower * (float64(attackStat) / float64(DefenseStat))) / 50
 	fmt.Println("[DEBUG]: Base damage:", dmg)
 	return float64(dmg), nil
 }
@@ -124,6 +147,9 @@ func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 }
 
 func (c *Calculation) calcModificationDamage(condDmg float64) (int, int, error) {
+	stabMod := 1.0
+	typeMod := 1.0
+
 	// TODO: implement modifications
 	critMod := 1.0
 	itemMod := 1.0
@@ -132,8 +158,6 @@ func (c *Calculation) calcModificationDamage(condDmg float64) (int, int, error) 
 	expertBeltMod := 1.0
 	tintedLensMod := 1.0
 	berryMod := 1.0
-	stabMod := 1.0
-	typeMod := 1.0
 
 	stabMod, err := c.attacker.stabModifier()
 	if err != nil {
@@ -141,6 +165,24 @@ func (c *Calculation) calcModificationDamage(condDmg float64) (int, int, error) 
 	}
 
 	typeMod = c.typeDamageModifier()
+
+	// final attacker item modifier
+	itemAtkMod, err := c.attacker.itemModifier(nil, models.DamageEffect, &models.ItemModifierOptions{})
+	if err != nil {
+		return 0, 0, err
+	}
+
+	// final defender item modifier
+	itemDefMod, err := c.defender.itemModifier(nil, models.DamageEffect, &models.ItemModifierOptions{
+		MoveType:	c.attacker.usedMove.Type,
+		TypeMod:	typeMod,
+	})
+	if err != nil {
+		return 0, 0, err
+	}
+
+	// final item modifier
+	itemMod = itemAtkMod * itemDefMod
 
 	dmgMin := condDmg * critMod * itemMod * firstMod * 0.85 * stabMod * typeMod * solidRockFilterMod * expertBeltMod * tintedLensMod * berryMod
 	dmgMax:= condDmg * critMod * itemMod * firstMod * 1.0 * stabMod * typeMod * solidRockFilterMod * expertBeltMod * tintedLensMod * berryMod

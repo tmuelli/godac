@@ -9,9 +9,16 @@ import (
 func (c *Calculation) typeDamageModifier() float64 {
 	mod := 1.0
 
+	// get used move type
+	atkType, err := getTypeFromName(c.data, c.attacker.usedMove.Type)
+	if err != nil {
+		fmt.Printf("Error during type damage modifier calc: %v\n", err)
+		return 1.0
+	}
+
 	for _, defType := range c.defender.specieTypes {
 		// TODO: check if type is in effectivness matrix => map: val, ok := map
-		mod *= defType.Effectiveness[c.attacker.usedMove.Type]
+		mod *= atkType.Effectiveness[defType.Name]
 	}
 
 	return mod
@@ -25,6 +32,23 @@ func (d *CalcData) stabModifier() (float64, error) {
 	}
 
 	return 1.0, nil
+}
+
+func getTypeFromName(data *models.Data, name string) (*models.Type, error) {
+	if data == nil {
+		return nil, fmt.Errorf("invalid parameters: getTypeFromName")
+	}
+
+	var result *models.Type
+	if t, ok := data.Types[name]; ok {
+		result = &t
+	}
+
+	if result == nil {
+		return nil, fmt.Errorf("invalid input: Unknown type %s", name)
+	}
+
+	return result, nil
 }
 
 func getTypesFromSpecie(data *models.Data, s *models.Specie) ([]*models.Type, error) {

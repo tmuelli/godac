@@ -3,6 +3,8 @@ package calc
 import (
 	"fmt"
 	"math"
+
+	"github.com/tmuelli/godac/internal/models"
 )
 
 func (d *CalcData) effectiveStat(kind StatKind) int {
@@ -12,6 +14,13 @@ func (d *CalcData) effectiveStat(kind StatKind) int {
 
 	// get nature modifier
 	nature := getNatureModifier(kind, d.nature)
+
+	// get item modifier
+	item, err := d.itemModifier(&kind, models.StatEffect, nil)
+	if err != nil {
+		fmt.Println("Error during calculating effective stat:", err)
+		return 0
+	}
 
 	switch (kind) {
 		case StatHp:
@@ -44,6 +53,8 @@ func (d *CalcData) effectiveStat(kind StatKind) int {
 	fmt.Println("[DEBUG]: Nature modifier:", nature)
 
 	// calculate effective stat
-	effStat := math.Abs((math.Abs((((2 * base) + iv + math.Abs(ev / 4)) * float64(d.level)) / 100) + 5) * nature)
-	return int(math.Floor(effStat))
+	baseEffStat := math.Floor((math.Floor((((2 * base) + iv + math.Floor(ev / 4)) * float64(d.level)) / 100) + 5) * nature)
+	effStat := math.Floor(baseEffStat * item)
+
+	return int(effStat)
 }
