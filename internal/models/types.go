@@ -15,6 +15,7 @@ type UserInput struct {
 	IvSetting     string   `json:"ivSetting"`
 	EvSetting     string   `json:"evSetting"`
 	Item          *string  `json:"item"`
+	Status        *string  `json:"status"`
 }
 
 /* Calculation result */

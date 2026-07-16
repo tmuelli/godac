@@ -8,6 +8,5 @@
     ],
     "healthPercent": 100,
     "ivSetting": "optimal",
-    "evSetting": "worstCase",
-    "item": "Colbur Berry"
+    "evSetting": "worstCase"
 }

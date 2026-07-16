@@ -5,6 +5,7 @@ type MoveCategory string
 type IvOption string
 type EvOption string
 type CalcDataType string
+type StatusCondition string
 
 const (
 	// move category
@@ -32,4 +33,14 @@ const (
 	// calc data type
 	Attacker	CalcDataType	= "attacker"
 	Defender	CalcDataType	= "defender"
+
+	// status condition
+	NoneStatus		StatusCondition		= "none"
+	Healthy			StatusCondition		= "healthy"
+	Poisoned		StatusCondition		= "poisoned"
+	BadlyPoisoned	StatusCondition		= "badly poisoned"
+	Burned			StatusCondition		= "burned"
+	Paralyzed		StatusCondition		= "paralyzed"
+	Asleep			StatusCondition		= "asleep"
+	Frozen			StatusCondition		= "frozen"
 )

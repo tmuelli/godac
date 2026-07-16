@@ -19,6 +19,7 @@ type CalcData struct {
 	level		int
 	health		int
 	dataType	CalcDataType
+	status		StatusCondition
 }
 
 type Calculation struct {
@@ -135,12 +136,17 @@ func (c *Calculation) calcBaseDamage() (float64, error) {
 
 func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 	burnMod := 1.0
+
+	// TODO: implement conditions
 	screenMod := 1.0
 	targetsMod := 1.0
 	weatherMod := 1.0
 	flashFireMod := 1.0
-	
-	// TODO: implement conditions
+
+	if c.attacker.status == Burned && c.attacker.usedMove.Category == string(Physical) {
+		burnMod = 0.5
+	}
+
 	dmg := (baseDmg * burnMod * screenMod * targetsMod * weatherMod * flashFireMod) + 2
 	fmt.Println("[DEBUG]: Conditional damage:", dmg)
 	return dmg, nil

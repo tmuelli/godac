@@ -11,5 +11,6 @@
     ],
     "healthPercent": 100,
     "ivSetting": "optimal",
-    "evSetting": "worstCase"
+    "evSetting": "worstCase",
+    "status": "burned"
 }

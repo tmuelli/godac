@@ -6,6 +6,26 @@ import (
 	"github.com/tmuelli/godac/internal/models"
 )
 
+func (s *StatusCondition) IsValid() bool {
+	condMap := map[string]StatusCondition {
+		"none":				NoneStatus,
+		"healthy":			Healthy,
+		"poisoned":			Poisoned,
+		"badly poisoned":	BadlyPoisoned,
+		"burned":			Burned,
+		"paralyzed":		Paralyzed,
+		"asleep":			Asleep,
+		"frozen":			Frozen,
+	}
+
+	con, ok := condMap[string(*s)]
+	if !ok {
+		return false
+	}
+
+	*s = con
+	return true
+}
 
 func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error) {
 	if data == nil {
@@ -152,6 +172,16 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 		}
 	}
 
+	// status condition
+	statusCon := NoneStatus
+
+	if input.Status != nil {
+		statusCon = StatusCondition(*input.Status)
+		if !statusCon.IsValid() {
+			return nil, fmt.Errorf("invalid input: Unknown status condition")
+		}
+	}
+
 	// successful validation of user input
 	calcData := CalcData{
 		specie: specie,
@@ -164,6 +194,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 		usedMove: usedMove,
 		ivs: ivSettings,
 		evs: evSettings,
+		status: statusCon,
 	}
 	return &calcData, nil
 }
