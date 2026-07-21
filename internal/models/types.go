@@ -18,6 +18,30 @@ type UserInput struct {
 	Status        *string  `json:"status"`
 }
 
+/* User field input */
+type UserFieldSideInput struct {
+	StealthRocks	bool	`json:"stealth_rocks"`
+	Spikes			int		`json:"spikes"`
+	Reflect			bool	`json:"reflect"`
+	LightScreen		bool	`json:"light_screen"`
+	Protect			bool	`json:"protect"`
+	LeechSeed		bool	`json:"leech_seed"`
+	Foresight		bool	`json:"foresight"`
+	HelpingHand		bool	`json:"helping_hand"`
+	Tailwind		bool	`json:"tailwind"`
+	FlowerGift		bool	`json:"flower_gift"`
+	PowerTrick		bool	`json:"power_trick"`
+	SwitchingOut	bool	`json:"switching_out"`
+}
+
+type UserFieldInput struct {
+	Type			string				`json:"type"`
+	Level			int					`json:"level"`
+	Terrain			string				`json:"terrain"`
+	Left			UserFieldSideInput	`json:"left"`
+	Right			UserFieldSideInput	`json:"right"`
+}
+
 /* Calculation result */
 type BattleResultRange struct {
 	Min		int
@@ -257,6 +281,90 @@ type Data struct {
 	Species		map[string]Specie
 }
 
+/* Field */
+type FieldType string
+func (ft *FieldType) IsValid() bool {
+	switch *ft {
+	case Singles, Doubles:
+		return true
+	default:
+		return false
+	}
+}
+
+type FieldTerrain string
+func (ft *FieldTerrain) IsValid() bool {
+	switch *ft {
+	case Clear, Sun, Rain, Sand, Hail, Gravity:
+		return true
+	default:
+		return false
+	}
+}
+
+type FieldSpikesStack int
+func (fss *FieldSpikesStack) IsValid() bool {
+	switch *fss {
+	case Spikes0, Spikes1, Spikes2, Spikes3:
+		return true
+	default:
+		return false
+	}
+}
+
+type FieldLevel int
+func (fl *FieldLevel) IsValid() bool {
+	switch *fl {
+	case Level5, Level50, Level100:
+		return true
+	default:
+		return false
+	}
+}
+
+const (
+	Singles		FieldType	= "Singles"
+	Doubles		FieldType	= "Doubles"
+
+	Clear		FieldTerrain	= "Clear"
+	Sun			FieldTerrain	= "Sun"
+	Rain		FieldTerrain	= "Rain"
+	Sand		FieldTerrain	= "Sand"
+	Hail		FieldTerrain	= "Hail"
+	Gravity		FieldTerrain	= "Gravity"
+
+	Spikes0		FieldSpikesStack	= 0
+	Spikes1		FieldSpikesStack	= 1
+	Spikes2		FieldSpikesStack	= 2
+	Spikes3		FieldSpikesStack	= 3
+
+	Level5		FieldLevel			= 5
+	Level50		FieldLevel			= 50
+	Level100	FieldLevel			= 100
+)
+
+type FieldSide struct {
+	Spikes			FieldSpikesStack
+	StealthRocks	bool
+	Reflect			bool
+	LightScreen		bool
+	Protect			bool
+	LeechSeed		bool
+	Foresight		bool
+	HelpingHand		bool
+	Tailwind		bool
+	FlowerGift		bool
+	PowerTrick		bool
+	SwitchingOut	bool
+}
+
+type Field struct {
+	Type		FieldType
+	Level		FieldLevel
+	Terrain		FieldTerrain
+	Left		FieldSide
+	Right		FieldSide
+}
 
 /* Calculation context */
 type CalcContext struct {

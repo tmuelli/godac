@@ -1,0 +1,33 @@
+{
+    "type": "Singles",
+    "level": 100,
+    "terrain": "None",
+    "left": {
+        "stealth_rocks": false,
+        "spikes": 0,
+        "reflect": false,
+        "light_screen": false,
+        "protect": false,
+        "leech_seed": false,
+        "foresight": false,
+        "helping_hand": false,
+        "tailwind": false,
+        "flower_gift": false,
+        "power_trick": false,
+        "switching_out": false
+    },
+    "right": {
+        "stealth_rocks": false,
+        "spikes": 0,
+        "reflect": false,
+        "light_screen": false,
+        "protect": false,
+        "leech_seed": false,
+        "foresight": false,
+        "helping_hand": false,
+        "tailwind": false,
+        "flower_gift": false,
+        "power_trick": false,
+        "switching_out": false
+    }
+}

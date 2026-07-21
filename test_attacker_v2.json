@@ -1,16 +1,12 @@
 {
-    "name": "Poochyena",
+    "name": "Linoone",
     "level": 100,
     "nature": "Hardy",
-    "attackMove": "Bite",
+    "attackMove": "Tackle",
     "moves": [
-        "Bite",
-        "Leer",
-        "Tackle",
-        "Crunch"
+        "Tackle"
     ],
     "healthPercent": 100,
     "ivSetting": "optimal",
-    "evSetting": "worstCase",
-    "status": "burned"
+    "evSetting": "worstCase"
 }

@@ -16,9 +16,34 @@ func (c *Calculation) typeDamageModifier() float64 {
 		return 1.0
 	}
 
+	foundGhost := false
+	foundFlying := false
+
 	for _, defType := range c.defender.specieTypes {
+		if defType.ID == "ghost" {
+			foundGhost = true
+		}
+
+		if defType.ID == "flying" {
+			foundFlying = true
+		}
+
 		// TODO: check if type is in effectivness matrix => map: val, ok := map
 		mod *= atkType.Effectiveness[defType.Name]
+	}
+
+	// check foresight
+	if mod == 0 && c.field.Right.Foresight {
+		if (atkType.ID == "normal" || atkType.ID == "fighting") && foundGhost {
+			mod = 1.0
+		}
+	}
+
+	// check gravity
+	if mod == 0 && c.field.Terrain == models.Gravity && foundFlying {
+		if atkType.ID == "ground" {
+			mod = 1.0
+		}
 	}
 
 	return mod

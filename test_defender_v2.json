@@ -1,10 +1,10 @@
 {
-    "name": "Kadabra",
+    "name": "Gengar",
     "level": 100,
     "nature": "Hardy",
-    "attackMove": "Confusion",
+    "attackMove": "Lick",
     "moves": [
-        "Confusion"
+        "Lick"
     ],
     "healthPercent": 100,
     "ivSetting": "optimal",

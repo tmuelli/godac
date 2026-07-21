@@ -26,9 +26,10 @@ type Calculation struct {
 	data		*models.Data
 	attacker	*CalcData
 	defender	*CalcData
+	field		*models.Field
 }
 
-func NewCalc(data *models.Data, atkInput *models.UserInput, defInput *models.UserInput) (*Calculation, error) {
+func NewCalc(data *models.Data, atkInput *models.UserInput, defInput *models.UserInput, fieldInput *models.UserFieldInput) (*Calculation, error) {
 	// validate inputs
 	attacker, err := validateInput(data, atkInput)
 	if err != nil {
@@ -40,13 +41,24 @@ func NewCalc(data *models.Data, atkInput *models.UserInput, defInput *models.Use
 		return nil, fmt.Errorf("invalid defender input: %v", err)
 	}
 	
+	field, err := validateFieldInput(fieldInput)
+	if err != nil {
+		return nil, fmt.Errorf("invalid field input: %v", err)
+	}
+
 	attacker.dataType = Attacker
 	defender.dataType = Defender
+
+	// TODO: decide on precedence of level input =>
+	// if attacker / defender level is set or field level is set or both
+	// determine on defaults and "last set" option
+	// FOR NOW: only UserInput level is used
 
 	return &Calculation{
 		data: data,
 		attacker: attacker,
 		defender: defender,
+		field: field,
 	}, nil
 }
 
@@ -68,6 +80,10 @@ func (c *Calculation) Calc() (models.BattleResult, error) {
 	if err != nil {
 		return models.BattleResult{}, err
 	}
+
+	// TODO: implement final dot damage (e.g. stealth rock, spikes, leech seed) from field
+	// in smogon damage calc this is not inside the gen4 damage calc but rather calculated afterwards
+	// TODO: also implement chip damage from sand / hail here (from field weather)
 
 	// TODO: implement percent calculation
 	calcResult := models.BattleResult{
@@ -94,7 +110,21 @@ func (c *Calculation) calcBaseDamage() (float64, error) {
 	var attackStat int
 	var DefenseStat int
 	moveItemModifier := 1.0
-	
+
+	// check protect
+	if c.field.Right.Protect && !c.attacker.usedMove.BreaksProtect {
+		return 0.0, nil
+	}
+
+	// check powertrick
+	if c.field.Left.PowerTrick {
+		c.attacker.specie.BaseStats.Atk, c.attacker.specie.BaseStats.Def = c.attacker.specie.BaseStats.Def, c.attacker.specie.BaseStats.Atk
+	}
+
+	if c.field.Right.PowerTrick {
+		c.defender.specie.BaseStats.Atk, c.defender.specie.BaseStats.Def = c.defender.specie.BaseStats.Def, c.defender.specie.BaseStats.Atk
+	}
+
 	atkCategory := c.attacker.usedMove.Category
 	switch (MoveCategory(atkCategory)) {
 		case Physical:
@@ -125,8 +155,16 @@ func (c *Calculation) calcBaseDamage() (float64, error) {
 			return 0, fmt.Errorf("invalid attack move category")
 	}
 	
+	// TODO: add new receiver method on move to calc base power depending on different moves
+	// for example Gyroball => depends on effectiveStat (Spe)
+	// TODO: implement helping hand => only relevant in field type doubles => 50% move power boost
 	moveBP := c.attacker.usedMove.BasePower
 	movePower := float64(moveBP) * moveItemModifier
+
+	// check field for switch out
+	if c.field.Right.SwitchingOut && c.attacker.usedMove.ID == "pursuit" {
+		moveBP *= 2
+	}
 
 	// TODO: change calculation to math.Floor every part
 	dmg := ((((2 * float64(c.attacker.level)) / 5) + 2) * movePower * (float64(attackStat) / float64(DefenseStat))) / 50
@@ -136,16 +174,25 @@ func (c *Calculation) calcBaseDamage() (float64, error) {
 
 func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 	burnMod := 1.0
+	screenMod := 1.0
+	weatherMod := 1.0
 
 	// TODO: implement conditions
-	screenMod := 1.0
 	targetsMod := 1.0
-	weatherMod := 1.0
 	flashFireMod := 1.0
 
 	if c.attacker.status == Burned && c.attacker.usedMove.Category == string(Physical) {
 		burnMod = 0.5
 	}
+
+	// check light screen or reflect
+	if (c.attacker.usedMove.Category == string(Physical) && c.field.Right.Reflect) ||
+	   (c.attacker.usedMove.Category == string(Special) && c.field.Right.LightScreen) {
+		screenMod = 0.5
+	}
+
+	// check weather
+	weatherMod = c.weatherModifier()
 
 	dmg := (baseDmg * burnMod * screenMod * targetsMod * weatherMod * flashFireMod) + 2
 	fmt.Println("[DEBUG]: Conditional damage:", dmg)

@@ -27,6 +27,82 @@ func (s *StatusCondition) IsValid() bool {
 	return true
 }
 
+func validateFieldSideInput(input *models.UserFieldSideInput) (*models.FieldSide, error) {
+	if input == nil {
+		return nil, fmt.Errorf("internal error: Invalid pointer to user field side input")
+	}
+
+	// field side spikes stack
+	spikes := models.FieldSpikesStack(input.Spikes)
+	if !spikes.IsValid() {
+		return nil, fmt.Errorf("invalid field side input: Unknown spikes stack type %d", input.Spikes)
+	}
+
+	// successfully validated side input
+	side := models.FieldSide{
+		Spikes: spikes,
+		StealthRocks: input.StealthRocks,
+		Reflect: input.Reflect,
+		LightScreen: input.LightScreen,
+		Protect: input.Protect,
+		LeechSeed: input.LightScreen,
+		Foresight: input.Foresight,
+		HelpingHand: input.HelpingHand,
+		Tailwind: input.Tailwind,
+		FlowerGift: input.FlowerGift,
+		PowerTrick: input.PowerTrick,
+		SwitchingOut: input.SwitchingOut,
+	}
+	return &side, nil
+}
+
+func validateFieldInput(input *models.UserFieldInput) (*models.Field, error) {
+	if input == nil {
+		return nil, fmt.Errorf("internal error: Invalid pointer to user field input")
+	}
+	
+	// field type
+	ft := models.FieldType(input.Type)
+	if !ft.IsValid() {
+		return nil, fmt.Errorf("invalid field input: Unknown field type %s", input.Type)
+	}
+
+	// field level
+	fl := models.FieldLevel(input.Level)
+	if !fl.IsValid() {
+		return nil, fmt.Errorf("invalid field input: Invalid field level %v", input.Level)
+	}
+
+	// field terrain
+	t := models.FieldTerrain(input.Terrain)
+	if !t.IsValid() {
+		return nil, fmt.Errorf("invalid field input: Unknown field terrain %s", input.Terrain)
+	}
+
+	// left side
+	left, err := validateFieldSideInput(&input.Left)
+	if err != nil {
+		return nil, fmt.Errorf("invalid left field side input: %v", err)
+	}
+
+	// right side
+	right, err := validateFieldSideInput(&input.Right)
+	if err != nil {
+		return nil, fmt.Errorf("invalid right field side input: %v", err)
+	}
+
+	// successfully validated field input
+	field := models.Field{
+		Type: ft,
+		Level: fl,
+		Terrain: t,
+		Left: *left,
+		Right: *right,
+	}
+
+	return &field, nil
+}
+
 func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error) {
 	if data == nil {
 		return nil, fmt.Errorf("internal error: Invalid base data")

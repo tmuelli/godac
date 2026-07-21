@@ -43,6 +43,7 @@ func (d *CalcData) effectiveStat(kind StatKind) int {
 			iv = float64(d.ivs.Spd)
 			ev = float64(d.evs.Spd)
 		case StatSpe:
+			// TODO: implement and check for tailwind field flag
 			fmt.Println("[DEBUG]: Not implemented yet")
 			return 0
 	}
@@ -51,6 +52,8 @@ func (d *CalcData) effectiveStat(kind StatKind) int {
 	fmt.Println("[DEBUG]: IV stat:", iv)
 	fmt.Println("[DEBUG]: EV stat:", ev)
 	fmt.Println("[DEBUG]: Nature modifier:", nature)
+
+	// TODO: implement field flower gift (from ability) combined with weather
 
 	// calculate effective stat
 	baseEffStat := math.Floor((math.Floor((((2 * base) + iv + math.Floor(ev / 4)) * float64(d.level)) / 100) + 5) * nature)
