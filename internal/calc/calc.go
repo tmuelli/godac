@@ -166,8 +166,7 @@ func (c *Calculation) calcBaseDamage() (float64, error) {
 		moveBP *= 2
 	}
 
-	// TODO: change calculation to math.Floor every part
-	dmg := ((((2 * float64(c.attacker.level)) / 5) + 2) * movePower * (float64(attackStat) / float64(DefenseStat))) / 50
+	dmg := math.Floor(math.Floor((math.Floor((((2 * float64(c.attacker.level)) / 5) + 2)) * movePower * math.Floor((float64(attackStat) / float64(DefenseStat))))) / 50)
 	fmt.Println("[DEBUG]: Base damage:", dmg)
 	return float64(dmg), nil
 }

@@ -1,10 +1,10 @@
 {
-    "name": "Linoone",
+    "name": "Swampert",
     "level": 100,
     "nature": "Hardy",
-    "attackMove": "Tackle",
+    "attackMove": "Earthquake",
     "moves": [
-        "Tackle"
+        "Earthquake"
     ],
     "healthPercent": 100,
     "ivSetting": "optimal",
