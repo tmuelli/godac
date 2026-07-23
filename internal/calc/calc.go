@@ -76,10 +76,23 @@ func (c *Calculation) Calc() (models.BattleResult, error) {
 	}
 
 	// calcute modification damage
-	minDmg, maxDmg, err := c.calcModificationDamage(condDmg)
+	dmg, err := c.calcModificationDamage(condDmg)
 	if err != nil {
 		return models.BattleResult{}, err
 	}
+
+	// populate possibilities array for result and set min and max values
+	// TODO: implement possibility calculation correct
+	result := make([]float64, 16)
+	for i := range 16 {
+		result[i] = math.Floor(dmg * float64(85 + i) / 100)
+	}
+
+	dmgMin := result[0]
+	dmgMax := result[15]
+
+	fmt.Println("[DEBUG]: Min damage:", dmgMin)
+	fmt.Println("[DEBUG]: Max damage:", dmgMax)
 
 	// TODO: implement final dot damage (e.g. stealth rock, spikes, leech seed) from field
 	// in smogon damage calc this is not inside the gen4 damage calc but rather calculated afterwards
@@ -88,9 +101,9 @@ func (c *Calculation) Calc() (models.BattleResult, error) {
 	// TODO: implement percent calculation
 	calcResult := models.BattleResult{
 		Range: models.BattleResultRange{
-			Min: minDmg,
+			Min: int(dmgMin),
 			MinPerc: 0,
-			Max: maxDmg,
+			Max: int(dmgMax),
 			MaxPerc: 0,
 		},
 		Possibilities: make([]int, 0),
@@ -166,7 +179,8 @@ func (c *Calculation) calcBaseDamage() (float64, error) {
 		moveBP *= 2
 	}
 
-	dmg := math.Floor(math.Floor((math.Floor((((2 * float64(c.attacker.level)) / 5) + 2)) * movePower * math.Floor((float64(attackStat) / float64(DefenseStat))))) / 50)
+	dmg := math.Floor(math.Floor((math.Floor(float64(2 * c.attacker.level) / 5 + 2) * movePower * float64(attackStat)) / 50) / float64(DefenseStat))
+
 	fmt.Println("[DEBUG]: Base damage:", dmg)
 	return float64(dmg), nil
 }
@@ -193,12 +207,12 @@ func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 	// check weather
 	weatherMod = c.weatherModifier()
 
-	dmg := (baseDmg * burnMod * screenMod * targetsMod * weatherMod * flashFireMod) + 2
+	dmg := math.Floor(baseDmg * burnMod * screenMod * targetsMod * weatherMod * flashFireMod) + 2
 	fmt.Println("[DEBUG]: Conditional damage:", dmg)
 	return dmg, nil
 }
 
-func (c *Calculation) calcModificationDamage(condDmg float64) (int, int, error) {
+func (c *Calculation) calcModificationDamage(condDmg float64) (float64, error) {
 	stabMod := 1.0
 	typeMod := 1.0
 
@@ -213,7 +227,7 @@ func (c *Calculation) calcModificationDamage(condDmg float64) (int, int, error) 
 
 	stabMod, err := c.attacker.stabModifier()
 	if err != nil {
-		return 0, 0, err
+		return 0.0, err
 	}
 
 	typeMod = c.typeDamageModifier()
@@ -221,7 +235,7 @@ func (c *Calculation) calcModificationDamage(condDmg float64) (int, int, error) 
 	// final attacker item modifier
 	itemAtkMod, err := c.attacker.itemModifier(nil, models.DamageEffect, &models.ItemModifierOptions{})
 	if err != nil {
-		return 0, 0, err
+		return 0.0, err
 	}
 
 	// final defender item modifier
@@ -230,17 +244,15 @@ func (c *Calculation) calcModificationDamage(condDmg float64) (int, int, error) 
 		TypeMod:	typeMod,
 	})
 	if err != nil {
-		return 0, 0, err
+		return 0.0, err
 	}
 
 	// final item modifier
 	itemMod = itemAtkMod * itemDefMod
 
-	dmgMin := condDmg * critMod * itemMod * firstMod * 0.85 * stabMod * typeMod * solidRockFilterMod * expertBeltMod * tintedLensMod * berryMod
-	dmgMax:= condDmg * critMod * itemMod * firstMod * 1.0 * stabMod * typeMod * solidRockFilterMod * expertBeltMod * tintedLensMod * berryMod
 
-	fmt.Println("[DEBUG]: Min damage:", dmgMin)
-	fmt.Println("[DEBUG]: Max damage:", dmgMax)
-
-	return int(math.Floor(dmgMin)), int(math.Floor(dmgMax)), nil
+	// random modifier is applied outside
+	// TODO: check if all modification modifiers need to be added inside range loop to get correct possibilities
+	dmg := math.Floor(condDmg * critMod * itemMod * firstMod * stabMod * typeMod * solidRockFilterMod * expertBeltMod * tintedLensMod * berryMod)
+	return dmg, nil
 }
