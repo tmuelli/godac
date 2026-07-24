@@ -40,8 +40,9 @@ func (c *Calculation) typeDamageModifier() float64 {
 	}
 
 	// check gravity
-	if mod == 0 && c.field.Terrain == models.Gravity && foundFlying {
+	if mod == 0 && c.field.IsGravity && foundFlying {
 		if atkType.ID == "ground" {
+			fmt.Println("test gravity check")
 			mod = 1.0
 		}
 	}

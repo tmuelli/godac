@@ -96,6 +96,7 @@ func validateFieldInput(input *models.UserFieldInput) (*models.Field, error) {
 		Type: ft,
 		Level: fl,
 		Terrain: t,
+		IsGravity: input.IsGravity,
 		Left: *left,
 		Right: *right,
 	}

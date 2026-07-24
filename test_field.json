@@ -1,7 +1,8 @@
 {
     "type": "Singles",
     "level": 100,
-    "terrain": "Gravity",
+    "terrain": "Clear",
+    "is_gravity": true,
     "left": {
         "stealth_rocks": false,
         "spikes": 0,

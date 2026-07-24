@@ -38,6 +38,7 @@ type UserFieldInput struct {
 	Type			string				`json:"type"`
 	Level			int					`json:"level"`
 	Terrain			string				`json:"terrain"`
+	IsGravity		bool				`json:"is_gravity"`
 	Left			UserFieldSideInput	`json:"left"`
 	Right			UserFieldSideInput	`json:"right"`
 }
@@ -295,7 +296,7 @@ func (ft *FieldType) IsValid() bool {
 type FieldTerrain string
 func (ft *FieldTerrain) IsValid() bool {
 	switch *ft {
-	case Clear, Sun, Rain, Sand, Hail, Gravity:
+	case Clear, Sun, Rain, Sand, Hail:
 		return true
 	default:
 		return false
@@ -331,7 +332,7 @@ const (
 	Rain		FieldTerrain	= "Rain"
 	Sand		FieldTerrain	= "Sand"
 	Hail		FieldTerrain	= "Hail"
-	Gravity		FieldTerrain	= "Gravity"
+	// Gravity		FieldTerrain	= "Gravity"
 
 	Spikes0		FieldSpikesStack	= 0
 	Spikes1		FieldSpikesStack	= 1
@@ -362,6 +363,7 @@ type Field struct {
 	Type		FieldType
 	Level		FieldLevel
 	Terrain		FieldTerrain
+	IsGravity	bool
 	Left		FieldSide
 	Right		FieldSide
 }
