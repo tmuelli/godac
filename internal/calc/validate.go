@@ -272,6 +272,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 		ivs: ivSettings,
 		evs: evSettings,
 		status: statusCon,
+		boosts: &models.Boosts{},
 	}
 	return &calcData, nil
 }

@@ -20,6 +20,7 @@ type CalcData struct {
 	health		int
 	dataType	CalcDataType
 	status		StatusCondition
+	boosts		*models.Boosts
 }
 
 type Calculation struct {
@@ -63,6 +64,12 @@ func NewCalc(data *models.Data, atkInput *models.UserInput, defInput *models.Use
 }
 
 func (c *Calculation) Calc() (models.BattleResult, error) {
+	// setup calculation
+	err := c.setup()
+	if err != nil {
+		return models.BattleResult{}, err
+	}
+	
 	// calculate base damage
 	baseDmg, err := c.calcBaseDamage()
 	if err != nil {
@@ -127,15 +134,6 @@ func (c *Calculation) calcBaseDamage() (float64, error) {
 	// check protect
 	if c.field.Right.Protect && !c.attacker.usedMove.BreaksProtect {
 		return 0.0, nil
-	}
-
-	// check powertrick
-	if c.field.Left.PowerTrick {
-		c.attacker.specie.BaseStats.Atk, c.attacker.specie.BaseStats.Def = c.attacker.specie.BaseStats.Def, c.attacker.specie.BaseStats.Atk
-	}
-
-	if c.field.Right.PowerTrick {
-		c.defender.specie.BaseStats.Atk, c.defender.specie.BaseStats.Def = c.defender.specie.BaseStats.Def, c.defender.specie.BaseStats.Atk
 	}
 
 	atkCategory := c.attacker.usedMove.Category

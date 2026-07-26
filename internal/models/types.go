@@ -1,5 +1,7 @@
 package models
 
+import "fmt"
+
 /****************************/
 /* Types: user input/output */
 /****************************/
@@ -88,6 +90,56 @@ type EvStats struct {
 	Spa	int
 	Spd	int
 	Spe	int
+}
+
+/* Boosts */
+const (
+	MAX_STAT_BOOST = 6
+	MIN_STAT_BOOST = -6
+)
+
+type StatBoost struct {
+	value	int
+}
+
+func (sb *StatBoost) Set(mod int) {
+	if mod == 0 {
+		return
+	}
+
+	newValue := sb.value + mod
+	if newValue < MIN_STAT_BOOST {
+		sb.value = MIN_STAT_BOOST
+	} else if newValue > MAX_STAT_BOOST {
+		sb.value = MAX_STAT_BOOST
+	} else {
+		sb.value = newValue
+	}
+}
+
+type Boosts struct {
+	Atk StatBoost
+	Def StatBoost
+	Spa StatBoost
+	Spd StatBoost
+	Spe StatBoost
+}
+
+func (b *Boosts) Get(stat string) (int, error) {
+	switch (stat) {
+	case "atk":
+		return b.Atk.value, nil
+	case "def":
+		return b.Def.value, nil
+	case "spa":
+		return b.Spa.value, nil
+	case "spd":
+		return b.Spd.value, nil
+	case "spe":
+		return b.Spe.value, nil
+	default:
+		return 0, fmt.Errorf("couldnt get stat boost - invalid stat kind")
+	}
 }
 
 /* Ability */
