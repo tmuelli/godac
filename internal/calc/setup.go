@@ -3,6 +3,7 @@ package calc
 import (
 	"fmt"
 	"slices"
+	"strings"
 
 	"github.com/tmuelli/godac/internal/models"
 )
@@ -69,6 +70,37 @@ func (c *Calculation) handleDownload(source *CalcData, target *CalcData) error {
 	return nil
 }
 
+func (c *Calculation) handleSpecialMoveSetup() {
+	switch c.attacker.usedMove.ID {
+	case "weatherball":
+		// TODO: maybe summarize with forecast function with exception for sand case => check if thats worth it
+		switch c.field.Terrain {
+		case models.Sun:
+			c.attacker.usedMove.Type = "Fire"
+		case models.Rain:
+			c.attacker.usedMove.Type = "Water"
+		case models.Hail:
+			c.attacker.usedMove.Type = "Ice"
+		case models.Sand:
+			c.attacker.usedMove.Type = "Rock"
+		default:
+			c.attacker.usedMove.Type = "Normal"
+		}
+	case "judgement":
+		if c.attacker.item != nil && strings.HasSuffix(c.attacker.item.Id, "plate") {
+			c.attacker.usedMove.Type = c.attacker.item.GetPlateBoostType()
+		}
+	case "naturalgift":
+		if c.attacker.item != nil && c.attacker.item.IsBerry {
+			c.attacker.usedMove.Type = c.attacker.item.NaturalGift.Type
+			c.attacker.usedMove.BasePower = c.attacker.item.NaturalGift.BasePower
+		}
+	case "brickbreak":
+		c.field.Right.LightScreen = false
+		c.field.Right.Reflect = false
+	}
+}
+
 func (c *Calculation) setup() error {
 	// check if weather is active => e.g. abilities air lock or cloud nine active
 	if !c.isWeatherActive() {
@@ -117,6 +149,28 @@ func (c *Calculation) setup() error {
 	err = c.handleDownload(c.defender, c.attacker)
 	if err != nil {
 		return err
+	}
+
+	// check if ability of defender is active
+	// TODO: change IsActive receiver to not reflect Active member logic => more like is effective or switch logic => is ability overwridden / deactivated
+	if !c.defender.ability.IsActive(c.attacker.ability.Id) {
+		c.defender.ability.Active = false
+	}
+
+	// check critical hit
+	preventCritAbilities := []string{"battlearmor", "shellarmor"}
+	if c.attacker.usedMove.Critical && c.defender.ability.Active && slices.Contains(preventCritAbilities, c.defender.ability.Id) {
+		c.attacker.usedMove.Critical = false
+	}
+
+	// handle special move setups
+	if c.attacker.usedMove.NeedSpecialMoveSetup() {
+		c.handleSpecialMoveSetup()
+	}
+
+	// check normalize
+	if c.attacker.ability.Active && c.attacker.ability.Id == "normalize" && c.attacker.usedMove.ID != "struggle" {
+		c.attacker.usedMove.Type = "Normal"
 	}
 
 	return nil

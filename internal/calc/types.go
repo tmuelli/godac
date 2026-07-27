@@ -32,8 +32,8 @@ func (c *Calculation) typeDamageModifier() float64 {
 		mod *= atkType.Effectiveness[defType.Name]
 	}
 
-	// check foresight
-	if mod == 0 && c.field.Right.Foresight {
+	// check foresight and scrappy ability
+	if mod == 0 && (c.field.Right.Foresight || c.attacker.ability.Id == "scrappy") {
 		if (atkType.ID == "normal" || atkType.ID == "fighting") && foundGhost {
 			mod = 1.0
 		}
@@ -46,6 +46,10 @@ func (c *Calculation) typeDamageModifier() float64 {
 			mod = 1.0
 		}
 	}
+
+	// TODO: implement following interaction => maybe necessary to split up the two type effective modifiers into seperate
+	// modifiers again => check
+	// Klutz doesn't let Iron Ball ground in generation 4
 
 	return mod
 }

@@ -97,6 +97,18 @@ func (c *Calculation) Calc() (models.BattleResult, error) {
 		}, nil
 	}
 
+	// check damage prevention from ability
+	// TODO: maybe save typeEff modifier to not calculate again in final damage mod calculation
+	typeEffectivness := c.typeDamageModifier()
+
+	if typeEffectivness == 0.0 {
+		return models.BattleResult{}, nil
+	}
+
+	if c.defender.ability.IsPreventingDamage(c.attacker.usedMove, c.defender.item, typeEffectivness, c.field.IsGravity) {
+		return models.BattleResult{}, nil
+	}
+
 	// handle fixed damage
 	if dmg := c.handleFixedDamage(); dmg != 0 {
 		return models.BattleResult{
@@ -109,6 +121,9 @@ func (c *Calculation) Calc() (models.BattleResult, error) {
 			Possibilities: []int{dmg},
 		}, nil
 	}
+
+	// handle ability damage prevention
+	// c.handleAbilityPrevention
 
 	// calculate base damage
 	baseDmg, err := c.calcBaseDamage()

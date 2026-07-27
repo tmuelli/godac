@@ -235,6 +235,8 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	if err != nil {
 		return nil, fmt.Errorf("internal error: Couldnt get ability to specie")
 	}
+	// initial abilities are always active
+	ability.Active = true
 
 	// item
 	var item *models.Item

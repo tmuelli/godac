@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 	"math"
+	"slices"
 )
 
 /****************************/
@@ -150,10 +151,44 @@ type Ability struct {
 	Kind	string
 	Id		string
 	Name	string
+	Active  bool
 }
 
 func (a Ability) Key() string {
 	return a.Name
+}
+
+func (a *Ability) IsActive(atkAbility string) bool {
+	ignoredAbilities := []string{"Battle Armor", "Clear Body", "Damp", "Dry Skin",
+    "Filter", "Flash Fire", "Flower Gift", "Heatproof",
+    "Hyper Cutter", "Immunity", "Inner Focus", "Insomnia",
+    "Keen Eye", "Leaf Guard", "Levitate", "Lightning Rod",
+    "Limber", "Magma Armor", "Marvel Scale", "Motor Drive",
+    "Oblivious", "Own Tempo", "Sand Veil", "Shell Armor",
+    "Shield Dust", "Simple", "Snow Cloak", "Solid Rock",
+    "Soundproof", "Sticky Hold", "Storm Drain", "Sturdy",
+    "Suction Cups", "Tangled Feet", "Thick Fat", "Unaware",
+    "Vital Spirit", "Volt Absorb", "Water Absorb", "Water Veil",
+    "White Smoke", "Wonder Guard"}
+	
+	if atkAbility == "moldbreaker" && !slices.Contains(ignoredAbilities, a.Id) {
+		return false
+	}
+
+	return true
+}
+
+func (a *Ability) IsPreventingDamage(move *Move, defItem *Item, typeEffectivness float64, isGravity bool) bool {
+	if ((move.Type == "???" || move.ID == "firefang") && a.Id == "wonderguard" && typeEffectivness <= 1.0) ||
+	   (move.Type == "Fire" && a.Id == "flashfire") ||
+	   (move.Type == "Water" && (a.Id == "dryskin" || a.Id == "waterabsorb")) ||
+	   (move.Type == "Electric" && (a.Id == "motordrive" || a.Id == "voltabsorb")) ||
+	   (move.Type == "Ground" && !isGravity && defItem.Id != "ironball" && a.Id == "levitate") ||
+	   (move.Flags.Sound != 0 && a.Id == "soundproof") {
+		return true
+	}
+	
+	return false
 }
 
 /* Item */
@@ -232,6 +267,46 @@ func (c *ItemCondition) ToFlag() ItemConditionFlag {
 	return flag
 }
 
+// TODO: maybe move this logic into json structure => add type json member like other type boosting items
+func (i *Item) GetPlateBoostType() string {
+	switch i.Id {
+	case "fistplate":
+		return "Fighting"
+	case "skyplate":
+		return "Flying"
+	case "toxicplate":
+		return "Posion"
+	case "earthplate":
+		return "Ground"
+	case "stoneplate":
+		return "Rock"
+	case "insectplate":
+		return "Bug"
+	case "spookyplate":
+		return "Ghost"
+	case "ironplate":
+		return "Steel"
+	case "flameplate":
+		return "Fire"
+	case "splashplate":
+		return "Water"
+	case "meadowplate":
+		return "Grass"
+	case "zapplate":
+		return "Electric"
+	case "mindplate":
+		return "Psychic"
+	case "icicleplate":
+		return "Ice"
+	case "dracoplate":
+		return "Dragon"
+	case "dreadplate":
+		return "Dark"
+	default:
+		return "Normal"
+	}
+}
+
 /* Move */
 type MoveFlags struct {
 	Contact		int `json:"contact"`
@@ -277,6 +352,7 @@ type Move struct {
 	Multiaccuracy  	bool   `json:"multiaccuracy,omitempty"`
 	Self           	MoveSelf `json:"self,omitempty"`
 	BreaksProtect 	bool `json:"breaksProtect,omitempty"`
+	Critical		bool `json:"critical"`
 }
 
 func (m Move) Key() string {
@@ -287,6 +363,11 @@ func (m *Move) HandlePainSplit(atkHP, defHP int) int {
 	avg := math.Floor(float64(atkHP + defHP) / 2)
 	dmg := math.Max(0, float64(defHP) - avg)
 	return int(dmg)
+}
+
+func (m *Move) NeedSpecialMoveSetup() bool {
+	specialMoves := []string{"weatherball", "judgement", "naturalgift", "brickbreak"}
+	return slices.Contains(specialMoves, m.ID)
 }
 
 /* Nature */
