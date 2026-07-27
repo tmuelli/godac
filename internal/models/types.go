@@ -1,6 +1,9 @@
 package models
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 /****************************/
 /* Types: user input/output */
@@ -278,6 +281,12 @@ type Move struct {
 
 func (m Move) Key() string {
 	return m.Name
+}
+
+func (m *Move) HandlePainSplit(atkHP, defHP int) int {
+	avg := math.Floor(float64(atkHP + defHP) / 2)
+	dmg := math.Max(0, float64(defHP) - avg)
+	return int(dmg)
 }
 
 /* Nature */

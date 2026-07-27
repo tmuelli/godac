@@ -63,6 +63,15 @@ func NewCalc(data *models.Data, atkInput *models.UserInput, defInput *models.Use
 	}, nil
 }
 
+func (c *Calculation) needCalc() bool {
+	if (c.attacker.usedMove.Category == string(Status) && c.attacker.usedMove.ID != "naturepower") ||
+	   (c.field.Right.Protect && !c.attacker.usedMove.BreaksProtect) {
+		return false
+	}
+
+	return true
+}
+
 func (c *Calculation) Calc() (models.BattleResult, error) {
 	// setup calculation
 	err := c.setup()
@@ -70,6 +79,37 @@ func (c *Calculation) Calc() (models.BattleResult, error) {
 		return models.BattleResult{}, err
 	}
 	
+	if !c.needCalc() {
+		return models.BattleResult{}, nil
+	}
+
+	// handle pain split
+	if c.attacker.usedMove.ID == "painsplit" {
+		dmg := c.attacker.usedMove.HandlePainSplit(c.attacker.health, c.defender.health)
+		return models.BattleResult{
+			Range: models.BattleResultRange{
+				Min: dmg,
+				Max: dmg,
+				MinPerc: 0,
+				MaxPerc: 0,
+			},
+			Possibilities: []int{dmg},
+		}, nil
+	}
+
+	// handle fixed damage
+	if dmg := c.handleFixedDamage(); dmg != 0 {
+		return models.BattleResult{
+			Range: models.BattleResultRange{
+				Min: dmg,
+				Max: dmg,
+				MinPerc: 0,
+				MaxPerc: 0,
+			},
+			Possibilities: []int{dmg},
+		}, nil
+	}
+
 	// calculate base damage
 	baseDmg, err := c.calcBaseDamage()
 	if err != nil {
@@ -125,16 +165,26 @@ func (c *Calculation) Calc() (models.BattleResult, error) {
 	return calcResult, nil
 }
 
+func (c *Calculation) handleFixedDamage() int {
+	switch c.attacker.usedMove.ID {
+	case "seismictoss", "nightshade":
+		return c.attacker.level
+	
+	case "dragonrage":
+		return FIXED_DMG_DRAGON_RAGE
+	
+	case "sonicboom":
+		return FIXED_DMG_SONIC_BOOM
+	}
+
+	return 0
+}
+
 func (c *Calculation) calcBaseDamage() (float64, error) {
 	// get attack and Defense stat based on category
 	var attackStat int
 	var DefenseStat int
 	moveItemModifier := 1.0
-
-	// check protect
-	if c.field.Right.Protect && !c.attacker.usedMove.BreaksProtect {
-		return 0.0, nil
-	}
 
 	atkCategory := c.attacker.usedMove.Category
 	switch (MoveCategory(atkCategory)) {

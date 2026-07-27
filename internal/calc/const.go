@@ -11,6 +11,7 @@ const (
 	// move category
 	Physical	MoveCategory	= "Physical"
 	Special		MoveCategory	= "Special"
+	Status		MoveCategory	= "Status"
 
 	// stat kind
 	StatHp		StatKind		= "hp"
@@ -43,4 +44,8 @@ const (
 	Paralyzed		StatusCondition		= "paralyzed"
 	Asleep			StatusCondition		= "asleep"
 	Frozen			StatusCondition		= "frozen"
+
+	// fixed damage
+	FIXED_DMG_DRAGON_RAGE	= 40
+	FIXED_DMG_SONIC_BOOM	= 20
 )
