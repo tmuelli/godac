@@ -6,52 +6,57 @@ import (
 	"github.com/tmuelli/godac/internal/models"
 )
 
-func (c *Calculation) typeDamageModifier() float64 {
-	mod := 1.0
-
-	// get used move type
-	atkType, err := getTypeFromName(c.data, c.attacker.usedMove.Type)
-	if err != nil {
-		fmt.Printf("Error during type damage modifier calc: %v\n", err)
+func calcTypeModifier(moveType, defType *models.Type, canHitGhostType, isGravity bool) float64 {
+	if canHitGhostType && defType.ID == "ghost" && (moveType.ID == "normal" || moveType.ID == "fighting") {
 		return 1.0
 	}
 
-	foundGhost := false
-	foundFlying := false
-
-	for _, defType := range c.defender.specieTypes {
-		if defType.ID == "ghost" {
-			foundGhost = true
-		}
-
-		if defType.ID == "flying" {
-			foundFlying = true
-		}
-
-		// TODO: check if type is in effectivness matrix => map: val, ok := map
-		mod *= atkType.Effectiveness[defType.Name]
+	if isGravity && defType.ID == "flying" && moveType.ID == "ground" {
+		return 1.0
 	}
 
-	// check foresight and scrappy ability
-	if mod == 0 && (c.field.Right.Foresight || c.attacker.ability.Id == "scrappy") {
-		if (atkType.ID == "normal" || atkType.ID == "fighting") && foundGhost {
-			mod = 1.0
-		}
+	mod, ok := moveType.Effectiveness[defType.Name]
+	if !ok {
+		fmt.Printf("Error trying to look up type %s in type map while trying to calc type modifier\n", defType.Name)
 	}
-
-	// check gravity
-	if mod == 0 && c.field.IsGravity && foundFlying {
-		if atkType.ID == "ground" {
-			fmt.Println("test gravity check")
-			mod = 1.0
-		}
-	}
-
-	// TODO: implement following interaction => maybe necessary to split up the two type effective modifiers into seperate
-	// modifiers again => check
-	// Klutz doesn't let Iron Ball ground in generation 4
 
 	return mod
+}
+
+func (c *Calculation) typeModifier() (float64, error) {
+	// get used move type
+	atkType, err := getTypeFromName(c.data, c.attacker.usedMove.Type)
+	if err != nil {
+		return 0.0, fmt.Errorf("Error during type damage modifier calc: %v\n", err)
+	}
+
+	canHitGhostType := c.field.Right.Foresight || c.attacker.ability.Id == "scrappy"
+	defHasSecondType := len(c.defender.specieTypes) > 1
+	typeMod1 := 1.0
+	typeMod2 := 1.0
+
+	typeMod1 = calcTypeModifier(atkType, c.defender.specieTypes[0], canHitGhostType, c.field.IsGravity)
+
+	if defHasSecondType {
+		typeMod2 = calcTypeModifier(atkType, c.defender.specieTypes[1], canHitGhostType, c.field.IsGravity)
+	}
+
+	typeMod := typeMod1 * typeMod2
+
+	// handle special case => ability 'Klutz'
+	if typeMod == 0.0 && atkType.ID == "ground" &&
+	   c.defender.item != nil && c.defender.item.Id == "ironball" &&
+	   c.defender.ability.Id != "klutz" {
+		if typeMod1 == 0.0 {
+			typeMod1 = 1.0
+		} else if defHasSecondType && typeMod2 == 0.0 {
+			typeMod2 = 1.0
+		}
+
+		typeMod = typeMod1 * typeMod2
+	}
+
+	return typeMod, nil
 }
 
 func (d *CalcData) stabModifier() (float64, error) {

@@ -24,10 +24,11 @@ type CalcData struct {
 }
 
 type Calculation struct {
-	data		*models.Data
-	attacker	*CalcData
-	defender	*CalcData
-	field		*models.Field
+	data				*models.Data
+	attacker			*CalcData
+	defender			*CalcData
+	field				*models.Field
+	typeEffectivness	float64
 }
 
 func NewCalc(data *models.Data, atkInput *models.UserInput, defInput *models.UserInput, fieldInput *models.UserFieldInput) (*Calculation, error) {
@@ -98,8 +99,16 @@ func (c *Calculation) Calc() (models.BattleResult, error) {
 	}
 
 	// check damage prevention from ability
-	// TODO: maybe save typeEff modifier to not calculate again in final damage mod calculation
-	typeEffectivness := c.typeDamageModifier()
+	typeEffectivness, err := c.typeModifier()
+	if err != nil {
+		return models.BattleResult{}, err
+	}
+
+	if typeEffectivness == 0.0 {
+		return models.BattleResult{}, nil
+	}
+
+	c.typeEffectivness = typeEffectivness
 
 	if typeEffectivness == 0.0 {
 		return models.BattleResult{}, nil
@@ -121,9 +130,6 @@ func (c *Calculation) Calc() (models.BattleResult, error) {
 			Possibilities: []int{dmg},
 		}, nil
 	}
-
-	// handle ability damage prevention
-	// c.handleAbilityPrevention
 
 	// calculate base damage
 	baseDmg, err := c.calcBaseDamage()
@@ -293,7 +299,7 @@ func (c *Calculation) calcModificationDamage(condDmg float64) (float64, error) {
 		return 0.0, err
 	}
 
-	typeMod = c.typeDamageModifier()
+	typeMod = c.typeEffectivness
 
 	// final attacker item modifier
 	itemAtkMod, err := c.attacker.itemModifier(nil, models.DamageEffect, &models.ItemModifierOptions{})

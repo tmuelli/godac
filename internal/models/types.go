@@ -183,7 +183,7 @@ func (a *Ability) IsPreventingDamage(move *Move, defItem *Item, typeEffectivness
 	   (move.Type == "Fire" && a.Id == "flashfire") ||
 	   (move.Type == "Water" && (a.Id == "dryskin" || a.Id == "waterabsorb")) ||
 	   (move.Type == "Electric" && (a.Id == "motordrive" || a.Id == "voltabsorb")) ||
-	   (move.Type == "Ground" && !isGravity && defItem.Id != "ironball" && a.Id == "levitate") ||
+	   (move.Type == "Ground" && !isGravity && defItem != nil && defItem.Id != "ironball" && a.Id == "levitate") ||
 	   (move.Flags.Sound != 0 && a.Id == "soundproof") {
 		return true
 	}

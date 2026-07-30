@@ -1,10 +1,10 @@
 {
-    "name": "Drifblim",
+    "name": "Growlithe",
     "level": 100,
     "nature": "Hardy",
-    "attackMove": "Lick",
+    "attackMove": "Ember",
     "moves": [
-        "Lick"
+        "Ember"
     ],
     "healthPercent": 100,
     "ivSetting": "optimal",
