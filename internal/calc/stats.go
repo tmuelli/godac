@@ -7,6 +7,15 @@ import (
 	"github.com/tmuelli/godac/internal/models"
 )
 
+func (d *CalcData) effectiveHpStat() int {
+	base := float64(d.specie.BaseStats.Hp)
+	iv := float64(d.ivs.Hp)
+	ev := float64(d.evs.Hp)
+
+	hp := math.Floor(math.Floor(2 * base) + iv + math.Floor(math.Floor(ev / 4) * float64(d.level)) / 100) + float64(d.level) + 10
+	return int(hp)
+}
+
 func (d *CalcData) effectiveStat(kind StatKind) int {
 	base := 0.0
 	iv := 0.0
@@ -24,8 +33,7 @@ func (d *CalcData) effectiveStat(kind StatKind) int {
 
 	switch (kind) {
 		case StatHp:
-			fmt.Println("[DEBUG]: Not implemented yet")
-			return 0
+			return d.effectiveHpStat()
 		case StatAtk:
 			base = float64(d.specie.BaseStats.Atk)
 			iv = float64(d.ivs.Atk)
@@ -44,8 +52,9 @@ func (d *CalcData) effectiveStat(kind StatKind) int {
 			ev = float64(d.evs.Spd)
 		case StatSpe:
 			// TODO: implement and check for tailwind field flag
-			fmt.Println("[DEBUG]: Not implemented yet")
-			return 0
+			base = float64(d.specie.BaseStats.Spe)
+			iv = float64(d.ivs.Spe)
+			ev = float64(d.evs.Spe)
 	}
 
 	fmt.Println("[DEBUG]: Base stat:", base)
