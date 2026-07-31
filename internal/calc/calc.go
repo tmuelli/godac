@@ -236,11 +236,8 @@ func (c *Calculation) calcBaseDamage() (float64, error) {
 		default:
 			return 0, fmt.Errorf("invalid attack move category")
 	}
-	
-	// TODO: add new receiver method on move to calc base power depending on different moves
-	// for example Gyroball => depends on effectiveStat (Spe)
-	// TODO: implement helping hand => only relevant in field type doubles => 50% move power boost
-	moveBP := c.attacker.usedMove.BasePower
+
+	moveBP := c.getMoveBasePower()
 	movePower := float64(moveBP) * moveItemModifier
 
 	// check field for switch out

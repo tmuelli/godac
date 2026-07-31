@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"math"
 	"slices"
 )
@@ -129,20 +128,20 @@ type Boosts struct {
 	Spe StatBoost
 }
 
-func (b *Boosts) Get(stat string) (int, error) {
+func (b *Boosts) Get(stat string) (int) {
 	switch (stat) {
 	case "atk":
-		return b.Atk.value, nil
+		return b.Atk.value
 	case "def":
-		return b.Def.value, nil
+		return b.Def.value
 	case "spa":
-		return b.Spa.value, nil
+		return b.Spa.value
 	case "spd":
-		return b.Spd.value, nil
+		return b.Spd.value
 	case "spe":
-		return b.Spe.value, nil
+		return b.Spe.value
 	default:
-		return 0, fmt.Errorf("couldnt get stat boost - invalid stat kind")
+		return 0
 	}
 }
 
@@ -247,6 +246,7 @@ type Item struct {
 	Multiplier		float64				`json:"multiplier"`
 	Restrictions	*ItemRestriction	`json:"restrictions"`
 	Condition		*ItemCondition		`json:"condition"`
+	FlingPower		int					`json:"flingPower"`
 }
 
 func (i Item) Key() string {

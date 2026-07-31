@@ -70,3 +70,17 @@ func (d *CalcData) effectiveStat(kind StatKind) int {
 
 	return int(effStat)
 }
+
+func (d *CalcData) sumStatBoosts() int {
+	sum := 0
+	boosts := []string{string(StatAtk), string(StatDef), string(StatSpa), string(StatSpd), string(StatSpe)}
+	
+	for _, b := range boosts {
+		boost := d.boosts.Get(b)
+		if boost > 0 {
+			sum += boost
+		}
+	}
+
+	return sum
+}

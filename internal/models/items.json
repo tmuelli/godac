@@ -2,7 +2,8 @@
   {
     "kind": "Item",
     "id": "berryjuice",
-    "name": "Berry Juice"
+    "name": "Berry Juice",
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -12,7 +13,8 @@
     "types": [
       "Fighting"
     ],
-    "multiplier": 1.2
+    "multiplier": 1.2,
+    "flingPower": 30
   },
   {
     "kind": "Item",
@@ -22,12 +24,14 @@
     "types": [
       "Dark"
     ],
-    "multiplier": 1.2
+    "multiplier": 1.2,
+    "flingPower": 30
   },
   {
     "kind": "Item",
     "id": "brightpowder",
-    "name": "Bright Powder"
+    "name": "Bright Powder",
+    "flingPower": 0
   },
   {
     "kind": "Item",
@@ -37,7 +41,8 @@
     "types": [
       "Fire"
     ],
-    "multiplier": 1.2
+    "multiplier": 1.2,
+    "flingPower": 30
   },
   {
     "kind": "Item",
@@ -47,37 +52,44 @@
     "types": [
       "Dragon"
     ],
-    "multiplier": 1.2
+    "multiplier": 1.2,
+    "flingPower": 70
   },
   {
     "kind": "Item",
     "id": "dragonscale",
-    "name": "Dragon Scale"
+    "name": "Dragon Scale",
+    "flingPower": 30
   },
   {
     "kind": "Item",
     "id": "fastball",
-    "name": "Fast Ball"
+    "name": "Fast Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
     "id": "firestone",
-    "name": "Fire Stone"
+    "name": "Fire Stone",
+    "flingPower": 30
   },
   {
     "kind": "Item",
     "id": "focusband",
-    "name": "Focus Band"
+    "name": "Focus Band",
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "friendball",
-    "name": "Friend Ball"
+    "name": "Friend Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
     "id": "greatball",
-    "name": "Great Ball"
+    "name": "Great Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
@@ -87,32 +99,38 @@
     "types": [
       "Rock"
     ],
-    "multiplier": 1.2
+    "multiplier": 1.2,
+    "flingPower": 100
   },
   {
     "kind": "Item",
     "id": "heavyball",
-    "name": "Heavy Ball"
+    "name": "Heavy Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
     "id": "kingsrock",
-    "name": "King's Rock"
+    "name": "King's Rock",
+    "flingPower": 30
   },
   {
     "kind": "Item",
     "id": "leafstone",
-    "name": "Leaf Stone"
+    "name": "Leaf Stone",
+    "flingPower": 30
   },
   {
     "kind": "Item",
     "id": "leftovers",
-    "name": "Leftovers"
+    "name": "Leftovers",
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "levelball",
-    "name": "Level Ball"
+    "name": "Level Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
@@ -128,22 +146,26 @@
       "species": [
         "pikachu"
       ]
-    }
+    },
+    "flingPower": 30
   },
   {
     "kind": "Item",
     "id": "loveball",
-    "name": "Love Ball"
+    "name": "Love Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
     "id": "luckypunch",
-    "name": "Lucky Punch"
+    "name": "Lucky Punch",
+    "flingPower": 40
   },
   {
     "kind": "Item",
     "id": "lureball",
-    "name": "Lure Ball"
+    "name": "Lure Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
@@ -153,17 +175,20 @@
     "types": [
       "Electric"
     ],
-    "multiplier": 1.2
+    "multiplier": 1.2,
+    "flingPower": 30
   },
   {
     "kind": "Item",
     "id": "mail",
-    "name": "Mail"
+    "name": "Mail",
+    "flingPower": 0
   },
   {
     "kind": "Item",
     "id": "masterball",
-    "name": "Master Ball"
+    "name": "Master Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
@@ -173,7 +198,8 @@
     "types": [
       "Steel"
     ],
-    "multiplier": 1.2
+    "multiplier": 1.2,
+    "flingPower": 30
   },
   {
     "kind": "Item",
@@ -191,7 +217,8 @@
     },
     "condition": {
       "notTransformed": true
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -201,17 +228,20 @@
     "types": [
       "Grass"
     ],
-    "multiplier": 1.2
+    "multiplier": 1.2,
+    "flingPower": 30
   },
   {
     "kind": "Item",
     "id": "moonball",
-    "name": "Moon Ball"
+    "name": "Moon Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
     "id": "moonstone",
-    "name": "Moon Stone"
+    "name": "Moon Stone",
+    "flingPower": 30
   },
   {
     "kind": "Item",
@@ -221,7 +251,8 @@
     "types": [
       "Water"
     ],
-    "multiplier": 1.2
+    "multiplier": 1.2,
+    "flingPower": 30
   },
   {
     "kind": "Item",
@@ -231,7 +262,8 @@
     "types": [
       "Ice"
     ],
-    "multiplier": 1.2
+    "multiplier": 1.2,
+    "flingPower": 30
   },
   {
     "kind": "Item",
@@ -241,27 +273,32 @@
     "types": [
       "Poison"
     ],
-    "multiplier": 1.2
+    "multiplier": 1.2,
+    "flingPower": 70
   },
   {
     "kind": "Item",
     "id": "pokeball",
-    "name": "Poke Ball"
+    "name": "Poke Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
     "id": "quickclaw",
-    "name": "Quick Claw"
+    "name": "Quick Claw",
+    "flingPower": 80
   },
   {
     "kind": "Item",
     "id": "safariball",
-    "name": "Safari Ball"
+    "name": "Safari Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
     "id": "scopelens",
-    "name": "Scope Lens"
+    "name": "Scope Lens",
+    "flingPower": 30
   },
   {
     "kind": "Item",
@@ -271,7 +308,8 @@
     "types": [
       "Flying"
     ],
-    "multiplier": 1.2
+    "multiplier": 1.2,
+    "flingPower": 50
   },
   {
     "kind": "Item",
@@ -281,7 +319,8 @@
     "types": [
       "Bug"
     ],
-    "multiplier": 1.2
+    "multiplier": 1.2,
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -291,7 +330,8 @@
     "types": [
       "Ground"
     ],
-    "multiplier": 1.2
+    "multiplier": 1.2,
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -301,22 +341,26 @@
     "types": [
       "Ghost"
     ],
-    "multiplier": 1.2
+    "multiplier": 1.2,
+    "flingPower": 30
   },
   {
     "kind": "Item",
     "id": "sportball",
-    "name": "Sport Ball"
+    "name": "Sport Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
     "id": "stick",
-    "name": "Stick"
+    "name": "Stick",
+    "flingPower": 60
   },
   {
     "kind": "Item",
     "id": "sunstone",
-    "name": "Sun Stone"
+    "name": "Sun Stone",
+    "flingPower": 30
   },
   {
     "kind": "Item",
@@ -332,12 +376,14 @@
         "cubone",
         "marowak"
       ]
-    }
+    },
+    "flingPower": 90
   },
   {
     "kind": "Item",
     "id": "thunderstone",
-    "name": "Thunder Stone"
+    "name": "Thunder Stone",
+    "flingPower": 30
   },
   {
     "kind": "Item",
@@ -347,22 +393,26 @@
     "types": [
       "Psychic"
     ],
-    "multiplier": 1.2
+    "multiplier": 1.2,
+    "flingPower": 30
   },
   {
     "kind": "Item",
     "id": "ultraball",
-    "name": "Ultra Ball"
+    "name": "Ultra Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
     "id": "upgrade",
-    "name": "Up-Grade"
+    "name": "Up-Grade",
+    "flingPower": 30
   },
   {
     "kind": "Item",
     "id": "waterstone",
-    "name": "Water Stone"
+    "name": "Water Stone",
+    "flingPower": 30
   },
   {
     "kind": "Item",
@@ -372,7 +422,8 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Dragon"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -382,7 +433,8 @@
     "naturalGift": {
       "basePower": 80,
       "type": "Ground"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -392,7 +444,8 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Ice"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -402,7 +455,8 @@
     "naturalGift": {
       "basePower": 80,
       "type": "Electric"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -412,7 +466,8 @@
     "naturalGift": {
       "basePower": 70,
       "type": "Fire"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -422,7 +477,8 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Fire"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -432,7 +488,8 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Water"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -442,12 +499,14 @@
     "stats": [
       "atk"
     ],
-    "multiplier": 1.5
+    "multiplier": 1.5,
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "clawfossil",
-    "name": "Claw Fossil"
+    "name": "Claw Fossil",
+    "flingPower": 100
   },
   {
     "kind": "Item",
@@ -457,7 +516,8 @@
     "naturalGift": {
       "basePower": 70,
       "type": "Bug"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -472,7 +532,8 @@
       "species": [
         "clamperl"
       ]
-    }
+    },
+    "flingPower": 30
   },
   {
     "kind": "Item",
@@ -487,17 +548,20 @@
       "species": [
         "clamperl"
       ]
-    }
+    },
+    "flingPower": 90
   },
   {
     "kind": "Item",
     "id": "diveball",
-    "name": "Dive Ball"
+    "name": "Dive Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
     "id": "domefossil",
-    "name": "Dome Fossil"
+    "name": "Dome Fossil",
+    "flingPower": 100
   },
   {
     "kind": "Item",
@@ -507,7 +571,8 @@
     "naturalGift": {
       "basePower": 80,
       "type": "Water"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -517,7 +582,8 @@
     "naturalGift": {
       "basePower": 80,
       "type": "Bug"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -527,7 +593,8 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Bug"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -537,7 +604,8 @@
     "naturalGift": {
       "basePower": 80,
       "type": "Ice"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -547,12 +615,14 @@
     "naturalGift": {
       "basePower": 70,
       "type": "Flying"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "helixfossil",
-    "name": "Helix Fossil"
+    "name": "Helix Fossil",
+    "flingPower": 100
   },
   {
     "kind": "Item",
@@ -562,7 +632,8 @@
     "naturalGift": {
       "basePower": 70,
       "type": "Ground"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -572,7 +643,8 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Dark"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -582,7 +654,8 @@
     "naturalGift": {
       "basePower": 70,
       "type": "Fighting"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -592,12 +665,14 @@
     "naturalGift": {
       "basePower": 80,
       "type": "Flying"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "laxincense",
-    "name": "Lax Incense"
+    "name": "Lax Incense",
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -607,7 +682,8 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Fighting"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -617,7 +693,8 @@
     "naturalGift": {
       "basePower": 80,
       "type": "Grass"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -627,17 +704,20 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Flying"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "luxuryball",
-    "name": "Luxury Ball"
+    "name": "Luxury Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
     "id": "machobrace",
-    "name": "Macho Brace"
+    "name": "Macho Brace",
+    "flingPower": 60
   },
   {
     "kind": "Item",
@@ -647,7 +727,8 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Ghost"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -657,12 +738,14 @@
     "naturalGift": {
       "basePower": 70,
       "type": "Rock"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "mentalherb",
-    "name": "Mental Herb"
+    "name": "Mental Herb",
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -672,17 +755,20 @@
     "naturalGift": {
       "basePower": 70,
       "type": "Water"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "nestball",
-    "name": "Nest Ball"
+    "name": "Nest Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
     "id": "netball",
-    "name": "Net Ball"
+    "name": "Net Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
@@ -692,12 +778,14 @@
     "naturalGift": {
       "basePower": 70,
       "type": "Dragon"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "oldamber",
-    "name": "Old Amber"
+    "name": "Old Amber",
+    "flingPower": 100
   },
   {
     "kind": "Item",
@@ -707,7 +795,8 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Poison"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -717,7 +806,8 @@
     "naturalGift": {
       "basePower": 70,
       "type": "Steel"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -727,7 +817,8 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Electric"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -737,7 +828,8 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Ground"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -747,7 +839,8 @@
     "naturalGift": {
       "basePower": 80,
       "type": "Poison"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -757,7 +850,8 @@
     "naturalGift": {
       "basePower": 70,
       "type": "Grass"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -767,12 +861,14 @@
     "naturalGift": {
       "basePower": 70,
       "type": "Ice"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "premierball",
-    "name": "Premier Ball"
+    "name": "Premier Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
@@ -782,7 +878,8 @@
     "naturalGift": {
       "basePower": 70,
       "type": "Poison"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -792,7 +889,8 @@
     "naturalGift": {
       "basePower": 70,
       "type": "Ghost"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -802,7 +900,8 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Grass"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -812,17 +911,20 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Steel"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "repeatball",
-    "name": "Repeat Ball"
+    "name": "Repeat Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
     "id": "rootfossil",
-    "name": "Root Fossil"
+    "name": "Root Fossil",
+    "flingPower": 100
   },
   {
     "kind": "Item",
@@ -832,17 +934,20 @@
     "naturalGift": {
       "basePower": 80,
       "type": "Fighting"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "seaincense",
-    "name": "Sea Incense"
+    "name": "Sea Incense",
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "shellbell",
-    "name": "Shell Bell"
+    "name": "Shell Bell",
+    "flingPower": 0
   },
   {
     "kind": "Item",
@@ -852,7 +957,8 @@
     "types": [
       "Normal"
     ],
-    "multiplier": 1.2
+    "multiplier": 1.2,
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -862,7 +968,8 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Psychic"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -879,7 +986,8 @@
         "latias",
         "latios"
       ]
-    }
+    },
+    "flingPower": 30
   },
   {
     "kind": "Item",
@@ -889,7 +997,8 @@
     "naturalGift": {
       "basePower": 70,
       "type": "Dark"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -899,7 +1008,8 @@
     "naturalGift": {
       "basePower": 80,
       "type": "Psychic"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -909,12 +1019,14 @@
     "naturalGift": {
       "basePower": 70,
       "type": "Psychic"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "timerball",
-    "name": "Timer Ball"
+    "name": "Timer Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
@@ -924,7 +1036,8 @@
     "naturalGift": {
       "basePower": 80,
       "type": "Fire"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -934,12 +1047,14 @@
     "naturalGift": {
       "basePower": 70,
       "type": "Electric"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "whiteherb",
-    "name": "White Herb"
+    "name": "White Herb",
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -949,7 +1064,8 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Rock"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -965,12 +1081,14 @@
       "species": [
         "dialga"
       ]
-    }
+    },
+    "flingPower": 60
   },
   {
     "kind": "Item",
     "id": "armorfossil",
-    "name": "Armor Fossil"
+    "name": "Armor Fossil",
+    "flingPower": 100
   },
   {
     "kind": "Item",
@@ -988,17 +1106,20 @@
     "multiplier": 0.5,
     "condition": {
       "typeReduction": true
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "bigroot",
-    "name": "Big Root"
+    "name": "Big Root",
+    "flingPower": 0
   },
   {
     "kind": "Item",
     "id": "blacksludge",
-    "name": "Black Sludge"
+    "name": "Black Sludge",
+    "flingPower": 30
   },
   {
     "kind": "Item",
@@ -1008,12 +1129,14 @@
     "naturalGift": {
       "basePower": 60,
       "type": "Rock"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "cherishball",
-    "name": "Cherish Ball"
+    "name": "Cherish Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
@@ -1031,7 +1154,8 @@
     "multiplier": 0.5,
     "condition": {
       "typeReduction": true
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -1041,7 +1165,8 @@
     "stats": [
       "spe"
     ],
-    "multiplier": 1.5
+    "multiplier": 1.5,
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -1051,7 +1176,8 @@
     "stats": [
       "spa"
     ],
-    "multiplier": 1.5
+    "multiplier": 1.5,
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -1069,7 +1195,8 @@
     "multiplier": 0.5,
     "condition": {
       "typeReduction": true
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -1087,7 +1214,8 @@
     "multiplier": 0.5,
     "condition": {
       "typeReduction": true
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -1105,7 +1233,8 @@
     "multiplier": 0.5,
     "condition": {
       "typeReduction": true
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -1115,57 +1244,68 @@
     "naturalGift": {
       "basePower": 80,
       "type": "Ghost"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "damprock",
-    "name": "Damp Rock"
+    "name": "Damp Rock",
+    "flingPower": 60
   },
   {
     "kind": "Item",
     "id": "dawnstone",
-    "name": "Dawn Stone"
+    "name": "Dawn Stone",
+    "flingPower": 80
   },
   {
     "kind": "Item",
     "id": "destinyknot",
-    "name": "Destiny Knot"
+    "name": "Destiny Knot",
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "dracoplate",
-    "name": "Draco Plate"
+    "name": "Draco Plate",
+    "flingPower": 90
   },
   {
     "kind": "Item",
     "id": "dreadplate",
-    "name": "Dread Plate"
+    "name": "Dread Plate",
+    "flingPower": 90
   },
   {
     "kind": "Item",
     "id": "dubiousdisc",
-    "name": "Dubious Disc"
+    "name": "Dubious Disc",
+    "flingPower": 50
   },
   {
     "kind": "Item",
     "id": "duskball",
-    "name": "Dusk Ball"
+    "name": "Dusk Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
     "id": "duskstone",
-    "name": "Dusk Stone"
+    "name": "Dusk Stone",
+    "flingPower": 80
   },
   {
     "kind": "Item",
     "id": "earthplate",
-    "name": "Earth Plate"
+    "name": "Earth Plate",
+    "flingPower": 90
   },
   {
     "kind": "Item",
     "id": "electirizer",
-    "name": "Electirizer"
+    "name": "Electirizer",
+    "flingPower": 80
   },
   {
     "kind": "Item",
@@ -1175,37 +1315,44 @@
     "multiplier": 1.2,
     "condition": {
       "superEffective": true
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "fistplate",
-    "name": "Fist Plate"
+    "name": "Fist Plate",
+    "flingPower": 90
   },
   {
     "kind": "Item",
     "id": "flameorb",
-    "name": "Flame Orb"
+    "name": "Flame Orb",
+    "flingPower": 30
   },
   {
     "kind": "Item",
     "id": "flameplate",
-    "name": "Flame Plate"
+    "name": "Flame Plate",
+    "flingPower": 90
   },
   {
     "kind": "Item",
     "id": "focussash",
-    "name": "Focus Sash"
+    "name": "Focus Sash",
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "fullincense",
-    "name": "Full Incense"
+    "name": "Full Incense",
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "gripclaw",
-    "name": "Grip Claw"
+    "name": "Grip Claw",
+    "flingPower": 0
   },
   {
     "kind": "Item",
@@ -1221,7 +1368,8 @@
       "species": [
         "giratina"
       ]
-    }
+    },
+    "flingPower": 0
   },
   {
     "kind": "Item",
@@ -1239,42 +1387,50 @@
     "multiplier": 0.5,
     "condition": {
       "typeReduction": true
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "healball",
-    "name": "Heal Ball"
+    "name": "Heal Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
     "id": "heatrock",
-    "name": "Heat Rock"
+    "name": "Heat Rock",
+    "flingPower": 60
   },
   {
     "kind": "Item",
     "id": "icicleplate",
-    "name": "Icicle Plate"
+    "name": "Icicle Plate",
+    "flingPower": 90
   },
   {
     "kind": "Item",
     "id": "icyrock",
-    "name": "Icy Rock"
+    "name": "Icy Rock",
+    "flingPower": 40
   },
   {
     "kind": "Item",
     "id": "insectplate",
-    "name": "Insect Plate"
+    "name": "Insect Plate",
+    "flingPower": 90
   },
   {
     "kind": "Item",
     "id": "ironball",
-    "name": "Iron Ball"
+    "name": "Iron Ball",
+    "flingPower": 130
   },
   {
     "kind": "Item",
     "id": "ironplate",
-    "name": "Iron Plate"
+    "name": "Iron Plate",
+    "flingPower": 90
   },
   {
     "kind": "Item",
@@ -1284,7 +1440,8 @@
     "naturalGift": {
       "basePower": 80,
       "type": "Dragon"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -1302,7 +1459,8 @@
     "multiplier": 0.5,
     "condition": {
       "typeReduction": true
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -1320,12 +1478,14 @@
     "multiplier": 0.5,
     "condition": {
       "typeReduction": true
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "laggingtail",
-    "name": "Lagging Tail"
+    "name": "Lagging Tail",
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -1335,12 +1495,14 @@
     "multiplier": 1.3,
     "condition": {
       "lifeOrb": true
-    }
+    },
+    "flingPower": 30
   },
   {
     "kind": "Item",
     "id": "lightclay",
-    "name": "Light Clay"
+    "name": "Light Clay",
+    "flingPower": 30
   },
   {
     "kind": "Item",
@@ -1356,17 +1518,20 @@
       "species": [
         "palkia"
       ]
-    }
+    },
+    "flingPower": 60
   },
   {
     "kind": "Item",
     "id": "magmarizer",
-    "name": "Magmarizer"
+    "name": "Magmarizer",
+    "flingPower": 80
   },
   {
     "kind": "Item",
     "id": "meadowplate",
-    "name": "Meadow Plate"
+    "name": "Meadow Plate",
+    "flingPower": 90
   },
   {
     "kind": "Item",
@@ -1376,7 +1541,8 @@
     "multiplier": 1,
     "condition": {
       "metronome": true
-    }
+    },
+    "flingPower": 0
   },
   {
     "kind": "Item",
@@ -1386,12 +1552,14 @@
     "naturalGift": {
       "basePower": 80,
       "type": "Rock"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "mindplate",
-    "name": "Mind Plate"
+    "name": "Mind Plate",
+    "flingPower": 90
   },
   {
     "kind": "Item",
@@ -1401,7 +1569,8 @@
     "multiplier": 1.1,
     "condition": {
       "physical": true
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -1419,22 +1588,26 @@
     "multiplier": 0.5,
     "condition": {
       "typeReduction": true
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "oddincense",
-    "name": "Odd Incense"
+    "name": "Odd Incense",
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "ovalstone",
-    "name": "Oval Stone"
+    "name": "Oval Stone",
+    "flingPower": 80
   },
   {
     "kind": "Item",
     "id": "parkball",
-    "name": "Park Ball"
+    "name": "Park Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
@@ -1452,7 +1625,8 @@
     "multiplier": 0.5,
     "condition": {
       "typeReduction": true
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -1470,52 +1644,62 @@
     "multiplier": 0.5,
     "condition": {
       "typeReduction": true
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "poweranklet",
-    "name": "Power Anklet"
+    "name": "Power Anklet",
+    "flingPower": 70
   },
   {
     "kind": "Item",
     "id": "powerband",
-    "name": "Power Band"
+    "name": "Power Band",
+    "flingPower": 70
   },
   {
     "kind": "Item",
     "id": "powerbelt",
-    "name": "Power Belt"
+    "name": "Power Belt",
+    "flingPower": 70
   },
   {
     "kind": "Item",
     "id": "powerbracer",
-    "name": "Power Bracer"
+    "name": "Power Bracer",
+    "flingPower": 70
   },
   {
     "kind": "Item",
     "id": "powerherb",
-    "name": "Power Herb"
+    "name": "Power Herb",
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "powerlens",
-    "name": "Power Lens"
+    "name": "Power Lens",
+    "flingPower": 70
   },
   {
     "kind": "Item",
     "id": "powerweight",
-    "name": "Power Weight"
+    "name": "Power Weight",
+    "flingPower": 70
   },
   {
     "kind": "Item",
     "id": "protector",
-    "name": "Protector"
+    "name": "Protector",
+    "flingPower": 80
   },
   {
     "kind": "Item",
     "id": "quickball",
-    "name": "Quick Ball"
+    "name": "Quick Ball",
+    "flingPower": 0
   },
   {
     "kind": "Item",
@@ -1533,27 +1717,32 @@
     },
     "condition": {
       "notTransformed": true
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "rarebone",
-    "name": "Rare Bone"
+    "name": "Rare Bone",
+    "flingPower": 100
   },
   {
     "kind": "Item",
     "id": "razorclaw",
-    "name": "Razor Claw"
+    "name": "Razor Claw",
+    "flingPower": 80
   },
   {
     "kind": "Item",
     "id": "razorfang",
-    "name": "Razor Fang"
+    "name": "Razor Fang",
+    "flingPower": 30
   },
   {
     "kind": "Item",
     "id": "reapercloth",
-    "name": "Reaper Cloth"
+    "name": "Reaper Cloth",
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -1571,17 +1760,20 @@
     "multiplier": 0.5,
     "condition": {
       "typeReduction": true
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "rockincense",
-    "name": "Rock Incense"
+    "name": "Rock Incense",
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "roseincense",
-    "name": "Rose Incense"
+    "name": "Rose Incense",
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -1591,17 +1783,20 @@
     "naturalGift": {
       "basePower": 80,
       "type": "Dark"
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "shedshell",
-    "name": "Shed Shell"
+    "name": "Shed Shell",
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "shinystone",
-    "name": "Shiny Stone"
+    "name": "Shiny Stone",
+    "flingPower": 80
   },
   {
     "kind": "Item",
@@ -1619,42 +1814,50 @@
     "multiplier": 0.5,
     "condition": {
       "typeReduction": true
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "skullfossil",
-    "name": "Skull Fossil"
+    "name": "Skull Fossil",
+    "flingPower": 100
   },
   {
     "kind": "Item",
     "id": "skyplate",
-    "name": "Sky Plate"
+    "name": "Sky Plate",
+    "flingPower": 90
   },
   {
     "kind": "Item",
     "id": "smoothrock",
-    "name": "Smooth Rock"
+    "name": "Smooth Rock",
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "splashplate",
-    "name": "Splash Plate"
+    "name": "Splash Plate",
+    "flingPower": 90
   },
   {
     "kind": "Item",
     "id": "spookyplate",
-    "name": "Spooky Plate"
+    "name": "Spooky Plate",
+    "flingPower": 90
   },
   {
     "kind": "Item",
     "id": "stickybarb",
-    "name": "Sticky Barb"
+    "name": "Sticky Barb",
+    "flingPower": 0
   },
   {
     "kind": "Item",
     "id": "stoneplate",
-    "name": "Stone Plate"
+    "name": "Stone Plate",
+    "flingPower": 90
   },
   {
     "kind": "Item",
@@ -1672,17 +1875,20 @@
     "multiplier": 0.5,
     "condition": {
       "typeReduction": true
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "toxicorb",
-    "name": "Toxic Orb"
+    "name": "Toxic Orb",
+    "flingPower": 30
   },
   {
     "kind": "Item",
     "id": "toxicplate",
-    "name": "Toxic Plate"
+    "name": "Toxic Plate",
+    "flingPower": 90
   },
   {
     "kind": "Item",
@@ -1700,17 +1906,20 @@
     "multiplier": 0.5,
     "condition": {
       "typeReduction": true
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "waveincense",
-    "name": "Wave Incense"
+    "name": "Wave Incense",
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "widelens",
-    "name": "Wide Lens"
+    "name": "Wide Lens",
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -1720,7 +1929,8 @@
     "multiplier": 1.1,
     "condition": {
       "special": true
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
@@ -1738,16 +1948,19 @@
     "multiplier": 0.5,
     "condition": {
       "typeReduction": true
-    }
+    },
+    "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "zapplate",
-    "name": "Zap Plate"
+    "name": "Zap Plate",
+    "flingPower": 90
   },
   {
     "kind": "Item",
     "id": "zoomlens",
-    "name": "Zoom Lens"
+    "name": "Zoom Lens",
+    "flingPower": 10
   }
 ]
