@@ -240,11 +240,6 @@ func (c *Calculation) calcBaseDamage() (float64, error) {
 	moveBP := c.getMoveBasePower()
 	movePower := float64(moveBP) * moveItemModifier
 
-	// check field for switch out
-	if c.field.Right.SwitchingOut && c.attacker.usedMove.ID == "pursuit" {
-		moveBP *= 2
-	}
-
 	dmg := math.Floor(math.Floor((math.Floor(float64(2 * c.attacker.level) / 5 + 2) * movePower * float64(attackStat)) / 50) / float64(DefenseStat))
 
 	fmt.Println("[DEBUG]: Base damage:", dmg)
