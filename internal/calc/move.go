@@ -1,12 +1,13 @@
 package calc
 
 import (
+	"fmt"
 	"math"
 
 	"github.com/tmuelli/godac/internal/models"
 )
 
-func (c *Calculation) getMoveBasePower() int {
+func (c *Calculation) moveBasePower() int {
 	basePower := c.attacker.usedMove.BasePower
 	atkHp := c.attacker.effectiveHpStat()
 	defHp := c.defender.effectiveHpStat()
@@ -96,4 +97,78 @@ func (c *Calculation) getMoveBasePower() int {
 	}
 
 	return basePower
+}
+
+func (c *Calculation) modifiedMovePower(basePower float64) (float64, error) {
+	// TODO: maybe find better approach to handle abiltiy modifier of move base power
+	var kind StatKind
+
+	if MoveCategory(c.attacker.usedMove.Category) == Special {
+		kind = StatSpa
+	} else if MoveCategory(c.attacker.usedMove.Category) == Physical {
+		kind = StatAtk
+	} else {
+		return 0.0, fmt.Errorf("invalid move category %v", c.attacker.usedMove.Category)
+	}
+
+	// helping hand modifier
+	if c.field.Left.HelpingHand {
+		basePower = math.Floor(basePower * 1.5)
+	}
+
+	// abilitiy technician modifier for move base power
+	if c.attacker.ability.Id == "technician" && c.attacker.usedMove.BasePower <= 60 {
+		basePower = math.Floor(basePower * 1.5)
+	}
+
+	// item modifier for move base power
+	itemMod, err := c.attacker.itemModifier(&kind, models.MoveEffect, nil)
+	if err != nil {
+		return 0, err
+	}
+
+	basePower = math.Floor(basePower * itemMod)
+
+	// ability reckless and iron fist
+	if (c.attacker.ability.Id == "reckless" && (len(c.attacker.usedMove.Recoil) > 1 || c.attacker.usedMove.HasCrashDamage)) ||
+	   (c.attacker.ability.Id == "ironfist" && c.attacker.usedMove.Flags.Punch != 0) {
+		basePower = math.Floor(basePower * 1.2)
+	}
+
+	// ability overgrow, blaze, torrent, swarm
+	atkHp := c.attacker.effectiveHpStat()
+	if float64(c.attacker.health) <= float64(atkHp / 3) {
+		if (c.attacker.ability.Id == "overgrow" && c.attacker.usedMove.Type == "grass") ||
+		   (c.attacker.ability.Id == "blaze" && c.attacker.usedMove.Type == "fire") ||
+		   (c.attacker.ability.Id == "torrent" && c.attacker.usedMove.Type == "water") ||
+		   (c.attacker.ability.Id == "swarm" && c.attacker.usedMove.Type == "bug") {
+			basePower = math.Floor(basePower * 1.5)
+		}
+	}
+
+	// ability heatproff and thick fat
+	if (c.defender.ability.Id == "heatproof" && c.attacker.usedMove.Type == "fire") ||
+	   (c.defender.ability.Id == "thickfat" && (c.attacker.usedMove.Type == "fire" || c.attacker.usedMove.Type == "ice")) {
+		basePower = math.Floor(basePower * 0.5)
+	}
+
+	// ability dry skin
+	if c.defender.ability.Id == "dryskin" && c.attacker.usedMove.Type == "fire" {
+		basePower = math.Floor(basePower * 1.25)
+	}
+
+	// ability rivalry
+	if c.attacker.gender != nil && c.defender.gender != nil {
+		atkGender := *c.attacker.gender
+		defGender := *c.defender.gender
+		if c.attacker.ability.Id == "rivalry" && atkGender != Neutral && defGender != Neutral {
+			if atkGender == defGender {
+				basePower = math.Floor(basePower * 1.25)
+			} else {
+				basePower = math.Floor(basePower * 0.75)
+			}
+		}
+	}
+
+	return basePower, nil
 }

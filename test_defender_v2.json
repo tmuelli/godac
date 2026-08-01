@@ -1,12 +1,13 @@
 {
-    "name": "Growlithe",
+    "name": "Poochyena",
     "level": 100,
     "nature": "Hardy",
-    "attackMove": "Ember",
+    "attackMove": "Bite",
     "moves": [
-        "Ember"
+        "Bite"
     ],
     "healthPercent": 100,
     "ivSetting": "optimal",
-    "evSetting": "worstCase"
+    "evSetting": "worstCase",
+    "gender": "M"
 }

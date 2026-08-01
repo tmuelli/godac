@@ -6,6 +6,7 @@ type IvOption string
 type EvOption string
 type CalcDataType string
 type StatusCondition string
+type Gender string
 
 const (
 	// move category
@@ -44,6 +45,11 @@ const (
 	Paralyzed		StatusCondition		= "paralyzed"
 	Asleep			StatusCondition		= "asleep"
 	Frozen			StatusCondition		= "frozen"
+
+	// gender
+	Male			Gender				= "M"
+	Female			Gender				= "F"
+	Neutral			Gender				= "N"
 
 	// fixed damage
 	FIXED_DMG_DRAGON_RAGE	= 40

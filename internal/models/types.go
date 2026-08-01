@@ -21,6 +21,7 @@ type UserInput struct {
 	EvSetting     string   `json:"evSetting"`
 	Item          *string  `json:"item"`
 	Status        *string  `json:"status"`
+	Gender        *string  `json:"gender"`
 }
 
 /* User field input */

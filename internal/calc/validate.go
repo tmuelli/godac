@@ -124,6 +124,18 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 		return nil, fmt.Errorf("invalid input: Unknown specie %s", input.Name)
 	}
 
+	// specie gender
+	var gender Gender
+	if input.Gender != nil {
+		if !gender.isValid(input.Gender) {
+			return nil, fmt.Errorf("invalid input: Unknown gender %s", *input.Gender)
+		}
+
+		if !gender.isValidForSpecie(specie) {
+			return nil, fmt.Errorf("invalid input: gender %s is not valid for specie %s", *input.Gender, specie.ID)
+		}
+	}
+
 	// nature
 	var nature *models.Nature
 
@@ -275,6 +287,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 		evs: evSettings,
 		status: statusCon,
 		boosts: &models.Boosts{},
+		gender: &gender,
 	}
 	return &calcData, nil
 }

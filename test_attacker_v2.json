@@ -1,12 +1,13 @@
 {
-    "name": "Swampert",
+    "name": "Shinx",
     "level": 100,
     "nature": "Hardy",
-    "attackMove": "Earthquake",
+    "attackMove": "Tackle",
     "moves": [
-        "Earthquake"
+        "Tackle"
     ],
     "healthPercent": 100,
     "ivSetting": "optimal",
-    "evSetting": "worstCase"
+    "evSetting": "worstCase",
+    "gender": "N"
 }

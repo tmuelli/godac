@@ -21,6 +21,7 @@ type CalcData struct {
 	dataType	CalcDataType
 	status		StatusCondition
 	boosts		*models.Boosts
+	gender		*Gender
 }
 
 type Calculation struct {
@@ -205,7 +206,6 @@ func (c *Calculation) calcBaseDamage() (float64, error) {
 	// get attack and Defense stat based on category
 	var attackStat int
 	var DefenseStat int
-	moveItemModifier := 1.0
 
 	atkCategory := c.attacker.usedMove.Category
 	switch (MoveCategory(atkCategory)) {
@@ -214,31 +214,20 @@ func (c *Calculation) calcBaseDamage() (float64, error) {
 			DefenseStat = c.defender.effectiveStat(StatDef)
 			fmt.Println("[DEBUG]: Effectice Atk stat:", attackStat)
 			fmt.Println("[DEBUG]: Effective Def stat:", DefenseStat)
-
-			kind := StatAtk
-			mod, err := c.attacker.itemModifier(&kind, models.MoveEffect, nil)
-			if err != nil {
-				return 0, err
-			}
-			moveItemModifier = mod
 		case Special:
 			attackStat = c.attacker.effectiveStat(StatSpa)
 			DefenseStat = c.defender.effectiveStat(StatSpd)
 			fmt.Println("[DEBUG]: Effectice sp Atk stat:", attackStat)
 			fmt.Println("[DEBUG]: Effective sp Def stat:", DefenseStat)
-
-			kind := StatSpa
-			mod, err := c.attacker.itemModifier(&kind, models.MoveEffect, nil)
-			if err != nil {
-				return 0, err
-			}
-			moveItemModifier = mod
 		default:
-			return 0, fmt.Errorf("invalid attack move category")
+			return 0.0, fmt.Errorf("invalid attack move category")
 	}
 
-	moveBP := c.getMoveBasePower()
-	movePower := float64(moveBP) * moveItemModifier
+	moveBP := c.moveBasePower()
+	movePower, err := c.modifiedMovePower(float64(moveBP))
+	if err != nil {
+		return 0.0, err
+	}
 
 	dmg := math.Floor(math.Floor((math.Floor(float64(2 * c.attacker.level) / 5 + 2) * movePower * float64(attackStat)) / 50) / float64(DefenseStat))
 
