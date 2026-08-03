@@ -62,7 +62,11 @@ func (c *Calculation) typeModifier() (float64, error) {
 func (d *CalcData) stabModifier() (float64, error) {
 	for _, t := range d.specieTypes {
 		if d.usedMove.Type == t.Name {
-			return 1.5, nil
+			if d.ability.Id == "adaptability" {
+				return 2.0, nil
+			} else {
+				return 1.5, nil
+			}
 		}
 	}
 

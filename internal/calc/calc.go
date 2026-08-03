@@ -245,15 +245,16 @@ func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 	burnMod := 1.0
 	screenMod := 1.0
 	weatherMod := 1.0
+	flashFireMod := 1.0
 
 	// TODO: implement conditions
 	targetsMod := 1.0
-	flashFireMod := 1.0
 
-	if c.attacker.status == Burned && c.attacker.usedMove.Category == string(Physical) {
+	if c.attacker.status == Burned && c.attacker.usedMove.Category == string(Physical) && c.attacker.ability.Id != "guts" {
 		burnMod = 0.5
 	}
 
+	// TODO: implement double battles as well => reduced screen mod
 	// check light screen or reflect
 	if (c.attacker.usedMove.Category == string(Physical) && c.field.Right.Reflect) ||
 	   (c.attacker.usedMove.Category == string(Special) && c.field.Right.LightScreen) {
@@ -263,6 +264,10 @@ func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 	// check weather
 	weatherMod = c.weatherModifier()
 
+	if c.attacker.ability.Id == "flashfire" && c.attacker.ability.Active && c.attacker.usedMove.Type == "fire" {
+		flashFireMod = 1.5
+	}
+
 	dmg := math.Floor(baseDmg * burnMod * screenMod * targetsMod * weatherMod * flashFireMod) + 2
 	fmt.Println("[DEBUG]: Conditional damage:", dmg)
 	return dmg, nil
@@ -271,15 +276,11 @@ func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 func (c *Calculation) calcModificationDamage(condDmg float64) (float64, error) {
 	stabMod := 1.0
 	typeMod := 1.0
-
-	// TODO: implement modifications
 	critMod := 1.0
 	itemMod := 1.0
-	firstMod := 1.0
 	solidRockFilterMod := 1.0
-	expertBeltMod := 1.0
 	tintedLensMod := 1.0
-	berryMod := 1.0
+	firstMod := 1.0
 
 	stabMod, err := c.attacker.stabModifier()
 	if err != nil {
@@ -288,13 +289,37 @@ func (c *Calculation) calcModificationDamage(condDmg float64) (float64, error) {
 
 	typeMod = c.typeEffectivness
 
-	// final attacker item modifier
+	// critical modifier if ability sniper
+	if c.attacker.usedMove.Critical {
+		if c.attacker.ability.Id == "sniper" {
+			critMod = 3
+		} else {
+			critMod = 2
+		}
+	}
+
+	// solid rock filter mod
+	if (c.defender.ability.Id == "filter" || c.defender.ability.Id == "solidrock") && typeMod > 1 {
+		solidRockFilterMod = 0.75
+	}
+
+	// tinted lens mod
+	if c.attacker.ability.Id == "tintedlens" && typeMod < 1 {
+		tintedLensMod = 2.0
+	}
+
+	// me first mod => technically useless because the other move has to be known => for future use
+	if c.attacker.usedMove.ID == "mefirst" {
+		firstMod = 1.5
+	}
+
+	// final attacker item modifier (does include expert belt mod)
 	itemAtkMod, err := c.attacker.itemModifier(nil, models.DamageEffect, &models.ItemModifierOptions{})
 	if err != nil {
 		return 0.0, err
 	}
 
-	// final defender item modifier
+	// final defender item modifier (does include berry mod)
 	itemDefMod, err := c.defender.itemModifier(nil, models.DamageEffect, &models.ItemModifierOptions{
 		MoveType:	c.attacker.usedMove.Type,
 		TypeMod:	typeMod,
@@ -306,9 +331,8 @@ func (c *Calculation) calcModificationDamage(condDmg float64) (float64, error) {
 	// final item modifier
 	itemMod = itemAtkMod * itemDefMod
 
-
 	// random modifier is applied outside
 	// TODO: check if all modification modifiers need to be added inside range loop to get correct possibilities
-	dmg := math.Floor(condDmg * critMod * itemMod * firstMod * stabMod * typeMod * solidRockFilterMod * expertBeltMod * tintedLensMod * berryMod)
+	dmg := math.Floor(condDmg * critMod * itemMod * firstMod * stabMod * typeMod * solidRockFilterMod  * tintedLensMod)
 	return dmg, nil
 }

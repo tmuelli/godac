@@ -3,8 +3,6 @@ package calc
 import "github.com/tmuelli/godac/internal/models"
 
 func (c *Calculation) weatherModifier() float64 {
-	// TODO: implement and check weather abilities here (air lock, cloud nine)
-
 	if c.attacker.usedMove.ID == "solarbeam" {
 		if c.field.Terrain == models.Clear || c.field.Terrain == models.Sun {
 			return 1.0
