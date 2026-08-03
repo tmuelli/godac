@@ -30,7 +30,7 @@ func (c *Calculation) typeModifier() (float64, error) {
 		return 0.0, fmt.Errorf("Error during type damage modifier calc: %v\n", err)
 	}
 
-	canHitGhostType := c.field.Right.Foresight || c.attacker.ability.Id == "scrappy"
+	canHitGhostType := c.field.Right.Foresight || c.attacker.hasAbility("scrappy")
 	defHasSecondType := len(c.defender.specieTypes) > 1
 	typeMod1 := 1.0
 	typeMod2 := 1.0
@@ -62,7 +62,7 @@ func (c *Calculation) typeModifier() (float64, error) {
 func (d *CalcData) stabModifier() (float64, error) {
 	for _, t := range d.specieTypes {
 		if d.usedMove.Type == t.Name {
-			if d.ability.Id == "adaptability" {
+			if d.hasAbility("adaptability") {
 				return 2.0, nil
 			} else {
 				return 1.5, nil

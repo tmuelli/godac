@@ -2,6 +2,7 @@ package calc
 
 import (
 	"fmt"
+	"slices"
 
 	"github.com/tmuelli/godac/internal/models"
 )
@@ -27,4 +28,8 @@ func getAbilityFromSpecie(data *models.Data, s *models.Specie) (*models.Ability,
 	}
 
 	return ability, nil
+}
+
+func (d *CalcData) hasAbility(ids ...string) bool {
+	return slices.Contains(ids, d.ability.Id)
 }

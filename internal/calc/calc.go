@@ -223,8 +223,8 @@ func (c *Calculation) calcBaseDamage() (float64, error) {
 			return 0.0, fmt.Errorf("invalid attack move category")
 	}
 
-	attackStat = c.attacker.effectiveStat(atkStat, atkMove, c.defender.ability.Id, c.field)
-	defenseStat = c.defender.effectiveStat(defStat, atkMove, c.attacker.ability.Id, c.field)
+	attackStat = c.attacker.effectiveStat(atkStat, atkMove, c.defender.hasAbility("unaware"), c.field)
+	defenseStat = c.defender.effectiveStat(defStat, atkMove, c.attacker.hasAbility("unaware"), c.field)
 
 	fmt.Println("[DEBUG]: Effectice sp Atk stat:", attackStat)
 	fmt.Println("[DEBUG]: Effective sp Def stat:", defenseStat)
@@ -264,7 +264,7 @@ func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 	// check weather
 	weatherMod = c.weatherModifier()
 
-	if c.attacker.ability.Id == "flashfire" && c.attacker.ability.Active && c.attacker.usedMove.Type == "fire" {
+	if c.attacker.hasAbility("flashfire") && c.attacker.ability.Active && c.attacker.usedMove.Type == "fire" {
 		flashFireMod = 1.5
 	}
 
@@ -291,7 +291,7 @@ func (c *Calculation) calcModificationDamage(condDmg float64) (float64, error) {
 
 	// critical modifier if ability sniper
 	if c.attacker.usedMove.Critical {
-		if c.attacker.ability.Id == "sniper" {
+		if c.attacker.hasAbility("sniper") {
 			critMod = 3
 		} else {
 			critMod = 2
@@ -299,12 +299,12 @@ func (c *Calculation) calcModificationDamage(condDmg float64) (float64, error) {
 	}
 
 	// solid rock filter mod
-	if (c.defender.ability.Id == "filter" || c.defender.ability.Id == "solidrock") && typeMod > 1 {
+	if (c.defender.hasAbility("filter", "solidrock")) && typeMod > 1 {
 		solidRockFilterMod = 0.75
 	}
 
 	// tinted lens mod
-	if c.attacker.ability.Id == "tintedlens" && typeMod < 1 {
+	if c.attacker.hasAbility("tintedlens") && typeMod < 1 {
 		tintedLensMod = 2.0
 	}
 

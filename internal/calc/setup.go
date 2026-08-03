@@ -9,8 +9,8 @@ import (
 )
 
 func (c *Calculation) isWeatherActive() bool {
-	if (c.attacker.ability.Id == "airlock" || c.attacker.ability.Id == "cloudnine") ||
-	   (c.defender.ability.Id == "airlock" || c.defender.ability.Id == "cloudnine") {
+	if (c.attacker.hasAbility("airlock", "cloudnine")) ||
+	   (c.defender.hasAbility("airlock", "cloudnine")) {
 		return true
 	}
 
@@ -18,7 +18,7 @@ func (c *Calculation) isWeatherActive() bool {
 }
 
 func (c *Calculation) handleForecast(side *CalcData) error {
-	if side.specie.ID == "castform" && side.ability.Id == "forecast" {
+	if side.specie.ID == "castform" && side.hasAbility("forecast") {
 		side.specieTypes = nil
 		new := "Normal"
 		switch (c.field.Terrain) {
@@ -44,8 +44,8 @@ func (c *Calculation) handleForecast(side *CalcData) error {
 func (c *Calculation) handleItem(source *CalcData, target *CalcData) error {
 	blockAbilities := []string{"clearbody", "whitesmoke", "hypercutter"}
 
-	if source.ability.Id == "intimidate" && !slices.Contains(blockAbilities, target.ability.Id) {
-		if target.ability.Id == "simple" {
+	if source.hasAbility("intimidate") && !slices.Contains(blockAbilities, target.ability.Id) {
+		if target.hasAbility("simple") {
 			target.boosts.Atk.Set(-2)
 		} else {
 			target.boosts.Atk.Set(-1)
@@ -56,7 +56,7 @@ func (c *Calculation) handleItem(source *CalcData, target *CalcData) error {
 }
 
 func (c *Calculation) handleDownload(source *CalcData, target *CalcData) error {
-	if source.ability.Id == "download" {
+	if source.hasAbility("download") {
 		def := target.specie.BaseStats.Def
 		spd := target.specie.BaseStats.Spd
 
@@ -169,7 +169,7 @@ func (c *Calculation) setup() error {
 	}
 
 	// check normalize
-	if c.attacker.ability.Active && c.attacker.ability.Id == "normalize" && c.attacker.usedMove.ID != "struggle" {
+	if c.attacker.ability.Active && c.attacker.hasAbility( "normalize") && c.attacker.usedMove.ID != "struggle" {
 		c.attacker.usedMove.Type = "Normal"
 	}
 

@@ -64,14 +64,14 @@ func (c *Calculation) moveBasePower() int {
 		// TODO: use getFinalSpeed => to be implemented
 		// maybe move effectiveStat(StatSpe) into effectiveSpeedStat()
 		// inside call effectiveStat and additionally check tailwind and stuff
-		atkSpeed := c.attacker.effectiveStat(StatSpe, nil, "", nil)
-		defSpeed := c.defender.effectiveStat(StatSpe, nil, "", nil)
+		atkSpeed := c.attacker.effectiveStat(StatSpe, nil, false, nil)
+		defSpeed := c.defender.effectiveStat(StatSpe, nil, false, nil)
 
 		basePower = int(math.Min(150.0, math.Floor(float64((25 * defSpeed) / atkSpeed))))
 	case "payback":
 		// TODO: use getFinalSpeed => to be implemented
-		atkSpeed := c.attacker.effectiveStat(StatSpe, nil, "", nil)
-		defSpeed := c.defender.effectiveStat(StatSpe, nil, "", nil)
+		atkSpeed := c.attacker.effectiveStat(StatSpe, nil, false, nil)
+		defSpeed := c.defender.effectiveStat(StatSpe, nil, false, nil)
 
 		if defSpeed >= atkSpeed {
 			basePower *= 2
@@ -121,7 +121,7 @@ func (c *Calculation) modifiedMovePower(basePower float64) (float64, error) {
 	}
 
 	// abilitiy technician modifier for move base power
-	if c.attacker.ability.Id == "technician" && c.attacker.usedMove.BasePower <= 60 {
+	if c.attacker.hasAbility("technician") && c.attacker.usedMove.BasePower <= 60 {
 		basePower = math.Floor(basePower * 1.5)
 	}
 
@@ -134,30 +134,30 @@ func (c *Calculation) modifiedMovePower(basePower float64) (float64, error) {
 	basePower = math.Floor(basePower * itemMod)
 
 	// ability reckless and iron fist
-	if (c.attacker.ability.Id == "reckless" && (len(c.attacker.usedMove.Recoil) > 1 || c.attacker.usedMove.HasCrashDamage)) ||
-	   (c.attacker.ability.Id == "ironfist" && c.attacker.usedMove.Flags.Punch != 0) {
+	if (c.attacker.hasAbility("reckless") && (len(c.attacker.usedMove.Recoil) > 1 || c.attacker.usedMove.HasCrashDamage)) ||
+	   (c.attacker.hasAbility("ironfist") && c.attacker.usedMove.Flags.Punch != 0) {
 		basePower = math.Floor(basePower * 1.2)
 	}
 
 	// ability overgrow, blaze, torrent, swarm
 	atkHp := c.attacker.effectiveHpStat()
 	if float64(c.attacker.health) <= float64(atkHp / 3) {
-		if (c.attacker.ability.Id == "overgrow" && c.attacker.usedMove.Type == "grass") ||
-		   (c.attacker.ability.Id == "blaze" && c.attacker.usedMove.Type == "fire") ||
-		   (c.attacker.ability.Id == "torrent" && c.attacker.usedMove.Type == "water") ||
-		   (c.attacker.ability.Id == "swarm" && c.attacker.usedMove.Type == "bug") {
+		if (c.attacker.hasAbility("overgrow") && c.attacker.usedMove.Type == "grass") ||
+		   (c.attacker.hasAbility("blaze") && c.attacker.usedMove.Type == "fire") ||
+		   (c.attacker.hasAbility("torrent") && c.attacker.usedMove.Type == "water") ||
+		   (c.attacker.hasAbility("swarm") && c.attacker.usedMove.Type == "bug") {
 			basePower = math.Floor(basePower * 1.5)
 		}
 	}
 
 	// ability heatproff and thick fat
-	if (c.defender.ability.Id == "heatproof" && c.attacker.usedMove.Type == "fire") ||
-	   (c.defender.ability.Id == "thickfat" && (c.attacker.usedMove.Type == "fire" || c.attacker.usedMove.Type == "ice")) {
+	if (c.defender.hasAbility("heatproof") && c.attacker.usedMove.Type == "fire") ||
+	   (c.defender.hasAbility("thickfat") && (c.attacker.usedMove.Type == "fire" || c.attacker.usedMove.Type == "ice")) {
 		basePower = math.Floor(basePower * 0.5)
 	}
 
 	// ability dry skin
-	if c.defender.ability.Id == "dryskin" && c.attacker.usedMove.Type == "fire" {
+	if c.defender.hasAbility("dryskin") && c.attacker.usedMove.Type == "fire" {
 		basePower = math.Floor(basePower * 1.25)
 	}
 
@@ -165,7 +165,7 @@ func (c *Calculation) modifiedMovePower(basePower float64) (float64, error) {
 	if c.attacker.gender != nil && c.defender.gender != nil {
 		atkGender := *c.attacker.gender
 		defGender := *c.defender.gender
-		if c.attacker.ability.Id == "rivalry" && atkGender != Neutral && defGender != Neutral {
+		if c.attacker.hasAbility("rivalry") && atkGender != Neutral && defGender != Neutral {
 			if atkGender == defGender {
 				basePower = math.Floor(basePower * 1.25)
 			} else {

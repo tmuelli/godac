@@ -53,7 +53,7 @@ func (d *CalcData) effectiveHpStat() int {
 	return int(hp)
 }
 
-func (d *CalcData) effectiveStat(kind StatKind, usedMove *models.Move, opponentAbility string, field *models.Field) int {
+func (d *CalcData) effectiveStat(kind StatKind, usedMove *models.Move, hasOpponentUnaware bool, field *models.Field) int {
 	base := 0.0
 	iv := 0.0
 	ev := 0.0
@@ -97,7 +97,7 @@ func (d *CalcData) effectiveStat(kind StatKind, usedMove *models.Move, opponentA
 	baseEffStat := math.Floor((math.Floor((((2 * base) + iv + math.Floor(ev / 4)) * float64(d.level)) / 100) + 5) * nature)
 
 	// check ability stats modifications
-	modStat := d.modifiedStat(kind, opponentAbility, usedMove, baseEffStat, field)
+	modStat := d.modifiedStat(kind, hasOpponentUnaware, usedMove, baseEffStat, field)
 
 	// get item modifier
 	item, err := d.itemModifier(&kind, models.StatEffect, nil)
@@ -110,7 +110,7 @@ func (d *CalcData) effectiveStat(kind StatKind, usedMove *models.Move, opponentA
 	return int(effStat)
 }
 
-func (d *CalcData) modifiedStat(kind StatKind, opponentAbility string, usedMove *models.Move, statValue float64, field *models.Field) float64 {
+func (d *CalcData) modifiedStat(kind StatKind, hasOpponentUnaware bool, usedMove *models.Move, statValue float64, field *models.Field) float64 {
 	modStat := 0.0
 
 	// dont calculate for hp or speed stat
@@ -123,8 +123,8 @@ func (d *CalcData) modifiedStat(kind StatKind, opponentAbility string, usedMove 
 	statBoosts := d.boosts.Get(string(kind))
 
 	// boosts are not accounted into modified stat if ability is unaware => ignores stat boosts
-	if opponentAbility != "unaware" {
-		if d.ability.Id == "simple" {
+	if hasOpponentUnaware {
+		if d.hasAbility("simple") {
 			statValue = getSimpleModifiedStat(statValue, statBoosts)
 		} else {
 			if (d.dataType == Attacker && (statBoosts > 0 || (!usedMove.Critical && statBoosts < 0))) ||
@@ -139,28 +139,28 @@ func (d *CalcData) modifiedStat(kind StatKind, opponentAbility string, usedMove 
 	if d.ability.Active {
 		switch d.dataType {
 		case Attacker:
-			if isPhysical && (d.ability.Id == "purepower" || d.ability.Id == "hugepower") {
+			if isPhysical && d.hasAbility("purepower", "hugepower") {
 				statValue *= 2
 			} else if field.Terrain == models.Sun {
-				if (isPhysical && d.ability.Id == "flowergift") ||
-				(!isPhysical && d.ability.Id == "solarpower") {
+				if (isPhysical && d.hasAbility("flowergift")) ||
+				(!isPhysical && d.hasAbility("solarpower")) {
 					statValue = math.Floor(statValue * 1.5)
 				}
-			} else if (isPhysical && (d.ability.Id == "hustle" || d.ability.Id == "guts") && d.status != NoneStatus) ||
-					(!isPhysical && (d.ability.Id == "plus" || d.ability.Id == "minus")) {
+			} else if (isPhysical && (d.hasAbility("hustle", "guts")) && d.status != NoneStatus) ||
+					(!isPhysical && (d.hasAbility("plus", "minus"))) {
 				statValue = math.Floor(statValue * 1.5)
-			} else if isPhysical && d.ability.Id == "slowstart" {
+			} else if isPhysical && d.hasAbility("slowstart") {
 				statValue = math.Floor(statValue / 2)
 			}
 
 			// TODO: check if this case can be combined with the defense case
-			if (field.Right.FlowerGift || d.ability.Id == "flowergift") && field.Terrain == models.Sun && isPhysical {
+			if (field.Right.FlowerGift || d.hasAbility("flowergift")) && field.Terrain == models.Sun && isPhysical {
 				statValue = math.Floor(statValue * 1.5)
 			}
 		case Defender:
-			if isPhysical && d.status != NoneStatus && d.ability.Id == "marvelscale" {
+			if isPhysical && d.status != NoneStatus && d.hasAbility("marvelscale") {
 				statValue = math.Floor(statValue * 1.5)
-			} else if !isPhysical && (field.Right.FlowerGift || d.ability.Id == "flowergift") && field.Terrain == models.Sun {
+			} else if !isPhysical && (field.Right.FlowerGift || d.hasAbility("flowergift")) && field.Terrain == models.Sun {
 				// TODO: check if this case can be combined with the defense case
 				statValue = math.Floor(statValue * 1.5)
 			}
