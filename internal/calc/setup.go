@@ -173,5 +173,7 @@ func (c *Calculation) setup() error {
 		c.attacker.usedMove.Type = "Normal"
 	}
 
+	// TODO: implement getFinalSpeed
+
 	return nil
 }

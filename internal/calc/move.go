@@ -61,13 +61,17 @@ func (c *Calculation) moveBasePower() int {
 			basePower = 20
 		}
 	case "gyroball":
-		atkSpeed := c.attacker.effectiveStat(StatSpe)
-		defSpeed := c.defender.effectiveStat(StatSpe)
+		// TODO: use getFinalSpeed => to be implemented
+		// maybe move effectiveStat(StatSpe) into effectiveSpeedStat()
+		// inside call effectiveStat and additionally check tailwind and stuff
+		atkSpeed := c.attacker.effectiveStat(StatSpe, nil, "", nil)
+		defSpeed := c.defender.effectiveStat(StatSpe, nil, "", nil)
 
 		basePower = int(math.Min(150.0, math.Floor(float64((25 * defSpeed) / atkSpeed))))
 	case "payback":
-		atkSpeed := c.attacker.effectiveStat(StatSpe)
-		defSpeed := c.defender.effectiveStat(StatSpe)
+		// TODO: use getFinalSpeed => to be implemented
+		atkSpeed := c.attacker.effectiveStat(StatSpe, nil, "", nil)
+		defSpeed := c.defender.effectiveStat(StatSpe, nil, "", nil)
 
 		if defSpeed >= atkSpeed {
 			basePower *= 2

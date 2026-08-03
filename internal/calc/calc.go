@@ -205,23 +205,29 @@ func (c *Calculation) handleFixedDamage() int {
 func (c *Calculation) calcBaseDamage() (float64, error) {
 	// get attack and Defense stat based on category
 	var attackStat int
-	var DefenseStat int
+	var defenseStat int
+	var atkStat StatKind
+	var defStat StatKind
 
 	atkCategory := c.attacker.usedMove.Category
+	atkMove := c.attacker.usedMove
+
 	switch (MoveCategory(atkCategory)) {
 		case Physical:
-			attackStat = c.attacker.effectiveStat(StatAtk)
-			DefenseStat = c.defender.effectiveStat(StatDef)
-			fmt.Println("[DEBUG]: Effectice Atk stat:", attackStat)
-			fmt.Println("[DEBUG]: Effective Def stat:", DefenseStat)
+			atkStat = StatAtk
+			defStat = StatDef
 		case Special:
-			attackStat = c.attacker.effectiveStat(StatSpa)
-			DefenseStat = c.defender.effectiveStat(StatSpd)
-			fmt.Println("[DEBUG]: Effectice sp Atk stat:", attackStat)
-			fmt.Println("[DEBUG]: Effective sp Def stat:", DefenseStat)
+			atkStat = StatSpa
+			defStat = StatSpd
 		default:
 			return 0.0, fmt.Errorf("invalid attack move category")
 	}
+
+	attackStat = c.attacker.effectiveStat(atkStat, atkMove, c.defender.ability.Id, c.field)
+	defenseStat = c.defender.effectiveStat(defStat, atkMove, c.attacker.ability.Id, c.field)
+
+	fmt.Println("[DEBUG]: Effectice sp Atk stat:", attackStat)
+	fmt.Println("[DEBUG]: Effective sp Def stat:", defenseStat)
 
 	moveBP := c.moveBasePower()
 	movePower, err := c.modifiedMovePower(float64(moveBP))
@@ -229,7 +235,7 @@ func (c *Calculation) calcBaseDamage() (float64, error) {
 		return 0.0, err
 	}
 
-	dmg := math.Floor(math.Floor((math.Floor(float64(2 * c.attacker.level) / 5 + 2) * movePower * float64(attackStat)) / 50) / float64(DefenseStat))
+	dmg := math.Floor(math.Floor((math.Floor(float64(2 * c.attacker.level) / 5 + 2) * movePower * float64(attackStat)) / 50) / float64(defenseStat))
 
 	fmt.Println("[DEBUG]: Base damage:", dmg)
 	return float64(dmg), nil

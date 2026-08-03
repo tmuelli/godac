@@ -1,0 +1,2 @@
+- change all multiple string comparison checks for ability with a receiver on calcdat hasAbility => use varadic arguments for passing multiple ability names
+- same implementation for types => specie has type
