@@ -142,22 +142,22 @@ func (c *Calculation) modifiedMovePower(basePower float64) (float64, error) {
 	// ability overgrow, blaze, torrent, swarm
 	atkHp := c.attacker.effectiveHpStat()
 	if float64(c.attacker.health) <= float64(atkHp / 3) {
-		if (c.attacker.hasAbility("overgrow") && c.attacker.usedMove.Type == "grass") ||
-		   (c.attacker.hasAbility("blaze") && c.attacker.usedMove.Type == "fire") ||
-		   (c.attacker.hasAbility("torrent") && c.attacker.usedMove.Type == "water") ||
-		   (c.attacker.hasAbility("swarm") && c.attacker.usedMove.Type == "bug") {
+		if (c.attacker.hasAbility("overgrow") && c.attacker.usedMove.HasType("grass")) ||
+		   (c.attacker.hasAbility("blaze") && c.attacker.usedMove.HasType("fire")) ||
+		   (c.attacker.hasAbility("torrent") && c.attacker.usedMove.HasType("water")) ||
+		   (c.attacker.hasAbility("swarm") && c.attacker.usedMove.HasType("bug")) {
 			basePower = math.Floor(basePower * 1.5)
 		}
 	}
 
 	// ability heatproff and thick fat
-	if (c.defender.hasAbility("heatproof") && c.attacker.usedMove.Type == "fire") ||
-	   (c.defender.hasAbility("thickfat") && (c.attacker.usedMove.Type == "fire" || c.attacker.usedMove.Type == "ice")) {
+	if (c.defender.hasAbility("heatproof") && c.attacker.usedMove.HasType("fire")) ||
+	   (c.defender.hasAbility("thickfat") && (c.attacker.usedMove.HasType("fire", "ice"))) {
 		basePower = math.Floor(basePower * 0.5)
 	}
 
 	// ability dry skin
-	if c.defender.hasAbility("dryskin") && c.attacker.usedMove.Type == "fire" {
+	if c.defender.hasAbility("dryskin") && c.attacker.usedMove.HasType("fire") {
 		basePower = math.Floor(basePower * 1.25)
 	}
 

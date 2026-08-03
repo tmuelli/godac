@@ -179,11 +179,11 @@ func (a *Ability) IsActive(atkAbility string) bool {
 }
 
 func (a *Ability) IsPreventingDamage(move *Move, defItem *Item, typeEffectivness float64, isGravity bool) bool {
-	if ((move.Type == "???" || move.ID == "firefang") && a.Id == "wonderguard" && typeEffectivness <= 1.0) ||
-	   (move.Type == "Fire" && a.Id == "flashfire") ||
-	   (move.Type == "Water" && (a.Id == "dryskin" || a.Id == "waterabsorb")) ||
-	   (move.Type == "Electric" && (a.Id == "motordrive" || a.Id == "voltabsorb")) ||
-	   (move.Type == "Ground" && !isGravity && defItem != nil && defItem.Id != "ironball" && a.Id == "levitate") ||
+	if ((move.HasType("???") || move.ID == "firefang") && a.Id == "wonderguard" && typeEffectivness <= 1.0) ||
+	   (move.HasType("Fire") && a.Id == "flashfire") ||
+	   (move.HasType("Water") && (a.Id == "dryskin" || a.Id == "waterabsorb")) ||
+	   (move.HasType("Electric") && (a.Id == "motordrive" || a.Id == "voltabsorb")) ||
+	   (move.HasType("Ground") && !isGravity && defItem != nil && defItem.Id != "ironball" && a.Id == "levitate") ||
 	   (move.Flags.Sound != 0 && a.Id == "soundproof") {
 		return true
 	}
@@ -369,6 +369,10 @@ func (m *Move) HandlePainSplit(atkHP, defHP int) int {
 func (m *Move) NeedSpecialMoveSetup() bool {
 	specialMoves := []string{"weatherball", "judgement", "naturalgift", "brickbreak"}
 	return slices.Contains(specialMoves, m.ID)
+}
+
+func (m *Move) HasType(ids ...string) bool {
+	return slices.Contains(ids, m.Type)
 }
 
 /* Nature */
