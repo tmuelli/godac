@@ -53,6 +53,66 @@ func (d *CalcData) effectiveHpStat() int {
 	return int(hp)
 }
 
+func getBaseSpeed(base, iv, ev float64, level int, nature *models.Nature) float64 {
+	// nature modifier
+	n := getNatureModifier(StatSpe, nature)
+	return math.Floor((math.Floor((((2 * base) + iv + math.Floor(ev / 4)) * float64(level)) / 100) + 5) * n)
+}
+
+func (d *CalcData) effectiveSpeedStat(field *models.Field) int {
+	speedMods := []int{}
+	
+	// first calculate base speed with base stat, iv and ev and nature
+	baseSpeed := getBaseSpeed(
+		float64(d.specie.BaseStats.Spe),
+		float64(d.ivs.Spe),
+		float64(d.evs.Spe),
+		d.level,
+		d.nature,
+	)
+
+	baseModifiedSpeed := getModifiedStat(baseSpeed, d.boosts.Get(string(StatSpe)))
+
+	if (d.dataType == Attacker && field.Left.Tailwind) ||
+	   (d.dataType == Defender && field.Right.Tailwind) {
+		speedMods = append(speedMods, SPEED_MOD_2X)
+	}
+
+	if d.ability.Active {
+		if d.hasAbility("unburden") ||
+		   (d.hasAbility("chlorophyll") && field.Terrain == models.Sun) ||
+		   (d.hasAbility("swiftswim") && field.Terrain == models.Rain) {
+			speedMods = append(speedMods, SPEED_MOD_2X)
+		} else if d.hasAbility("quickfeet") && d.status != NoneStatus {
+			speedMods = append(speedMods, SPEED_MOD_1_5X)
+		} else if d.hasAbility("slowstart") {
+			speedMods = append(speedMods, SPEED_MOD_0_5X)
+		}
+	}
+
+	if !d.ability.Active && !d.hasAbility("unburden") {
+		if d.item != nil {
+
+		}
+		if d.item.Id == "choicescarf" {
+			speedMods = append(speedMods, SPEED_MOD_1_5X)
+		} else if d.item.Id == "ironball" {// || EV_ITEMS
+			speedMods = append(speedMods, SPEED_MOD_0_5X)
+		} else if d.item.Id == "quickpowder" && d.specie.ID == "ditto" {
+			speedMods = append(speedMods, SPEED_MOD_2X)
+		}
+	}
+
+	modSpeed := OF32(pokeRound((baseModifiedSpeed * combineMods(speedMods, COMBINE_MODS_MIN, COMBINE_MODS_MAX)) / FIXED_POINT_SCALE_BASE))
+	
+	if d.status == Paralyzed && !d.hasAbility("quickfeet") {
+		modSpeed = int(math.Floor(float64(OF32(modSpeed * 25) / 100)))
+	}
+	
+	effSpeed := math.Min(float64(MAX_SPEED), float64(modSpeed))
+	return int(math.Max(0, effSpeed))
+}
+
 func (d *CalcData) effectiveStat(kind StatKind, usedMove *models.Move, hasOpponentUnaware bool, field *models.Field) int {
 	base := 0.0
 	iv := 0.0
@@ -79,10 +139,7 @@ func (d *CalcData) effectiveStat(kind StatKind, usedMove *models.Move, hasOppone
 			iv = float64(d.ivs.Spd)
 			ev = float64(d.evs.Spd)
 		case StatSpe:
-			// TODO: implement and check for tailwind field flag
-			base = float64(d.specie.BaseStats.Spe)
-			iv = float64(d.ivs.Spe)
-			ev = float64(d.evs.Spe)
+			return d.effectiveSpeedStat(field)
 	}
 
 	fmt.Println("[DEBUG]: Base stat:", base)
