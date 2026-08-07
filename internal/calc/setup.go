@@ -87,11 +87,11 @@ func (c *Calculation) handleSpecialMoveSetup() {
 			c.attacker.usedMove.Type = "Normal"
 		}
 	case "judgement":
-		if c.attacker.item != nil && strings.HasSuffix(c.attacker.item.Id, "plate") {
+		if c.attacker.hasItem() && strings.HasSuffix(c.attacker.item.Id, "plate") {
 			c.attacker.usedMove.Type = c.attacker.item.GetPlateBoostType()
 		}
 	case "naturalgift":
-		if c.attacker.item != nil && c.attacker.item.IsBerry {
+		if c.attacker.hasItem() && c.attacker.item.IsBerry {
 			c.attacker.usedMove.Type = c.attacker.item.NaturalGift.Type
 			c.attacker.usedMove.BasePower = c.attacker.item.NaturalGift.BasePower
 		}

@@ -42,7 +42,7 @@ func (c *Calculation) moveBasePower() int {
 			basePower = 20
 		}
 	case "fling":
-		if c.attacker.item != nil {
+		if c.attacker.hasItem() {
 			basePower = c.attacker.item.FlingPower
 		}
 	case "grassknot", "lowkick":

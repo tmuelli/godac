@@ -7,6 +7,18 @@ import (
 	"github.com/tmuelli/godac/internal/models"
 )
 
+func getEVItems() []string {
+	return []string{
+		"machobrace",
+		"poweranklet",
+		"powerband",
+		"powerbelt",
+		"powerbracer",
+		"powerlens",
+		"powerweight",
+	}
+}
+
 func getModifiedStat(stat float64, boost int) float64 {
 	boostTable := [][]float64{
     	{2, 8},
@@ -91,14 +103,11 @@ func (d *CalcData) effectiveSpeedStat(field *models.Field) int {
 	}
 
 	if !d.ability.Active && !d.hasAbility("unburden") {
-		if d.item != nil {
-
-		}
-		if d.item.Id == "choicescarf" {
+		if d.hasItem("choicescarf") {
 			speedMods = append(speedMods, SPEED_MOD_1_5X)
-		} else if d.item.Id == "ironball" {// || EV_ITEMS
+		} else if d.hasItem(append([]string{"ironball"}, getEVItems()...)...) {
 			speedMods = append(speedMods, SPEED_MOD_0_5X)
-		} else if d.item.Id == "quickpowder" && d.specie.ID == "ditto" {
+		} else if d.hasItem("quickpowder") && d.specie.ID == "ditto" {
 			speedMods = append(speedMods, SPEED_MOD_2X)
 		}
 	}

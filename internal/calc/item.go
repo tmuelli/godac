@@ -93,6 +93,19 @@ func (d *CalcData) baseItemModifier(kind StatKind) float64 {
 	return d.item.Multiplier
 }
 
+// checks if calc data has item, if no ids are passed and item != nil it counts as true
+func (d *CalcData) hasItem(ids ...string) bool {
+	if d.item == nil {
+		return false
+	}
+
+	if len(ids) == 0 {
+		return true
+	}
+
+	return slices.Contains(ids, d.item.Id)
+}
+
 func (d *CalcData) moveItemModifier() (float64, error) {
 	if d.item == nil {
 		// no item => nothing to do
@@ -137,7 +150,7 @@ func (d *CalcData) berryModifier(options models.ItemModifierOptions) (float64, e
 	}
 
 	// check type effectivness
-	if options.TypeMod < 2 && (options.MoveType != "normal" || d.item.Id != "chilanberry") {
+	if options.TypeMod < 2 && (options.MoveType != "normal" || !d.hasItem("chilanberry")) {
 		return 1.0, nil
 	}
 

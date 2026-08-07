@@ -45,8 +45,7 @@ func (c *Calculation) typeModifier() (float64, error) {
 
 	// handle special case => ability 'Klutz'
 	if typeMod == 0.0 && atkType.ID == "ground" &&
-	   c.defender.item != nil && c.defender.item.Id == "ironball" &&
-	   c.defender.ability.Id != "klutz" {
+	   c.defender.hasItem("ironball") && !c.defender.hasAbility("klutz") {
 		if typeMod1 == 0.0 {
 			typeMod1 = 1.0
 		} else if defHasSecondType && typeMod2 == 0.0 {
