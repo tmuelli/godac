@@ -20,14 +20,13 @@ func (c *Calculation) isWeatherActive() bool {
 func (c *Calculation) handleForecast(side *CalcData) error {
 	if side.specie.ID == "castform" && side.hasAbility("forecast") {
 		side.specieTypes = nil
-		new := "Normal"
-		switch (c.field.Terrain) {
-		case models.Sun:
-			new = "Fire"
-		case models.Rain:
-			new = "Water"
-		case models.Hail:
-			new = "Ice"
+		var new string
+
+		switch c.field.Terrain {
+		case models.Sun, models.Rain, models.Hail, models.Clear:
+			new = getTypeStringFromWeather(c.field.Terrain)
+		default:
+			new = "Normal"
 		}
 
 		newType, ok := c.data.Types[new]
@@ -73,19 +72,7 @@ func (c *Calculation) handleDownload(source *CalcData, target *CalcData) error {
 func (c *Calculation) handleSpecialMoveSetup() {
 	switch c.attacker.usedMove.ID {
 	case "weatherball":
-		// TODO: maybe summarize with forecast function with exception for sand case => check if thats worth it
-		switch c.field.Terrain {
-		case models.Sun:
-			c.attacker.usedMove.Type = "Fire"
-		case models.Rain:
-			c.attacker.usedMove.Type = "Water"
-		case models.Hail:
-			c.attacker.usedMove.Type = "Ice"
-		case models.Sand:
-			c.attacker.usedMove.Type = "Rock"
-		default:
-			c.attacker.usedMove.Type = "Normal"
-		}
+		c.attacker.usedMove.Type = getTypeStringFromWeather(c.field.Terrain)
 	case "judgement":
 		if c.attacker.hasItem() && strings.HasSuffix(c.attacker.item.Id, "plate") {
 			c.attacker.usedMove.Type = c.attacker.item.GetPlateBoostType()

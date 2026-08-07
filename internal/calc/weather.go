@@ -39,3 +39,18 @@ func (c *Calculation) weatherModifier() float64 {
 
 	return 1.0
 }
+
+func getTypeStringFromWeather(terrain models.FieldTerrain) string {
+	switch terrain {
+	case models.Sun:
+		return "Fire"
+	case models.Rain:
+		return "Water"
+	case models.Hail:
+		return "Ice"
+	case models.Sand:
+		return "Rock"
+	default:
+		return "Normal"
+	}
+}
