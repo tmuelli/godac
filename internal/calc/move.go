@@ -7,7 +7,7 @@ import (
 	"github.com/tmuelli/godac/internal/models"
 )
 
-func (c *Calculation) moveBasePower() int {
+func (c *Calculation) moveBasePower(hitCount int) int {
 	basePower := c.attacker.usedMove.BasePower
 	atkHp := c.attacker.effectiveHpStat()
 	defHp := c.defender.effectiveHpStat()
@@ -90,6 +90,7 @@ func (c *Calculation) moveBasePower() int {
 		basePower = int(math.Floor(float64(c.defender.health * 120) / float64(defHp)) + 1)
 	case "triplekick":
 		// TODO: implement hits field on move
+		basePower = hitCount * 10
 	case "weatherball":
 		if c.field.Terrain != models.Clear {
 			basePower *= 2

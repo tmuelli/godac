@@ -132,8 +132,16 @@ func (c *Calculation) Calc() (models.BattleResult, error) {
 		}, nil
 	}
 
+	// TODO: implement multihit accordingly this is just the default value to pass it into moveBasePower calculation
+	var hitCount int
+	if len(c.attacker.usedMove.Multihit) != 1 {
+		hitCount = 1
+	} else {
+		hitCount = c.attacker.usedMove.Multihit[0]
+	}
+
 	// calculate base damage
-	baseDmg, err := c.calcBaseDamage()
+	baseDmg, err := c.calcBaseDamage(hitCount)
 	if err != nil {
 		return models.BattleResult{}, err
 	}
@@ -202,7 +210,7 @@ func (c *Calculation) handleFixedDamage() int {
 	return 0
 }
 
-func (c *Calculation) calcBaseDamage() (float64, error) {
+func (c *Calculation) calcBaseDamage(hitCount int) (float64, error) {
 	// get attack and Defense stat based on category
 	var attackStat int
 	var defenseStat int
@@ -229,7 +237,8 @@ func (c *Calculation) calcBaseDamage() (float64, error) {
 	fmt.Println("[DEBUG]: Effectice sp Atk stat:", attackStat)
 	fmt.Println("[DEBUG]: Effective sp Def stat:", defenseStat)
 
-	moveBP := c.moveBasePower()
+
+	moveBP := c.moveBasePower(hitCount)
 	movePower, err := c.modifiedMovePower(float64(moveBP))
 	if err != nil {
 		return 0.0, err
