@@ -194,6 +194,7 @@ func (a *Ability) IsPreventingDamage(move *Move, defItem *Item, typeEffectivness
 /* Item */
 type ItemEffect string
 type ItemConditionFlag uint16
+type ItemDamageSubStage int
 
 const (
 	StatEffect		ItemEffect	= "stat"
@@ -209,6 +210,12 @@ const (
 	ItemConMetronome
 	ItemConLifeOrb
 	ItemConTypeReduction
+)
+
+const (
+	DamagePreLoop		ItemDamageSubStage = iota	// life orb, metronome => applied before final loop in calcModificationDamage
+	DamageExpertBelt								// expert belt applied before tinted lens modifier (inside loop)
+	DamageBerry										// berry mod applied after tinted lens modifier (inside loop)
 )
 
 type NaturalGiftItem struct {
@@ -233,6 +240,7 @@ type ItemCondition struct {
 type ItemModifierOptions struct {
 	MoveType	string
 	TypeMod		float64
+	SubStage	ItemDamageSubStage
 }
 
 type Item struct {

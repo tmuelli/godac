@@ -6,6 +6,12 @@ import (
 	"github.com/tmuelli/godac/internal/models"
 )
 
+type TypeEffectivness struct {
+	typeMod1		float64
+	typeMod2		float64
+	activeValue		float64
+}
+
 func calcTypeModifier(moveType, defType *models.Type, canHitGhostType, isGravity bool) float64 {
 	if canHitGhostType && defType.ID == "ghost" && (moveType.ID == "normal" || moveType.ID == "fighting") {
 		return 1.0
@@ -23,11 +29,16 @@ func calcTypeModifier(moveType, defType *models.Type, canHitGhostType, isGravity
 	return mod
 }
 
-func (c *Calculation) typeModifier() (float64, error) {
+func (c *Calculation) setTypeModifier() error {
 	// get used move type
 	atkType, err := getTypeFromName(c.data, c.attacker.usedMove.Type)
 	if err != nil {
-		return 0.0, fmt.Errorf("Error during type damage modifier calc: %v\n", err)
+		c.typeEff = TypeEffectivness{
+			typeMod1: 0.0,
+			typeMod2: 0.0,
+			activeValue: 0.0,
+		}
+		return fmt.Errorf("Error during type damage modifier calc: %v\n", err)
 	}
 
 	canHitGhostType := c.field.Right.Foresight || c.attacker.hasAbility("scrappy")
@@ -51,11 +62,16 @@ func (c *Calculation) typeModifier() (float64, error) {
 		} else if defHasSecondType && typeMod2 == 0.0 {
 			typeMod2 = 1.0
 		}
-
-		typeMod = typeMod1 * typeMod2
 	}
 
-	return typeMod, nil
+	c.typeEff = TypeEffectivness{
+		typeMod1: typeMod1,
+		typeMod2: typeMod2,
+	}
+	
+	c.typeEff.activeValue = c.typeEff.typeMod1 * c.typeEff.typeMod2
+
+	return nil
 }
 
 func (d *CalcData) stabModifier() (float64, error) {

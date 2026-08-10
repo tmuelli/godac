@@ -29,7 +29,7 @@ type Calculation struct {
 	attacker			*CalcData
 	defender			*CalcData
 	field				*models.Field
-	typeEffectivness	float64
+	typeEff				TypeEffectivness
 }
 
 func NewCalc(data *models.Data, atkInput *models.UserInput, defInput *models.UserInput, fieldInput *models.UserFieldInput) (*Calculation, error) {
@@ -100,22 +100,16 @@ func (c *Calculation) Calc() (models.BattleResult, error) {
 	}
 
 	// check damage prevention from ability
-	typeEffectivness, err := c.typeModifier()
+	err = c.setTypeModifier()
 	if err != nil {
 		return models.BattleResult{}, err
 	}
 
-	if typeEffectivness == 0.0 {
+	if c.typeEff.activeValue == 0.0 {
 		return models.BattleResult{}, nil
 	}
 
-	c.typeEffectivness = typeEffectivness
-
-	if typeEffectivness == 0.0 {
-		return models.BattleResult{}, nil
-	}
-
-	if c.defender.ability.IsPreventingDamage(c.attacker.usedMove, c.defender.item, typeEffectivness, c.field.IsGravity) {
+	if c.defender.ability.IsPreventingDamage(c.attacker.usedMove, c.defender.item, c.typeEff.activeValue, c.field.IsGravity) {
 		return models.BattleResult{}, nil
 	}
 
@@ -153,20 +147,13 @@ func (c *Calculation) Calc() (models.BattleResult, error) {
 	}
 
 	// calcute modification damage
-	dmg, err := c.calcModificationDamage(condDmg)
+	dmgResult, err := c.calcModificationDamage(condDmg)
 	if err != nil {
 		return models.BattleResult{}, err
 	}
 
-	// populate possibilities array for result and set min and max values
-	// TODO: implement possibility calculation correct
-	result := make([]float64, 16)
-	for i := range 16 {
-		result[i] = math.Floor(dmg * float64(85 + i) / 100)
-	}
-
-	dmgMin := result[0]
-	dmgMax := result[15]
+	dmgMin := dmgResult[0]
+	dmgMax := dmgResult[15]
 
 	fmt.Println("[DEBUG]: Min damage:", dmgMin)
 	fmt.Println("[DEBUG]: Max damage:", dmgMax)
@@ -282,21 +269,23 @@ func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 	return dmg, nil
 }
 
-func (c *Calculation) calcModificationDamage(condDmg float64) (float64, error) {
-	stabMod := 1.0
-	typeMod := 1.0
+func (c *Calculation) calcModificationDamage(condDmg float64) ([]float64, error) {
+	resultDmg := condDmg
+	resultDmgSlice := make([]float64, RESULT_DAMAGE_SLICE_SIZE)
+	
+	// modifiers which get applied before random multiplier
 	critMod := 1.0
 	itemMod := 1.0
-	solidRockFilterMod := 1.0
-	tintedLensMod := 1.0
 	firstMod := 1.0
 
-	stabMod, err := c.attacker.stabModifier()
-	if err != nil {
-		return 0.0, err
-	}
-
-	typeMod = c.typeEffectivness
+	// modifiers which get applied after random multiplier
+	stabMod := 1.0
+	typeMod1 := 1.0
+	typeMod2 := 1.0
+	solidRockFilterMod := 1.0
+	tintedLensMod := 1.0
+	expertBeltMod := 1.0
+	berryMod := 1.0
 
 	// critical modifier if ability sniper
 	if c.attacker.usedMove.Critical {
@@ -307,41 +296,97 @@ func (c *Calculation) calcModificationDamage(condDmg float64) (float64, error) {
 		}
 	}
 
-	// solid rock filter mod
-	if (c.defender.hasAbility("filter", "solidrock")) && typeMod > 1 {
-		solidRockFilterMod = 0.75
+	resultDmg = math.Floor(resultDmg * critMod)
+
+	// final attacker item modifier (does include expert belt mod)
+	itemAtkMod, err := c.attacker.itemModifier(nil, models.DamageEffect, &models.ItemModifierOptions{
+		SubStage: models.DamagePreLoop,
+	})
+	if err != nil {
+		return resultDmgSlice, err
 	}
 
-	// tinted lens mod
-	if c.attacker.hasAbility("tintedlens") && typeMod < 1 {
-		tintedLensMod = 2.0
+	// final defender item modifier (does include berry mod)
+	itemDefMod, err := c.defender.itemModifier(nil, models.DamageEffect, &models.ItemModifierOptions{
+		MoveType:	c.attacker.usedMove.Type,
+		TypeMod:	c.typeEff.activeValue,
+		SubStage:	models.DamagePreLoop,
+	})
+	if err != nil {
+		return resultDmgSlice, err
 	}
+
+	// final item modifier
+	itemMod = itemAtkMod * itemDefMod
+	resultDmg = math.Floor(resultDmg * itemMod)
 
 	// me first mod => technically useless because the other move has to be known => for future use
 	if c.attacker.usedMove.ID == "mefirst" {
 		firstMod = 1.5
 	}
 
-	// final attacker item modifier (does include expert belt mod)
-	itemAtkMod, err := c.attacker.itemModifier(nil, models.DamageEffect, &models.ItemModifierOptions{})
+	resultDmg = math.Floor(resultDmg * firstMod)
+
+	// calculate loop modifiers (stab, typeMod1, typeMod2, filterMod, tintedLensMod)
+	stabMod, err = c.attacker.stabModifier()
 	if err != nil {
-		return 0.0, err
+		return resultDmgSlice, err
 	}
 
-	// final defender item modifier (does include berry mod)
-	itemDefMod, err := c.defender.itemModifier(nil, models.DamageEffect, &models.ItemModifierOptions{
-		MoveType:	c.attacker.usedMove.Type,
-		TypeMod:	typeMod,
+	typeMod1 = c.typeEff.typeMod1
+	typeMod2 = c.typeEff.typeMod2
+
+	// solid rock filter mod
+	if (c.defender.hasAbility("filter", "solidrock")) && c.typeEff.activeValue > 1 {
+		solidRockFilterMod = 0.75
+	}
+
+	// tinted lens mod
+	if c.attacker.hasAbility("tintedlens") && c.typeEff.activeValue < 1 {
+		tintedLensMod = 2.0
+	}
+
+	// expert belt mod
+	expertBeltMod, err = c.attacker.itemModifier(nil, models.DamageEffect, &models.ItemModifierOptions{
+		SubStage: models.DamageExpertBelt,
+		TypeMod:  c.typeEff.activeValue,
 	})
-	if err != nil {
-		return 0.0, err
+
+	// berry mod
+	berryMod, err = c.defender.itemModifier(nil, models.DamageEffect, &models.ItemModifierOptions{
+		SubStage:  models.DamageBerry,
+		MoveType:  c.attacker.usedMove.Type,
+		TypeMod:   c.typeEff.activeValue,
+	})
+
+	// add random multiplier and other modifiers inside loop to get correct damage spread with floor rounding
+	for i := range resultDmgSlice {
+		dmg := resultDmg
+
+		// random multiplier
+		dmg = math.Floor((dmg * float64(85 + i)) / 100)
+
+		// stab modifier
+		dmg = math.Floor(dmg * stabMod)
+
+		// type effectiveness modifier
+		dmg = math.Floor(dmg * typeMod1)
+		dmg = math.Floor(dmg * typeMod2)
+
+		// filter / solid rock modifier
+		dmg = math.Floor(dmg * solidRockFilterMod)
+
+		// expert belt modifier
+		dmg = math.Floor(dmg * expertBeltMod)
+
+		// tinted lens modifier
+		dmg = math.Floor(dmg * tintedLensMod)
+
+		// berry modifier
+		dmg = math.Floor(dmg * berryMod)
+
+		resultDmgSlice[i] = math.Max(1, dmg)
 	}
 
-	// final item modifier
-	itemMod = itemAtkMod * itemDefMod
-
-	// random modifier is applied outside
-	// TODO: check if all modification modifiers need to be added inside range loop to get correct possibilities
-	dmg := math.Floor(condDmg * critMod * itemMod * firstMod * stabMod * typeMod * solidRockFilterMod  * tintedLensMod)
-	return dmg, nil
+	return resultDmgSlice, nil
 }

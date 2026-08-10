@@ -144,17 +144,31 @@ func (d *CalcData) berryModifier(options models.ItemModifierOptions) (float64, e
 		return 1.0, fmt.Errorf("unknown move type for berry item mod calc")
 	}
 
+	if len(d.item.Types) == 0 {
+		return 1.0, nil
+	}
+
 	// check matching berry damage reduction type
-	if options.MoveType != d.item.Types[0] || !d.item.Condition.TypeReduction {
+	if !slices.Contains(d.item.Types, options.MoveType) {
 		return 1.0, nil
 	}
 
-	// check type effectivness
-	if options.TypeMod < 2 && (options.MoveType != "normal" || !d.hasItem("chilanberry")) {
+	// check typeReduction flag
+	if d.item.Condition == nil {
 		return 1.0, nil
 	}
 
-	return 0.5, nil
+	cond := d.item.Condition.ToFlag()
+	if cond & models.ItemConTypeReduction == 0 {
+		return 1.0, nil
+	}
+
+	// all type reducing berries can only reduce super effective moves (except chilan berry)
+	if (cond & models.ItemConSuperEffective == 0) && options.TypeMod <= 1 {
+		return 1.0, nil
+	}
+
+	return d.item.Multiplier, nil
 }
 
 func (d *CalcData) finalItemModifier(options models.ItemModifierOptions) (float64, error) {
@@ -163,20 +177,53 @@ func (d *CalcData) finalItemModifier(options models.ItemModifierOptions) (float6
 		return 1.0, nil
 	}
 
-	// check if berry
-	if d.item.IsBerry && d.dataType == Defender {
-		return d.berryModifier(options)
-	}
-
-	// check item conditions
-	if d.item.Condition != nil {
-		condFlag := d.item.Condition.ToFlag()
-		if !d.validItemCondition(condFlag, nil) {
+	switch options.SubStage {
+	case models.DamagePreLoop:
+		// life orb and metronome only
+		if d.item.IsBerry {
 			return 1.0, nil
 		}
-	}
 
-	return d.item.Multiplier, nil
+		if d.item.Condition != nil {
+			cond := d.item.Condition.ToFlag()
+
+			if cond & models.ItemConMetronome != 0 {
+				return metronomeMultiplier(), nil
+			}
+
+			if cond & models.ItemConLifeOrb != 0 {
+				return d.item.Multiplier, nil
+			}
+		}
+
+		return 1.0, nil
+
+	case models.DamageExpertBelt:
+		// expert belt => only on attacker side
+		if d.dataType != Attacker || d.item.IsBerry {
+			return 1.0, nil
+		}
+
+		if d.item.Condition != nil {
+			cond := d.item.Condition.ToFlag()
+			if cond & models.ItemConSuperEffective != 0 && options.TypeMod > 1 {
+				return d.item.Multiplier, nil
+			}
+		}
+
+		return 1.0, nil
+
+	case models.DamageBerry:
+		// Berry only — defender side
+		if !d.item.IsBerry || (d.dataType != Defender) {
+			return 1.0, nil
+		}
+
+		return d.berryModifier(options)
+
+	default:
+		return 1.0, fmt.Errorf("unknown item damage sub stage")
+	}
 }
 
 func (d *CalcData) itemModifier(kind *StatKind, stage models.ItemEffect, options *models.ItemModifierOptions) (float64, error) {
