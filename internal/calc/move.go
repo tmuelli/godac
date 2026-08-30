@@ -7,6 +7,45 @@ import (
 	"github.com/tmuelli/godac/internal/models"
 )
 
+func (c *Calculation) checkMultihitBoost(usedItems *models.MultihitItemUsage) {
+	atkSimple := 1
+
+	if c.attacker.hasAbility("simple") {
+		atkSimple = 2
+	}
+
+	var stat StatKind
+	if c.attacker.usedMove.Kind == string(Physical) {
+		stat = StatAtk
+	} else {
+		stat = StatSpa
+	}
+
+	if c.attacker.usedMove.DropsStats() {
+		if !c.attacker.hasAbility("unaware") {
+			boosts := c.attacker.boosts.Get(string(stat))
+			boostDrop := c.attacker.usedMove.GetBoostDrop(string(stat))
+
+			effectiveBoosts := int(math.Max(-6, float64(boosts - (boostDrop * atkSimple))))
+
+			if c.attacker.hasItem("whiteherb") && boosts < 0 && !usedItems.HasAtkUsedItem {
+				effectiveBoosts += (boostDrop * atkSimple)
+				usedItems.HasAtkUsedItem = true
+			}
+
+			if stat == StatAtk {
+				c.attacker.boosts.Atk.Set(effectiveBoosts)
+			} else {
+				c.attacker.boosts.Spa.Set(effectiveBoosts)
+			}
+
+			// TODO: in damage calculator code the effective stat gets recalculated here from original stat and boost
+			// check if this has to be recalculated here as well => because modifiedStat receiver method on CalcData is using the boost to
+			// calculate modified stat => need to be checked if setting here is necessary
+		}
+	}
+}
+
 func (c *Calculation) moveBasePower(hitCount int) int {
 	basePower := c.attacker.usedMove.BasePower
 	atkHp := c.attacker.effectiveHpStat()

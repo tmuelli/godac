@@ -69,4 +69,6 @@ const (
 	MAX_SPEED					= 10000
 
 	RESULT_DAMAGE_SLICE_SIZE 	= 16
+
+	DEFAULT_HIT_COUNT			= 1
 )

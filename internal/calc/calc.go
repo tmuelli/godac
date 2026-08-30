@@ -30,6 +30,7 @@ type Calculation struct {
 	defender			*CalcData
 	field				*models.Field
 	typeEff				TypeEffectivness
+	Result				models.BattleResult
 }
 
 func NewCalc(data *models.Data, atkInput *models.UserInput, defInput *models.UserInput, fieldInput *models.UserFieldInput) (*Calculation, error) {
@@ -62,6 +63,15 @@ func NewCalc(data *models.Data, atkInput *models.UserInput, defInput *models.Use
 		attacker: attacker,
 		defender: defender,
 		field: field,
+		Result: models.BattleResult{
+			Range: models.BattleResultRange{
+				Min: 0,
+				MinPerc: 0,
+				Max: 0,
+				MaxPerc: 0,
+			},
+			DmgMatrix: [][]int{},
+		},
 	}, nil
 }
 
@@ -74,84 +84,75 @@ func (c *Calculation) needCalc() bool {
 	return true
 }
 
-func (c *Calculation) Calc() (models.BattleResult, error) {
+func (c *Calculation) Calc() error {
 	// setup calculation
 	err := c.setup()
 	if err != nil {
-		return models.BattleResult{}, err
+		return err
 	}
 	
 	if !c.needCalc() {
-		return models.BattleResult{}, nil
+		return nil
 	}
 
 	// handle pain split
 	if c.attacker.usedMove.ID == "painsplit" {
 		dmg := c.attacker.usedMove.HandlePainSplit(c.attacker.health, c.defender.health)
-		return models.BattleResult{
-			Range: models.BattleResultRange{
-				Min: dmg,
-				Max: dmg,
-				MinPerc: 0,
-				MaxPerc: 0,
-			},
-			Possibilities: []int{dmg},
-		}, nil
+		c.Result.Range = models.BattleResultRange{
+			Min: dmg,
+			Max: dmg,
+			MinPerc: 0,
+			MaxPerc: 0,
+		}
+		c.Result.DmgMatrix = [][]int{{dmg}}
+		return nil
 	}
 
 	// check damage prevention from ability
 	err = c.setTypeModifier()
 	if err != nil {
-		return models.BattleResult{}, err
+		return err
 	}
 
 	if c.typeEff.activeValue == 0.0 {
-		return models.BattleResult{}, nil
+		return nil
 	}
 
 	if c.defender.ability.IsPreventingDamage(c.attacker.usedMove, c.defender.item, c.typeEff.activeValue, c.field.IsGravity) {
-		return models.BattleResult{}, nil
+		return nil
 	}
 
 	// handle fixed damage
 	if dmg := c.handleFixedDamage(); dmg != 0 {
-		return models.BattleResult{
-			Range: models.BattleResultRange{
-				Min: dmg,
-				Max: dmg,
-				MinPerc: 0,
-				MaxPerc: 0,
-			},
-			Possibilities: []int{dmg},
-		}, nil
-	}
-
-	// TODO: implement multihit accordingly this is just the default value to pass it into moveBasePower calculation
-	var hitCount int
-	if len(c.attacker.usedMove.Multihit) != 1 {
-		hitCount = 1
-	} else {
-		hitCount = c.attacker.usedMove.Multihit[0]
+		c.Result.Range = models.BattleResultRange{
+			Min: dmg,
+			Max: dmg,
+			MinPerc: 0,
+			MaxPerc: 0,
+		}
+		c.Result.DmgMatrix = [][]int{{dmg}}
+		return nil
 	}
 
 	// calculate base damage
-	baseDmg, err := c.calcBaseDamage(hitCount)
+	baseDmg, err := c.calcBaseDamage(DEFAULT_HIT_COUNT)
 	if err != nil {
-		return models.BattleResult{}, err
+		return err
 	}
 
 	// calculate conditional damage
 	condDmg, err := c.calcConditionalDamage(baseDmg)
 	if err != nil {
-		return models.BattleResult{}, err
+		return err
 	}
 
 	// calcute modification damage
 	dmgResult, err := c.calcModificationDamage(condDmg)
 	if err != nil {
-		return models.BattleResult{}, err
+		return err
 	}
 
+	c.Result.DmgMatrix = append(c.Result.DmgMatrix, dmgResult)
 	dmgMin := dmgResult[0]
 	dmgMax := dmgResult[15]
 
@@ -163,23 +164,44 @@ func (c *Calculation) Calc() (models.BattleResult, error) {
 	// TODO: also implement chip damage from sand / hail here (from field weather)
 
 	// TODO: implement percent calculation
-	calcResult := models.BattleResult{
-		Range: models.BattleResultRange{
-			Min: int(dmgMin),
-			MinPerc: 0,
-			Max: int(dmgMax),
-			MaxPerc: 0,
-		},
-		Possibilities: make([]int, 0),
+	c.Result.Range.Min = int(dmgMin)
+	c.Result.Range.MinPerc = 0
+	c.Result.Range.Max = int(dmgMax)
+	c.Result.Range.MaxPerc = 0
+
+	if c.attacker.usedMove.Hits > DEFAULT_HIT_COUNT {
+		usedItems := models.MultihitItemUsage{
+			HasAtkUsedItem: false,
+			HasDefUsedItem: false,
+		}
+
+		for hit := 1; hit < c.attacker.usedMove.Hits; hit++ {
+			// check multihit item usage
+			c.checkMultihitBoost(&usedItems)
+
+			// calculate base damage
+			baseDmg, err := c.calcBaseDamage(hit + 1)
+			if err != nil {
+				return err
+			}
+
+			// calculate conditional damage
+			condDmg, err := c.calcConditionalDamage(baseDmg)
+			if err != nil {
+				return err
+			}
+
+			// calcute modification damage
+			dmgResult, err := c.calcModificationDamage(condDmg)
+			if err != nil {
+				return err
+			}
+
+			c.Result.DmgMatrix = append(c.Result.DmgMatrix, dmgResult)
+		}
 	}
 
-	// populate possibilities array for result and set min and max values
-	// TODO: implement possibility calculation correct
-	for i := 0; i <= (calcResult.Range.Max - calcResult.Range.Min); i++ {
-		calcResult.Possibilities = append(calcResult.Possibilities, calcResult.Range.Min + i)
-	}
-
-	return calcResult, nil
+	return nil
 }
 
 func (c *Calculation) handleFixedDamage() int {
@@ -269,9 +291,9 @@ func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 	return dmg, nil
 }
 
-func (c *Calculation) calcModificationDamage(condDmg float64) ([]float64, error) {
+func (c *Calculation) calcModificationDamage(condDmg float64) ([]int, error) {
 	resultDmg := condDmg
-	resultDmgSlice := make([]float64, RESULT_DAMAGE_SLICE_SIZE)
+	resultDmgSlice := make([]int, RESULT_DAMAGE_SLICE_SIZE)
 	
 	// modifiers which get applied before random multiplier
 	critMod := 1.0
@@ -385,7 +407,7 @@ func (c *Calculation) calcModificationDamage(condDmg float64) ([]float64, error)
 		// berry modifier
 		dmg = math.Floor(dmg * berryMod)
 
-		resultDmgSlice[i] = math.Max(1, dmg)
+		resultDmgSlice[i] = int(math.Max(1, dmg))
 	}
 
 	return resultDmgSlice, nil

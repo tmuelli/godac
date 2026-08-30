@@ -170,6 +170,24 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 		return nil, fmt.Errorf("invalid move used: Unknown move")
 	}
 
+	// check for multiple hits or multihit move
+	usedMove.Hits = DEFAULT_HIT_COUNT
+
+	if input.Hits != nil {
+		if *input.Hits == 0 {
+			return nil, fmt.Errorf("invalid hits value: Must hit at least once")
+		}
+
+		if len(usedMove.Multihit) != 0 {
+			if !usedMove.ValidMultihit(*input.Hits) {
+				return nil, fmt.Errorf("invalid hits value: Must be value in multihit range")
+			}
+		}
+
+		usedMove.Hits = *input.Hits
+	}
+
+
 	// level
 	if input.Level < 1 || input.Level > 100 {
 		return nil, fmt.Errorf("invalid input: Invalid level %d", input.Level)

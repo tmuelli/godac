@@ -55,17 +55,16 @@ func main() {
 	}
 
 	fmt.Println("Start calculation...")
-	var result models.BattleResult
-	result, err = calculation.Calc()
+	err = calculation.Calc()
 	if err != nil {
 		log.Fatal("Error while damage calculation: ", err)
 	}
 
 	fmt.Println("Damage result successfully calculated")
-	fmt.Println("Min dmg:", result.Range.Min)
-	fmt.Println("Max dmg:", result.Range.Max)
+	fmt.Println("Min dmg:", calculation.Result.Range.Min)
+	fmt.Println("Max dmg:", calculation.Result.Range.Max)
 	fmt.Println("Possible range:")
-	for _, v := range result.Possibilities {
+	for _, v := range calculation.Result.DmgMatrix[0] {
 		fmt.Printf("%v ", v)
 	}
 	fmt.Printf("\n")

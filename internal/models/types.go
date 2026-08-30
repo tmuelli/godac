@@ -22,6 +22,7 @@ type UserInput struct {
 	Item          *string  `json:"item"`
 	Status        *string  `json:"status"`
 	Gender        *string  `json:"gender"`
+	Hits          *int     `json:"hits"`
 }
 
 /* User field input */
@@ -59,7 +60,7 @@ type BattleResultRange struct {
 
 type BattleResult struct {
 	Range BattleResultRange
-	Possibilities []int
+	DmgMatrix [][]int
 }
 
 /********************/
@@ -330,17 +331,12 @@ type MoveFlags struct {
 }
 
 // TODO: maybe use stat type battle modifier later
-type MoveSelfBoosts struct {
+type MoveSelf struct {
 	Atk int `json:"atk"`
 	Def int `json:"def"`
 	Spa int `json:"spa"`
 	Spd int `json:"spd"`
 	Spe int `json:"spe"`
-}
-
-// TODO: maybe use stat type battle modifier later
-type MoveSelf struct {
-	Boosts MoveSelfBoosts `json:"boosts"`
 }
 
 type Move struct {
@@ -354,6 +350,7 @@ type Move struct {
 	Drain          	[]int  `json:"drain,omitempty"`
 	Target         	string `json:"target,omitempty"`
 	Multihit       	[]int  `json:"multihit,omitempty"`
+	Hits            int    `json:"hits,omitempty"`
 	Priority       	int    `json:"priority,omitempty"`
 	Recoil         	[]int  `json:"recoil,omitempty"`
 	HasCrashDamage 	bool   `json:"hasCrashDamage,omitempty"`
@@ -381,6 +378,47 @@ func (m *Move) NeedSpecialMoveSetup() bool {
 
 func (m *Move) HasType(ids ...string) bool {
 	return slices.Contains(ids, m.Type)
+}
+
+func (m *Move) DropsStats() bool {
+	boosts := []int{m.Self.Atk, m.Self.Def, m.Self.Spa, m.Self.Spd, m.Self.Spa}
+
+	for _, s := range boosts {
+		if s < 0 {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (m *Move) GetBoostDrop(stat string) int {
+	switch (stat) {
+	case "atk":
+		return m.Self.Atk
+	case "def":
+		return m.Self.Def
+	case "spa":
+		return m.Self.Spa
+	case "spd":
+		return m.Self.Spd
+	case "spe":
+		return m.Self.Spe
+	default:
+		return 0
+	}
+}
+
+type MultihitItemUsage struct {
+	HasAtkUsedItem bool
+	HasDefUsedItem bool
+}
+
+func (m *Move) ValidMultihit(hits int) bool {
+	maxHits := slices.Max(m.Multihit)
+	minHits := slices.Min(m.Multihit)
+
+	return hits >= minHits && hits <= maxHits
 }
 
 /* Nature */
