@@ -9,6 +9,15 @@ import (
 /* Types: user input/output */
 /****************************/
 
+/* User input stat boosts */
+type UserInputBoosts struct {
+	Atk	int	`json:"atk"`
+	Def	int	`json:"def"`
+	Spa	int	`json:"spa"`
+	Spd	int	`json:"spd"`
+	Spe	int	`json:"spe"`
+}
+
 /* User input */
 type UserInput struct {
 	Name          string   `json:"name"`
@@ -23,6 +32,7 @@ type UserInput struct {
 	Status        *string  `json:"status"`
 	Gender        *string  `json:"gender"`
 	Hits          *int     `json:"hits"`
+	Boosts        UserInputBoosts   `json:"boosts"`
 }
 
 /* User field input */
@@ -128,6 +138,17 @@ type Boosts struct {
 	Spa StatBoost
 	Spd StatBoost
 	Spe StatBoost
+}
+
+func NewBoosts(input *UserInputBoosts) Boosts {
+	boosts := Boosts{}
+	boosts.Atk.Set(input.Atk)
+	boosts.Def.Set(input.Def)
+	boosts.Spa.Set(input.Spa)
+	boosts.Spd.Set(input.Spd)
+	boosts.Spe.Set(input.Spe)
+
+	return boosts
 }
 
 func (b *Boosts) Get(stat string) (int) {

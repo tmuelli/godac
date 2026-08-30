@@ -291,6 +291,9 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 		}
 	}
 
+	// boosts
+	boosts := models.NewBoosts(&input.Boosts)
+
 	// successful validation of user input
 	calcData := CalcData{
 		specie: specie,
@@ -304,7 +307,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 		ivs: ivSettings,
 		evs: evSettings,
 		status: statusCon,
-		boosts: &models.Boosts{},
+		boosts: &boosts,
 		gender: &gender,
 	}
 	return &calcData, nil

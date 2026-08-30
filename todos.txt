@@ -1,5 +1,4 @@
 FIXME:
-- add boosts to input struct
 - make custom iv / ev available in input and use them in calculation
 
 TODOS:
