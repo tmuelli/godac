@@ -203,24 +203,35 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	switch (IvOption(input.IvSetting)) {
 	case IvOptimal:
 		ivSettings = &models.IvStats{
-			Hp: 31,
-			Atk: 31,
-			Def: 31,
-			Spa: 31,
-			Spd: 31,
-			Spe: 31,
+			BaseStats: models.BaseStats{
+				Hp: 31,
+				Atk: 31,
+				Def: 31,
+				Spa: 31,
+				Spd: 31,
+				Spe: 31,
+			},
 		}
 	case IvWorstCase:
 		ivSettings = &models.IvStats{
-			Hp: 0,
-			Atk: 0,
-			Def: 0,
-			Spa: 0,
-			Spd: 0,
-			Spe: 0,
+			BaseStats: models.BaseStats{
+				Hp: 0,
+				Atk: 0,
+				Def: 0,
+				Spa: 0,
+				Spd: 0,
+				Spe: 0,
+			},
 		}
 	case IvCustom:
-		return nil, fmt.Errorf("invalid input: Custom iv setting not supported yet")
+		if input.IvCustom == nil {
+			return nil, fmt.Errorf("invalid input: Custom iv settings only supported when custom values are given")
+		}
+
+		ivSettings = input.IvCustom
+		if !ivSettings.Valid() {
+			return nil, fmt.Errorf("invalid input: Invalid custom iv values")
+		}
 	default:
 		return nil, fmt.Errorf("invalid input: Unknown iv setting")
 	}
@@ -230,21 +241,25 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	switch (EvOption(input.EvSetting)) {
 	case EvOptimal:
 		evSettings = &models.EvStats{
-			Hp: 31,
-			Atk: 31,
-			Def: 31,
-			Spa: 31,
-			Spd: 31,
-			Spe: 31,
+			BaseStats: models.BaseStats{
+				Hp: 31,
+				Atk: 31,
+				Def: 31,
+				Spa: 31,
+				Spd: 31,
+				Spe: 31,
+			},
 		}
 	case EvWorstCase:
 		evSettings = &models.EvStats{
-			Hp: 0,
-			Atk: 0,
-			Def: 0,
-			Spa: 0,
-			Spd: 0,
-			Spe: 0,
+			BaseStats: models.BaseStats{
+				Hp: 0,
+				Atk: 0,
+				Def: 0,
+				Spa: 0,
+				Spd: 0,
+				Spe: 0,
+			},
 		}
 	case EvCustom:
 		return nil, fmt.Errorf("invalid input: Custom ev setting not supported yet")

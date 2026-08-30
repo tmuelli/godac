@@ -27,7 +27,9 @@ type UserInput struct {
 	Moves         []string `json:"moves"`
 	HealthPercent int      `json:"healthPercent"`
 	IvSetting     string   `json:"ivSetting"`
+	IvCustom      *IvStats  `json:"ivCustom"`
 	EvSetting     string   `json:"evSetting"`
+	EvCustom      *EvStats  `json:"evCustom"`
 	Item          *string  `json:"item"`
 	Status        *string  `json:"status"`
 	Gender        *string  `json:"gender"`
@@ -87,24 +89,56 @@ type BaseStats struct {
 	Spe	int	`json:"spe"`
 }
 
+type StatType string
+const (
+	IV		StatType = "iv"
+	EV		StatType = "ev"
+
+	IV_MIN = 0
+	IV_MAX = 31
+
+	EV_MIN = 0
+	EV_MAX = 252
+)
+
+func IsValidStats(statType StatType, stats BaseStats) bool {
+	values := []int{stats.Atk, stats.Def, stats.Spa, stats.Spd, stats.Spe}
+	switch statType {
+	case IV:
+		for _, v := range values {
+			if v < IV_MIN || v > IV_MAX {
+				return false
+			}
+		}
+		return true
+	case EV:
+		for _, v := range values {
+			if v < EV_MIN || v > EV_MAX {
+				return false
+			}
+		}
+		return true
+	default:
+		return false
+	}
+}
+
 /* IvStats */
 type IvStats struct {
-	Hp	int
-	Atk	int
-	Def	int
-	Spa	int
-	Spd	int
-	Spe	int
+	BaseStats
+}
+
+func (i *IvStats) Valid() bool {
+	return IsValidStats(IV, i.BaseStats)
 }
 
 /* EvStats */
 type EvStats struct {
-	Hp	int
-	Atk	int
-	Def	int
-	Spa	int
-	Spd	int
-	Spe	int
+	BaseStats
+}
+
+func (e *EvStats) Valid() bool {
+	return IsValidStats(EV, e.BaseStats)
 }
 
 /* Boosts */

@@ -1,6 +1,3 @@
-FIXME:
-- make custom iv / ev available in input and use them in calculation
-
 TODOS:
 - same implementation for types => specie has type
 - check type capitalization => change to lower case like all other ids
