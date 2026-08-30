@@ -1,10 +1,10 @@
 {
-    "name": "Shinx",
+    "name": "Poochyena",
     "level": 100,
     "nature": "Hardy",
-    "attackMove": "Tackle",
+    "attackMove": "Bite",
     "moves": [
-        "Tackle"
+        "Bite"
     ],
     "healthPercent": 100,
     "ivSetting": "optimal",

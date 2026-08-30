@@ -177,8 +177,6 @@ func (d *CalcData) effectiveStat(kind StatKind, usedMove *models.Move, hasOppone
 }
 
 func (d *CalcData) modifiedStat(kind StatKind, hasOpponentUnaware bool, usedMove *models.Move, statValue float64, field *models.Field) float64 {
-	modStat := 0.0
-
 	// dont calculate for hp or speed stat
 	switch kind {
 	case StatAtk, StatDef, StatSpa, StatSpd:
@@ -189,7 +187,7 @@ func (d *CalcData) modifiedStat(kind StatKind, hasOpponentUnaware bool, usedMove
 	statBoosts := d.boosts.Get(string(kind))
 
 	// boosts are not accounted into modified stat if ability is unaware => ignores stat boosts
-	if hasOpponentUnaware {
+	if !hasOpponentUnaware {
 		if d.hasAbility("simple") {
 			statValue = getSimpleModifiedStat(statValue, statBoosts)
 		} else {
@@ -245,7 +243,7 @@ func (d *CalcData) modifiedStat(kind StatKind, hasOpponentUnaware bool, usedMove
 		}
 	}
 
-	return modStat
+	return statValue
 }
 
 func (d *CalcData) sumStatBoosts() int {
