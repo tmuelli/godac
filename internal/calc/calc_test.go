@@ -16,11 +16,9 @@ type testCase struct {
     atkLevel    int
     atkItem     string
     atkNature   string
-    atkEvAtk    int
-    atkEvSpa    int
-    atkIvAtk    int
-    atkIvSpa    int
-    // atkBoosts   *models.Boosts
+	atkIVs      models.IvStats
+	atkEVs      models.EvStats
+    atkBoosts   models.UserInputBoosts
     atkStatus   string
 	atkHealth	int
 
@@ -36,9 +34,9 @@ type testCase struct {
     defLevel    int
     defItem     string
     defNature   string
-    defEvHp     int
-    defEvDef    int
-    defEvSpd    int
+	defIVs      models.IvStats
+	defEVs      models.EvStats
+	defBoosts   models.UserInputBoosts
 	defHealth	int
 
     // field
@@ -101,8 +99,7 @@ func runTest(t *testing.T, data *models.Data, tc testCase) {
         Nature:			tc.atkNature,
         EvSetting:		atkEvSetting,
         IvSetting:		atkIvSetting,
-		// TODO: implement boosts for input
-        // Boosts:		tc.atkBoosts,
+        Boosts:			tc.atkBoosts,
         AttackMove:		tc.atkMove,
 		Moves:			tc.atkMoves,
 		HealthPercent:  atkHp,
@@ -115,8 +112,7 @@ func runTest(t *testing.T, data *models.Data, tc testCase) {
         Nature:			tc.defNature,
         EvSetting:		defEvSetting,
         IvSetting:		defIvSetting,
-        // TODO: implement boosts for input
-		// Boosts:		tc.defBoosts,
+		Boosts:			tc.defBoosts,
 		HealthPercent:  defHp,
 		AttackMove:		tc.defMove,
 		Moves:			tc.defMoves,
