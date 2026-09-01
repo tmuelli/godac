@@ -8,9 +8,18 @@ import (
 
 	"github.com/tmuelli/godac/internal/calc"
 	"github.com/tmuelli/godac/internal/models"
+	"github.com/tmuelli/godac/internal/tui"
 )
 
 func main() {
+	err := tui.Run()
+	if err != nil {
+		fmt.Printf("Error from tui: %v\n", err)
+		os.Exit(1)
+	}
+
+	return
+
 	// load data
 	data, err := models.NewData()
 	if err != nil {
