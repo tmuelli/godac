@@ -5,6 +5,20 @@ import (
 	"charm.land/lipgloss/v2"
 )
 
+type Setting int
+type SideFocus int
+
+const (
+	GeneralSetting Setting = iota
+	SidesSetting
+
+	Left			SideFocus = iota
+	Right
+
+	CHECKED = "[x]"
+	UNCHECKED = "[ ]"
+)
+
 type generalGroup struct {
 	label		string
 	settings	[]string
@@ -58,9 +72,88 @@ func (g generalGroup) Value() string {
 	return g.settings[g.index]
 }
 
+type sidesGroup struct {
+	label			string
+	left			bool
+	right			bool
+	focused			SideFocus
+	groupFocused	bool
+	styles			*styles
+}
+
+func (g sidesGroup) Update(msg tea.Msg) (sidesGroup, tea.Cmd) {
+	if !g.groupFocused {
+		return g, nil
+	}
+
+	switch msg := msg.(type) {
+	case tea.KeyPressMsg:
+		switch msg.String() {
+		case "left":
+			g.focused = Left
+		case "right":
+			g.focused = Right
+		case "enter":
+			if g.focused == Left {
+				g.left = !g.left
+			} else {
+				g.right = !g.right
+			}
+		}
+	}
+	
+	return g, nil
+}
+
+func (g sidesGroup) View() string {
+	isGroupFocused := g.groupFocused
+
+	// left
+	leftCol := UNCHECKED
+	if g.left {
+		leftCol = CHECKED
+	}
+
+	leftStyle := lipgloss.NewStyle().Bold(isGroupFocused)
+	if g.focused == Left {
+		leftStyle = leftStyle.Foreground(lipgloss.Color("#EE82EE"))
+	} else {
+		leftStyle.Foreground(lipgloss.NoColor{})
+	}
+
+	// label
+	lableStyle := lipgloss.NewStyle().Bold(isGroupFocused)
+
+	// right
+	rightCol := UNCHECKED
+	if g.right {
+		rightCol = CHECKED
+	}
+
+	rightStyle := lipgloss.NewStyle().Bold(isGroupFocused)
+	if g.focused == Right {
+		rightStyle = rightStyle.Foreground(lipgloss.Color("#EE82EE"))
+	} else {
+		rightStyle.Foreground(lipgloss.NoColor{})
+	}
+
+	return lipgloss.JoinHorizontal(
+		lipgloss.Top,
+		leftStyle.Render(leftCol),
+		" ",
+		lableStyle.Render(g.label),
+		" ",
+		rightStyle.Render(rightCol),
+	)
+}
+
 type fieldModel struct {
 	general		[]generalGroup
 	generalRow	int
+	sides		[]sidesGroup
+	sidesRow	int
+	setting		Setting
+	styles		*styles
 }
 
 func newFieldStyles(bgIsDark bool) *styles {
@@ -92,6 +185,16 @@ func newGeneralGroup(s *styles, label string, defaultIndex int, settings []strin
 	}
 }
 
+func newSidesGroup(s *styles, label string, defaultFocus SideFocus, defaultLeft bool, defaultRight bool) sidesGroup {
+	return sidesGroup{
+		label: label,
+		left: defaultLeft,
+		right: defaultRight,
+		focused: defaultFocus,
+		styles: s,
+	}
+}
+
 func newFieldModel(s *styles) fieldModel {
 	fieldStyles := newFieldStyles(true)
 
@@ -102,9 +205,29 @@ func newFieldModel(s *styles) fieldModel {
 	}
 	general[0].focused = true
 
+	defaultSideFocus := Left
+	sides := []sidesGroup{
+		newSidesGroup(fieldStyles, "Stealth Rock", defaultSideFocus, false, false),
+		newSidesGroup(fieldStyles, "Reflect", defaultSideFocus, false, false),
+		newSidesGroup(fieldStyles, "Light Screen", defaultSideFocus, false, false),
+		newSidesGroup(fieldStyles, "Protect", defaultSideFocus, false, false),
+		newSidesGroup(fieldStyles, "Leech Seed", defaultSideFocus, false, false),
+		newSidesGroup(fieldStyles, "Foresight", defaultSideFocus, false, false),
+		newSidesGroup(fieldStyles, "Helping Hand", defaultSideFocus, false, false),
+		newSidesGroup(fieldStyles, "Tailwind", defaultSideFocus, false, false),
+		newSidesGroup(fieldStyles, "Flower Gift", defaultSideFocus, false, false),
+		newSidesGroup(fieldStyles, "Power Trick", defaultSideFocus, false, false),
+		newSidesGroup(fieldStyles, "Switching Out", defaultSideFocus, false, false),
+	}
+	sides[0].groupFocused = true
+
 	return fieldModel{
 		general: general,
 		generalRow: 0,
+		sides: sides,
+		sidesRow: 0,
+		setting: GeneralSetting,
+		styles: fieldStyles,
 	}
 }
 
@@ -115,23 +238,55 @@ func (m fieldModel) Init() tea.Cmd {
 func (m fieldModel) Update(msg tea.Msg) (fieldModel, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyPressMsg:
-		switch msg.String() {
-		case "up":
-			m.general[m.generalRow].focused = false
-			m.generalRow = max(m.generalRow - 1, 0)
-			m.general[m.generalRow].focused = true
-			return m, nil
-		case "down":
-			m.general[m.generalRow].focused = false
-			m.generalRow = min(m.generalRow + 1, len(m.general) - 1)
-			m.general[m.generalRow].focused = true
-			return m, nil
+		switch m.setting {
+		case GeneralSetting:
+			switch msg.String() {
+			case "s":
+				m.setting = SidesSetting
+				return m, nil
+			case "up":
+				m.general[m.generalRow].focused = false
+				m.generalRow = max(m.generalRow - 1, 0)
+				m.general[m.generalRow].focused = true
+				return m, nil
+			case "down":
+				m.general[m.generalRow].focused = false
+				m.generalRow = min(m.generalRow + 1, len(m.general) - 1)
+				m.general[m.generalRow].focused = true
+				return m, nil
+			}
+		case SidesSetting:
+			switch msg.String() {
+			case "g":
+				m.setting = GeneralSetting
+				return m, nil
+			case "up":
+				m.sides[m.sidesRow].groupFocused = false
+				m.sidesRow = max(m.sidesRow - 1, 0)
+				m.sides[m.sidesRow].groupFocused = true
+				return m, nil
+			case "down":
+				m.sides[m.sidesRow].groupFocused = false
+				m.sidesRow = min(m.sidesRow + 1, len(m.sides) - 1)
+				m.sides[m.sidesRow].groupFocused = true
+				return m, nil
+			}
 		}
 	}
 	
-	var cmd tea.Cmd
-	m.general[m.generalRow], cmd = m.general[m.generalRow].Update(msg)
-	return m, cmd
+	switch m.setting {
+	case GeneralSetting:
+		var cmd tea.Cmd
+		m.general[m.generalRow], cmd = m.general[m.generalRow].Update(msg)
+		return m, cmd
+
+	case SidesSetting:
+		var cmd tea.Cmd
+		m.sides[m.sidesRow], cmd = m.sides[m.sidesRow].Update(msg)
+		return m, cmd
+	}
+
+	return m, nil
 }
 
 func (m fieldModel) View() string {
@@ -146,17 +301,47 @@ func (m fieldModel) Title() string {
 }
 
 func (m fieldModel) Body() string {
-	content := "General:\n"
-	content += m.FormatGeneralSettings()
+	content := m.FormatGeneralSettings()
+	content += m.FormatSideSettings()
 	return content
 }
 
 func (m fieldModel) FormatGeneralSettings() string {
+	var title string
 	var lines []string
+
+	titleStyle := lipgloss.NewStyle()
+	if m.setting == GeneralSetting {
+		titleStyle = titleStyle.Bold(true).Foreground(lipgloss.Color("#FFFF00"))
+	} else {
+		titleStyle.Foreground(lipgloss.NoColor{})
+	}
+
+	title = "General"
 
 	for _, g := range m.general {
 		lines = append(lines, g.View())
 	}
 	
-	return lipgloss.JoinVertical(lipgloss.Left, lines...)
+	return titleStyle.Render(title) + ":\n" + lipgloss.JoinVertical(lipgloss.Left, lines...)
+}
+
+func (m fieldModel) FormatSideSettings() string {
+	var title string
+	var lines []string
+
+	titleStyle := lipgloss.NewStyle()
+	if m.setting == SidesSetting {
+		titleStyle = titleStyle.Bold(true).Foreground(lipgloss.Color("#FFFF00"))
+	} else {
+		titleStyle.Foreground(lipgloss.NoColor{})
+	}
+
+	title = "Sides"
+
+	for _, s := range m.sides {
+		lines = append(lines, s.View())
+	}
+
+	return "\n" + titleStyle.Render(title) + ":\n" + lipgloss.JoinVertical(lipgloss.Left, lines...)
 }
