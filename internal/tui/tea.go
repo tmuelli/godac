@@ -17,14 +17,18 @@ type model struct {
 	calc		calcModel
 	config		configModel
 	field		fieldModel
+
+	styles		*styles
 }
 
 func NewModel() model {
+	s := newStyles(true)
+
 	return model{
-		current:	CalcView,
-		calc:		newCalcModel(),
-		config:		newConfigModel(),
-		field:		newFieldModel(),
+		current:	FieldView,
+		calc:		newCalcModel(s),
+		config:		newConfigModel(s),
+		field:		newFieldModel(s),
 	}
 }
 

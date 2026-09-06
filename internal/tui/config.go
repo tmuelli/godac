@@ -14,7 +14,7 @@ type configModel struct {
 	styles		*styles
 }
 
-func newConfigModel() configModel {
+func newConfigModel(s *styles) configModel {
 	tabs := []string{"Basics", "Stats", "Misc.", "Moves"}
 	tabContent := []string{"Basics here", "Stats here", "Misc. here", "Moves here"}
 

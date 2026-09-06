@@ -9,7 +9,7 @@ type calcModel struct {
 	tab		table.Model
 }
 
-func newCalcModel() calcModel {
+func newCalcModel(s *styles) calcModel {
 	columns := []table.Column{
 		{Title: "Pokemon1 [R]", Width: 15},
 		{Title: "", Width: 5},
