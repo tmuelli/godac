@@ -33,8 +33,7 @@ func newConfigModel(s *styles) configModel {
 		tabs:		tabs,
 		tabContent:	tabContent,
 		activeTab:	0,
-		// TODO: centralize styles
-		styles:		newStyles(true),
+		styles:		s,
 	}
 }
 
@@ -83,24 +82,10 @@ func (m configModel) Body() string {
 	var renderedTabs []string
 
 	for i, t := range m.tabs {
-		var style lipgloss.Style
-		isFirst, isLast, isActive := i == 0, i == len(m.tabs)-1, i == m.activeTab
-		if isActive {
-			style = s.activeTab
-		} else {
-			style = s.inactiveTab
+		style := m.styles.tab
+		if i == m.activeTab {
+			style = style.BorderForeground(m.styles.highlight).Bold(true)
 		}
-		border, _, _, _, _ := style.GetBorder()
-		if isFirst && isActive {
-			border.BottomLeft = "│"
-		} else if isFirst && !isActive {
-			border.BottomLeft = "├"
-		} else if isLast && isActive {
-			border.BottomRight = "│"
-		} else if isLast && !isActive {
-			border.BottomRight = "┤"
-		}
-		style = style.Border(border)
 		renderedTabs = append(renderedTabs, style.Render(t))
 	}
 

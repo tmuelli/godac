@@ -7,6 +7,7 @@ import (
 
 type calcModel struct {
 	tab		table.Model
+	styles	*styles
 }
 
 func newCalcModel(s *styles) calcModel {
@@ -32,7 +33,8 @@ func newCalcModel(s *styles) calcModel {
 	)
 
 	return calcModel{
-		tab: t,
+		tab:		t,
+		styles:		s,
 	}
 }
 
