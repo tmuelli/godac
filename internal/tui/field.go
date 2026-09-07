@@ -205,6 +205,7 @@ func newFieldModel(s *styles) fieldModel {
 	}
 	general[0].focused = true
 
+	// TODO: add spikes settings
 	defaultSideFocus := Left
 	sides := []sidesGroup{
 		newSidesGroup(fieldStyles, "Stealth Rock", defaultSideFocus, false, false),

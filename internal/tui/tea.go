@@ -25,7 +25,7 @@ func NewModel() model {
 	s := newStyles(true)
 
 	return model{
-		current:	FieldView,
+		current:	ConfigView,
 		calc:		newCalcModel(s),
 		config:		newConfigModel(s),
 		field:		newFieldModel(s),

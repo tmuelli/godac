@@ -7,21 +7,33 @@ import (
 	"charm.land/lipgloss/v2"
 )
 
+type tabContent interface {
+	Init()					tea.Cmd
+	Update(msg tea.Msg)		(tabContent, tea.Cmd)
+	View()					string
+}
+
 type configModel struct {
 	tabs		[]string
-	tabContent	[]string
+	tabContent	[]tabContent
 	activeTab	int
 	styles		*styles
 }
 
 func newConfigModel(s *styles) configModel {
 	tabs := []string{"Basics", "Stats", "Misc.", "Moves"}
-	tabContent := []string{"Basics here", "Stats here", "Misc. here", "Moves here"}
+	tabContent := []tabContent{
+		newBasicsModel(s),
+		newStatsModel(s),
+		newMiscModel(s),
+		newMovesModel(s),
+	}
 
 	return configModel{
 		tabs:		tabs,
 		tabContent:	tabContent,
 		activeTab:	0,
+		// TODO: centralize styles
 		styles:		newStyles(true),
 	}
 }
@@ -44,7 +56,9 @@ func (m configModel) Update(msg tea.Msg) (configModel, tea.Cmd) {
 		}
 	}
 
-	return m, nil
+	var cmd tea.Cmd
+	m.tabContent[m.activeTab], cmd = m.tabContent[m.activeTab].Update(msg)
+	return m, cmd
 }
 
 func (m configModel) View() string {
@@ -93,6 +107,6 @@ func (m configModel) Body() string {
 	row := lipgloss.JoinHorizontal(lipgloss.Top, renderedTabs...)
 	doc.WriteString(row)
 	doc.WriteString("\n")
-	doc.WriteString(s.window.Width((lipgloss.Width(row))).Render(m.tabContent[m.activeTab]))
+	doc.WriteString(s.window.Width((lipgloss.Width(row))).Render(m.tabContent[m.activeTab].View()))
 	return s.doc.Render(doc.String())
 }
