@@ -45,11 +45,11 @@ func (m configModel) Update(msg tea.Msg) (configModel, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyPressMsg:
 		switch msg.String() {
-		case "right", "tab":
+		case "tab":
 			m.activeTab = min(m.activeTab+1, len(m.tabs)-1)
 			return m, nil
 
-		case "left", "shift+tab":
+		case "shift+tab":
 			m.activeTab = max(m.activeTab-1, 0)
 			return m, nil
 		}
@@ -92,6 +92,8 @@ func (m configModel) Body() string {
 	row := lipgloss.JoinHorizontal(lipgloss.Top, renderedTabs...)
 	doc.WriteString(row)
 	doc.WriteString("\n")
-	doc.WriteString(s.window.Width((lipgloss.Width(row))).Render(m.tabContent[m.activeTab].View()))
+
+	content := m.tabContent[m.activeTab].View()
+	doc.WriteString(s.window.Width((lipgloss.Width(content))).Render(content))
 	return s.doc.Render(doc.String())
 }

@@ -1,16 +1,44 @@
 package tui
 
 import (
+	"charm.land/bubbles/v2/table"
 	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 )
 
 type statsModel struct {
+	columns		[]table.Column
+	rows		[][]string
+	row			int
+	col			int
 	styles		*styles
 }
 
 func newStatsModel(s *styles) statsModel {
+	columns := []table.Column{
+		{Title: "Stat", Width: 15},
+		{Title: "Base", Width: 15},
+		{Title: "IV", Width: 15},
+		{Title: "EV", Width: 15},
+		{Title: "Total", Width: 15},
+		{Title: "Boost", Width: 15},
+	}
+
+	rows := [][]string{
+		{"Hp", "0", "0", "0", "0", "0"},
+		{"Atk", "0", "0", "0", "0", "0"},
+		{"Def", "0", "0", "0", "0", "0"},
+		{"Spa", "0", "0", "0", "0", "0"},
+		{"Spd", "0", "0", "0", "0", "0"},
+		{"Spe", "0", "0", "0", "0", "0"},
+	}
+
 	return statsModel{
-		styles: s,
+		columns:	columns,
+		rows:		rows,
+		row:		0,
+		col:		0,
+		styles:		s,
 	}
 }
 
@@ -19,9 +47,50 @@ func (m statsModel) Init() tea.Cmd {
 }
 
 func (m statsModel) Update(msg tea.Msg) (tabContent, tea.Cmd) {
+	switch msg := msg.(type) {
+	case editConfirmMsg:
+		m.rows[m.row][m.col] = msg.value
+		return m, nil
+	case tea.KeyPressMsg:
+		switch msg.String() {
+		case "up":
+			m.row = max(m.row - 1, 0)
+		case "down":
+			m.row = min(m.row + 1, len(m.rows) - 1)
+		case "left":
+			m.col = max(m.col - 1, 0)
+		case "right":
+			m.col = min(m.col + 1, len(m.columns) - 1)
+		case "enter":
+			key := m.columns[m.col].Title
+			value := m.rows[m.row][m.col]
+			return m, requestTextInput(key, value)
+		}
+	}
+	
 	return m, nil
 }
 
 func (m statsModel) View() string {
-	return "Stats here"
+	var lines []string
+
+	var headerCells []string
+	for _, c := range m.columns {
+		headerCells = append(headerCells, lipgloss.NewStyle().Width(c.Width).Bold(true).Render(c.Title))
+	}
+	lines = append(lines, lipgloss.JoinHorizontal(lipgloss.Top, headerCells...))
+
+	for ri, row := range m.rows {
+		var cells []string
+		for ci, colVal := range row {
+			style := lipgloss.NewStyle().Width(m.columns[ci].Width)
+			if ri == m.row && ci == m.col {
+				style = style.Foreground(m.styles.highlight).Bold(true)
+			}
+			cells = append(cells, style.Render(colVal))
+		}
+		lines = append(lines, lipgloss.JoinHorizontal(lipgloss.Top, cells...))
+	}
+
+	return lipgloss.JoinVertical(lipgloss.Left, lines...)
 }
