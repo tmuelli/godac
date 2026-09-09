@@ -6,11 +6,15 @@ import (
 	"charm.land/lipgloss/v2"
 )
 
-type statsModel struct {
+type statsData struct {
 	columns		[]table.Column
 	rows		[][]string
 	row			int
 	col			int
+}
+
+type statsModel struct {
+	stats		side[statsData]
 	styles		*styles
 }
 
@@ -34,10 +38,20 @@ func newStatsModel(s *styles) statsModel {
 	}
 
 	return statsModel{
-		columns:	columns,
-		rows:		rows,
-		row:		0,
-		col:		0,
+		stats:		side[statsData]{
+			left:	statsData{
+				columns:	columns,
+				rows:		cloneRows(rows),
+				row:		0,
+				col:		0,
+			},
+			right:	statsData{
+				columns:	columns,
+				rows:		cloneRows(rows),
+				row:		0,
+				col:		0,
+			},
+		},
 		styles:		s,
 	}
 }
@@ -46,45 +60,51 @@ func (m statsModel) Init() tea.Cmd {
 	return nil
 }
 
-func (m statsModel) Update(msg tea.Msg) (tabContent, tea.Cmd) {
+func (m statsModel) Update(msg tea.Msg, side ConfigSide) (tabContent, tea.Cmd) {
+	data := m.stats.Get(side)
+
 	switch msg := msg.(type) {
 	case editConfirmMsg:
-		m.rows[m.row][m.col] = msg.value
+		data.rows[data.row][data.col] = msg.value
+		m.stats.Set(side, data)
 		return m, nil
 	case tea.KeyPressMsg:
 		switch msg.String() {
 		case "up":
-			m.row = max(m.row - 1, 0)
+			data.row = max(data.row - 1, 0)
 		case "down":
-			m.row = min(m.row + 1, len(m.rows) - 1)
+			data.row = min(data.row + 1, len(data.rows) - 1)
 		case "left":
-			m.col = max(m.col - 1, 0)
+			data.col = max(data.col - 1, 0)
 		case "right":
-			m.col = min(m.col + 1, len(m.columns) - 1)
+			data.col = min(data.col + 1, len(data.columns) - 1)
 		case "enter":
-			key := m.columns[m.col].Title
-			value := m.rows[m.row][m.col]
+			key := data.columns[data.col].Title
+			value := data.rows[data.row][data.col]
 			return m, requestTextInput(key, value)
 		}
+		m.stats.Set(side, data)
 	}
 	
 	return m, nil
 }
 
-func (m statsModel) View() string {
+func (m statsModel) View(side ConfigSide) string {
+	data := m.stats.Get(side)
+
 	var lines []string
 
 	var headerCells []string
-	for _, c := range m.columns {
+	for _, c := range data.columns {
 		headerCells = append(headerCells, lipgloss.NewStyle().Width(c.Width).Bold(true).Render(c.Title))
 	}
 	lines = append(lines, lipgloss.JoinHorizontal(lipgloss.Top, headerCells...))
 
-	for ri, row := range m.rows {
+	for ri, row := range data.rows {
 		var cells []string
 		for ci, colVal := range row {
-			style := lipgloss.NewStyle().Width(m.columns[ci].Width)
-			if ri == m.row && ci == m.col {
+			style := lipgloss.NewStyle().Width(data.columns[ci].Width)
+			if ri == data.row && ci == data.col {
 				style = style.Foreground(m.styles.highlight).Bold(true)
 			}
 			cells = append(cells, style.Render(colVal))

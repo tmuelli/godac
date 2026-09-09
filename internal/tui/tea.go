@@ -18,6 +18,7 @@ const (
 type model struct {
 	current		View
 	calc		calcModel
+	configSide	ConfigSide
 	config		configModel
 	field		fieldModel
 
@@ -32,10 +33,11 @@ func NewModel() model {
 	s := newStyles(true)
 
 	return model{
-		current:	ConfigView,
+		current:	CalcView,
 		calc:		newCalcModel(s),
 		config:		newConfigModel(s),
 		field:		newFieldModel(s),
+		styles:		s,
 	}
 }
 
@@ -77,7 +79,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.calc, cmd = m.calc.Update(editMsg)
 
 				case ConfigView:
-					m.config, cmd = m.config.Update(editMsg)
+					m.config, cmd = m.config.Update(editMsg, m.configSide)
 
 				case FieldView:
 					m.field, cmd = m.field.Update(editMsg)
@@ -102,8 +104,14 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.current = CalcView
 			return m, nil
 
-		case "r", "l":
+		case "r":
 			m.current = ConfigView
+			m.configSide = RightSide
+			return m, nil
+
+		case "l":
+			m.current = ConfigView
+			m.configSide = LeftSide
 			return m, nil
 
 		case "f":
@@ -118,7 +126,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.calc, cmd = m.calc.Update(msg)
 
 	case ConfigView:
-		m.config, cmd = m.config.Update(msg)
+		m.config, cmd = m.config.Update(msg, m.configSide)
 
 	case FieldView:
 		m.field, cmd = m.field.Update(msg)
@@ -138,7 +146,7 @@ func (m model) View() tea.View {
 		content = m.calc.View()
 
 	case ConfigView:
-		content = m.config.View()
+		content = m.config.View(m.configSide)
 
 	case FieldView:
 		content = m.field.View()

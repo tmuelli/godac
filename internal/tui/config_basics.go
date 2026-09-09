@@ -7,14 +7,14 @@ import (
 )
 
 type basicsModel struct {
-	valueMap	map[string]string
+	values		side[map[string]string]
 	options		[]string
 	activeIndex	int
 	styles		*styles
 }
 
 func newBasicsModel(s *styles) basicsModel {
-	valueMap := map[string]string{
+	template := map[string]string{
 		"Name": "",
 		"Gender": "",
 		"Type1": "",
@@ -23,8 +23,11 @@ func newBasicsModel(s *styles) basicsModel {
 	}
 
 	return basicsModel{
-		valueMap:		valueMap,
-		options:		maps.Keys(valueMap),
+		values:		side[map[string]string]{
+			left:	maps.Clone(template),
+			right:	maps.Clone(template),
+		},
+		options:		maps.Keys(template),
 		activeIndex:	0,
 		styles:			s,
 	}
@@ -34,10 +37,10 @@ func (m basicsModel) Init() tea.Cmd {
 	return nil
 }
 
-func (m basicsModel) Update(msg tea.Msg) (tabContent, tea.Cmd) {
+func (m basicsModel) Update(msg tea.Msg, side ConfigSide) (tabContent, tea.Cmd) {
 	switch msg := msg.(type) {
 	case editConfirmMsg:
-		m.valueMap[msg.fieldID] = msg.value
+		m.values.Get(side)[msg.fieldID] = msg.value
 		return m, nil
 	case tea.KeyPressMsg:
 		switch msg.String() {
@@ -47,7 +50,7 @@ func (m basicsModel) Update(msg tea.Msg) (tabContent, tea.Cmd) {
 			m.activeIndex = min(m.activeIndex + 1, len(m.options) - 1)
 		case "enter":
 			key := m.options[m.activeIndex]
-			value := m.valueMap[key]
+			value := m.values.Get(side)[key]
 			return m, requestTextInput(key, value)
 		}
 	}
@@ -55,7 +58,9 @@ func (m basicsModel) Update(msg tea.Msg) (tabContent, tea.Cmd) {
 	return m, nil
 }
 
-func (m basicsModel) View() string {
+func (m basicsModel) View(side ConfigSide) string {
+	values := m.values.Get(side)
+
 	var lines []string
 
 	for i, o := range m.options {
@@ -63,7 +68,8 @@ func (m basicsModel) View() string {
 		if i == m.activeIndex {
 			style = style.Bold(true)
 		}
-		lines = append(lines, style.Render(o, ": ", "[", m.valueMap[o], "]"))
+		line := o + ": " + "[" + values[o] + "]"
+		lines = append(lines, style.Render(line))
 	}
 
 	rows := lipgloss.JoinVertical(lipgloss.Left, lines...)

@@ -8,9 +8,9 @@ import (
 )
 
 type tabContent interface {
-	Init()					tea.Cmd
-	Update(msg tea.Msg)		(tabContent, tea.Cmd)
-	View()					string
+	Init()									tea.Cmd
+	Update(msg tea.Msg, side ConfigSide)	(tabContent, tea.Cmd)
+	View(side ConfigSide)					string
 }
 
 type configModel struct {
@@ -41,7 +41,7 @@ func (m configModel) Init() tea.Cmd {
 	return nil
 }
 
-func (m configModel) Update(msg tea.Msg) (configModel, tea.Cmd) {
+func (m configModel) Update(msg tea.Msg, side ConfigSide) (configModel, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyPressMsg:
 		switch msg.String() {
@@ -56,14 +56,14 @@ func (m configModel) Update(msg tea.Msg) (configModel, tea.Cmd) {
 	}
 
 	var cmd tea.Cmd
-	m.tabContent[m.activeTab], cmd = m.tabContent[m.activeTab].Update(msg)
+	m.tabContent[m.activeTab], cmd = m.tabContent[m.activeTab].Update(msg, side)
 	return m, cmd
 }
 
-func (m configModel) View() string {
+func (m configModel) View(side ConfigSide) string {
 	content := m.Title()
 	content += "\n\n"
-	content += m.Body()
+	content += m.Body(side)
 	return content
 }
 
@@ -71,7 +71,7 @@ func (m configModel) Title() string {
 	return "Config view - Press [C] for calculation view or [F] for field view"
 }
 
-func (m configModel) Body() string {
+func (m configModel) Body(side ConfigSide) string {
 	if m.styles == nil {
 		return ""
 	}
@@ -93,7 +93,7 @@ func (m configModel) Body() string {
 	doc.WriteString(row)
 	doc.WriteString("\n")
 
-	content := m.tabContent[m.activeTab].View()
+	content := m.tabContent[m.activeTab].View(side)
 	doc.WriteString(s.window.Width((lipgloss.Width(content))).Render(content))
 	return s.doc.Render(doc.String())
 }
