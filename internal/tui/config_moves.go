@@ -112,3 +112,13 @@ func (m movesModel) View(side ConfigSide) string {
 
 	return lipgloss.JoinVertical(lipgloss.Left, lines...)
 }
+
+func (m movesModel) Names(side ConfigSide) []string {
+	var names []string
+	data := m.moves.Get(side)
+	for _, row := range data.rows {
+		names = append(names, row[0])
+	}
+
+	return names
+}

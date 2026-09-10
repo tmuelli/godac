@@ -143,7 +143,13 @@ func (m model) View() tea.View {
 
 	switch m.current {
 	case CalcView:
-		content = m.calc.View()
+		ctx := calcContext{
+			leftName:	m.config.Name(LeftSide),
+			rightName:	m.config.Name(RightSide),
+			leftMoves:	m.config.Moves(LeftSide),
+			rightMoves:	m.config.Moves(RightSide),
+		}
+		content = m.calc.View(ctx)
 
 	case ConfigView:
 		content = m.config.View(m.configSide)

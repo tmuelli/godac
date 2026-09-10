@@ -97,3 +97,14 @@ func (m configModel) Body(side ConfigSide) string {
 	doc.WriteString(s.window.Width((lipgloss.Width(content))).Render(content))
 	return s.doc.Render(doc.String())
 }
+
+func (m configModel) Name(side ConfigSide) string {
+	// TODO: maybe iota constant for consistent tab accessing
+	basics := m.tabContent[0].(basicsModel)
+	return basics.values.Get(side)["Name"]
+}
+
+func (m configModel) Moves(side ConfigSide) []string {
+	moves := m.tabContent[3].(movesModel)
+	return moves.Names(side)
+}
