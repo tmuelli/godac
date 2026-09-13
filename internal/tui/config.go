@@ -101,13 +101,28 @@ func (m configModel) Body(side ConfigSide) string {
 	return s.doc.Render(doc.String())
 }
 
-func (m configModel) Name(side ConfigSide) string {
-	// TODO: maybe iota constant for consistent tab accessing
-	basics := m.tabContent[0].(basicsModel)
-	return basics.values.Get(side)["Name"]
-}
+func (m configModel) Input(side ConfigSide, reqInfo *calcRequestInfo) *models.UserInput {
+	attackMove := ""
+	if side == ConfigSide(reqInfo.usedSide) {
+		attackMove = reqInfo.usedMove
+	}
 
-func (m configModel) Moves(side ConfigSide) []string {
-	moves := m.tabContent[3].(movesModel)
-	return moves.Names(side)
+	return &models.UserInput{
+		Name:				m.Name(side),
+		Level:				m.Level(side),
+		Gender:				m.Gender(side),
+		AttackMove:			attackMove,
+		Moves:				m.Moves(side),
+		HealthPercent:		m.HealthPercent(side),
+		// TODO: implement shortcut iv settings (optimal, worstcase) input option
+		IvSetting:			"custom",
+		IvCustom:			m.IvCustomStats(side),
+		// TODO: implement shortcut ev settings (optimal, worstcase) input option
+		EvSetting:			"custom",
+		EvCustom:			m.EvCustomStats(side),
+		Item:				m.Item(side),
+		Status:				m.Status(side),
+		Hits:				m.Hits(side, attackMove),
+		Boosts:				m.Boosts(side),
+	}
 }

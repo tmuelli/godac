@@ -6,6 +6,7 @@ import (
 	"charm.land/bubbles/v2/table"
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
+	"github.com/tmuelli/godac/internal/calc"
 	"github.com/tmuelli/godac/internal/models"
 )
 
@@ -21,6 +22,11 @@ type calcContext struct {
 	rightMoves	[]string
 }
 
+type calcResult struct {
+	r		models.BattleResult
+	err		error
+}
+
 type calcModel struct {
 	columns		[]table.Column
 	rows		[][]string
@@ -28,6 +34,7 @@ type calcModel struct {
 	col			int
 	styles		*styles
 	data		*models.Data
+	result		calcResult
 }
 
 func newCalcModel(s *styles, data *models.Data) calcModel {
@@ -59,6 +66,10 @@ func (m calcModel) Init() tea.Cmd {
 
 func (m calcModel) Update(msg tea.Msg) (calcModel, tea.Cmd) {
 	switch msg := msg.(type) {
+	case userInputMsg:
+		input := msg.input
+		m.Calculate(input)
+		return m, nil
 	case tea.KeyPressMsg:
 		switch msg.String() {
 			case "up":
@@ -69,6 +80,15 @@ func (m calcModel) Update(msg tea.Msg) (calcModel, tea.Cmd) {
 				m.col = max(m.col - 1, 0)
 			case "right":
 				m.col = min(m.col + 1, len(m.columns) - 1)
+			case "enter":
+				usedSide := m.col
+				usedMove := m.rows[m.row][m.col]
+
+				if usedSide == LEFT {
+					return m, requestCalc(usedMove, LEFT)
+				} else {
+					return m, requestCalc(usedMove, RIGHT)
+				}
 		}
 	}
 
@@ -111,9 +131,21 @@ func (m calcModel) Body(ctx calcContext) string {
 
 	body := lipgloss.JoinVertical(lipgloss.Left, lines...)
 	body += "\n\nChoose one move\n"
-	body += "\nPokemon1 (Move x) vs. Pokemon 2: MinDmg - MaxDmg (MinPerc - MaxPerc)\n"
-	body += "\nPossible dmg amounts: (x, ...)\n"
+	body += m.ResultView()
 	return body
+}
+
+func (m calcModel) ResultView() string {
+	content := "\nPokemon1 (Move x) vs. Pokemon 2:\n"
+	content += fmt.Sprintf("%d - %d (%f - %f)\n",
+		m.result.r.Range.Min,
+		m.result.r.Range.Max,
+		m.result.r.Range.MinPerc,
+		m.result.r.Range.MaxPerc,
+	)
+	content += "\nPossible dmg amounts:\n"
+	// TODO: format damage matrix
+	return content
 }
 
 func (m calcModel) fillFromContext(ctx calcContext) {
@@ -135,5 +167,32 @@ func (m calcModel) fillSideFromContext(sideName string, sideMoves []string, side
 		}
 
 		m.rows[i][side] = fmt.Sprintf("%s [%s%d]", move, sidePrefix, i+1)
+	}
+}
+
+func (m *calcModel) Calculate(input *UserInput) {
+	// create new calculation
+	calculation, err := calc.NewCalc(m.data, &input.leftInput, &input.rightInput, &input.fieldInput)
+	if err != nil {
+		// log.Fatal("Error while initializing calculation data:", err)
+		m.result.err = err
+		return
+	}
+
+	err = calculation.Calc()
+	if err != nil {
+		// log.Fatal("Error while damage calculation: ", err)
+		m.result.err = err
+		return
+	}
+
+	m.result.r = models.BattleResult{
+		Range: models.BattleResultRange{
+			Min: calculation.Result.Range.Min,
+			MinPerc: 0,
+			Max: calculation.Result.Range.Max,
+			MaxPerc: 0,
+		},
+		DmgMatrix: calculation.Result.DmgMatrix,
 	}
 }

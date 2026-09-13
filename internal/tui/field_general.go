@@ -82,7 +82,6 @@ func (m fieldModel) FormatGeneralSettings() string {
 	return titleStyle.Render(title) + ":\n" + lipgloss.JoinVertical(lipgloss.Left, lines...)
 }
 
-// TODO: use later for get easier value get
 func (g generalGroup) Value() string {
 	return g.settings[g.index]
 }

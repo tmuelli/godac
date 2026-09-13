@@ -100,6 +100,15 @@ func (g sidesGroup) View() string {
 	)
 }
 
+// TODO: implement value getter for spikes
+func (g sidesGroup) Value(side SideFocus) bool {
+	if side == Left {
+		return g.left
+	} else {
+		return g.right
+	}
+}
+
 func (m fieldModel) FormatSideSettings() string {
 	var title string
 	var lines []string
@@ -119,3 +128,4 @@ func (m fieldModel) FormatSideSettings() string {
 
 	return "\n" + titleStyle.Render(title) + ":\n" + lipgloss.JoinVertical(lipgloss.Left, lines...)
 }
+

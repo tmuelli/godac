@@ -35,6 +35,8 @@ type model struct {
 	editMin, editMax	int
 	input				textinput.Model
 	inputValid			bool
+
+	calcRequestInfo		calcRequestInfo
 }
 
 func NewModel(data *models.Data) model {
@@ -66,6 +68,19 @@ func (m model) Init() tea.Cmd {
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case calcRequestMsg:
+		m.calcRequestInfo.usedMove = msg.usedMove
+		m.calcRequestInfo.usedSide = msg.usedSide
+
+		userInput := m.Input()
+		inputMsg := userInputMsg{
+			input:	userInput,
+		}
+
+		var cmd tea.Cmd
+		m.calc, cmd = m.calc.Update(inputMsg)
+		return m, cmd
+
 	case editRequestMsg:
 		m.editing = true
 		m.editID = msg.fieldID
@@ -218,4 +233,14 @@ func (m model) View() tea.View {
 	)
 	v.AltScreen = true
 	return v
+}
+
+func (m model) Input() *UserInput {
+	input := UserInput{
+		leftInput:	*m.config.Input(LeftSide, &m.calcRequestInfo),
+		rightInput:	*m.config.Input(RightSide, &m.calcRequestInfo),
+		fieldInput:	*m.field.Input(),
+	}
+
+	return &input
 }

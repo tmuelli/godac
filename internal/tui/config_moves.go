@@ -16,7 +16,7 @@ type movesData struct {
 }
 
 type movesModel struct {
-	moves		side[movesData]
+	tab			side[movesData]
 	styles		*styles
 	data		*models.Data
 }
@@ -39,7 +39,7 @@ func newMovesModel(s *styles, data *models.Data) movesModel {
 	}
 
 	return movesModel{
-		moves:		side[movesData]{
+		tab:		side[movesData]{
 			left:	movesData{
 				columns:	columns,
 				rows:		cloneRows(rows),
@@ -63,12 +63,12 @@ func (m movesModel) Init() tea.Cmd {
 }
 
 func (m movesModel) Update(msg tea.Msg, side ConfigSide) (tabContent, tea.Cmd) {
-	data := m.moves.Get(side)
+	data := m.tab.Get(side)
 	
 	switch msg := msg.(type) {
 	case editConfirmMsg:
 		data.rows[data.row][data.col] = msg.value
-		m.moves.Set(side, data)
+		m.tab.Set(side, data)
 		return m, nil
 	case tea.KeyPressMsg:
 		switch msg.String() {
@@ -85,14 +85,14 @@ func (m movesModel) Update(msg tea.Msg, side ConfigSide) (tabContent, tea.Cmd) {
 			value := data.rows[data.row][data.col]
 			return m, m.requestInput(key, value)
 		}
-		m.moves.Set(side, data)
+		m.tab.Set(side, data)
 	}
 	
 	return m, nil
 }
 
 func (m movesModel) View(side ConfigSide) string {
-	data := m.moves.Get(side)
+	data := m.tab.Get(side)
 
 	var lines []string
 
@@ -119,7 +119,7 @@ func (m movesModel) View(side ConfigSide) string {
 
 func (m movesModel) Names(side ConfigSide) []string {
 	var names []string
-	data := m.moves.Get(side)
+	data := m.tab.Get(side)
 	for _, row := range data.rows {
 		names = append(names, row[0])
 	}

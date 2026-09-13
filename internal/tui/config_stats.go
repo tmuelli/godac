@@ -15,7 +15,7 @@ type statsData struct {
 }
 
 type statsModel struct {
-	stats		side[statsData]
+	tab			side[statsData]
 	styles		*styles
 	data		*models.Data
 }
@@ -40,7 +40,7 @@ func newStatsModel(s *styles, data *models.Data) statsModel {
 	}
 
 	return statsModel{
-		stats:		side[statsData]{
+		tab:		side[statsData]{
 			left:	statsData{
 				columns:	columns,
 				rows:		cloneRows(rows),
@@ -64,12 +64,12 @@ func (m statsModel) Init() tea.Cmd {
 }
 
 func (m statsModel) Update(msg tea.Msg, side ConfigSide) (tabContent, tea.Cmd) {
-	data := m.stats.Get(side)
+	data := m.tab.Get(side)
 
 	switch msg := msg.(type) {
 	case editConfirmMsg:
 		data.rows[data.row][data.col] = msg.value
-		m.stats.Set(side, data)
+		m.tab.Set(side, data)
 		return m, nil
 	case tea.KeyPressMsg:
 		switch msg.String() {
@@ -86,14 +86,14 @@ func (m statsModel) Update(msg tea.Msg, side ConfigSide) (tabContent, tea.Cmd) {
 			value := data.rows[data.row][data.col]
 			return m, m.requestInput(key, value)
 		}
-		m.stats.Set(side, data)
+		m.tab.Set(side, data)
 	}
 	
 	return m, nil
 }
 
 func (m statsModel) View(side ConfigSide) string {
-	data := m.stats.Get(side)
+	data := m.tab.Get(side)
 
 	var lines []string
 

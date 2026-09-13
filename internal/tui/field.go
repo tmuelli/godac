@@ -22,6 +22,19 @@ type fieldModel struct {
 	data		*models.Data
 }
 
+// TODO: implement value getter for spikes
+func (m fieldModel) SideGroupValue(label string, side SideFocus) bool {
+	value := false
+	
+	for _, s := range m.sides {
+		if s.label == label {
+			value = s.Value(side)
+		}
+	}
+
+	return value
+}
+
 func newFieldModel(s *styles, data *models.Data) fieldModel {
 	general := []generalGroup{
 		newGeneralGroup(s, "BattleMode", 0, []string{"Singles", "Doubles"}),
@@ -131,4 +144,54 @@ func (m fieldModel) Body() string {
 	content := m.FormatGeneralSettings()
 	content += m.FormatSideSettings()
 	return content
+}
+
+func (m fieldModel) SideInput(side SideFocus) *models.UserFieldSideInput {
+	input := models.UserFieldSideInput{
+		StealthRocks:	m.SideGroupValue("Stealth Rock", side),
+		// TODO: implement value getter for spikes
+		Spikes:			0,
+		Reflect:		m.SideGroupValue("Reflect", side),
+		LightScreen:	m.SideGroupValue("Light Screen", side),
+		Protect:		m.SideGroupValue("Protect", side),
+		LeechSeed:		m.SideGroupValue("Leech Seed", side),
+		Foresight:		m.SideGroupValue("Foresight", side),
+		HelpingHand: 	m.SideGroupValue("Helping Hand", side),
+		Tailwind:		m.SideGroupValue("Tailwind", side),
+		FlowerGift:		m.SideGroupValue("Flower Gift", side),
+		PowerTrick:		m.SideGroupValue("Power Trick", side),
+		SwitchingOut:	m.SideGroupValue("Switching Out", side),
+	}
+	
+	return &input
+}
+
+func (m fieldModel) Input() *models.UserFieldInput {
+	// type
+	fieldType := m.general[0].Value()
+
+	// level
+	var level int
+	switch m.general[1].Value() {
+	case "Level 100":
+		level = 100
+	case "Level 50":
+		level = 50
+	case "Level 5":
+		level = 5
+	}
+
+	// terrain
+	terrain := m.general[2].Value()
+
+	fieldInput := models.UserFieldInput{
+		Type:		fieldType,
+		Level:		level,
+		Terrain:	terrain,
+		IsGravity:	false,	// TODO implement later in field view
+		Left:		*m.SideInput(Left),
+		Right:		*m.SideInput(Right),
+	}
+	
+	return &fieldInput
 }

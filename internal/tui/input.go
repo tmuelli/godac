@@ -1,6 +1,9 @@
 package tui
 
-import tea "charm.land/bubbletea/v2"
+import (
+	tea "charm.land/bubbletea/v2"
+	"github.com/tmuelli/godac/internal/models"
+)
 
 type EditMode int
 
@@ -23,12 +26,6 @@ type editConfirmMsg struct {
 	value		string
 }
 
-func requestTextInput(fieldID, initial string) tea.Cmd {
-	return func() tea.Msg {
-		return editRequestMsg{fieldID: fieldID, initial: initial}
-	}
-}
-
 func requestNumberInput(fieldID, initial string, min, max int) tea.Cmd {
 	return func() tea.Msg {
 		return editRequestMsg{
@@ -48,6 +45,35 @@ func requestSelectInput(fieldID, initial string, options []string) tea.Cmd {
 			initial:	initial,
 			options:	options,
 			mode:		SelectEditMode,
+		}
+	}
+}
+
+type UserInput struct {
+	fieldInput	models.UserFieldInput
+	leftInput	models.UserInput
+	rightInput	models.UserInput
+}
+
+type userInputMsg struct {
+	input		*UserInput
+}
+
+type calcRequestMsg struct {
+	usedMove	string
+	usedSide	int
+}
+
+type calcRequestInfo struct {
+	usedMove	string
+	usedSide	int
+}
+
+func requestCalc(move string, side int) tea.Cmd {
+	return func() tea.Msg {
+		return calcRequestMsg{
+			usedMove:	move,
+			usedSide:	side,
 		}
 	}
 }
