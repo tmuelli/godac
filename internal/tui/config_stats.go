@@ -4,6 +4,7 @@ import (
 	"charm.land/bubbles/v2/table"
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
+	"github.com/tmuelli/godac/internal/models"
 )
 
 type statsData struct {
@@ -16,9 +17,10 @@ type statsData struct {
 type statsModel struct {
 	stats		side[statsData]
 	styles		*styles
+	data		*models.Data
 }
 
-func newStatsModel(s *styles) statsModel {
+func newStatsModel(s *styles, data *models.Data) statsModel {
 	columns := []table.Column{
 		{Title: "Stat", Width: 15},
 		{Title: "Base", Width: 15},
@@ -53,6 +55,7 @@ func newStatsModel(s *styles) statsModel {
 			},
 		},
 		styles:		s,
+		data:		data,
 	}
 }
 
@@ -81,7 +84,7 @@ func (m statsModel) Update(msg tea.Msg, side ConfigSide) (tabContent, tea.Cmd) {
 		case "enter":
 			key := data.columns[data.col].Title
 			value := data.rows[data.row][data.col]
-			return m, requestTextInput(key, value)
+			return m, m.requestInput(key, value)
 		}
 		m.stats.Set(side, data)
 	}
@@ -113,4 +116,35 @@ func (m statsModel) View(side ConfigSide) string {
 	}
 
 	return lipgloss.JoinVertical(lipgloss.Left, lines...)
+}
+
+// TODO: maybe make general requestInput
+func (m statsModel) requestInput(key, value string) tea.Cmd {
+	min := 0
+	max := 0
+	var options []string
+	isNumeric := true
+
+	// TODO: maybe use SliceFROmMapValue somewhere before to not do this everytime again
+	// TODO: change to constants where its reasonable
+	switch key {
+	case "Base":
+		min = 1
+		max = 255
+	case "IV":
+		min = 0
+		max = 31
+	case "EV":
+		min = 0
+		max = 252
+	case "Boost":
+		isNumeric = false
+		options = []string{"-6", "-5", "-4", "-3", "-2", "-1", "0", "+1", "+2", "+3", "+4", "+5", "+6"}
+	}
+
+	if isNumeric {
+		return requestNumberInput(key, value, min, max)
+	} else {
+		return requestSelectInput(key, value, options)
+	}
 }

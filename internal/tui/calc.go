@@ -6,6 +6,7 @@ import (
 	"charm.land/bubbles/v2/table"
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
+	"github.com/tmuelli/godac/internal/models"
 )
 
 const (
@@ -26,9 +27,10 @@ type calcModel struct {
 	row			int
 	col			int
 	styles		*styles
+	data		*models.Data
 }
 
-func newCalcModel(s *styles) calcModel {
+func newCalcModel(s *styles, data *models.Data) calcModel {
 	columns := []table.Column{
 		{Title: "Pokemon1 [L]", Width: 15},
 		{Title: "Pokemon2 [R]", Width: 15},
@@ -47,6 +49,7 @@ func newCalcModel(s *styles) calcModel {
 		row:		0,
 		col:		0,
 		styles:		s,
+		data:		data,
 	}
 }
 

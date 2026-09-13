@@ -4,6 +4,8 @@ import (
 	"charm.land/bubbles/v2/table"
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
+	"github.com/tmuelli/godac/internal/models"
+	"github.com/tmuelli/godac/internal/utils"
 )
 
 type movesData struct {
@@ -16,9 +18,10 @@ type movesData struct {
 type movesModel struct {
 	moves		side[movesData]
 	styles		*styles
+	data		*models.Data
 }
 
-func newMovesModel(s *styles) movesModel {
+func newMovesModel(s *styles, data *models.Data) movesModel {
 	columns := []table.Column{
 		{Title: "Move", Width: 15},
 		{Title: "Base Power", Width: 15},
@@ -51,6 +54,7 @@ func newMovesModel(s *styles) movesModel {
 			},
 		},
 		styles:		s,
+		data:		data,
 	}
 }
 
@@ -79,7 +83,7 @@ func (m movesModel) Update(msg tea.Msg, side ConfigSide) (tabContent, tea.Cmd) {
 		case "enter":
 			key := data.columns[data.col].Title
 			value := data.rows[data.row][data.col]
-			return m, requestTextInput(key, value)
+			return m, m.requestInput(key, value)
 		}
 		m.moves.Set(side, data)
 	}
@@ -121,4 +125,45 @@ func (m movesModel) Names(side ConfigSide) []string {
 	}
 
 	return names
+}
+
+// TODO: maybe make general requestInput
+func (m movesModel) requestInput(key, value string) tea.Cmd {
+	min := 0
+	max := 0
+	var options []string
+	isNumeric := false
+
+	// TODO: maybe use SliceFROmMapValue somewhere before to not do this everytime again
+	// TODO: change to constants where its reasonable
+	switch key {
+	case "Move":
+		options = utils.SliceFromMapValue(m.data.Moves, func(m models.Move) string {
+			return m.Name
+		})
+	case "Base Power":
+		isNumeric = true
+		min = 0
+		// TODO: numeric input with only one limit => set sane limit?
+		max = 1000
+	case "Type":
+		options = utils.SliceFromMapValue(m.data.Types, func(t models.Type) string {
+			return t.Name
+		})
+	case "Category":
+		options = []string{"Physical", "Special"}
+	case "Crit":
+		options = []string{"Yes", "No"}
+	case "Hits":
+		// TODO: better solution
+		options = []string{"Once", "Twice", "3 times", "4 times", "5 times",
+			"1 hits", "2 hits", "3 hits", "4 hits", "5 hits",
+		}
+	}
+
+	if isNumeric {
+		return requestNumberInput(key, value, min, max)
+	} else {
+		return requestSelectInput(key, value, options)
+	}
 }

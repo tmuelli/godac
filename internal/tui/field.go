@@ -2,6 +2,7 @@ package tui
 
 import (
 	tea "charm.land/bubbletea/v2"
+	"github.com/tmuelli/godac/internal/models"
 )
 
 type Setting int
@@ -18,9 +19,10 @@ type fieldModel struct {
 	sidesRow	int
 	setting		Setting
 	styles		*styles
+	data		*models.Data
 }
 
-func newFieldModel(s *styles) fieldModel {
+func newFieldModel(s *styles, data *models.Data) fieldModel {
 	general := []generalGroup{
 		newGeneralGroup(s, "BattleMode", 0, []string{"Singles", "Doubles"}),
 		newGeneralGroup(s, "Level", 0, []string{"Level 100", "Level 50", "Level 5"}),
@@ -52,6 +54,7 @@ func newFieldModel(s *styles) fieldModel {
 		sidesRow: 0,
 		setting: GeneralSetting,
 		styles: s,
+		data:	data,
 	}
 }
 

@@ -3,6 +3,8 @@ package tui
 import (
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
+	"github.com/tmuelli/godac/internal/models"
+	"github.com/tmuelli/godac/internal/utils"
 	"golang.org/x/exp/maps"
 )
 
@@ -11,9 +13,10 @@ type miscModel struct {
 	options		[]string
 	activeIndex	int
 	styles		*styles
+	data		*models.Data
 }
 
-func newMiscModel(s *styles) miscModel {
+func newMiscModel(s *styles, data *models.Data) miscModel {
 	template := map[string]string{
 		"Nature": "",
 		"Ability": "",
@@ -30,6 +33,7 @@ func newMiscModel(s *styles) miscModel {
 		options:		maps.Keys(template),
 		activeIndex:	0,
 		styles:			s,
+		data:			data,
 	}
 }
 
@@ -51,7 +55,7 @@ func (m miscModel) Update(msg tea.Msg, side ConfigSide) (tabContent, tea.Cmd) {
 		case "enter":
 			key := m.options[m.activeIndex]
 			value := m.values.Get(side)[key]
-			return m, requestTextInput(key, value)
+			return m, m.requestInput(key, value)
 		}
 	}
 
@@ -74,4 +78,41 @@ func (m miscModel) View(side ConfigSide) string {
 
 	rows := lipgloss.JoinVertical(lipgloss.Left, lines...)
 	return rows
+}
+
+// TODO: maybe make general requestInput
+func (m miscModel) requestInput(key, value string) tea.Cmd {
+	min := 0
+	max := 0
+	var options []string
+	isNumeric := false
+
+	// TODO: maybe use SliceFROmMapValue somewhere before to not do this everytime again
+	// TODO: change to constants where its reasonable
+	switch key {
+	case "Nature":
+		options = utils.SliceFromMapValue(m.data.Natures, func(n models.Nature) string {
+			return n.Name
+		})
+	case "Ability":
+		options = utils.SliceFromMapValue(m.data.Abilities, func(a models.Ability) string {
+			return a.Name
+		})
+	case "Item":
+		options = utils.SliceFromMapValue(m.data.Items, func(i models.Item) string {
+			return i.Name
+		})
+	case "Status":
+		options = []string{"Healthy", "Poisoned", "Badly Poisoned", "Burned", "Paralyzed", "Asleep", "Frozen"}
+	case "Health":
+		isNumeric = true
+		min = 1
+		max = 100
+	}
+
+	if isNumeric {
+		return requestNumberInput(key, value, min, max)
+	} else {
+		return requestSelectInput(key, value, options)
+	}
 }

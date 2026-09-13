@@ -12,19 +12,19 @@ import (
 )
 
 func main() {
-	err := tui.Run()
+	// load data
+	data, err := models.NewData()
+	if err != nil {
+		log.Fatal("Failed to load data ", err)
+	}
+
+	err = tui.Run(data)
 	if err != nil {
 		fmt.Printf("Error from tui: %v\n", err)
 		os.Exit(1)
 	}
 
 	return
-
-	// load data
-	data, err := models.NewData()
-	if err != nil {
-		log.Fatal("Failed to load data ", err)
-	}
 
 	testAttackerData, err := os.ReadFile("test_attacker_v2.json")
 	if err != nil {

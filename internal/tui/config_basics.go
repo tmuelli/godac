@@ -3,6 +3,8 @@ package tui
 import (
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
+	"github.com/tmuelli/godac/internal/models"
+	"github.com/tmuelli/godac/internal/utils"
 	"golang.org/x/exp/maps"
 )
 
@@ -11,9 +13,10 @@ type basicsModel struct {
 	options		[]string
 	activeIndex	int
 	styles		*styles
+	data		*models.Data
 }
 
-func newBasicsModel(s *styles) basicsModel {
+func newBasicsModel(s *styles, data *models.Data) basicsModel {
 	template := map[string]string{
 		"Name": "",
 		"Gender": "",
@@ -30,6 +33,7 @@ func newBasicsModel(s *styles) basicsModel {
 		options:		maps.Keys(template),
 		activeIndex:	0,
 		styles:			s,
+		data:			data,
 	}
 }
 
@@ -51,7 +55,7 @@ func (m basicsModel) Update(msg tea.Msg, side ConfigSide) (tabContent, tea.Cmd) 
 		case "enter":
 			key := m.options[m.activeIndex]
 			value := m.values.Get(side)[key]
-			return m, requestTextInput(key, value)
+			return m, m.requestInput(key, value)
 		}
 	}
 
@@ -74,4 +78,37 @@ func (m basicsModel) View(side ConfigSide) string {
 
 	rows := lipgloss.JoinVertical(lipgloss.Left, lines...)
 	return rows
+}
+
+// TODO: maybe make general requestInput
+func (m basicsModel) requestInput(key, value string) tea.Cmd {
+	min := 0
+	max := 0
+	var options []string
+	isNumeric := false
+
+	// TODO: maybe use SliceFROmMapValue somewhere before to not do this everytime again
+	// TODO: change to constants where its reasonable
+	switch key {
+	case "Name":
+		options = utils.SliceFromMapValue(m.data.Species, func(s models.Specie) string {
+			return s.Name
+		})
+	case "Gender":
+		options = []string{"Female", "Male", "Genderless"}
+	case "Type1", "Type2":
+		options = utils.SliceFromMapValue(m.data.Types, func(t models.Type) string {
+			return t.Name
+		})
+	case "Level":
+		isNumeric = true
+		min = 1
+		max = 100
+	}
+
+	if isNumeric {
+		return requestNumberInput(key, value, min, max)
+	} else {
+		return requestSelectInput(key, value, options)
+	}
 }

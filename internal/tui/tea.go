@@ -1,10 +1,13 @@
 package tui
 
 import (
+	"slices"
+	"strconv"
 	"strings"
 
 	"charm.land/bubbles/v2/textinput"
 	tea "charm.land/bubbletea/v2"
+	"github.com/tmuelli/godac/internal/models"
 )
 
 type View int
@@ -23,26 +26,33 @@ type model struct {
 	field		fieldModel
 
 	styles		*styles
+	data		*models.Data
 
-	editing		bool
-	input		textinput.Model
-	editID		string
+	editing				bool
+	editMode			EditMode
+	editID				string
+	editOptions			[]string
+	editMin, editMax	int
+	input				textinput.Model
+	inputValid			bool
 }
 
-func NewModel() model {
+func NewModel(data *models.Data) model {
 	s := newStyles(true)
 
 	return model{
 		current:	CalcView,
-		calc:		newCalcModel(s),
-		config:		newConfigModel(s),
-		field:		newFieldModel(s),
+		calc:		newCalcModel(s, data),
+		config:		newConfigModel(s, data),
+		field:		newFieldModel(s, data),
+		data:		data,
 		styles:		s,
+		inputValid:	true,
 	}
 }
 
-func Run() error {
-	p := tea.NewProgram(NewModel())
+func Run(data *models.Data) error {
+	p := tea.NewProgram(NewModel(data))
 	if _, err := p.Run(); err != nil {
 		return err
 	}
@@ -59,9 +69,23 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case editRequestMsg:
 		m.editing = true
 		m.editID = msg.fieldID
+		m.editMode = msg.mode
+
 		m.input = textinput.New()
+
+		switch m.editMode {
+		case SelectEditMode:
+			m.input.SetSuggestions(msg.options)
+			m.input.ShowSuggestions = true
+			m.editOptions = msg.options
+
+		case NumberEditMode:
+			m.editMin = msg.min
+			m.editMax = msg.max
+		}
+		
 		// m.input.SetValue(msg.initial)
-		m.input.Placeholder = msg.initial
+		// m.input.Placeholder = msg.initial
 		m.input.Focus()
 		return m, nil
 
@@ -70,6 +94,24 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			switch msg.String() {
 			case "enter":
 				value := m.input.Value()
+				m.inputValid = true
+
+				switch m.editMode {
+				case SelectEditMode:
+					if !slices.Contains(m.editOptions, value) {
+						m.inputValid = false
+						return m, nil
+					}
+
+				case NumberEditMode:
+					n, err := strconv.Atoi(value)
+					if err != nil || n < m.editMin || n >m.editMax {
+						m.inputValid = false
+						return m, nil
+					}
+				}
+
+				// input is valid => editing can now be exited
 				m.editing = false
 
 				var cmd tea.Cmd
@@ -163,6 +205,11 @@ func (m model) View() tea.View {
 	if m.editing {
 		doc.WriteString("\n\n")
 		doc.WriteString(m.input.View())
+
+		if !m.inputValid {
+			// TODO: better error message and better visualization
+			doc.WriteString("\nInvalid input. Please try again.\n")
+		}
 	}
 
 	v := tea.NewView(
@@ -171,20 +218,4 @@ func (m model) View() tea.View {
 	)
 	v.AltScreen = true
 	return v
-}
-
-type editRequestMsg struct {
-	fieldID		string
-	initial		string
-}
-
-type editConfirmMsg struct {
-	fieldID		string
-	value		string
-}
-
-func requestTextInput(fieldID, initial string) tea.Cmd {
-	return func() tea.Msg {
-		return editRequestMsg{fieldID: fieldID, initial: initial}
-	}
 }

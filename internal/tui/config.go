@@ -5,6 +5,7 @@ import (
 
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
+	"github.com/tmuelli/godac/internal/models"
 )
 
 type tabContent interface {
@@ -18,15 +19,16 @@ type configModel struct {
 	tabContent	[]tabContent
 	activeTab	int
 	styles		*styles
+	data		*models.Data
 }
 
-func newConfigModel(s *styles) configModel {
+func newConfigModel(s *styles, data *models.Data) configModel {
 	tabs := []string{"Basics", "Stats", "Misc.", "Moves"}
 	tabContent := []tabContent{
-		newBasicsModel(s),
-		newStatsModel(s),
-		newMiscModel(s),
-		newMovesModel(s),
+		newBasicsModel(s, data),
+		newStatsModel(s, data),
+		newMiscModel(s, data),
+		newMovesModel(s, data),
 	}
 
 	return configModel{
@@ -34,6 +36,7 @@ func newConfigModel(s *styles) configModel {
 		tabContent:	tabContent,
 		activeTab:	0,
 		styles:		s,
+		data:		data,
 	}
 }
 
