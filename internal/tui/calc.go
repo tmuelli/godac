@@ -10,11 +10,6 @@ import (
 	"github.com/tmuelli/godac/internal/models"
 )
 
-const (
-	LEFT = iota
-	RIGHT
-)
-
 type calcContext struct {
 	leftName	string
 	rightName	string
@@ -81,13 +76,13 @@ func (m calcModel) Update(msg tea.Msg) (calcModel, tea.Cmd) {
 			case "right":
 				m.col = min(m.col + 1, len(m.columns) - 1)
 			case "enter":
-				usedSide := m.col
+				usedSide := Side(m.col)
 				usedMove := m.rows[m.row][m.col]
 
-				if usedSide == LEFT {
-					return m, requestCalc(usedMove, LEFT)
+				if usedSide == LeftSide {
+					return m, requestCalc(usedMove, LeftSide)
 				} else {
-					return m, requestCalc(usedMove, RIGHT)
+					return m, requestCalc(usedMove, RightSide)
 				}
 		}
 	}
@@ -150,13 +145,13 @@ func (m calcModel) ResultView() string {
 
 func (m calcModel) fillFromContext(ctx calcContext) {
 	// left
-	m.fillSideFromContext(ctx.leftName, ctx.leftMoves, LEFT, "L")
+	m.fillSideFromContext(ctx.leftName, ctx.leftMoves, LeftSide, "L")
 
 	// right
-	m.fillSideFromContext(ctx.rightName, ctx.rightMoves, RIGHT, "R")
+	m.fillSideFromContext(ctx.rightName, ctx.rightMoves, RightSide, "R")
 }
 
-func (m calcModel) fillSideFromContext(sideName string, sideMoves []string, side int, sidePrefix string) {
+func (m calcModel) fillSideFromContext(sideName string, sideMoves []string, side Side, sidePrefix string) {
 	if sideName != "" {
 		m.columns[side].Title = fmt.Sprintf("%s [%s]", sideName, sidePrefix)
 	}

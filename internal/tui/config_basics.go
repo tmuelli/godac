@@ -41,7 +41,7 @@ func (m basicsModel) Init() tea.Cmd {
 	return nil
 }
 
-func (m basicsModel) Update(msg tea.Msg, side ConfigSide) (tabContent, tea.Cmd) {
+func (m basicsModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 	switch msg := msg.(type) {
 	case editConfirmMsg:
 		m.values.Get(side)[msg.fieldID] = msg.value
@@ -62,7 +62,7 @@ func (m basicsModel) Update(msg tea.Msg, side ConfigSide) (tabContent, tea.Cmd) 
 	return m, nil
 }
 
-func (m basicsModel) View(side ConfigSide) string {
+func (m basicsModel) View(side Side) string {
 	values := m.values.Get(side)
 
 	var lines []string

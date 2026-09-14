@@ -6,26 +6,19 @@ import (
 	"github.com/tmuelli/godac/internal/models"
 )
 
-type ConfigSide int
-
-const (
-	LeftSide	ConfigSide = iota
-	RightSide
-)
-
 type side[T any] struct {
 	left	T
 	right	T
 }
 
-func (s side[T]) Get(side ConfigSide) T {
+func (s side[T]) Get(side Side) T {
 	if side == LeftSide {
 		return s.left
 	}
 	return s.right
 }
 
-func (s *side[T]) Set(side ConfigSide, v T) {
+func (s *side[T]) Set(side Side, v T) {
 	if side == LeftSide {
 		s.left = v
 	} else {
@@ -33,19 +26,19 @@ func (s *side[T]) Set(side ConfigSide, v T) {
 	}
 }
 
-func (m configModel) Name(side ConfigSide) string {
+func (m configModel) Name(side Side) string {
 	// TODO: maybe iota constant for consistent tab accessing
 	basics := m.tabContent[0].(basicsModel)
 	return basics.values.Get(side)["Name"]
 }
 
-func (m configModel) Gender(side ConfigSide) *string {
+func (m configModel) Gender(side Side) *string {
 	basics := m.tabContent[0].(basicsModel)
 	gender := basics.values.Get(side)["Gender"]
 	return &gender
 }
 
-func (m configModel) Level(side ConfigSide) int {
+func (m configModel) Level(side Side) int {
 	basics := m.tabContent[0].(basicsModel)
 
 	// level
@@ -59,12 +52,12 @@ func (m configModel) Level(side ConfigSide) int {
 
 // TODO: setting types / using types from input
 
-func (m configModel) Moves(side ConfigSide) []string {
+func (m configModel) Moves(side Side) []string {
 	moves := m.tabContent[3].(movesModel)
 	return moves.Names(side)
 }
 
-func (m configModel) Hits(side ConfigSide, move string) *int {
+func (m configModel) Hits(side Side, move string) *int {
 	moves := m.tabContent[3].(movesModel)
 	data := moves.tab.Get(side)
 
@@ -91,7 +84,7 @@ func (m configModel) Hits(side ConfigSide, move string) *int {
 	return &hits
 }
 
-func (m configModel) HealthPercent(side ConfigSide) int {
+func (m configModel) HealthPercent(side Side) int {
 	misc := m.tabContent[2].(miscModel)
 
 	health, err := strconv.Atoi(misc.values.Get(side)["Health"])
@@ -102,7 +95,7 @@ func (m configModel) HealthPercent(side ConfigSide) int {
 	return health
 }
 
-func (m configModel) IvCustomStats(side ConfigSide) *models.IvStats {
+func (m configModel) IvCustomStats(side Side) *models.IvStats {
 	stats := m.tabContent[1].(statsModel)
 	data := stats.tab.Get(side)
 
@@ -137,7 +130,7 @@ func (m configModel) IvCustomStats(side ConfigSide) *models.IvStats {
 	return &s
 }
 
-func (m configModel) EvCustomStats(side ConfigSide) *models.EvStats {
+func (m configModel) EvCustomStats(side Side) *models.EvStats {
 	stats := m.tabContent[1].(statsModel)
 	data := stats.tab.Get(side)
 
@@ -172,19 +165,19 @@ func (m configModel) EvCustomStats(side ConfigSide) *models.EvStats {
 	return &s
 }
 
-func (m configModel) Item(side ConfigSide) *string {
+func (m configModel) Item(side Side) *string {
 	misc := m.tabContent[2].(miscModel)
 	item := misc.values.Get(side)["Item"]
 	return &item
 }
 
-func (m configModel) Status(side ConfigSide) *string {
+func (m configModel) Status(side Side) *string {
 	misc := m.tabContent[2].(miscModel)
 	status := misc.values.Get(side)["Status"]
 	return &status
 }
 
-func (m configModel) Boosts(side ConfigSide) models.UserInputBoosts {
+func (m configModel) Boosts(side Side) models.UserInputBoosts {
 	stats := m.tabContent[1].(statsModel)
 	data := stats.tab.Get(side)
 	boosts := models.UserInputBoosts{}

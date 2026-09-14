@@ -23,7 +23,7 @@ type fieldModel struct {
 }
 
 // TODO: implement value getter for spikes
-func (m fieldModel) SideGroupValue(label string, side SideFocus) bool {
+func (m fieldModel) SideGroupValue(label string, side Side) bool {
 	value := false
 	
 	for _, s := range m.sides {
@@ -44,19 +44,19 @@ func newFieldModel(s *styles, data *models.Data) fieldModel {
 	general[0].focused = true
 
 	// TODO: add spikes settings
-	defaultSideFocus := Left
+	defaultSide := LeftSide
 	sides := []sidesGroup{
-		newSidesGroup(s, "Stealth Rock", defaultSideFocus, false, false),
-		newSidesGroup(s, "Reflect", defaultSideFocus, false, false),
-		newSidesGroup(s, "Light Screen", defaultSideFocus, false, false),
-		newSidesGroup(s, "Protect", defaultSideFocus, false, false),
-		newSidesGroup(s, "Leech Seed", defaultSideFocus, false, false),
-		newSidesGroup(s, "Foresight", defaultSideFocus, false, false),
-		newSidesGroup(s, "Helping Hand", defaultSideFocus, false, false),
-		newSidesGroup(s, "Tailwind", defaultSideFocus, false, false),
-		newSidesGroup(s, "Flower Gift", defaultSideFocus, false, false),
-		newSidesGroup(s, "Power Trick", defaultSideFocus, false, false),
-		newSidesGroup(s, "Switching Out", defaultSideFocus, false, false),
+		newSidesGroup(s, "Stealth Rock", defaultSide, false, false),
+		newSidesGroup(s, "Reflect", defaultSide, false, false),
+		newSidesGroup(s, "Light Screen", defaultSide, false, false),
+		newSidesGroup(s, "Protect", defaultSide, false, false),
+		newSidesGroup(s, "Leech Seed", defaultSide, false, false),
+		newSidesGroup(s, "Foresight", defaultSide, false, false),
+		newSidesGroup(s, "Helping Hand", defaultSide, false, false),
+		newSidesGroup(s, "Tailwind", defaultSide, false, false),
+		newSidesGroup(s, "Flower Gift", defaultSide, false, false),
+		newSidesGroup(s, "Power Trick", defaultSide, false, false),
+		newSidesGroup(s, "Switching Out", defaultSide, false, false),
 	}
 	sides[0].groupFocused = true
 
@@ -146,7 +146,7 @@ func (m fieldModel) Body() string {
 	return content
 }
 
-func (m fieldModel) SideInput(side SideFocus) *models.UserFieldSideInput {
+func (m fieldModel) SideInput(side Side) *models.UserFieldSideInput {
 	input := models.UserFieldSideInput{
 		StealthRocks:	m.SideGroupValue("Stealth Rock", side),
 		// TODO: implement value getter for spikes
@@ -189,8 +189,8 @@ func (m fieldModel) Input() *models.UserFieldInput {
 		Level:		level,
 		Terrain:	terrain,
 		IsGravity:	false,	// TODO implement later in field view
-		Left:		*m.SideInput(Left),
-		Right:		*m.SideInput(Right),
+		Left:		*m.SideInput(LeftSide),
+		Right:		*m.SideInput(RightSide),
 	}
 	
 	return &fieldInput

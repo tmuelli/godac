@@ -63,7 +63,7 @@ func (m statsModel) Init() tea.Cmd {
 	return nil
 }
 
-func (m statsModel) Update(msg tea.Msg, side ConfigSide) (tabContent, tea.Cmd) {
+func (m statsModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 	data := m.tab.Get(side)
 
 	switch msg := msg.(type) {
@@ -92,7 +92,7 @@ func (m statsModel) Update(msg tea.Msg, side ConfigSide) (tabContent, tea.Cmd) {
 	return m, nil
 }
 
-func (m statsModel) View(side ConfigSide) string {
+func (m statsModel) View(side Side) string {
 	data := m.tab.Get(side)
 
 	var lines []string

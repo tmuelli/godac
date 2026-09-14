@@ -5,12 +5,7 @@ import (
 	"charm.land/lipgloss/v2"
 )
 
-type SideFocus int
-
 const (
-	Left			SideFocus = iota
-	Right
-
 	CHECKED = "[x]"
 	UNCHECKED = "[ ]"
 )
@@ -19,12 +14,12 @@ type sidesGroup struct {
 	label			string
 	left			bool
 	right			bool
-	focused			SideFocus
+	focused			Side
 	groupFocused	bool
 	styles			*styles
 }
 
-func newSidesGroup(s *styles, label string, defaultFocus SideFocus, defaultLeft bool, defaultRight bool) sidesGroup {
+func newSidesGroup(s *styles, label string, defaultFocus Side, defaultLeft bool, defaultRight bool) sidesGroup {
 	return sidesGroup{
 		label: label,
 		left: defaultLeft,
@@ -43,11 +38,11 @@ func (g sidesGroup) Update(msg tea.Msg) (sidesGroup, tea.Cmd) {
 	case tea.KeyPressMsg:
 		switch msg.String() {
 		case "left":
-			g.focused = Left
+			g.focused = LeftSide
 		case "right":
-			g.focused = Right
+			g.focused = RightSide
 		case "enter":
-			if g.focused == Left {
+			if g.focused == LeftSide {
 				g.left = !g.left
 			} else {
 				g.right = !g.right
@@ -68,7 +63,7 @@ func (g sidesGroup) View() string {
 	}
 
 	leftStyle := lipgloss.NewStyle().Bold(isGroupFocused)
-	if g.focused == Left {
+	if g.focused == LeftSide {
 		leftStyle = leftStyle.Foreground(g.styles.highlight)
 	} else {
 		leftStyle.Foreground(lipgloss.NoColor{})
@@ -84,7 +79,7 @@ func (g sidesGroup) View() string {
 	}
 
 	rightStyle := lipgloss.NewStyle().Bold(isGroupFocused)
-	if g.focused == Right {
+	if g.focused == RightSide {
 		rightStyle = rightStyle.Foreground(g.styles.highlight)
 	} else {
 		rightStyle.Foreground(lipgloss.NoColor{})
@@ -101,8 +96,8 @@ func (g sidesGroup) View() string {
 }
 
 // TODO: implement value getter for spikes
-func (g sidesGroup) Value(side SideFocus) bool {
-	if side == Left {
+func (g sidesGroup) Value(side Side) bool {
+	if side == LeftSide {
 		return g.left
 	} else {
 		return g.right

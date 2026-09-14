@@ -62,7 +62,7 @@ func (m movesModel) Init() tea.Cmd {
 	return nil
 }
 
-func (m movesModel) Update(msg tea.Msg, side ConfigSide) (tabContent, tea.Cmd) {
+func (m movesModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 	data := m.tab.Get(side)
 	
 	switch msg := msg.(type) {
@@ -91,7 +91,7 @@ func (m movesModel) Update(msg tea.Msg, side ConfigSide) (tabContent, tea.Cmd) {
 	return m, nil
 }
 
-func (m movesModel) View(side ConfigSide) string {
+func (m movesModel) View(side Side) string {
 	data := m.tab.Get(side)
 
 	var lines []string
@@ -117,7 +117,7 @@ func (m movesModel) View(side ConfigSide) string {
 	return lipgloss.JoinVertical(lipgloss.Left, lines...)
 }
 
-func (m movesModel) Names(side ConfigSide) []string {
+func (m movesModel) Names(side Side) []string {
 	var names []string
 	data := m.tab.Get(side)
 	for _, row := range data.rows {

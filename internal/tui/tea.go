@@ -21,7 +21,7 @@ const (
 type model struct {
 	current		View
 	calc		calcModel
-	configSide	ConfigSide
+	configSide	Side
 	config		configModel
 	field		fieldModel
 

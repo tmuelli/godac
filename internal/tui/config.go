@@ -10,8 +10,8 @@ import (
 
 type tabContent interface {
 	Init()									tea.Cmd
-	Update(msg tea.Msg, side ConfigSide)	(tabContent, tea.Cmd)
-	View(side ConfigSide)					string
+	Update(msg tea.Msg, side Side)	(tabContent, tea.Cmd)
+	View(side Side)					string
 }
 
 type configModel struct {
@@ -44,7 +44,7 @@ func (m configModel) Init() tea.Cmd {
 	return nil
 }
 
-func (m configModel) Update(msg tea.Msg, side ConfigSide) (configModel, tea.Cmd) {
+func (m configModel) Update(msg tea.Msg, side Side) (configModel, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyPressMsg:
 		switch msg.String() {
@@ -63,7 +63,7 @@ func (m configModel) Update(msg tea.Msg, side ConfigSide) (configModel, tea.Cmd)
 	return m, cmd
 }
 
-func (m configModel) View(side ConfigSide) string {
+func (m configModel) View(side Side) string {
 	content := m.Title()
 	content += "\n\n"
 	content += m.Body(side)
@@ -74,7 +74,7 @@ func (m configModel) Title() string {
 	return "Config view - Press [C] for calculation view or [F] for field view"
 }
 
-func (m configModel) Body(side ConfigSide) string {
+func (m configModel) Body(side Side) string {
 	if m.styles == nil {
 		return ""
 	}
@@ -101,9 +101,9 @@ func (m configModel) Body(side ConfigSide) string {
 	return s.doc.Render(doc.String())
 }
 
-func (m configModel) Input(side ConfigSide, reqInfo *calcRequestInfo) *models.UserInput {
+func (m configModel) Input(side Side, reqInfo *calcRequestInfo) *models.UserInput {
 	attackMove := ""
-	if side == ConfigSide(reqInfo.usedSide) {
+	if side == Side(reqInfo.usedSide) {
 		attackMove = reqInfo.usedMove
 	}
 
