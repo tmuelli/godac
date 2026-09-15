@@ -9,6 +9,13 @@ import (
 	"github.com/tmuelli/godac/internal/models"
 )
 
+const (
+	basicsTab = iota
+	statsTab
+	miscTab
+	movesTab
+)
+
 type calcContext struct {
 	leftName	string
 	rightName	string

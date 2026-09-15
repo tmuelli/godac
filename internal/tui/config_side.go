@@ -35,18 +35,18 @@ func (s *side[T]) Set(side Side, v T) {
 
 func (m configModel) Name(side Side) string {
 	// TODO: maybe iota constant for consistent tab accessing
-	basics := m.tabContent[0].(basicsModel)
+	basics := m.tabContent[basicsTab].(basicsModel)
 	return basics.fieldList.Get(side).values["Name"]
 }
 
 func (m configModel) Gender(side Side) *string {
-	basics := m.tabContent[0].(basicsModel)
+	basics := m.tabContent[basicsTab].(basicsModel)
 	gender := basics.fieldList.Get(side).values["Gender"]
 	return &gender
 }
 
 func (m configModel) Level(side Side) int {
-	basics := m.tabContent[0].(basicsModel)
+	basics := m.tabContent[basicsTab].(basicsModel)
 
 	// level
 	level, err := strconv.Atoi(basics.fieldList.Get(side).values["Level"])
@@ -60,12 +60,12 @@ func (m configModel) Level(side Side) int {
 // TODO: setting types / using types from input
 
 func (m configModel) Moves(side Side) []string {
-	moves := m.tabContent[3].(movesModel)
+	moves := m.tabContent[movesTab].(movesModel)
 	return moves.Names(side)
 }
 
 func (m configModel) Hits(side Side, move string) *int {
-	moves := m.tabContent[3].(movesModel)
+	moves := m.tabContent[movesTab].(movesModel)
 	data := moves.tab.Get(side)
 
 	var hits int
@@ -92,7 +92,7 @@ func (m configModel) Hits(side Side, move string) *int {
 }
 
 func (m configModel) HealthPercent(side Side) int {
-	misc := m.tabContent[2].(miscModel)
+	misc := m.tabContent[miscTab].(miscModel)
 	health, err := strconv.Atoi(misc.fieldList.Get(side).values["Health"])
 	// TODO: error handling
 	if err != nil {
@@ -102,7 +102,7 @@ func (m configModel) HealthPercent(side Side) int {
 }
 
 func (m configModel) IvCustomStats(side Side) *models.IvStats {
-	stats := m.tabContent[1].(statsModel)
+	stats := m.tabContent[statsTab].(statsModel)
 	data := stats.tab.Get(side)
 
 	s := models.IvStats{}
@@ -137,7 +137,7 @@ func (m configModel) IvCustomStats(side Side) *models.IvStats {
 }
 
 func (m configModel) EvCustomStats(side Side) *models.EvStats {
-	stats := m.tabContent[1].(statsModel)
+	stats := m.tabContent[statsTab].(statsModel)
 	data := stats.tab.Get(side)
 
 	s := models.EvStats{}
@@ -172,19 +172,19 @@ func (m configModel) EvCustomStats(side Side) *models.EvStats {
 }
 
 func (m configModel) Item(side Side) *string {
-	misc := m.tabContent[2].(miscModel)
+	misc := m.tabContent[miscTab].(miscModel)
 	item := misc.fieldList.Get(side).values["Item"]
 	return &item
 }
 
 func (m configModel) Status(side Side) *string {
-	misc := m.tabContent[2].(miscModel)
+	misc := m.tabContent[miscTab].(miscModel)
 	status := misc.fieldList.Get(side).values["Status"]
 	return &status
 }
 
 func (m configModel) Boosts(side Side) models.UserInputBoosts {
-	stats := m.tabContent[1].(statsModel)
+	stats := m.tabContent[statsTab].(statsModel)
 	data := stats.tab.Get(side)
 	boosts := models.UserInputBoosts{}
 	
