@@ -137,7 +137,7 @@ func (m configModel) EvCustomStats(side Side) *models.EvStats {
 	return &s
 }
 
-func (m configModel) Boosts(side Side) *models.UserInputBoosts {
+func (m configModel) Boosts(side Side) models.UserInputBoosts {
 	stats := m.tabContent[statsTab].(statsModel)
 	values := stats.columnValues(side, 5)
 	s := models.UserInputBoosts{
@@ -148,5 +148,5 @@ func (m configModel) Boosts(side Side) *models.UserInputBoosts {
 		Spe:	values["Spe"],
 	}
 
-	return &s
+	return s
 }
