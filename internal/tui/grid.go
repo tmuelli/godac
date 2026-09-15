@@ -16,6 +16,7 @@ func (g *gridData) MoveRow(rowDelta int) {
 	g.row = max(0, min(g.row + rowDelta, len(g.rows) - 1))
 }
 
+// FIXME: implement editable logic on columns so some columns cannot be edited / focused
 func (g *gridData) MoveCol(colDelta int) {
 	g.col = max(0, min(g.col + colDelta, len(g.columns) - 1))
 }

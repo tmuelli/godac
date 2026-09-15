@@ -36,12 +36,12 @@ func (s *side[T]) Set(side Side, v T) {
 func (m configModel) Name(side Side) string {
 	// TODO: maybe iota constant for consistent tab accessing
 	basics := m.tabContent[0].(basicsModel)
-	return basics.values.Get(side)["Name"]
+	return basics.fieldList.Get(side).values["Name"]
 }
 
 func (m configModel) Gender(side Side) *string {
 	basics := m.tabContent[0].(basicsModel)
-	gender := basics.values.Get(side)["Gender"]
+	gender := basics.fieldList.Get(side).values["Gender"]
 	return &gender
 }
 
@@ -49,7 +49,7 @@ func (m configModel) Level(side Side) int {
 	basics := m.tabContent[0].(basicsModel)
 
 	// level
-	level, err := strconv.Atoi(basics.values.Get(side)["Level"])
+	level, err := strconv.Atoi(basics.fieldList.Get(side).values["Level"])
 	// TODO: error handling
 	if err != nil {
 		
@@ -93,8 +93,7 @@ func (m configModel) Hits(side Side, move string) *int {
 
 func (m configModel) HealthPercent(side Side) int {
 	misc := m.tabContent[2].(miscModel)
-
-	health, err := strconv.Atoi(misc.values.Get(side)["Health"])
+	health, err := strconv.Atoi(misc.fieldList.Get(side).values["Health"])
 	// TODO: error handling
 	if err != nil {
 		
@@ -174,13 +173,13 @@ func (m configModel) EvCustomStats(side Side) *models.EvStats {
 
 func (m configModel) Item(side Side) *string {
 	misc := m.tabContent[2].(miscModel)
-	item := misc.values.Get(side)["Item"]
+	item := misc.fieldList.Get(side).values["Item"]
 	return &item
 }
 
 func (m configModel) Status(side Side) *string {
 	misc := m.tabContent[2].(miscModel)
-	status := misc.values.Get(side)["Status"]
+	status := misc.fieldList.Get(side).values["Status"]
 	return &status
 }
 
