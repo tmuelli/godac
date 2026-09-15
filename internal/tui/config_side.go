@@ -1,8 +1,6 @@
 package tui
 
 import (
-	"strconv"
-
 	"github.com/tmuelli/godac/internal/models"
 )
 
@@ -49,11 +47,7 @@ func (m configModel) Level(side Side) int {
 	basics := m.tabContent[basicsTab].(basicsModel)
 
 	// level
-	level, err := strconv.Atoi(basics.fieldList.Get(side).values["Level"])
-	// TODO: error handling
-	if err != nil {
-		
-	}
+	level := atoiOrZero(basics.fieldList.Get(side).values["Level"])
 	return level
 }
 
@@ -93,11 +87,7 @@ func (m configModel) Hits(side Side, move string) *int {
 
 func (m configModel) HealthPercent(side Side) int {
 	misc := m.tabContent[miscTab].(miscModel)
-	health, err := strconv.Atoi(misc.fieldList.Get(side).values["Health"])
-	// TODO: error handling
-	if err != nil {
-		
-	}
+	health := atoiOrZero(misc.fieldList.Get(side).values["Health"])
 	return health
 }
 
@@ -109,13 +99,7 @@ func (m configModel) IvCustomStats(side Side) *models.IvStats {
 
 	for _, row := range data.rows {
 		// TODO: put into constant to generalize with ev logic
-		v := row[2]
-
-		value, err := strconv.Atoi(v)
-		// TODO: error handling
-		if err != nil {
-
-		}
+		value := atoiOrZero(row[2])
 
 		switch row[0] {
 		case "Hp":
@@ -144,13 +128,7 @@ func (m configModel) EvCustomStats(side Side) *models.EvStats {
 
 	for _, row := range data.rows {
 		// TODO: put into constant to generalize with ev logic
-		v := row[3]
-
-		value, err := strconv.Atoi(v)
-		// TODO: error handling
-		if err != nil {
-
-		}
+		value := atoiOrZero(row[3])
 
 		switch row[0] {
 		case "Hp":
@@ -190,13 +168,7 @@ func (m configModel) Boosts(side Side) models.UserInputBoosts {
 	
 	for _, row := range data.rows{
 		// TODO: use constant
-		v := row[5]
-
-		value, err := strconv.Atoi(v)
-		// TODO: error handling
-		if err != nil {
-
-		}
+		value := atoiOrZero(row[5])
 
 		switch row[0] {
 		case "Hp":
