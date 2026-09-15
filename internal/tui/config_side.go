@@ -91,64 +91,6 @@ func (m configModel) HealthPercent(side Side) int {
 	return health
 }
 
-func (m configModel) IvCustomStats(side Side) *models.IvStats {
-	stats := m.tabContent[statsTab].(statsModel)
-	data := stats.tab.Get(side)
-
-	s := models.IvStats{}
-
-	for _, row := range data.rows {
-		// TODO: put into constant to generalize with ev logic
-		value := atoiOrZero(row[2])
-
-		switch row[0] {
-		case "Hp":
-			s.Hp = value
-		case "Atk":
-			s.Atk = value
-		case "Def":
-			s.Def = value
-		case "Spa":
-			s.Spa = value
-		case "Spd":
-			s.Spd = value
-		case "Spe":
-			s.Spe = value
-		}
-	}
-
-	return &s
-}
-
-func (m configModel) EvCustomStats(side Side) *models.EvStats {
-	stats := m.tabContent[statsTab].(statsModel)
-	data := stats.tab.Get(side)
-
-	s := models.EvStats{}
-
-	for _, row := range data.rows {
-		// TODO: put into constant to generalize with ev logic
-		value := atoiOrZero(row[3])
-
-		switch row[0] {
-		case "Hp":
-			s.Hp = value
-		case "Atk":
-			s.Atk = value
-		case "Def":
-			s.Def = value
-		case "Spa":
-			s.Spa = value
-		case "Spd":
-			s.Spd = value
-		case "Spe":
-			s.Spe = value
-		}
-	}
-
-	return &s
-}
-
 func (m configModel) Item(side Side) *string {
 	misc := m.tabContent[miscTab].(miscModel)
 	item := misc.fieldList.Get(side).values["Item"]
@@ -161,30 +103,50 @@ func (m configModel) Status(side Side) *string {
 	return &status
 }
 
-func (m configModel) Boosts(side Side) models.UserInputBoosts {
+func (m configModel) IvCustomStats(side Side) *models.IvStats {
 	stats := m.tabContent[statsTab].(statsModel)
-	data := stats.tab.Get(side)
-	boosts := models.UserInputBoosts{}
-	
-	for _, row := range data.rows{
-		// TODO: use constant
-		value := atoiOrZero(row[5])
-
-		switch row[0] {
-		case "Hp":
-			// TODO: remove from view / selectable disable
-		case "Atk":
-			boosts.Atk = value
-		case "Def":
-			boosts.Def = value
-		case "Spa":
-			boosts.Spa = value
-		case "Spd":
-			boosts.Spd = value
-		case "Spe":
-			boosts.Spe = value
-		}
+	values := stats.columnValues(side, 2)
+	s := models.IvStats{
+		BaseStats: models.BaseStats{
+			Hp:		values["Hp"],
+			Atk:	values["Atk"],
+			Def:	values["Def"],
+			Spa:	values["Spa"],
+			Spd:	values["Spd"],
+			Spe:	values["Spe"],
+		},
 	}
 
-	return boosts
+	return &s
+}
+
+func (m configModel) EvCustomStats(side Side) *models.EvStats {
+	stats := m.tabContent[statsTab].(statsModel)
+	values := stats.columnValues(side, 3)
+	s := models.EvStats{
+		BaseStats: models.BaseStats{
+			Hp:		values["Hp"],
+			Atk:	values["Atk"],
+			Def:	values["Def"],
+			Spa:	values["Spa"],
+			Spd:	values["Spd"],
+			Spe:	values["Spe"],
+		},
+	}
+
+	return &s
+}
+
+func (m configModel) Boosts(side Side) *models.UserInputBoosts {
+	stats := m.tabContent[statsTab].(statsModel)
+	values := stats.columnValues(side, 5)
+	s := models.UserInputBoosts{
+		Atk:	values["Atk"],
+		Def:	values["Def"],
+		Spa:	values["Spa"],
+		Spd:	values["Spd"],
+		Spe:	values["Spe"],
+	}
+
+	return &s
 }

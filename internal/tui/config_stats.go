@@ -116,3 +116,22 @@ func (m statsModel) requestInput(key, value string) tea.Cmd {
 		return requestSelectInput(key, value, options)
 	}
 }
+
+func (m statsModel) columnValues(side Side, col int) map[string]int {
+	data := m.tab.Get(side)
+	values := map[string]int {
+		"Hp": 0,
+		"Atk": 0,
+		"Def": 0,
+		"Spa": 0,
+		"Spd": 0,
+		"Spe": 0,
+	}
+
+	for _, row := range data.rows {
+		value := atoiOrZero(row[col])
+		values[row[0]] = value
+	}
+
+	return values
+}
