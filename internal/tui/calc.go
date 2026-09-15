@@ -5,7 +5,6 @@ import (
 
 	"charm.land/bubbles/v2/table"
 	tea "charm.land/bubbletea/v2"
-	"charm.land/lipgloss/v2"
 	"github.com/tmuelli/godac/internal/calc"
 	"github.com/tmuelli/godac/internal/models"
 )
@@ -23,10 +22,7 @@ type calcResult struct {
 }
 
 type calcModel struct {
-	columns		[]table.Column
-	rows		[][]string
-	row			int
-	col			int
+	grid		gridData
 	styles		*styles
 	data		*models.Data
 	result		calcResult
@@ -46,10 +42,12 @@ func newCalcModel(s *styles, data *models.Data) calcModel {
 	}
 
 	return calcModel{
-		columns:	columns,
-		rows:		rows,
-		row:		0,
-		col:		0,
+		grid:	gridData{
+			columns:	columns,
+			rows:		rows,
+			row:		0,
+			col:		0,
+		},
 		styles:		s,
 		data:		data,
 	}
@@ -62,28 +60,22 @@ func (m calcModel) Init() tea.Cmd {
 func (m calcModel) Update(msg tea.Msg) (calcModel, tea.Cmd) {
 	switch msg := msg.(type) {
 	case userInputMsg:
-		input := msg.input
-		m.Calculate(input)
+		m.Calculate(msg.input)
 		return m, nil
 	case tea.KeyPressMsg:
 		switch msg.String() {
 			case "up":
-				m.row = max(m.row - 1, 0)
+				m.grid.MoveRow(-1)
 			case "down":
-				m.row = min(m.row + 1, len(m.rows) - 1)
+				m.grid.MoveRow(1)
 			case "left":
-				m.col = max(m.col - 1, 0)
+				m.grid.MoveCol(-1)
 			case "right":
-				m.col = min(m.col + 1, len(m.columns) - 1)
+				m.grid.MoveCol(1)
 			case "enter":
-				usedSide := Side(m.col)
-				usedMove := m.rows[m.row][m.col]
-
-				if usedSide == LeftSide {
-					return m, requestCalc(usedMove, LeftSide)
-				} else {
-					return m, requestCalc(usedMove, RightSide)
-				}
+				usedSide := Side(m.grid.col)
+				usedMove := m.grid.rows[m.grid.row][m.grid.col]
+				return m, requestCalc(usedMove, usedSide)
 		}
 	}
 
@@ -104,27 +96,7 @@ func (m calcModel) Title() string {
 func (m calcModel) Body(ctx calcContext) string {
 	m.fillFromContext(ctx)
 
-	var lines []string
-	var headerCells []string
-
-	for _, c := range m.columns {
-		headerCells = append(headerCells, lipgloss.NewStyle().Width(c.Width).Bold(true).Render(c.Title))
-	}
-	lines = append(lines, lipgloss.JoinHorizontal(lipgloss.Top, headerCells...))
-
-	for ri, row := range m.rows {
-		var cells []string
-		for ci, colVal := range row {
-			style := lipgloss.NewStyle().Width(m.columns[ci].Width)
-			if ri == m.row && ci == m.col {
-				style = style.Foreground(m.styles.highlight).Bold(true)
-			}
-			cells = append(cells, style.Render(colVal))
-		}
-		lines = append(lines, lipgloss.JoinHorizontal(lipgloss.Top, cells...))
-	}
-
-	body := lipgloss.JoinVertical(lipgloss.Left, lines...)
+	body := renderGrid(m.grid, m.styles)
 	body += "\n\nChoose one move\n"
 	body += m.ResultView()
 	return body
@@ -143,6 +115,7 @@ func (m calcModel) ResultView() string {
 	return content
 }
 
+// FIXME: Move logic into Update rather than View => View should only render and not mutate
 func (m calcModel) fillFromContext(ctx calcContext) {
 	// left
 	m.fillSideFromContext(ctx.leftName, ctx.leftMoves, LeftSide, "L")
@@ -151,9 +124,10 @@ func (m calcModel) fillFromContext(ctx calcContext) {
 	m.fillSideFromContext(ctx.rightName, ctx.rightMoves, RightSide, "R")
 }
 
+// FIXME: Move logic into Update rather than View => View should only render and not mutate
 func (m calcModel) fillSideFromContext(sideName string, sideMoves []string, side Side, sidePrefix string) {
 	if sideName != "" {
-		m.columns[side].Title = fmt.Sprintf("%s [%s]", sideName, sidePrefix)
+		m.grid.columns[side].Title = fmt.Sprintf("%s [%s]", sideName, sidePrefix)
 	}
 
 	for i, move := range sideMoves {
@@ -161,7 +135,7 @@ func (m calcModel) fillSideFromContext(sideName string, sideMoves []string, side
 			continue
 		}
 
-		m.rows[i][side] = fmt.Sprintf("%s [%s%d]", move, sidePrefix, i+1)
+		m.grid.rows[i][side] = fmt.Sprintf("%s [%s%d]", move, sidePrefix, i+1)
 	}
 }
 

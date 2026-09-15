@@ -11,6 +11,13 @@ type side[T any] struct {
 	right	T
 }
 
+func (s *side[T]) GetPtr(side Side) *T {
+	if side == LeftSide {
+		return &s.left
+	}
+	return &s.right
+}
+
 func (s side[T]) Get(side Side) T {
 	if side == LeftSide {
 		return s.left

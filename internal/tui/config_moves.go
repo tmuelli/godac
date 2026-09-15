@@ -3,20 +3,12 @@ package tui
 import (
 	"charm.land/bubbles/v2/table"
 	tea "charm.land/bubbletea/v2"
-	"charm.land/lipgloss/v2"
 	"github.com/tmuelli/godac/internal/models"
 	"github.com/tmuelli/godac/internal/utils"
 )
 
-type movesData struct {
-	columns		[]table.Column
-	rows		[][]string
-	row			int
-	col			int
-}
-
 type movesModel struct {
-	tab			side[movesData]
+	tab			side[gridData]
 	styles		*styles
 	data		*models.Data
 }
@@ -39,14 +31,14 @@ func newMovesModel(s *styles, data *models.Data) movesModel {
 	}
 
 	return movesModel{
-		tab:		side[movesData]{
-			left:	movesData{
+		tab:		side[gridData]{
+			left:	gridData{
 				columns:	columns,
 				rows:		cloneRows(rows),
 				row:		0,
 				col:		0,
 			},
-			right:	movesData{
+			right:	gridData{
 				columns:	columns,
 				rows:		cloneRows(rows),
 				row:		0,
@@ -63,58 +55,34 @@ func (m movesModel) Init() tea.Cmd {
 }
 
 func (m movesModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
-	data := m.tab.Get(side)
+	data := m.tab.GetPtr(side)
 	
 	switch msg := msg.(type) {
 	case editConfirmMsg:
-		data.rows[data.row][data.col] = msg.value
-		m.tab.Set(side, data)
+		data.Set(data.row, data.col, msg.value)
 		return m, nil
 	case tea.KeyPressMsg:
 		switch msg.String() {
 		case "up":
-			data.row = max(data.row - 1, 0)
+			data.MoveRow(-1)
 		case "down":
-			data.row = min(data.row + 1, len(data.rows) - 1)
+			data.MoveRow(1)
 		case "left":
-			data.col = max(data.col - 1, 0)
+			data.MoveCol(-1)
 		case "right":
-			data.col = min(data.col + 1, len(data.columns) - 1)
+			data.MoveCol(1)
 		case "enter":
 			key := data.columns[data.col].Title
 			value := data.rows[data.row][data.col]
 			return m, m.requestInput(key, value)
 		}
-		m.tab.Set(side, data)
 	}
 	
 	return m, nil
 }
 
 func (m movesModel) View(side Side) string {
-	data := m.tab.Get(side)
-
-	var lines []string
-
-	var headerCells []string
-	for _, c := range data.columns {
-		headerCells = append(headerCells, lipgloss.NewStyle().Width(c.Width).Bold(true).Render(c.Title))
-	}
-	lines = append(lines, lipgloss.JoinHorizontal(lipgloss.Top, headerCells...))
-
-	for ri, row := range data.rows {
-		var cells []string
-		for ci, colVal := range row {
-			style := lipgloss.NewStyle().Width(data.columns[ci].Width)
-			if ri == data.row && ci == data.col {
-				style = style.Foreground(m.styles.highlight).Bold(true)
-			}
-			cells = append(cells, style.Render(colVal))
-		}
-		lines = append(lines, lipgloss.JoinHorizontal(lipgloss.Top, cells...))
-	}
-
-	return lipgloss.JoinVertical(lipgloss.Left, lines...)
+	return renderGrid(m.tab.Get(side), m.styles)
 }
 
 func (m movesModel) Names(side Side) []string {
