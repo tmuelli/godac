@@ -13,13 +13,13 @@ type statsModel struct {
 }
 
 func newStatsModel(s *styles, data *models.Data) statsModel {
-	columns := []table.Column{
-		{Title: "Stat", Width: 15},
-		{Title: "Base", Width: 15},
-		{Title: "IV", Width: 15},
-		{Title: "EV", Width: 15},
-		{Title: "Total", Width: 15},
-		{Title: "Boost", Width: 15},
+	columns := []gridColumn{
+		{col: table.Column{Title: "Stat", Width: 15}, editable: false},
+		{col: table.Column{Title: "Base", Width: 15}, editable: true},
+		{col: table.Column{Title: "IV", Width: 15}, editable: true},
+		{col: table.Column{Title: "EV", Width: 15}, editable: true},
+		{col: table.Column{Title: "Total", Width: 15}, editable: false},
+		{col: table.Column{Title: "Boost", Width: 15}, editable: true},
 	}
 
 	rows := [][]string{
@@ -31,19 +31,21 @@ func newStatsModel(s *styles, data *models.Data) statsModel {
 		{"Spe", "0", "0", "0", "0", "0"},
 	}
 
+	initialColIndex := firstEditableCol(columns)
+
 	return statsModel{
 		tab:		side[gridData]{
 			left:	gridData{
 				columns:	columns,
 				rows:		cloneRows(rows),
 				row:		0,
-				col:		0,
+				col:		initialColIndex,
 			},
 			right:	gridData{
 				columns:	columns,
 				rows:		cloneRows(rows),
 				row:		0,
-				col:		0,
+				col:		initialColIndex,
 			},
 		},
 		styles:		s,
@@ -73,7 +75,11 @@ func (m statsModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 		case "right":
 			data.MoveCol(1)
 		case "enter":
-			key := data.columns[data.col].Title
+			if !data.columns[data.col].editable {
+				return m, nil
+			}
+
+			key := data.columns[data.col].col.Title
 			value := data.rows[data.row][data.col]
 			return m, m.requestInput(key, value)
 		}

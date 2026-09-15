@@ -36,9 +36,9 @@ type calcModel struct {
 }
 
 func newCalcModel(s *styles, data *models.Data) calcModel {
-	columns := []table.Column{
-		{Title: "Pokemon1 [L]", Width: 15},
-		{Title: "Pokemon2 [R]", Width: 15},
+	columns := []gridColumn{
+		{col: table.Column{Title: "Pokemon1 [L]", Width: 15}, editable: false},
+		{col: table.Column{Title: "Pokemon2 [R]", Width: 15}, editable: false},
 	}
 
 	rows := [][]string{
@@ -80,6 +80,10 @@ func (m calcModel) Update(msg tea.Msg) (calcModel, tea.Cmd) {
 			case "right":
 				m.grid.MoveCol(1)
 			case "enter":
+				if !m.grid.columns[m.grid.col].editable {
+					return m, nil
+				}
+
 				usedSide := Side(m.grid.col)
 				usedMove := m.grid.rows[m.grid.row][m.grid.col]
 				return m, requestCalc(usedMove, usedSide)
@@ -134,7 +138,7 @@ func (m calcModel) fillFromContext(ctx calcContext) {
 // FIXME: Move logic into Update rather than View => View should only render and not mutate
 func (m calcModel) fillSideFromContext(sideName string, sideMoves []string, side Side, sidePrefix string) {
 	if sideName != "" {
-		m.grid.columns[side].Title = fmt.Sprintf("%s [%s]", sideName, sidePrefix)
+		m.grid.columns[side].col.Title = fmt.Sprintf("%s [%s]", sideName, sidePrefix)
 	}
 
 	for i, move := range sideMoves {

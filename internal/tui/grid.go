@@ -5,8 +5,13 @@ import (
 	"charm.land/lipgloss/v2"
 )
 
+type gridColumn struct {
+	col			table.Column
+	editable	bool
+}
+
 type gridData struct {
-	columns		[]table.Column
+	columns		[]gridColumn
 	rows		[][]string
 	row			int
 	col			int
@@ -16,9 +21,21 @@ func (g *gridData) MoveRow(rowDelta int) {
 	g.row = max(0, min(g.row + rowDelta, len(g.rows) - 1))
 }
 
-// FIXME: implement editable logic on columns so some columns cannot be edited / focused
 func (g *gridData) MoveCol(colDelta int) {
-	g.col = max(0, min(g.col + colDelta, len(g.columns) - 1))
+	// g.col = max(0, min(g.col + colDelta, len(g.columns) - 1))
+	next := g.col
+	for {
+		next += colDelta
+
+		if next < 0 || next >= len(g.columns) {
+			return
+		}
+
+		if g.columns[next].editable {
+			g.col = next
+			return
+		}
+	}
 }
 
 func (g *gridData) Set(row, col int, value string) {
@@ -30,14 +47,14 @@ func renderGrid(data gridData, s *styles) string {
 
 	var headerCells []string
 	for _, c := range data.columns {
-		headerCells = append(headerCells, lipgloss.NewStyle().Width(c.Width).Bold(true).Render(c.Title))
+		headerCells = append(headerCells, lipgloss.NewStyle().Width(c.col.Width).Bold(true).Render(c.col.Title))
 	}
 	lines = append(lines, lipgloss.JoinHorizontal(lipgloss.Top, headerCells...))
 
 	for ri, row := range data.rows {
 		var cells []string
 		for ci, colVal := range row {
-			style := lipgloss.NewStyle().Width(data.columns[ci].Width)
+			style := lipgloss.NewStyle().Width(data.columns[ci].col.Width)
 			if ri == data.row && ci == data.col {
 				style = style.Foreground(s.highlight).Bold(true)
 			}
@@ -47,4 +64,13 @@ func renderGrid(data gridData, s *styles) string {
 	}
 
 	return lipgloss.JoinVertical(lipgloss.Left, lines...)
+}
+
+func firstEditableCol(columns []gridColumn) int {
+	for i, c := range columns {
+		if c.editable {
+			return i
+		}
+	}
+	return 0
 }

@@ -14,13 +14,13 @@ type movesModel struct {
 }
 
 func newMovesModel(s *styles, data *models.Data) movesModel {
-	columns := []table.Column{
-		{Title: "Move", Width: 15},
-		{Title: "Base Power", Width: 15},
-		{Title: "Type", Width: 15},
-		{Title: "Category", Width: 15},
-		{Title: "Crit", Width: 15},
-		{Title: "Hits", Width: 15},
+	columns := []gridColumn{
+		{col: table.Column{Title: "Move", Width: 15}, editable: true},
+		{col: table.Column{Title: "Base Power", Width: 15}, editable: true},
+		{col: table.Column{Title: "Type", Width: 15}, editable: true},
+		{col: table.Column{Title: "Category", Width: 15}, editable: true},
+		{col: table.Column{Title: "Crit", Width: 15}, editable: true},
+		{col: table.Column{Title: "Hits", Width: 15}, editable: true},
 	}
 
 	rows := [][]string{
@@ -30,19 +30,21 @@ func newMovesModel(s *styles, data *models.Data) movesModel {
 		{"Move4", "BP4", "Type4", "None", "No", "0"},
 	}
 
+	initialColIndex := firstEditableCol(columns)
+
 	return movesModel{
 		tab:		side[gridData]{
 			left:	gridData{
 				columns:	columns,
 				rows:		cloneRows(rows),
 				row:		0,
-				col:		0,
+				col:		initialColIndex,
 			},
 			right:	gridData{
 				columns:	columns,
 				rows:		cloneRows(rows),
 				row:		0,
-				col:		0,
+				col:		initialColIndex,
 			},
 		},
 		styles:		s,
@@ -72,7 +74,11 @@ func (m movesModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 		case "right":
 			data.MoveCol(1)
 		case "enter":
-			key := data.columns[data.col].Title
+			if !data.columns[data.col].editable {
+				return m, nil
+			}
+
+			key := data.columns[data.col].col.Title
 			value := data.rows[data.row][data.col]
 			return m, m.requestInput(key, value)
 		}
