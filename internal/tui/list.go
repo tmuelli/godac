@@ -18,16 +18,24 @@ func (l *list) SetActiveRow(rowIndex int) {
 
 func renderList(l list, s *styles) string {
 	var lines []string
+	maxLineWidth := 0
 
-	for i, o := range l.options {
-		style := lipgloss.NewStyle()
+	// get max width and fill lines
+	for _, o := range l.options {
+		line := o + ": " + "[" + l.values[o] + "]"
+		maxLineWidth = max(maxLineWidth, len(line))
+		lines = append(lines, line)
+	}
+
+	var styledLines []string
+	for i, line := range lines {
+		style := lipgloss.NewStyle().Width(maxLineWidth + 20)
 		if i == l.activeIndex {
 			style = style.Bold(true)
 		}
-		line := o + ": " + "[" + l.values[o] + "]"
-		lines = append(lines, style.Render(line))
+		styledLines = append(styledLines, style.Render(line))
 	}
 
-	rows := lipgloss.JoinVertical(lipgloss.Left, lines...)
+	rows := lipgloss.JoinVertical(lipgloss.Left, styledLines...)
 	return rows
 }
