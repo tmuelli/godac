@@ -3,6 +3,7 @@ package tui
 import (
 	"fmt"
 
+	"charm.land/bubbles/v2/key"
 	"charm.land/bubbles/v2/table"
 	tea "charm.land/bubbletea/v2"
 	"github.com/tmuelli/godac/internal/calc"
@@ -15,6 +16,18 @@ const (
 	miscTab
 	movesTab
 )
+
+type calcKeyMap struct {}
+
+var calcKeys = calcKeyMap{}
+
+func (k calcKeyMap) ShortHelp() []key.Binding {
+	return []key.Binding{}
+}
+
+func (k calcKeyMap) FullHelp() [][]key.Binding {
+	return [][]key.Binding{{}}
+}
 
 type calcContext struct {
 	leftName			string
@@ -97,7 +110,7 @@ func (m calcModel) View(ctx calcContext) string {
 }
 
 func (m calcModel) Title() string {
-	return "Calculation view - Press [L] or [R] for config view or [F] for field view"
+	return "Calculation overview"
 }
 
 func (m calcModel) Body(ctx calcContext) string {

@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"strings"
 
+	"charm.land/bubbles/v2/help"
+	"charm.land/bubbles/v2/key"
 	"charm.land/bubbles/v2/textinput"
 	tea "charm.land/bubbletea/v2"
 	"github.com/tmuelli/godac/internal/models"
@@ -17,6 +19,33 @@ const (
 	ConfigView
 	FieldView
 )
+
+type globalKeyMap struct {
+	Calc		key.Binding
+	Config		key.Binding
+	Field		key.Binding
+	Help		key.Binding
+	Quit		key.Binding
+}
+
+var globalKeys = globalKeyMap{
+	Calc:		key.NewBinding(key.WithKeys("c"), key.WithHelp("c", "calc view")),
+	Config:		key.NewBinding(key.WithKeys("r", "l"), key.WithHelp("r/l", "config view")),
+	Field:		key.NewBinding(key.WithKeys("f"), key.WithHelp("f", "field view")),
+	Help:		key.NewBinding(key.WithKeys("?"), key.WithHelp("?", "help")),
+	Quit:		key.NewBinding(key.WithKeys("ctrl+c", "q", "esc"), key.WithHelp("q", "quit")),
+}
+
+func (k globalKeyMap) ShortHelp() []key.Binding {
+	return []key.Binding{k.Help, k.Quit}
+}
+
+func (k globalKeyMap) FullHelp() [][]key.Binding {
+	return [][]key.Binding{
+		{k.Calc, k.Config, k.Field},
+		{k.Help, k.Quit},
+	}
+}
 
 type model struct {
 	current		View
@@ -37,6 +66,8 @@ type model struct {
 	inputValid			bool
 
 	calcRequestInfo		calcRequestInfo
+
+	help		help.Model
 }
 
 func NewModel(data *models.Data) model {
@@ -50,6 +81,7 @@ func NewModel(data *models.Data) model {
 		data:		data,
 		styles:		s,
 		inputValid:	true,
+		help:		help.New(),
 	}
 }
 
@@ -159,6 +191,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, cmd
 		}
 
+		// TODO: change to key.Matches()
 		switch msg.String() {
 		// quit terminal repl
 		case "q", "esc", "ctrl+c":
@@ -180,6 +213,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case "f":
 			m.current = FieldView
+			return m, nil
+
+		case "?":
+			m.help.ShowAll = !m.help.ShowAll
 			return m, nil
 		}
 	}
@@ -234,6 +271,10 @@ func (m model) View() tea.View {
 		}
 	}
 
+	// help menu
+	doc.WriteString("\n\n")
+	doc.WriteString(m.help.View(m.KeyMap()))
+
 	v := tea.NewView(
 		// s.doc.Render(doc.String()),
 		doc.String(),
@@ -250,4 +291,15 @@ func (m model) Input() *UserInput {
 	}
 
 	return &input
+}
+
+func (m model) KeyMap() help.KeyMap {
+	switch m.current {
+	case ConfigView:
+		return helpKeyMap{global: globalKeys, view: configKeys}
+	case FieldView:
+		return helpKeyMap{global: globalKeys, view: fieldKeys}
+	default:
+		return helpKeyMap{global: globalKeys, view: calcKeys}
+	}
 }

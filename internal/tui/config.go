@@ -1,12 +1,34 @@
 package tui
 
 import (
+	"fmt"
 	"strings"
 
+	"charm.land/bubbles/v2/key"
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 	"github.com/tmuelli/godac/internal/models"
 )
+
+type configKeyMap struct {
+	NextTab		key.Binding
+	PrevTab		key.Binding
+}
+
+var configKeys = configKeyMap{
+	NextTab:		key.NewBinding(key.WithKeys("tab"), key.WithHelp("tab", "next tab")),
+	PrevTab:		key.NewBinding(key.WithKeys("shift+tab"), key.WithHelp("shift+tab", "prev tab")),
+}
+
+func (k configKeyMap) ShortHelp() []key.Binding {
+	return []key.Binding{}
+}
+
+func (k configKeyMap) FullHelp() [][]key.Binding {
+	return [][]key.Binding{
+		{k.NextTab, k.PrevTab},
+	}
+}
 
 type tabContent interface {
 	Init()									tea.Cmd
@@ -76,14 +98,21 @@ func (m configModel) Update(msg tea.Msg, side Side) (configModel, tea.Cmd) {
 }
 
 func (m configModel) View(side Side) string {
-	content := m.Title()
+	content := m.Title(side)
 	content += "\n\n"
 	content += m.Body(side)
 	return content
 }
 
-func (m configModel) Title() string {
-	return "Config view - Press [C] for calculation view or [F] for field view"
+func (m configModel) Title(side Side) string {
+	var sideDesc string
+	if side == LeftSide {
+		sideDesc = "attacker"
+	} else {
+		sideDesc = "defender"
+	}
+
+	return fmt.Sprintf("Configuration of %s\n", sideDesc)
 }
 
 func (m configModel) Body(side Side) string {

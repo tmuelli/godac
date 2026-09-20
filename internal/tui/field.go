@@ -1,6 +1,7 @@
 package tui
 
 import (
+	"charm.land/bubbles/v2/key"
 	tea "charm.land/bubbletea/v2"
 	"github.com/tmuelli/godac/internal/models"
 )
@@ -11,6 +12,18 @@ const (
 	GeneralSetting Setting = iota
 	SidesSetting
 )
+
+type fieldKeyMap struct {}
+
+var fieldKeys = fieldKeyMap{}
+
+func (k fieldKeyMap) ShortHelp() []key.Binding {
+	return []key.Binding{}
+}
+
+func (k fieldKeyMap) FullHelp() [][]key.Binding {
+	return [][]key.Binding{{}}
+}
 
 type fieldModel struct {
 	general		[]generalGroup
@@ -137,7 +150,7 @@ func (m fieldModel) View() string {
 }
 
 func (m fieldModel) Title() string {
-	return "Field view - Press [C] for calculation view or [L] or [R] for config view"
+	return "Field configuration"
 }
 
 func (m fieldModel) Body() string {
