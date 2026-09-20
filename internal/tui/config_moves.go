@@ -1,10 +1,23 @@
 package tui
 
 import (
+	"fmt"
+
 	"charm.land/bubbles/v2/table"
 	tea "charm.land/bubbletea/v2"
 	"github.com/tmuelli/godac/internal/models"
 	"github.com/tmuelli/godac/internal/utils"
+)
+
+type MoveColumnType int
+
+const (
+	MOVE_COL		MoveColumnType = iota
+	BP_COL
+	MOVE_TYPE_COL
+	CATEGORY_COL
+	CRIT_COL
+	HITS_COL
 )
 
 type moveRowSettings struct {
@@ -75,9 +88,13 @@ func (m movesModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 	case editConfirmMsg:
 		data.Set(data.row, data.col, msg.value)
 
-		
 		if msg.value != "" {
 			(*rowSettings)[data.row].isSet = true
+
+			// automatically fill move row only when move name changes
+			if msg.fieldID == "Move" {
+				m.fillMovesDefaults(data, msg.value)
+			}
 		} else {
 			(*rowSettings)[data.row].isSet = false
 		}
@@ -163,5 +180,34 @@ func (m movesModel) requestInput(key, value string) tea.Cmd {
 		return requestNumberInput(key, value, min, max)
 	} else {
 		return requestSelectInput(key, value, options)
+	}
+}
+
+func (m movesModel) fillMovesDefaults(data *gridData, moveName string) {
+	moveData, ok := m.data.Moves[moveName]
+	if !ok {
+		// should not happen => move is validated through editConfirmMsg => if still unknown move here, dont do anything => internal error
+		return
+	}
+
+	for i := range data.columns {
+		if i == int(MOVE_COL) {
+			// new move was already set in Update
+			continue
+		}
+
+		var value string
+		switch MoveColumnType(i) {
+		case BP_COL:
+			value = fmt.Sprintf("%d", moveData.BasePower)
+		case MOVE_TYPE_COL:
+			value = moveData.Type
+		case CATEGORY_COL:
+			value = moveData.Category
+		default:
+			continue
+		}
+
+		data.Set(data.row, i, value)
 	}
 }

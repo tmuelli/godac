@@ -1,6 +1,8 @@
 package tui
 
 import (
+	"fmt"
+
 	tea "charm.land/bubbletea/v2"
 	"github.com/tmuelli/godac/internal/models"
 	"github.com/tmuelli/godac/internal/utils"
@@ -52,6 +54,20 @@ func (m basicsModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 	switch msg := msg.(type) {
 	case editConfirmMsg:
 		data.SetValue(msg.fieldID, msg.value)
+
+		if msg.value != "" {
+			if msg.fieldID == "Name" {
+				specieData, ok := m.data.Species[msg.value]
+				if !ok {
+					// should not happen => specie is validated through editConfirmMsg => if still unknown specie here, dont do anything => internal error
+					return m, nil
+				}
+				m.fillBasicDefaults(data, &specieData)
+
+				return m, requestAutoFillForSpecie(&specieData)
+			}
+		}
+
 		return m, nil
 	case tea.KeyPressMsg:
 		switch msg.String() {
@@ -103,5 +119,35 @@ func (m basicsModel) requestInput(key, value string) tea.Cmd {
 		return requestNumberInput(key, value, min, max)
 	} else {
 		return requestSelectInput(key, value, options)
+	}
+}
+
+func (m basicsModel) fillBasicDefaults(data *list,specie *models.Specie) {
+	if specie == nil {
+		// internal error
+		return
+	}
+
+	for k := range data.values {
+		if k == "Name" {
+			// specie name was already set in update from editConfirmMsg
+			continue
+		}
+
+		var value string
+		switch k {
+		case "Gender":
+			value = specie.Gender
+		case "Type1":
+			value = specie.Types[0]
+		case "Type2":
+			if len(specie.Types) > 1 {
+				value = specie.Types[1]
+			}
+		case "Level":
+			value = fmt.Sprintf("%d", models.Level100)
+		}
+
+		data.SetValue(k, value)
 	}
 }

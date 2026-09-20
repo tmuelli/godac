@@ -1,6 +1,8 @@
 package tui
 
 import (
+	"fmt"
+
 	tea "charm.land/bubbletea/v2"
 	"github.com/tmuelli/godac/internal/models"
 	"github.com/tmuelli/godac/internal/utils"
@@ -50,9 +52,14 @@ func (m miscModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 	data := m.fieldList.GetPtr(side)
 
 	switch msg := msg.(type) {
+	case autoFillForSpecieRequestMsg:
+		m.fillMiscDefaults(data, msg.specie)
+		return m, nil
+
 	case editConfirmMsg:
 		data.SetValue(msg.fieldID, msg.value)
 		return m, nil
+
 	case tea.KeyPressMsg:
 		switch msg.String() {
 		case "up":
@@ -107,5 +114,26 @@ func (m miscModel) requestInput(key, value string) tea.Cmd {
 		return requestNumberInput(key, value, min, max)
 	} else {
 		return requestSelectInput(key, value, options)
+	}
+}
+
+func (m miscModel) fillMiscDefaults(data *list, specie *models.Specie) {
+	if specie == nil {
+		// internal error
+		return
+	}
+
+	for k := range data.values {
+		var value string
+		switch k {
+		case "Ability":
+			value = specie.Abilities["0"]
+		case "Status":
+			value = "healthy"
+		case "Health":
+			value = fmt.Sprintf("%d%%", 100)
+		}
+
+		data.SetValue(k, value)
 	}
 }

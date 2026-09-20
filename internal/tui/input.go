@@ -77,3 +77,15 @@ func requestCalc(moveIndex int, side Side) tea.Cmd {
 		}
 	}
 }
+
+type autoFillForSpecieRequestMsg struct {
+	specie		*models.Specie
+}
+
+func requestAutoFillForSpecie(specie *models.Specie) tea.Cmd {
+	return func() tea.Msg {
+		return autoFillForSpecieRequestMsg{
+			specie:		specie,
+		}
+	}
+}

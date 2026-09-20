@@ -46,6 +46,18 @@ func (m configModel) Init() tea.Cmd {
 
 func (m configModel) Update(msg tea.Msg, side Side) (configModel, tea.Cmd) {
 	switch msg := msg.(type) {
+	case autoFillForSpecieRequestMsg:
+		var cmds []tea.Cmd
+		var cmd tea.Cmd
+
+		m.tabContent[statsTab], cmd = m.tabContent[statsTab].Update(msg, side)
+		cmds = append(cmds, cmd)
+
+		m.tabContent[miscTab], cmd = m.tabContent[miscTab].Update(msg, side)
+		cmds = append(cmds, cmd)
+
+		return m, tea.Batch(cmds...)
+
 	case tea.KeyPressMsg:
 		switch msg.String() {
 		case "tab":

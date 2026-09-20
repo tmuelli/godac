@@ -1,6 +1,8 @@
 package tui
 
 import (
+	"fmt"
+
 	"charm.land/bubbles/v2/table"
 	tea "charm.land/bubbletea/v2"
 	"github.com/tmuelli/godac/internal/models"
@@ -61,6 +63,10 @@ func (m statsModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 	data := m.tab.GetPtr(side)
 
 	switch msg := msg.(type) {
+	case autoFillForSpecieRequestMsg:
+		m.fillStatsDefaults(data, msg.specie)
+		return m, nil
+
 	case editConfirmMsg:
 		data.Set(data.row, data.col, msg.value)
 		return m, nil
@@ -140,4 +146,35 @@ func (m statsModel) columnValues(side Side, col int) map[string]int {
 	}
 
 	return values
+}
+
+func (m statsModel) fillStatsDefaults(data *gridData, specie *models.Specie) {
+	if specie == nil {
+		// internal error
+		return
+	}
+
+	baseStats := specie.BaseStats
+
+	for rowIndex := range data.rows {
+		var value string
+		switch data.rows[rowIndex][0] {
+		case "Hp":
+			value = fmt.Sprintf("%d", baseStats.Hp)
+		case "Atk":
+			value = fmt.Sprintf("%d", baseStats.Atk)
+		case "Def":
+			value = fmt.Sprintf("%d", baseStats.Def)
+		case "Spa":
+			value = fmt.Sprintf("%d", baseStats.Spa)
+		case "Spd":
+			value = fmt.Sprintf("%d", baseStats.Spd)
+		case "Spe":
+			value = fmt.Sprintf("%d", baseStats.Spe)
+		default:
+			continue
+		}
+
+		data.Set(rowIndex, 1, value)
+	}
 }
