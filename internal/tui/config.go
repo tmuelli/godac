@@ -151,6 +151,7 @@ func (m configModel) Input(side Side, reqInfo *calcRequestInfo) *models.UserInpu
 	return &models.UserInput{
 		Name:				m.Name(side),
 		Level:				m.Level(side),
+		Nature:				m.Nature(side),
 		Gender:				m.Gender(side),
 		AttackMove:			attackMove,
 		Moves:				m.Moves(side),
@@ -165,5 +166,6 @@ func (m configModel) Input(side Side, reqInfo *calcRequestInfo) *models.UserInpu
 		Status:				m.Status(side),
 		Hits:				m.Hits(side, attackMove),
 		Boosts:				m.Boosts(side),
+		InputSide:			m.InputSide(side),
 	}
 }

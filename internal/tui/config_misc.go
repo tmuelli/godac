@@ -132,6 +132,8 @@ func (m miscModel) fillMiscDefaults(data *list, specie *models.Specie) {
 			value = "healthy"
 		case "Health":
 			value = fmt.Sprintf("%d%%", 100)
+		case "Nature":
+			value = DEFAULT_NATURE
 		}
 
 		data.SetValue(k, value)

@@ -138,6 +138,11 @@ func (m basicsModel) fillBasicDefaults(data *list,specie *models.Specie) {
 		switch k {
 		case "Gender":
 			value = specie.Gender
+
+			// if no value is given => default to female
+			if value == "" {
+				value = DEFAULT_GENDER
+			}
 		case "Type1":
 			value = specie.Types[0]
 		case "Type2":

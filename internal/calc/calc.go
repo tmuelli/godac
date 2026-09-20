@@ -50,9 +50,6 @@ func NewCalc(data *models.Data, atkInput *models.UserInput, defInput *models.Use
 		return nil, fmt.Errorf("invalid field input: %v", err)
 	}
 
-	attacker.dataType = Attacker
-	defender.dataType = Defender
-
 	// TODO: decide on precedence of level input =>
 	// if attacker / defender level is set or field level is set or both
 	// determine on defaults and "last set" option

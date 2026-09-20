@@ -112,7 +112,18 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	if input == nil {
 		return nil, fmt.Errorf("internal error: Invalid pointer to user input")
 	}
-	
+
+	// input side
+	var calcType CalcDataType
+	switch input.InputSide {
+	case "attacker":
+		calcType = Attacker
+	case "defender":
+		calcType = Defender
+	default:
+		return nil, fmt.Errorf("invalid input: Unknown input side %s", input.InputSide)
+	}
+
 	// specie
 	var specie *models.Specie
 
@@ -149,44 +160,45 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 
 	// moves
 	var move *string
-	for i, m := range input.Moves {
-		if m == input.AttackMove {
-			move = &input.Moves[i]
-			break
-		}
-	}
-
-	if move == nil {
-		return nil, fmt.Errorf("invalid attack Move: Move is %s is not in moveset of attacker", input.AttackMove)
-	}
-
 	var usedMove *models.Move
 
-	if m, ok := data.Moves[*move]; ok {
-		usedMove = &m
-	}
-
-	if usedMove == nil {
-		return nil, fmt.Errorf("invalid move used: Unknown move")
-	}
-
-	// check for multiple hits or multihit move
-	usedMove.Hits = DEFAULT_HIT_COUNT
-
-	if input.Hits != nil {
-		if *input.Hits == 0 {
-			return nil, fmt.Errorf("invalid hits value: Must hit at least once")
-		}
-
-		if len(usedMove.Multihit) != 0 {
-			if !usedMove.ValidMultihit(*input.Hits) {
-				return nil, fmt.Errorf("invalid hits value: Must be value in multihit range")
+	if calcType == Attacker {
+		for i, m := range input.Moves {
+			if m == input.AttackMove {
+				move = &input.Moves[i]
+				break
 			}
 		}
 
-		usedMove.Hits = *input.Hits
-	}
+		if move == nil {
+			return nil, fmt.Errorf("invalid attack Move: Move is %s is not in moveset of attacker", input.AttackMove)
+		}
 
+		if m, ok := data.Moves[*move]; ok {
+			usedMove = &m
+		}
+
+		if usedMove == nil {
+			return nil, fmt.Errorf("invalid move used: Unknown move")
+		}
+
+		// check for multiple hits or multihit move
+		usedMove.Hits = DEFAULT_HIT_COUNT
+
+		if input.Hits != nil {
+			if *input.Hits == 0 {
+				return nil, fmt.Errorf("invalid hits value: Must hit at least once")
+			}
+
+			if len(usedMove.Multihit) != 0 {
+				if !usedMove.ValidMultihit(*input.Hits) {
+					return nil, fmt.Errorf("invalid hits value: Must be value in multihit range")
+				}
+			}
+
+			usedMove.Hits = *input.Hits
+		}
+	}
 
 	// level
 	if input.Level < 1 || input.Level > 100 {
@@ -262,7 +274,14 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 			},
 		}
 	case EvCustom:
-		return nil, fmt.Errorf("invalid input: Custom ev setting not supported yet")
+		if input.EvCustom == nil {
+			return nil, fmt.Errorf("invalid input: Custom ev settings only supported when custom values are given")
+		}
+
+		evSettings = input.EvCustom
+		if !evSettings.Valid() {
+			return nil, fmt.Errorf("invalid input: Invalid custom ev values")
+		}
 	default:
 		return nil, fmt.Errorf("invalid input: Unknown ev setting")
 	}
@@ -324,6 +343,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 		status: statusCon,
 		boosts: &boosts,
 		gender: &gender,
+		dataType: calcType,
 	}
 	return &calcData, nil
 }

@@ -35,6 +35,7 @@ type UserInput struct {
 	Gender        *string  `json:"gender"`
 	Hits          *int     `json:"hits"`
 	Boosts        UserInputBoosts   `json:"boosts"`
+	InputSide     string   `json:"inputSide"`
 }
 
 /* User field input */
@@ -575,7 +576,7 @@ const (
 	Singles		FieldType	= "Singles"
 	Doubles		FieldType	= "Doubles"
 
-	Clear		FieldTerrain	= "Clear"
+	Clear		FieldTerrain	= "None"
 	Sun			FieldTerrain	= "Sun"
 	Rain		FieldTerrain	= "Rain"
 	Sand		FieldTerrain	= "Sand"

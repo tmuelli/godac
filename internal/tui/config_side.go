@@ -32,7 +32,6 @@ func (s *side[T]) Set(side Side, v T) {
 }
 
 func (m configModel) Name(side Side) string {
-	// TODO: maybe iota constant for consistent tab accessing
 	basics := m.tabContent[basicsTab].(basicsModel)
 	return basics.fieldList.Get(side).values["Name"]
 }
@@ -40,7 +39,18 @@ func (m configModel) Name(side Side) string {
 func (m configModel) Gender(side Side) *string {
 	basics := m.tabContent[basicsTab].(basicsModel)
 	gender := basics.fieldList.Get(side).values["Gender"]
-	return &gender
+	
+	var result string
+	switch gender {
+	case "Male":
+		result = "M"
+	case "Female":
+		result = "F"
+	case "Genderless":
+		result = "N"
+	}
+
+	return &result
 }
 
 func (m configModel) Level(side Side) int {
@@ -55,7 +65,8 @@ func (m configModel) Level(side Side) int {
 
 func (m configModel) Moves(side Side) []string {
 	moves := m.tabContent[movesTab].(movesModel)
-	return moves.Names(side)
+	settings := m.MoveSettings(side)
+	return moves.Names(side, settings)
 }
 
 func (m configModel) MoveSettings(side Side) []moveRowSettings {
@@ -92,13 +103,20 @@ func (m configModel) Hits(side Side, move string) *int {
 
 func (m configModel) HealthPercent(side Side) int {
 	misc := m.tabContent[miscTab].(miscModel)
-	health := atoiOrZero(misc.fieldList.Get(side).values["Health"])
+	// remove percent sign from string value
+	healthString := misc.fieldList.Get(side).values["Health"]
+	health := atoiOrZero(healthString[:len(healthString)-1])
 	return health
 }
 
 func (m configModel) Item(side Side) *string {
 	misc := m.tabContent[miscTab].(miscModel)
 	item := misc.fieldList.Get(side).values["Item"]
+
+	if item == "" {
+		return nil
+	}
+
 	return &item
 }
 
@@ -154,4 +172,16 @@ func (m configModel) Boosts(side Side) models.UserInputBoosts {
 	}
 
 	return s
+}
+
+func (m configModel) Nature(side Side) string {
+	misc := m.tabContent[miscTab].(miscModel)
+	return misc.fieldList.Get(side).values["Nature"]
+}
+
+func (m configModel) InputSide(side Side) string {
+	if side == LeftSide {
+		return "attacker"
+	}
+	return "defender"
 }

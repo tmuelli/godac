@@ -128,10 +128,15 @@ func (m movesModel) View(side Side) string {
 	return renderGrid(m.tab.Get(side), m.styles)
 }
 
-func (m movesModel) Names(side Side) []string {
+func (m movesModel) Names(side Side, settings []moveRowSettings) []string {
 	var names []string
 	data := m.tab.Get(side)
-	for _, row := range data.rows {
+	for i, row := range data.rows {
+		if !settings[i].isSet {
+			// do not add placeholder moves to move slice
+			continue
+		}
+
 		names = append(names, row[0])
 	}
 
@@ -204,6 +209,8 @@ func (m movesModel) fillMovesDefaults(data *gridData, moveName string) {
 			value = moveData.Type
 		case CATEGORY_COL:
 			value = moveData.Category
+		case HITS_COL:
+			value = DEFAULT_HITS
 		default:
 			continue
 		}
