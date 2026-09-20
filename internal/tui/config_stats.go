@@ -157,6 +157,7 @@ func (m statsModel) fillStatsDefaults(data *gridData, specie *models.Specie) {
 	baseStats := specie.BaseStats
 
 	for rowIndex := range data.rows {
+		// set base stats
 		var value string
 		switch data.rows[rowIndex][0] {
 		case "Hp":
@@ -176,5 +177,8 @@ func (m statsModel) fillStatsDefaults(data *gridData, specie *models.Specie) {
 		}
 
 		data.Set(rowIndex, 1, value)
+
+		// default to max iv
+		data.Set(rowIndex, 2, fmt.Sprintf("%d", models.IV_MAX))
 	}
 }
