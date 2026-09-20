@@ -137,7 +137,7 @@ func (m fieldModel) View() string {
 }
 
 func (m fieldModel) Title() string {
-	return "Field view - Press [C] for calculation view or [R] or [L] for config view"
+	return "Field view - Press [C] for calculation view or [L] or [R] for config view"
 }
 
 func (m fieldModel) Body() string {

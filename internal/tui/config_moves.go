@@ -7,10 +7,15 @@ import (
 	"github.com/tmuelli/godac/internal/utils"
 )
 
+type moveRowSettings struct {
+	isSet	bool
+}
+
 type movesModel struct {
-	tab			side[gridData]
-	styles		*styles
-	data		*models.Data
+	tab				side[gridData]
+	rowSettings		side[[]moveRowSettings]
+	styles			*styles
+	data			*models.Data
 }
 
 func newMovesModel(s *styles, data *models.Data) movesModel {
@@ -32,6 +37,8 @@ func newMovesModel(s *styles, data *models.Data) movesModel {
 
 	initialColIndex := firstEditableCol(columns)
 
+	rowData := make([]moveRowSettings, len(rows))
+
 	return movesModel{
 		tab:		side[gridData]{
 			left:	gridData{
@@ -47,6 +54,10 @@ func newMovesModel(s *styles, data *models.Data) movesModel {
 				col:		initialColIndex,
 			},
 		},
+		rowSettings: side[[]moveRowSettings]{
+			left:	append([]moveRowSettings{}, rowData...),
+			right:	append([]moveRowSettings{}, rowData...),
+		},
 		styles:		s,
 		data:		data,
 	}
@@ -58,10 +69,19 @@ func (m movesModel) Init() tea.Cmd {
 
 func (m movesModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 	data := m.tab.GetPtr(side)
+	rowSettings := m.rowSettings.GetPtr(side)
 	
 	switch msg := msg.(type) {
 	case editConfirmMsg:
 		data.Set(data.row, data.col, msg.value)
+
+		
+		if msg.value != "" {
+			(*rowSettings)[data.row].isSet = true
+		} else {
+			(*rowSettings)[data.row].isSet = false
+		}
+
 		return m, nil
 	case tea.KeyPressMsg:
 		switch msg.String() {
@@ -99,6 +119,10 @@ func (m movesModel) Names(side Side) []string {
 	}
 
 	return names
+}
+
+func (m movesModel) MoveRowSettings(side Side) []moveRowSettings {
+	return m.rowSettings.Get(side)
 }
 
 // TODO: maybe make general requestInput

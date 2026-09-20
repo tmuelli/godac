@@ -58,6 +58,11 @@ func (m configModel) Moves(side Side) []string {
 	return moves.Names(side)
 }
 
+func (m configModel) MoveSettings(side Side) []moveRowSettings {
+	moves := m.tabContent[movesTab].(movesModel)
+	return moves.MoveRowSettings(side)
+}
+
 func (m configModel) Hits(side Side, move string) *int {
 	moves := m.tabContent[movesTab].(movesModel)
 	data := moves.tab.Get(side)

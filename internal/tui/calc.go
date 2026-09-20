@@ -17,10 +17,10 @@ const (
 )
 
 type calcContext struct {
-	leftName	string
-	rightName	string
-	leftMoves	[]string
-	rightMoves	[]string
+	leftName			string
+	rightName			string
+	leftMoves			[]string
+	rightMoves			[]string
 }
 
 type calcResult struct {
@@ -37,8 +37,8 @@ type calcModel struct {
 
 func newCalcModel(s *styles, data *models.Data) calcModel {
 	columns := []gridColumn{
-		{col: table.Column{Title: "Pokemon1 [L]", Width: 15}, editable: false},
-		{col: table.Column{Title: "Pokemon2 [R]", Width: 15}, editable: false},
+		{col: table.Column{Title: "Pokemon1 [L]", Width: 15}, editable: true},
+		{col: table.Column{Title: "Pokemon2 [R]", Width: 15}, editable: true},
 	}
 
 	rows := [][]string{
@@ -80,13 +80,9 @@ func (m calcModel) Update(msg tea.Msg) (calcModel, tea.Cmd) {
 			case "right":
 				m.grid.MoveCol(1)
 			case "enter":
-				if !m.grid.columns[m.grid.col].editable {
-					return m, nil
-				}
-
 				usedSide := Side(m.grid.col)
-				usedMove := m.grid.rows[m.grid.row][m.grid.col]
-				return m, requestCalc(usedMove, usedSide)
+				usedMoveIndex := m.grid.row
+				return m, requestCalc(usedMoveIndex, usedSide)
 		}
 	}
 
@@ -101,7 +97,7 @@ func (m calcModel) View(ctx calcContext) string {
 }
 
 func (m calcModel) Title() string {
-	return "Calculation view - Press [R] or [L] for config view or [F] for field view"
+	return "Calculation view - Press [L] or [R] for config view or [F] for field view"
 }
 
 func (m calcModel) Body(ctx calcContext) string {
@@ -114,6 +110,10 @@ func (m calcModel) Body(ctx calcContext) string {
 }
 
 func (m calcModel) ResultView() string {
+	if m.result.err != nil {
+		return fmt.Sprintf("Error: %v\n", m.result.err)
+	}
+
 	content := "\nPokemon1 (Move x) vs. Pokemon 2:\n"
 	content += fmt.Sprintf("%d - %d (%f - %f)\n",
 		m.result.r.Range.Min,

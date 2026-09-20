@@ -60,8 +60,8 @@ type userInputMsg struct {
 }
 
 type calcRequestMsg struct {
-	usedMove	string
-	usedSide	Side
+	usedMoveIndex	int
+	usedSide		Side
 }
 
 type calcRequestInfo struct {
@@ -69,11 +69,11 @@ type calcRequestInfo struct {
 	usedSide	Side
 }
 
-func requestCalc(move string, side Side) tea.Cmd {
+func requestCalc(moveIndex int, side Side) tea.Cmd {
 	return func() tea.Msg {
 		return calcRequestMsg{
-			usedMove:	move,
-			usedSide:	side,
+			usedMoveIndex:	moveIndex,
+			usedSide:		side,
 		}
 	}
 }

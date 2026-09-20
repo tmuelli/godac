@@ -69,7 +69,14 @@ func (m model) Init() tea.Cmd {
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case calcRequestMsg:
-		m.calcRequestInfo.usedMove = msg.usedMove
+		moveSettings := m.config.MoveSettings(msg.usedSide)
+		moves := m.config.Moves(msg.usedSide)
+
+		if !moveSettings[msg.usedMoveIndex].isSet {
+			return m, nil
+		}
+
+		m.calcRequestInfo.usedMove = moves[msg.usedMoveIndex]
 		m.calcRequestInfo.usedSide = msg.usedSide
 
 		userInput := m.Input()
@@ -201,10 +208,10 @@ func (m model) View() tea.View {
 	switch m.current {
 	case CalcView:
 		ctx := calcContext{
-			leftName:	m.config.Name(LeftSide),
-			rightName:	m.config.Name(RightSide),
-			leftMoves:	m.config.Moves(LeftSide),
-			rightMoves:	m.config.Moves(RightSide),
+			leftName:			m.config.Name(LeftSide),
+			rightName:			m.config.Name(RightSide),
+			leftMoves:			m.config.Moves(LeftSide),
+			rightMoves:			m.config.Moves(RightSide),
 		}
 		content = m.calc.View(ctx)
 
