@@ -1,7 +1,6 @@
 package calc
 
 import (
-	"fmt"
 	"math"
 
 	"github.com/tmuelli/godac/internal/models"
@@ -151,13 +150,8 @@ func (d *CalcData) effectiveStat(kind StatKind, usedMove *models.Move, hasOppone
 			return d.effectiveSpeedStat(field)
 	}
 
-	fmt.Println("[DEBUG]: Base stat:", base)
-	fmt.Println("[DEBUG]: IV stat:", iv)
-	fmt.Println("[DEBUG]: EV stat:", ev)
-
 	// get nature modifier
 	nature := getNatureModifier(kind, d.nature)
-	fmt.Println("[DEBUG]: Nature modifier:", nature)
 
 	// calculate effective stat
 	baseEffStat := math.Floor((math.Floor((((2 * base) + iv + math.Floor(ev / 4)) * float64(d.level)) / 100) + 5) * nature)
@@ -168,7 +162,8 @@ func (d *CalcData) effectiveStat(kind StatKind, usedMove *models.Move, hasOppone
 	// get item modifier
 	item, err := d.itemModifier(&kind, models.StatEffect, nil)
 	if err != nil {
-		fmt.Println("Error during calculating effective stat:", err)
+		// TODO: add to logging
+		// fmt.Println("Error during calculating effective stat:", err)
 		return 0
 	}
 

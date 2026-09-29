@@ -153,8 +153,6 @@ func (c *Calculation) Calc() error {
 	dmgMin := dmgResult[0]
 	dmgMax := dmgResult[15]
 
-	fmt.Println("[DEBUG]: Min damage:", dmgMin)
-	fmt.Println("[DEBUG]: Max damage:", dmgMax)
 
 	// TODO: implement final dot damage (e.g. stealth rock, spikes, leech seed) from field
 	// in smogon damage calc this is not inside the gen4 damage calc but rather calculated afterwards
@@ -240,10 +238,6 @@ func (c *Calculation) calcBaseDamage(hitCount int) (float64, error) {
 	attackStat = c.attacker.effectiveStat(atkStat, atkMove, c.defender.hasAbility("unaware"), c.field)
 	defenseStat = c.defender.effectiveStat(defStat, atkMove, c.attacker.hasAbility("unaware"), c.field)
 
-	fmt.Println("[DEBUG]: Effectice sp Atk stat:", attackStat)
-	fmt.Println("[DEBUG]: Effective sp Def stat:", defenseStat)
-
-
 	moveBP := c.moveBasePower(hitCount)
 	movePower, err := c.modifiedMovePower(float64(moveBP))
 	if err != nil {
@@ -251,8 +245,6 @@ func (c *Calculation) calcBaseDamage(hitCount int) (float64, error) {
 	}
 
 	dmg := math.Floor(math.Floor((math.Floor(float64(2 * c.attacker.level) / 5 + 2) * movePower * float64(attackStat)) / 50) / float64(defenseStat))
-
-	fmt.Println("[DEBUG]: Base damage:", dmg)
 	return float64(dmg), nil
 }
 
@@ -284,7 +276,6 @@ func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 	}
 
 	dmg := math.Floor(baseDmg * burnMod * screenMod * targetsMod * weatherMod * flashFireMod) + 2
-	fmt.Println("[DEBUG]: Conditional damage:", dmg)
 	return dmg, nil
 }
 

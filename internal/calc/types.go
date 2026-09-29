@@ -21,10 +21,11 @@ func calcTypeModifier(moveType, defType *models.Type, canHitGhostType, isGravity
 		return 1.0
 	}
 
-	mod, ok := moveType.Effectiveness[defType.Name]
-	if !ok {
-		fmt.Printf("Error trying to look up type %s in type map while trying to calc type modifier\n", defType.Name)
-	}
+	mod := moveType.Effectiveness[defType.Name]
+	// if !ok {
+	// 	// TODO: add to logging
+	// 	// fmt.Printf("Error trying to look up type %s in type map while trying to calc type modifier\n", defType.Name)
+	// }
 
 	return mod
 }
