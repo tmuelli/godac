@@ -1,5 +1,27 @@
 TODOS:
-- same implementation for types => specie has type
-- check type capitalization => change to lower case like all other ids
-	- check capitalization throughout the entire application
-- check the use of validItemCondition function and the need of it => refactor this part with context and stuff when metronome logic comes in
+	- health hp input
+	- health hp progress bar
+	- input values override master data => move or specie has different type than default
+	- calculation TODOS
+		- level input / field level => precedence or last edited wins
+		- percentage result output
+		- double battle calculation
+		- metronome item multiplier
+		- nature power terrain basepower calculation
+		- checkItem implementation => ability Klutz = except iron ball in gen 4 and not ev items => setup func
+		- getFinalSpeed implementation
+		- add logging
+	- clean up / bugfix TODOS
+		- same implementation for types => specie has type
+		- check type capitalization => change to lower case like all other ids
+			- check capitalization throughout the entire codebase
+		- check the use of validItemCondition function and the need of it => refactor this part with context and stuff when metronome logic comes in
+		- checkMultihitBoost => effective stats in dropStats case
+		- use only ability IsActive function or member field Active
+		- modifiedStat function attacker and defender combine logic of cases
+	- tests
+		- triple kick => hit accounting
+
+FUTURE FEATURES:
+	- final dot accounting into damage calculation (specifically after calculation)
+	- loading and saving settings / calculation data etc.
