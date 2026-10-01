@@ -50,8 +50,8 @@ type calcModel struct {
 
 func newCalcModel(s *styles, data *models.Data) calcModel {
 	columns := []gridColumn{
-		{col: table.Column{Title: "Pokemon1 [L]", Width: 15}, editable: true},
-		{col: table.Column{Title: "Pokemon2 [R]", Width: 15}, editable: true},
+		{col: table.Column{Title: "Pokemon1 [L]", Width: 15}, editable: true, visible: true},
+		{col: table.Column{Title: "Pokemon2 [R]", Width: 15}, editable: true, visible: true},
 	}
 
 	rows := [][]string{

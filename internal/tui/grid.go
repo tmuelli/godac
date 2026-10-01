@@ -8,6 +8,7 @@ import (
 type gridColumn struct {
 	col			table.Column
 	editable	bool
+	visible		bool
 }
 
 type gridData struct {
@@ -31,7 +32,7 @@ func (g *gridData) MoveCol(colDelta int) {
 			return
 		}
 
-		if g.columns[next].editable {
+		if g.columns[next].editable && g.columns[next].visible {
 			g.col = next
 			return
 		}
@@ -47,6 +48,10 @@ func renderGrid(data gridData, s *styles) string {
 
 	var headerCells []string
 	for _, c := range data.columns {
+		if !c.visible {
+			continue
+		}
+
 		headerCells = append(headerCells, lipgloss.NewStyle().Width(c.col.Width).Bold(true).Render(c.col.Title))
 	}
 	lines = append(lines, lipgloss.JoinHorizontal(lipgloss.Top, headerCells...))
@@ -54,7 +59,12 @@ func renderGrid(data gridData, s *styles) string {
 	for ri, row := range data.rows {
 		var cells []string
 		for ci, colVal := range row {
-			style := lipgloss.NewStyle().Width(data.columns[ci].col.Width)
+			c := data.columns[ci]
+			if !c.visible {
+				continue
+			}
+
+			style := lipgloss.NewStyle().Width(c.col.Width)
 			if ri == data.row && ci == data.col {
 				style = style.Foreground(s.highlight).Bold(true)
 			}

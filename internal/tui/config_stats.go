@@ -16,12 +16,12 @@ type statsModel struct {
 
 func newStatsModel(s *styles, data *models.Data) statsModel {
 	columns := []gridColumn{
-		{col: table.Column{Title: "Stat", Width: 15}, editable: false},
-		{col: table.Column{Title: "Base", Width: 15}, editable: true},
-		{col: table.Column{Title: "IV", Width: 15}, editable: true},
-		{col: table.Column{Title: "EV", Width: 15}, editable: true},
-		{col: table.Column{Title: "Total", Width: 15}, editable: false},
-		{col: table.Column{Title: "Boost", Width: 15}, editable: true},
+		{col: table.Column{Title: "Stat", Width: 15}, editable: false, visible: true},
+		{col: table.Column{Title: "Base", Width: 15}, editable: true, visible: true},
+		{col: table.Column{Title: "IV", Width: 15}, editable: true, visible: true},
+		{col: table.Column{Title: "EV", Width: 15}, editable: true, visible: true},
+		{col: table.Column{Title: "Total", Width: 15}, editable: false, visible: true},
+		{col: table.Column{Title: "Boost", Width: 15}, editable: true, visible: true},
 	}
 
 	rows := [][]string{

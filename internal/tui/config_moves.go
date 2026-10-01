@@ -33,12 +33,12 @@ type movesModel struct {
 
 func newMovesModel(s *styles, data *models.Data) movesModel {
 	columns := []gridColumn{
-		{col: table.Column{Title: "Move", Width: 15}, editable: true},
-		{col: table.Column{Title: "Base Power", Width: 15}, editable: true},
-		{col: table.Column{Title: "Type", Width: 15}, editable: true},
-		{col: table.Column{Title: "Category", Width: 15}, editable: true},
-		{col: table.Column{Title: "Crit", Width: 15}, editable: true},
-		{col: table.Column{Title: "Hits", Width: 15}, editable: true},
+		{col: table.Column{Title: "Move", Width: 15}, editable: true, visible: true},
+		{col: table.Column{Title: "Base Power", Width: 15}, editable: true, visible: true},
+		{col: table.Column{Title: "Type", Width: 15}, editable: true, visible: true},
+		{col: table.Column{Title: "Category", Width: 15}, editable: true, visible: true},
+		{col: table.Column{Title: "Crit", Width: 15}, editable: true, visible: true},
+		{col: table.Column{Title: "Hits", Width: 15}, editable: true, visible: true},
 	}
 
 	rows := [][]string{
