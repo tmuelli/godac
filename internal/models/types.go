@@ -616,8 +616,3 @@ type Field struct {
 	Left		FieldSide
 	Right		FieldSide
 }
-
-/* Calculation context */
-type CalcContext struct {
-	SuperEffective		bool
-}

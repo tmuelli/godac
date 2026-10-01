@@ -12,15 +12,15 @@ func metronomeMultiplier() float64 {
 	return 0.0
 }
 
-func (d *CalcData) validItemCondition(cond models.ItemConditionFlag, ctx *models.CalcContext) bool {
-	if (cond & models.ItemConSuperEffective) != 0 {
-		// TODO: use ctx here
-	}
-
+// validItemCondition evaluates item.Condition flags that evaluate whether an
+// item's effect applies during stat/move resolution. Damage-stage-only
+// flags (SuperEffective, TypeReduction) are intentionally not checked here —
+// see berryModifier/finalItemModifier. Metronome is also resolved separately
+// (see metronomeMultiplier) and is not evaluated here.
+func (d *CalcData) validItemCondition(cond models.ItemConditionFlag) bool {
 	if (cond & models.ItemConNotTransformed) != 0 {
 		// only applies to ditto specie
-		// TODO: for now assume ditto is always transformed when calculation is done
-		// TODO: implement transformation info later
+		// for now assume ditto is always transformed when calculation is done
 		if d.specie.ID == "ditto" {
 			return false
 		}
@@ -36,23 +36,6 @@ func (d *CalcData) validItemCondition(cond models.ItemConditionFlag, ctx *models
 		if d.usedMove.Category != string(Special) {
 			return false
 		}
-	}
-
-	if (cond & models.ItemConMetronome) != 0 {
-		// Metronome is handled in special function as it needs
-		// information about consecutive move use
-		// see: metronomeModifier() and finalItemModifier()
-		return true
-	}
-
-	if (cond & models.ItemConLifeOrb) != 0 {
-		// TODO: to be implemented life orb
-		// if recoil damage is considered later add it here
-		return true
-	}
-
-	if (cond & models.ItemConTypeReduction) != 0 {
-		// TODO: use ctx here
 	}
 
 	return true
@@ -85,7 +68,7 @@ func (d *CalcData) baseItemModifier(kind StatKind) float64 {
 	// check item conditions
 	if d.item.Condition != nil {
 		condFlag := d.item.Condition.ToFlag()
-		if !d.validItemCondition(condFlag, nil) {
+		if !d.validItemCondition(condFlag) {
 			return 1.0
 		}
 	}
@@ -122,7 +105,7 @@ func (d *CalcData) moveItemModifier() (float64, error) {
 	// check item conditions
 	if d.item.Condition != nil {
 		condFlag := d.item.Condition.ToFlag()
-		if !d.validItemCondition(condFlag, nil) {
+		if !d.validItemCondition(condFlag) {
 			return 1.0, nil
 		}
 	}
