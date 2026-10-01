@@ -9,6 +9,25 @@ import (
 	"golang.org/x/exp/maps"
 )
 
+// TODO: implement current health in hp
+const (
+	NATURE = "Nature"
+	ABILTIY = "Abiltiy"
+	ITEM = "Item"
+	STATUS = "Status"
+	HEALTH_PERCENT = "Health Percent"
+	CURRENT_HEALTH = "Current Health"
+)
+
+var KEYS = []string{
+	NATURE,
+	ABILTIY,
+	ITEM,
+	STATUS,
+	HEALTH_PERCENT,
+	CURRENT_HEALTH,
+}
+
 type miscModel struct {
 	fieldList	side[list]
 	styles		*styles
@@ -16,15 +35,12 @@ type miscModel struct {
 }
 
 func newMiscModel(s *styles, data *models.Data) miscModel {
-	template := map[string]string{
-		"Nature": "",
-		"Ability": "",
-		"Item": "",
-		"Status": "",
-		"Health": "",
+	template := make(map[string]string, len(KEYS))
+	for _, k := range KEYS {
+		template[k] = ""
 	}
 
-	options := []string{"Nature", "Ability", "Item", "Status", "Health"}
+	options := KEYS
 
 	return miscModel{
 		fieldList:	side[list]{
@@ -90,21 +106,21 @@ func (m miscModel) requestInput(key, value string) tea.Cmd {
 	// TODO: maybe use SliceFROmMapValue somewhere before to not do this everytime again
 	// TODO: change to constants where its reasonable
 	switch key {
-	case "Nature":
+	case NATURE:
 		options = utils.SliceFromMapValue(m.data.Natures, func(n models.Nature) string {
 			return n.Name
 		})
-	case "Ability":
+	case ABILTIY:
 		options = utils.SliceFromMapValue(m.data.Abilities, func(a models.Ability) string {
 			return a.Name
 		})
-	case "Item":
+	case ITEM:
 		options = utils.SliceFromMapValue(m.data.Items, func(i models.Item) string {
 			return i.Name
 		})
-	case "Status":
+	case STATUS:
 		options = []string{"Healthy", "Poisoned", "Badly Poisoned", "Burned", "Paralyzed", "Asleep", "Frozen"}
-	case "Health":
+	case HEALTH_PERCENT:
 		isNumeric = true
 		min = 1
 		max = 100
@@ -126,13 +142,13 @@ func (m miscModel) fillMiscDefaults(data *list, specie *models.Specie) {
 	for k := range data.values {
 		var value string
 		switch k {
-		case "Ability":
+		case ABILTIY:
 			value = specie.Abilities["0"]
-		case "Status":
+		case STATUS:
 			value = "healthy"
-		case "Health":
+		case HEALTH_PERCENT:
 			value = fmt.Sprintf("%d%%", 100)
-		case "Nature":
+		case NATURE:
 			value = DEFAULT_NATURE
 		}
 
