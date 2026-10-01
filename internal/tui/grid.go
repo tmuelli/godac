@@ -78,7 +78,7 @@ func renderGrid(data gridData, s *styles) string {
 
 func firstEditableCol(columns []gridColumn) int {
 	for i, c := range columns {
-		if c.editable {
+		if c.editable && c.visible {
 			return i
 		}
 	}
