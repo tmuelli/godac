@@ -140,7 +140,6 @@ func (c *Calculation) moveBasePower(hitCount int) int {
 }
 
 func (c *Calculation) modifiedMovePower(basePower float64) (float64, error) {
-	// TODO: maybe find better approach to handle abiltiy modifier of move base power
 	var kind StatKind
 
 	if MoveCategory(c.attacker.usedMove.Category) == Special {
