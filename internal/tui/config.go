@@ -68,6 +68,11 @@ func (m configModel) Init() tea.Cmd {
 
 func (m configModel) Update(msg tea.Msg, side Side) (configModel, tea.Cmd) {
 	switch msg := msg.(type) {
+	case metronomeColVisibleRequestMsg:
+		var cmd tea.Cmd
+		m.tabContent[movesTab], cmd = m.tabContent[movesTab].Update(msg, side)
+		return m, cmd
+
 	case autoFillForSpecieRequestMsg:
 		var cmds []tea.Cmd
 		var cmd tea.Cmd
@@ -175,6 +180,7 @@ func (m configModel) Input(side Side, reqInfo *calcRequestInfo) *models.UserInpu
 		Item:				m.Item(side),
 		Status:				m.Status(side),
 		Hits:				m.Hits(side, attackMove),
+		MetronomeHits:		m.MetronomeHits(side, attackMove),
 		Boosts:				m.Boosts(side),
 		InputSide:			m.InputSide(side),
 	}

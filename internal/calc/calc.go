@@ -22,6 +22,7 @@ type CalcData struct {
 	status		StatusCondition
 	boosts		*models.Boosts
 	gender		*Gender
+	metrHits	int
 }
 
 type Calculation struct {

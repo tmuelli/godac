@@ -18,6 +18,7 @@ const (
 	CATEGORY_COL
 	CRIT_COL
 	HITS_COL
+	METR_HITS_COL
 )
 
 type moveRowSettings struct {
@@ -35,17 +36,18 @@ func newMovesModel(s *styles, data *models.Data) movesModel {
 	columns := []gridColumn{
 		{col: table.Column{Title: "Move", Width: 15}, editable: true, visible: true},
 		{col: table.Column{Title: "Base Power", Width: 15}, editable: true, visible: true},
-		{col: table.Column{Title: "Type", Width: 15}, editable: true, visible: true},
+		{col: table.Column{Title: "Type", Width: 10}, editable: true, visible: true},
 		{col: table.Column{Title: "Category", Width: 15}, editable: true, visible: true},
-		{col: table.Column{Title: "Crit", Width: 15}, editable: true, visible: true},
-		{col: table.Column{Title: "Hits", Width: 15}, editable: true, visible: true},
+		{col: table.Column{Title: "Crit", Width: 10}, editable: true, visible: true},
+		{col: table.Column{Title: "Hits", Width: 10}, editable: true, visible: true},
+		{col: table.Column{Title: "Metr. Hits", Width: 15}, editable: true, visible: false},
 	}
 
 	rows := [][]string{
-		{"Move1", "BP1", "Type1", "None", "No", "0"},
-		{"Move2", "BP2", "Type2", "None", "No", "0"},
-		{"Move3", "BP3", "Type3", "None", "No", "0"},
-		{"Move4", "BP4", "Type4", "None", "No", "0"},
+		{"Move1", "BP1", "Type1", "None", "No", "0", "0"},
+		{"Move2", "BP2", "Type2", "None", "No", "0", "0"},
+		{"Move3", "BP3", "Type3", "None", "No", "0", "0"},
+		{"Move4", "BP4", "Type4", "None", "No", "0", "0"},
 	}
 
 	initialColIndex := firstEditableCol(columns)
@@ -55,13 +57,13 @@ func newMovesModel(s *styles, data *models.Data) movesModel {
 	return movesModel{
 		tab:		side[gridData]{
 			left:	gridData{
-				columns:	columns,
+				columns:	cloneColumns(columns),
 				rows:		cloneRows(rows),
 				row:		0,
 				col:		initialColIndex,
 			},
 			right:	gridData{
-				columns:	columns,
+				columns:	cloneColumns(columns),
 				rows:		cloneRows(rows),
 				row:		0,
 				col:		initialColIndex,
@@ -85,6 +87,11 @@ func (m movesModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 	rowSettings := m.rowSettings.GetPtr(side)
 	
 	switch msg := msg.(type) {
+	case metronomeColVisibleRequestMsg:
+		data.columns[METR_HITS_COL].visible = msg.visible
+		data.SetNextValidCol()
+		return m, nil
+
 	case editConfirmMsg:
 		data.Set(data.row, data.col, msg.value)
 
@@ -178,6 +185,21 @@ func (m movesModel) requestInput(key, value string) tea.Cmd {
 		// TODO: better solution
 		options = []string{"Once", "Twice", "3 times", "4 times", "5 times",
 			"1 hits", "2 hits", "3 hits", "4 hits", "5 hits",
+		}
+	case "Metr. Hits":
+		// TODO: better solution
+		options = []string{
+			"Never",
+			"Once",
+			"Twice",
+			"3 times",
+			"4 times",
+			"5 times",
+			"6 times",
+			"7 times",
+			"8 times",
+			"9 times",
+			"10 times",
 		}
 	}
 

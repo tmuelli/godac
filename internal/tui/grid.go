@@ -43,6 +43,18 @@ func (g *gridData) Set(row, col int, value string) {
 	g.rows[row][col] = value
 }
 
+func (g *gridData) SetNextValidCol() {
+	if g.col < len(g.columns) && g.columns[g.col].editable && g.columns[g.col].visible {
+		return
+	}
+
+	g.MoveCol(1)
+
+	if !g.columns[g.col].editable || !g.columns[g.col].visible {
+		g.MoveCol(-1)
+	}
+}
+
 func renderGrid(data gridData, s *styles) string {
 	var lines []string
 
@@ -52,7 +64,10 @@ func renderGrid(data gridData, s *styles) string {
 			continue
 		}
 
-		headerCells = append(headerCells, lipgloss.NewStyle().Width(c.col.Width).Bold(true).Render(c.col.Title))
+		headerCells = append(headerCells, lipgloss.NewStyle().
+			Width(c.col.Width).
+			Bold(true).
+			Render(c.col.Title))
 	}
 	lines = append(lines, lipgloss.JoinHorizontal(lipgloss.Top, headerCells...))
 

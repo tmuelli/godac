@@ -34,6 +34,7 @@ type UserInput struct {
 	Status        *string  `json:"status"`
 	Gender        *string  `json:"gender"`
 	Hits          *int     `json:"hits"`
+	MetronomeHits *int     `json:"metronome_hits"`
 	Boosts        UserInputBoosts   `json:"boosts"`
 	InputSide     string   `json:"inputSide"`
 }

@@ -101,6 +101,45 @@ func (m configModel) Hits(side Side, move string) *int {
 	return &hits
 }
 
+func (m configModel) MetronomeHits(side Side, move string) *int {
+	moves := m.tabContent[movesTab].(movesModel)
+	data := moves.tab.Get(side)
+
+	var metrHits int
+
+	if data.columns[METR_HITS_COL].visible {
+		for _, m := range data.rows {
+			// TODO: use constants here
+			if m[0] == move {
+				switch m[6] {
+				case "Once":
+					metrHits = 1
+				case "Twice":
+					metrHits = 2
+				case "3 times":
+					metrHits = 3
+				case "4 times":
+					metrHits = 4
+				case "5 times":
+					metrHits = 5
+				case "6 times":
+					metrHits = 6
+				case "7 times":
+					metrHits = 7
+				case "8 times":
+					metrHits = 8
+				case "9 times":
+					metrHits = 9
+				case "10 times":
+					metrHits = 10
+				}
+			}
+		}
+	}
+
+	return &metrHits
+}
+
 func (m configModel) HealthPercent(side Side) int {
 	misc := m.tabContent[miscTab].(miscModel)
 	// remove percent sign from string value

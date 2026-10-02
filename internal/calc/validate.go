@@ -313,6 +313,17 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 		if item == nil {
 			return nil, fmt.Errorf("invalid input: Unknown item")
 		}
+
+		// metronome hits
+		if item.Id == "metronome" {
+			if input.MetronomeHits == nil {
+				return nil, fmt.Errorf("invalid input: metronome hits invalid")
+			}
+
+			if *input.MetronomeHits < 0 || *input.MetronomeHits > 10 {
+				return nil, fmt.Errorf("invalid input: metronome hits value is out of range")
+			}
+		}
 	}
 
 	// status condition
@@ -344,6 +355,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 		boosts: &boosts,
 		gender: &gender,
 		dataType: calcType,
+		metrHits: *input.MetronomeHits,
 	}
 	return &calcData, nil
 }

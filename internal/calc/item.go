@@ -7,9 +7,20 @@ import (
 	"github.com/tmuelli/godac/internal/models"
 )
 
-func metronomeMultiplier() float64 {
-	// TODO: to be implemented => use calc context for same move count
-	return 0.0
+func metronomeMultiplier(hits int) float64 {
+	mod := 1.0
+
+	if hits <= 1 {
+		return mod
+	}
+
+	if hits <= 9 {
+		mod = 1.0 + (0.1 * float64(hits))
+	} else {
+		mod = 2.0
+	}
+
+	return mod
 }
 
 // validItemCondition evaluates item.Condition flags that evaluate whether an
@@ -171,7 +182,7 @@ func (d *CalcData) finalItemModifier(options models.ItemModifierOptions) (float6
 			cond := d.item.Condition.ToFlag()
 
 			if cond & models.ItemConMetronome != 0 {
-				return metronomeMultiplier(), nil
+				return metronomeMultiplier(d.metrHits), nil
 			}
 
 			if cond & models.ItemConLifeOrb != 0 {

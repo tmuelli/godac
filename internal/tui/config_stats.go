@@ -38,13 +38,13 @@ func newStatsModel(s *styles, data *models.Data) statsModel {
 	return statsModel{
 		tab:		side[gridData]{
 			left:	gridData{
-				columns:	columns,
+				columns:	cloneColumns(columns),
 				rows:		cloneRows(rows),
 				row:		0,
 				col:		initialColIndex,
 			},
 			right:	gridData{
-				columns:	columns,
+				columns:	cloneColumns(columns),
 				rows:		cloneRows(rows),
 				row:		0,
 				col:		initialColIndex,

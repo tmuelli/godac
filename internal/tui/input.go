@@ -89,3 +89,15 @@ func requestAutoFillForSpecie(specie *models.Specie) tea.Cmd {
 		}
 	}
 }
+
+type metronomeColVisibleRequestMsg struct {
+	visible		bool
+}
+
+func requestMetronomeColVisible(visible bool) tea.Cmd {
+	return func() tea.Msg {
+		return metronomeColVisibleRequestMsg{
+			visible:	visible,
+		}
+	}
+}

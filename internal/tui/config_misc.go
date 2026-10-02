@@ -74,6 +74,12 @@ func (m miscModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 
 	case editConfirmMsg:
 		data.SetValue(msg.fieldID, msg.value)
+
+		if msg.fieldID == ITEM {
+			isMetronomeColVisible := msg.value == "Metronome"
+			return m, requestMetronomeColVisible(isMetronomeColVisible)
+		}
+
 		return m, nil
 
 	case tea.KeyPressMsg:

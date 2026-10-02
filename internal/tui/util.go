@@ -10,6 +10,10 @@ func cloneRows(rows [][]string) [][]string{
 	return output
 }
 
+func cloneColumns(columns []gridColumn) []gridColumn {
+	return append([]gridColumn{}, columns...)
+}
+
 func atoiOrZero(value string) int {
 	n, _ := strconv.Atoi(value)
 	return n
