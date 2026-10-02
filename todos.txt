@@ -7,7 +7,6 @@ CALC:
 			- level input / field level => precedence or last edited wins
 			- percentage result output
 			- double battle calculation
-			- metronome item multiplier
 			- nature power terrain basepower calculation
 			- checkItem implementation => ability Klutz = except iron ball in gen 4 and not ev items => setup func
 			- getFinalSpeed implementation
@@ -20,6 +19,7 @@ CALC:
 			- checkMultihitBoost => effective stats in dropStats case
 			- use only ability IsActive function or member field Active
 			- modifiedStat function attacker and defender combine logic of cases
+			- UI overhaul
 		- tests
 			- triple kick => hit accounting
 
