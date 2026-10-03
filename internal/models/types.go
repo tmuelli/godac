@@ -3,6 +3,8 @@ package models
 import (
 	"math"
 	"slices"
+
+	"github.com/tmuelli/godac/internal/utils"
 )
 
 /****************************/
@@ -530,6 +532,30 @@ type Data struct {
 	Natures		map[string]Nature
 	Types		map[string]Type
 	Species		map[string]Specie
+}
+
+func (d *Data) AbilityNames() []string {
+	return utils.SliceFromMapValue(d.Abilities, func(a Ability) string { return a.Name })
+}
+
+func (d *Data) ItemNames() []string {
+	return utils.SliceFromMapValue(d.Items, func(i Item) string { return i.Name })
+}
+
+func (d *Data) MoveNames() []string {
+	return utils.SliceFromMapValue(d.Moves, func(m Move) string { return m.Name })
+}
+
+func (d *Data) NatureNames() []string {
+	return utils.SliceFromMapValue(d.Natures, func(n Nature) string { return n.Name })
+}
+
+func (d *Data) TypeNames() []string {
+	return utils.SliceFromMapValue(d.Types, func(t Type) string { return t.Name })
+}
+
+func (d *Data) SpecieNames() []string {
+	return utils.SliceFromMapValue(d.Species, func(s Specie) string { return s.Name })
 }
 
 /* Field */

@@ -49,6 +49,15 @@ func requestSelectInput(fieldID, initial string, options []string) tea.Cmd {
 	}
 }
 
+func requestTextInput(fieldID, initial string) tea.Cmd {
+	return func() tea.Msg {
+		return editRequestMsg{
+			fieldID:	fieldID,
+			initial:	initial,
+		}
+	}
+}
+
 type UserInput struct {
 	fieldInput	models.UserFieldInput
 	leftInput	models.UserInput

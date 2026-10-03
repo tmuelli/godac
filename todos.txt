@@ -22,6 +22,11 @@ CALC:
 			- UI overhaul
 		- tests
 			- triple kick => hit accounting
+		- tui TODOS
+			- shared keys
+			- constants for fields
+			- second specie type => maybe unable to set or handle if set and specie originally only has one type
+
 
 	FUTURE FEATURES:
 		- final dot accounting into damage calculation (specifically after calculation)

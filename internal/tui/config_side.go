@@ -32,13 +32,13 @@ func (s *side[T]) Set(side Side, v T) {
 }
 
 func (m configModel) Name(side Side) string {
-	basics := m.tabContent[basicsTab].(basicsModel)
-	return basics.fieldList.Get(side).values["Name"]
+	basics := m.tabContent[basicsTab].(fieldListModel)
+	return basics.fields.Get(side).values[NAME]
 }
 
 func (m configModel) Gender(side Side) *string {
-	basics := m.tabContent[basicsTab].(basicsModel)
-	gender := basics.fieldList.Get(side).values["Gender"]
+	basics := m.tabContent[basicsTab].(fieldListModel)
+	gender := basics.fields.Get(side).values[GENDER]
 	
 	var result string
 	switch gender {
@@ -54,10 +54,10 @@ func (m configModel) Gender(side Side) *string {
 }
 
 func (m configModel) Level(side Side) int {
-	basics := m.tabContent[basicsTab].(basicsModel)
+	basics := m.tabContent[basicsTab].(fieldListModel)
 
 	// level
-	level := atoiOrZero(basics.fieldList.Get(side).values["Level"])
+	level := atoiOrZero(basics.fields.Get(side).values[LEVEL])
 	return level
 }
 
@@ -141,16 +141,16 @@ func (m configModel) MetronomeHits(side Side, move string) *int {
 }
 
 func (m configModel) HealthPercent(side Side) int {
-	misc := m.tabContent[miscTab].(miscModel)
+	misc := m.tabContent[miscTab].(fieldListModel)
 	// remove percent sign from string value
-	healthString := misc.fieldList.Get(side).values["Health"]
+	healthString := misc.fields.Get(side).values[HEALTH_PERCENT]
 	health := atoiOrZero(healthString[:len(healthString)-1])
 	return health
 }
 
 func (m configModel) Item(side Side) *string {
-	misc := m.tabContent[miscTab].(miscModel)
-	item := misc.fieldList.Get(side).values["Item"]
+	misc := m.tabContent[miscTab].(fieldListModel)
+	item := misc.fields.Get(side).values[ITEM]
 
 	if item == "" {
 		return nil
@@ -160,8 +160,8 @@ func (m configModel) Item(side Side) *string {
 }
 
 func (m configModel) Status(side Side) *string {
-	misc := m.tabContent[miscTab].(miscModel)
-	status := misc.fieldList.Get(side).values["Status"]
+	misc := m.tabContent[miscTab].(fieldListModel)
+	status := misc.fields.Get(side).values[STATUS]
 	return &status
 }
 
@@ -214,8 +214,8 @@ func (m configModel) Boosts(side Side) models.UserInputBoosts {
 }
 
 func (m configModel) Nature(side Side) string {
-	misc := m.tabContent[miscTab].(miscModel)
-	return misc.fieldList.Get(side).values["Nature"]
+	misc := m.tabContent[miscTab].(fieldListModel)
+	return misc.fields.Get(side).values[NATURE]
 }
 
 func (m configModel) InputSide(side Side) string {
