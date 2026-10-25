@@ -219,27 +219,16 @@ func (a Ability) Key() string {
 	return a.Name
 }
 
-func (a *Ability) IsActive(atkAbility string) bool {
-	ignoredAbilities := []string{"Battle Armor", "Clear Body", "Damp", "Dry Skin",
-		"Filter", "Flash Fire", "Flower Gift", "Heatproof",
-		"Hyper Cutter", "Immunity", "Inner Focus", "Insomnia",
-		"Keen Eye", "Leaf Guard", "Levitate", "Lightning Rod",
-		"Limber", "Magma Armor", "Marvel Scale", "Motor Drive",
-		"Oblivious", "Own Tempo", "Sand Veil", "Shell Armor",
-		"Shield Dust", "Simple", "Snow Cloak", "Solid Rock",
-		"Soundproof", "Sticky Hold", "Storm Drain", "Sturdy",
-		"Suction Cups", "Tangled Feet", "Thick Fat", "Unaware",
-		"Vital Spirit", "Volt Absorb", "Water Absorb", "Water Veil",
-		"White Smoke", "Wonder Guard"}
-
-	if atkAbility == "moldbreaker" && !slices.Contains(ignoredAbilities, a.Id) {
-		return false
-	}
-
-	return true
+func (a *Ability) IsIgnoredBy(atkAbility string) bool {
+	_, ok := ignoredAbilities[a.Id]
+	return atkAbility == "moldbreaker" && ok
 }
 
 func (a *Ability) IsPreventingDamage(move *Move, defItem *Item, typeEffectivness float64, isGravity bool) bool {
+	if !a.Active {
+		return false
+	}
+
 	if ((move.HasType("???") || move.ID == "firefang") && a.Id == "wonderguard" && typeEffectivness <= 1.0) ||
 		(move.HasType("Fire") && a.Id == "flashfire") ||
 		(move.HasType("Water") && (a.Id == "dryskin" || a.Id == "waterabsorb")) ||

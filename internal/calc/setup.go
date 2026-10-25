@@ -2,7 +2,6 @@ package calc
 
 import (
 	"fmt"
-	"slices"
 	"strings"
 
 	"github.com/tmuelli/godac/internal/models"
@@ -43,7 +42,7 @@ func (c *Calculation) handleForecast(side *CalcData) error {
 func (c *Calculation) handleItem(source *CalcData, target *CalcData) error {
 	blockAbilities := []string{"clearbody", "whitesmoke", "hypercutter"}
 
-	if source.hasAbility("intimidate") && !slices.Contains(blockAbilities, target.ability.Id) {
+	if source.hasAbility("intimidate") && !target.hasAbility(blockAbilities...) {
 		if target.hasAbility("simple") {
 			target.boosts.Atk.Set(-2)
 		} else {
@@ -94,6 +93,11 @@ func (c *Calculation) setup() error {
 		c.field.Terrain = models.Clear
 	}
 
+	// check if ability of defender is active
+	if c.defender.ability.IsIgnoredBy(c.attacker.ability.Id) {
+		c.defender.ability.Active = false
+	}
+
 	// check forecast
 	err := c.handleForecast(c.attacker)
 	if err != nil {
@@ -136,15 +140,9 @@ func (c *Calculation) setup() error {
 		return err
 	}
 
-	// check if ability of defender is active
-	// TODO: change IsActive receiver to not reflect Active member logic => more like is effective or switch logic => is ability overwridden / deactivated
-	if !c.defender.ability.IsActive(c.attacker.ability.Id) {
-		c.defender.ability.Active = false
-	}
-
 	// check critical hit
 	preventCritAbilities := []string{"battlearmor", "shellarmor"}
-	if c.attacker.usedMove.Critical && c.defender.ability.Active && slices.Contains(preventCritAbilities, c.defender.ability.Id) {
+	if c.attacker.usedMove.Critical && c.defender.hasAbility(preventCritAbilities...) {
 		c.attacker.usedMove.Critical = false
 	}
 
@@ -154,7 +152,7 @@ func (c *Calculation) setup() error {
 	}
 
 	// check normalize
-	if c.attacker.ability.Active && c.attacker.hasAbility("normalize") && c.attacker.usedMove.ID != "struggle" {
+	if c.attacker.hasAbility("normalize") && c.attacker.usedMove.ID != "struggle" {
 		c.attacker.usedMove.Type = "Normal"
 	}
 

@@ -89,19 +89,17 @@ func (d *CalcData) effectiveSpeedStat(field *models.Field) int {
 		speedMods = append(speedMods, SPEED_MOD_2X)
 	}
 
-	if d.ability.Active {
-		if d.hasAbility("unburden") ||
-			(d.hasAbility("chlorophyll") && field.Terrain == models.Sun) ||
-			(d.hasAbility("swiftswim") && field.Terrain == models.Rain) {
-			speedMods = append(speedMods, SPEED_MOD_2X)
-		} else if d.hasAbility("quickfeet") && d.status != NoneStatus {
-			speedMods = append(speedMods, SPEED_MOD_1_5X)
-		} else if d.hasAbility("slowstart") {
-			speedMods = append(speedMods, SPEED_MOD_0_5X)
-		}
+	if d.hasAbility("unburden") ||
+		(d.hasAbility("chlorophyll") && field.Terrain == models.Sun) ||
+		(d.hasAbility("swiftswim") && field.Terrain == models.Rain) {
+		speedMods = append(speedMods, SPEED_MOD_2X)
+	} else if d.hasAbility("quickfeet") && d.status != NoneStatus {
+		speedMods = append(speedMods, SPEED_MOD_1_5X)
+	} else if d.hasAbility("slowstart") {
+		speedMods = append(speedMods, SPEED_MOD_0_5X)
 	}
 
-	if d.ability.Active && !d.hasAbility("unburden") {
+	if !d.hasAbility("unburden") {
 		if d.hasItem("choicescarf") {
 			speedMods = append(speedMods, SPEED_MOD_1_5X)
 		} else if d.hasItem(append([]string{"ironball"}, getEVItems()...)...) {
@@ -195,46 +193,44 @@ func (d *CalcData) modifiedStat(kind StatKind, hasOpponentUnaware bool, usedMove
 
 	isPhysical := usedMove.Category == string(Physical)
 
-	if d.ability.Active {
-		switch d.dataType {
-		case Attacker:
-			if isPhysical && d.hasAbility("purepower", "hugepower") {
-				statValue *= 2
-			} else if field.Terrain == models.Sun {
-				if (isPhysical && d.hasAbility("flowergift")) ||
-					(!isPhysical && d.hasAbility("solarpower")) {
-					statValue = math.Floor(statValue * 1.5)
-				}
-			} else if (isPhysical && (d.hasAbility("hustle", "guts")) && d.status != NoneStatus) ||
-				(!isPhysical && (d.hasAbility("plus", "minus"))) {
+	switch d.dataType {
+	case Attacker:
+		if isPhysical && d.hasAbility("purepower", "hugepower") {
+			statValue *= 2
+		} else if field.Terrain == models.Sun {
+			if (isPhysical && d.hasAbility("flowergift")) ||
+				(!isPhysical && d.hasAbility("solarpower")) {
 				statValue = math.Floor(statValue * 1.5)
-			} else if isPhysical && d.hasAbility("slowstart") {
-				statValue = math.Floor(statValue / 2)
 			}
+		} else if (isPhysical && (d.hasAbility("hustle", "guts")) && d.status != NoneStatus) ||
+			(!isPhysical && (d.hasAbility("plus", "minus"))) {
+			statValue = math.Floor(statValue * 1.5)
+		} else if isPhysical && d.hasAbility("slowstart") {
+			statValue = math.Floor(statValue / 2)
+		}
 
+		// TODO: check if this case can be combined with the defense case
+		if (field.Right.FlowerGift || d.hasAbility("flowergift")) && field.Terrain == models.Sun && isPhysical {
+			statValue = math.Floor(statValue * 1.5)
+		}
+	case Defender:
+		if isPhysical && d.status != NoneStatus && d.hasAbility("marvelscale") {
+			statValue = math.Floor(statValue * 1.5)
+		} else if !isPhysical && (field.Right.FlowerGift || d.hasAbility("flowergift")) && field.Terrain == models.Sun {
 			// TODO: check if this case can be combined with the defense case
-			if (field.Right.FlowerGift || d.hasAbility("flowergift")) && field.Terrain == models.Sun && isPhysical {
-				statValue = math.Floor(statValue * 1.5)
-			}
-		case Defender:
-			if isPhysical && d.status != NoneStatus && d.hasAbility("marvelscale") {
-				statValue = math.Floor(statValue * 1.5)
-			} else if !isPhysical && (field.Right.FlowerGift || d.hasAbility("flowergift")) && field.Terrain == models.Sun {
-				// TODO: check if this case can be combined with the defense case
-				statValue = math.Floor(statValue * 1.5)
-			}
+			statValue = math.Floor(statValue * 1.5)
+		}
 
-			if field.Terrain == models.Sand && (d.specieTypes[0].ID == "rock" || (len(d.specieTypes) > 1 && d.specieTypes[1].ID == "rock")) && !isPhysical {
-				statValue = math.Floor(statValue * 1.5)
-			}
+		if field.Terrain == models.Sand && (d.specieTypes[0].ID == "rock" || (len(d.specieTypes) > 1 && d.specieTypes[1].ID == "rock")) && !isPhysical {
+			statValue = math.Floor(statValue * 1.5)
+		}
 
-			if usedMove.ID == "explosion" || usedMove.ID == "selfdestruct" {
-				statValue = math.Floor(statValue * 0.5)
-			}
+		if usedMove.ID == "explosion" || usedMove.ID == "selfdestruct" {
+			statValue = math.Floor(statValue * 0.5)
+		}
 
-			if statValue < 1 {
-				statValue = 1
-			}
+		if statValue < 1 {
+			statValue = 1
 		}
 	}
 

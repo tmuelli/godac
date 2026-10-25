@@ -252,7 +252,7 @@ func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 	flashFireMod := 1.0
 	targetsMod := 1.0
 
-	if c.attacker.status == Burned && c.attacker.usedMove.Category == string(Physical) && c.attacker.ability.Id != "guts" {
+	if c.attacker.status == Burned && c.attacker.usedMove.Category == string(Physical) && !c.attacker.hasAbility("guts") {
 		burnMod = 0.5
 	}
 
@@ -274,7 +274,7 @@ func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 	// check weather
 	weatherMod = c.weatherModifier()
 
-	if c.attacker.hasAbility("flashfire") && c.attacker.ability.Active && c.attacker.usedMove.HasType("fire") {
+	if c.attacker.hasAbility("flashfire") && c.attacker.usedMove.HasType("fire") {
 		flashFireMod = 1.5
 	}
 

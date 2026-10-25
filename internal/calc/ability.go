@@ -31,5 +31,5 @@ func getAbilityFromSpecie(data *models.Data, s *models.Specie) (*models.Ability,
 }
 
 func (d *CalcData) hasAbility(ids ...string) bool {
-	return slices.Contains(ids, d.ability.Id)
+	return d.ability.Active && slices.Contains(ids, d.ability.Id)
 }
