@@ -8,30 +8,30 @@ import (
 )
 
 type CalcData struct {
-	specie		*models.Specie
-	specieTypes	[]*models.Type
-	nature		*models.Nature
-	ability		*models.Ability
-	item		*models.Item
-	usedMove	*models.Move
-	ivs			*models.IvStats
-	evs			*models.EvStats
-	level		int
-	health		int
-	dataType	CalcDataType
-	status		StatusCondition
-	boosts		*models.Boosts
-	gender		*Gender
-	metrHits	int
+	specie      *models.Specie
+	specieTypes []*models.Type
+	nature      *models.Nature
+	ability     *models.Ability
+	item        *models.Item
+	usedMove    *models.Move
+	ivs         *models.IvStats
+	evs         *models.EvStats
+	level       int
+	health      int
+	dataType    CalcDataType
+	status      StatusCondition
+	boosts      *models.Boosts
+	gender      *Gender
+	metrHits    int
 }
 
 type Calculation struct {
-	data				*models.Data
-	attacker			*CalcData
-	defender			*CalcData
-	field				*models.Field
-	typeEff				TypeEffectivness
-	Result				models.BattleResult
+	data     *models.Data
+	attacker *CalcData
+	defender *CalcData
+	field    *models.Field
+	typeEff  TypeEffectivness
+	Result   models.BattleResult
 }
 
 func NewCalc(data *models.Data, atkInput *models.UserInput, defInput *models.UserInput, fieldInput *models.UserFieldInput) (*Calculation, error) {
@@ -45,7 +45,7 @@ func NewCalc(data *models.Data, atkInput *models.UserInput, defInput *models.Use
 	if err != nil {
 		return nil, fmt.Errorf("invalid defender input: %v", err)
 	}
-	
+
 	field, err := validateFieldInput(fieldInput)
 	if err != nil {
 		return nil, fmt.Errorf("invalid field input: %v", err)
@@ -57,15 +57,15 @@ func NewCalc(data *models.Data, atkInput *models.UserInput, defInput *models.Use
 	// FOR NOW: only UserInput level is used
 
 	return &Calculation{
-		data: data,
+		data:     data,
 		attacker: attacker,
 		defender: defender,
-		field: field,
+		field:    field,
 		Result: models.BattleResult{
 			Range: models.BattleResultRange{
-				Min: 0,
+				Min:     0,
 				MinPerc: 0,
-				Max: 0,
+				Max:     0,
 				MaxPerc: 0,
 			},
 			DmgMatrix: [][]int{},
@@ -75,7 +75,7 @@ func NewCalc(data *models.Data, atkInput *models.UserInput, defInput *models.Use
 
 func (c *Calculation) needCalc() bool {
 	if (c.attacker.usedMove.Category == string(Status) && c.attacker.usedMove.ID != "naturepower") ||
-	   (c.field.Right.Protect && !c.attacker.usedMove.BreaksProtect) {
+		(c.field.Right.Protect && !c.attacker.usedMove.BreaksProtect) {
 		return false
 	}
 
@@ -88,7 +88,7 @@ func (c *Calculation) Calc() error {
 	if err != nil {
 		return err
 	}
-	
+
 	if !c.needCalc() {
 		return nil
 	}
@@ -97,8 +97,8 @@ func (c *Calculation) Calc() error {
 	if c.attacker.usedMove.ID == "painsplit" {
 		dmg := c.attacker.usedMove.HandlePainSplit(c.attacker.health, c.defender.health)
 		c.Result.Range = models.BattleResultRange{
-			Min: dmg,
-			Max: dmg,
+			Min:     dmg,
+			Max:     dmg,
 			MinPerc: 0,
 			MaxPerc: 0,
 		}
@@ -123,8 +123,8 @@ func (c *Calculation) Calc() error {
 	// handle fixed damage
 	if dmg := c.handleFixedDamage(); dmg != 0 {
 		c.Result.Range = models.BattleResultRange{
-			Min: dmg,
-			Max: dmg,
+			Min:     dmg,
+			Max:     dmg,
 			MinPerc: 0,
 			MaxPerc: 0,
 		}
@@ -154,16 +154,16 @@ func (c *Calculation) Calc() error {
 	dmgMin := dmgResult[0]
 	dmgMax := dmgResult[15]
 
-
 	// TODO: implement final dot damage (e.g. stealth rock, spikes, leech seed) from field
 	// in smogon damage calc this is not inside the gen4 damage calc but rather calculated afterwards
 	// TODO: also implement chip damage from sand / hail here (from field weather)
 
-	// TODO: implement percent calculation
 	c.Result.Range.Min = int(dmgMin)
-	c.Result.Range.MinPerc = 0
 	c.Result.Range.Max = int(dmgMax)
-	c.Result.Range.MaxPerc = 0
+
+	minPerc, maxPerc := c.percentRange()
+	c.Result.Range.MinPerc = minPerc
+	c.Result.Range.MaxPerc = maxPerc
 
 	if c.attacker.usedMove.Hits > DEFAULT_HIT_COUNT {
 		usedItems := models.MultihitItemUsage{
@@ -204,10 +204,10 @@ func (c *Calculation) handleFixedDamage() int {
 	switch c.attacker.usedMove.ID {
 	case "seismictoss", "nightshade":
 		return c.attacker.level
-	
+
 	case "dragonrage":
 		return FIXED_DMG_DRAGON_RAGE
-	
+
 	case "sonicboom":
 		return FIXED_DMG_SONIC_BOOM
 	}
@@ -225,15 +225,15 @@ func (c *Calculation) calcBaseDamage(hitCount int) (float64, error) {
 	atkCategory := c.attacker.usedMove.Category
 	atkMove := c.attacker.usedMove
 
-	switch (MoveCategory(atkCategory)) {
-		case Physical:
-			atkStat = StatAtk
-			defStat = StatDef
-		case Special:
-			atkStat = StatSpa
-			defStat = StatSpd
-		default:
-			return 0.0, fmt.Errorf("invalid attack move category")
+	switch MoveCategory(atkCategory) {
+	case Physical:
+		atkStat = StatAtk
+		defStat = StatDef
+	case Special:
+		atkStat = StatSpa
+		defStat = StatSpd
+	default:
+		return 0.0, fmt.Errorf("invalid attack move category")
 	}
 
 	attackStat = c.attacker.effectiveStat(atkStat, atkMove, c.defender.hasAbility("unaware"), c.field)
@@ -245,7 +245,7 @@ func (c *Calculation) calcBaseDamage(hitCount int) (float64, error) {
 		return 0.0, err
 	}
 
-	dmg := math.Floor(math.Floor((math.Floor(float64(2 * c.attacker.level) / 5 + 2) * movePower * float64(attackStat)) / 50) / float64(defenseStat))
+	dmg := math.Floor(math.Floor((math.Floor(float64(2*c.attacker.level)/5+2)*movePower*float64(attackStat))/50) / float64(defenseStat))
 	return float64(dmg), nil
 }
 
@@ -265,7 +265,7 @@ func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 	// TODO: implement double battles as well => reduced screen mod
 	// check light screen or reflect
 	if (c.attacker.usedMove.Category == string(Physical) && c.field.Right.Reflect) ||
-	   (c.attacker.usedMove.Category == string(Special) && c.field.Right.LightScreen) {
+		(c.attacker.usedMove.Category == string(Special) && c.field.Right.LightScreen) {
 		screenMod = 0.5
 	}
 
@@ -276,14 +276,14 @@ func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 		flashFireMod = 1.5
 	}
 
-	dmg := math.Floor(baseDmg * burnMod * screenMod * targetsMod * weatherMod * flashFireMod) + 2
+	dmg := math.Floor(baseDmg*burnMod*screenMod*targetsMod*weatherMod*flashFireMod) + 2
 	return dmg, nil
 }
 
 func (c *Calculation) calcModificationDamage(condDmg float64) ([]int, error) {
 	resultDmg := condDmg
 	resultDmgSlice := make([]int, RESULT_DAMAGE_SLICE_SIZE)
-	
+
 	// modifiers which get applied before random multiplier
 	critMod := 1.0
 	itemMod := 1.0
@@ -319,9 +319,9 @@ func (c *Calculation) calcModificationDamage(condDmg float64) ([]int, error) {
 
 	// final defender item modifier (does include berry mod)
 	itemDefMod, err := c.defender.itemModifier(nil, models.DamageEffect, &models.ItemModifierOptions{
-		MoveType:	c.attacker.usedMove.Type,
-		TypeMod:	c.typeEff.activeValue,
-		SubStage:	models.DamagePreLoop,
+		MoveType: c.attacker.usedMove.Type,
+		TypeMod:  c.typeEff.activeValue,
+		SubStage: models.DamagePreLoop,
 	})
 	if err != nil {
 		return resultDmgSlice, err
@@ -365,9 +365,9 @@ func (c *Calculation) calcModificationDamage(condDmg float64) ([]int, error) {
 
 	// berry mod
 	berryMod, err = c.defender.itemModifier(nil, models.DamageEffect, &models.ItemModifierOptions{
-		SubStage:  models.DamageBerry,
-		MoveType:  c.attacker.usedMove.Type,
-		TypeMod:   c.typeEff.activeValue,
+		SubStage: models.DamageBerry,
+		MoveType: c.attacker.usedMove.Type,
+		TypeMod:  c.typeEff.activeValue,
 	})
 
 	// add random multiplier and other modifiers inside loop to get correct damage spread with floor rounding
@@ -375,7 +375,7 @@ func (c *Calculation) calcModificationDamage(condDmg float64) ([]int, error) {
 		dmg := resultDmg
 
 		// random multiplier
-		dmg = math.Floor((dmg * float64(85 + i)) / 100)
+		dmg = math.Floor((dmg * float64(85+i)) / 100)
 
 		// stab modifier
 		dmg = math.Floor(dmg * stabMod)

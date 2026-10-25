@@ -2,7 +2,6 @@ CALC:
 	TODOS:
 		- input values override master data => move or specie has different type than default
 		- calculation TODOS
-			- percentage result output
 			- double battle calculation
 			- nature power terrain basepower calculation
 			- checkItem implementation => ability Klutz = except iron ball in gen 4 and not ev items => setup func
