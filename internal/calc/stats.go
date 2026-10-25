@@ -197,27 +197,22 @@ func (d *CalcData) modifiedStat(kind StatKind, hasOpponentUnaware bool, usedMove
 	case Attacker:
 		if isPhysical && d.hasAbility("purepower", "hugepower") {
 			statValue *= 2
-		} else if field.Terrain == models.Sun {
-			if (isPhysical && d.hasAbility("flowergift")) ||
-				(!isPhysical && d.hasAbility("solarpower")) {
-				statValue = math.Floor(statValue * 1.5)
-			}
-		} else if (isPhysical && (d.hasAbility("hustle", "guts")) && d.status != NoneStatus) ||
+		} else if (field.Terrain == models.Sun) && ((isPhysical && d.hasAbility("flowergift")) || (!isPhysical && d.hasAbility("solarpower"))) {
+			statValue = math.Floor(statValue * 1.5)
+		} else if (isPhysical && (d.hasAbility("hustle") || (d.hasAbility("guts") && d.status != NoneStatus))) ||
 			(!isPhysical && (d.hasAbility("plus", "minus"))) {
 			statValue = math.Floor(statValue * 1.5)
 		} else if isPhysical && d.hasAbility("slowstart") {
 			statValue = math.Floor(statValue / 2)
 		}
 
-		// TODO: check if this case can be combined with the defense case
-		if (field.Right.FlowerGift || d.hasAbility("flowergift")) && field.Terrain == models.Sun && isPhysical {
+		if field.Left.FlowerGift && !d.hasAbility("flowergift") && field.Terrain == models.Sun && isPhysical {
 			statValue = math.Floor(statValue * 1.5)
 		}
 	case Defender:
 		if isPhysical && d.status != NoneStatus && d.hasAbility("marvelscale") {
 			statValue = math.Floor(statValue * 1.5)
 		} else if !isPhysical && (field.Right.FlowerGift || d.hasAbility("flowergift")) && field.Terrain == models.Sun {
-			// TODO: check if this case can be combined with the defense case
 			statValue = math.Floor(statValue * 1.5)
 		}
 
