@@ -6,7 +6,6 @@ CALC:
 			- same implementation for types => specie has type
 			- check type capitalization => change to lower case like all other ids
 				- check capitalization throughout the entire codebase
-			- checkMultihitBoost => effective stats in dropStats case
 			- use only ability IsActive function or member field Active
 			- modifiedStat function attacker and defender combine logic of cases
 			- remaining CALC TODOs

@@ -52,11 +52,6 @@ func NewCalc(data *models.Data, atkInput *models.UserInput, defInput *models.Use
 		return nil, fmt.Errorf("invalid field input: %v", err)
 	}
 
-	// TODO: decide on precedence of level input =>
-	// if attacker / defender level is set or field level is set or both
-	// determine on defaults and "last set" option
-	// FOR NOW: only UserInput level is used
-
 	return &Calculation{
 		data:     data,
 		attacker: attacker,
@@ -155,9 +150,9 @@ func (c *Calculation) Calc() error {
 	dmgMin := dmgResult[0]
 	dmgMax := dmgResult[15]
 
-	// TODO: implement final dot damage (e.g. stealth rock, spikes, leech seed) from field
+	// FUTURE FEATURE: implement final dot damage (e.g. stealth rock, spikes, leech seed) from field
 	// in smogon damage calc this is not inside the gen4 damage calc but rather calculated afterwards
-	// TODO: also implement chip damage from sand / hail here (from field weather)
+	// FUTURE FEATURE: also implement chip damage from sand / hail here (from field weather)
 
 	c.Result.Range.Min = int(dmgMin)
 	c.Result.Range.Max = int(dmgMax)

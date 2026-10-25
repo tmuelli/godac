@@ -38,10 +38,6 @@ func (c *Calculation) checkMultihitBoost(usedItems *models.MultihitItemUsage) {
 			} else {
 				c.attacker.boosts.Spa.Set(effectiveBoosts)
 			}
-
-			// TODO: in damage calculator code the effective stat gets recalculated here from original stat and boost
-			// check if this has to be recalculated here as well => because modifiedStat receiver method on CalcData is using the boost to
-			// calculate modified stat => need to be checked if setting here is necessary
 		}
 	}
 }
@@ -127,7 +123,6 @@ func (c *Calculation) moveBasePower(hitCount int) int {
 	case "crushgrip", "wringout":
 		basePower = int(math.Floor(float64(c.defender.health*120)/float64(defHp)) + 1)
 	case "triplekick":
-		// TODO: implement hits field on move
 		basePower = hitCount * 10
 	case "weatherball":
 		if c.field.Terrain != models.Clear {
