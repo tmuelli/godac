@@ -10,7 +10,7 @@ import (
 
 func (c *Calculation) isWeatherActive() bool {
 	if (c.attacker.hasAbility("airlock", "cloudnine")) ||
-	   (c.defender.hasAbility("airlock", "cloudnine")) {
+		(c.defender.hasAbility("airlock", "cloudnine")) {
 		return true
 	}
 
@@ -50,7 +50,7 @@ func (c *Calculation) handleItem(source *CalcData, target *CalcData) error {
 			target.boosts.Atk.Set(-1)
 		}
 	}
-	
+
 	return nil
 }
 
@@ -93,7 +93,7 @@ func (c *Calculation) setup() error {
 	if !c.isWeatherActive() {
 		c.field.Terrain = models.Clear
 	}
-	
+
 	// check forecast
 	err := c.handleForecast(c.attacker)
 	if err != nil {
@@ -156,11 +156,9 @@ func (c *Calculation) setup() error {
 	}
 
 	// check normalize
-	if c.attacker.ability.Active && c.attacker.hasAbility( "normalize") && c.attacker.usedMove.ID != "struggle" {
+	if c.attacker.ability.Active && c.attacker.hasAbility("normalize") && c.attacker.usedMove.ID != "struggle" {
 		c.attacker.usedMove.Type = "Normal"
 	}
-
-	// TODO: implement getFinalSpeed
 
 	return nil
 }
