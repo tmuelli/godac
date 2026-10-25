@@ -2,22 +2,23 @@ package tui
 
 import (
 	"fmt"
+	"strconv"
 
 	tea "charm.land/bubbletea/v2"
 	"github.com/tmuelli/godac/internal/models"
 )
 
 const (
-	NAME = "Name"
+	NAME   = "Name"
 	GENDER = "Gender"
-	TYPE1 = "Type1"
-	TYPE2 = "Type2"
-	LEVEL = "Level"
+	TYPE1  = "Type1"
+	TYPE2  = "Type2"
+	LEVEL  = "Level"
 )
 
 var basicsSpec = []fieldSpec{
 	{
-		key: NAME,
+		key:     NAME,
 		options: func(d *models.Data) []string { return d.SpecieNames() },
 		onConfirm: func(data *list, value string, d *models.Data) tea.Cmd {
 			specieData, ok := d.Species[value]
@@ -34,14 +35,24 @@ var basicsSpec = []fieldSpec{
 	{key: GENDER, options: func(d *models.Data) []string { return []string{"Male", "Female"} }},
 	{key: TYPE1, options: func(d *models.Data) []string { return d.TypeNames() }},
 	{key: TYPE2, options: func(d *models.Data) []string { return d.TypeNames() }},
-	{key: LEVEL, isNumeric: true, min: 1, max: 100, defaultValue: fmt.Sprintf("%d", models.Level100) },
+	{key: LEVEL, isNumeric: true, min: 1, max: 100, defaultValue: fmt.Sprintf("%d", models.Level100)},
 }
 
 func newBasicsModel(s *styles, data *models.Data) fieldListModel {
-	return newFieldListModel(s, data, basicsSpec)
+	m := newFieldListModel(s, data, basicsSpec)
+
+	m.customUpdate = func(msg tea.Msg, data *list, d *models.Data) (tea.Cmd, bool) {
+		if req, ok := msg.(setLevelRequestMsg); ok {
+			data.SetValue(LEVEL, strconv.Itoa(req.level))
+			return nil, true
+		}
+		return nil, false
+	}
+
+	return m
 }
 
-func fillBasicDefaults(data *list,specie *models.Specie) {
+func fillBasicDefaults(data *list, specie *models.Specie) {
 	if specie == nil {
 		// internal error
 		return
@@ -69,6 +80,11 @@ func fillBasicDefaults(data *list,specie *models.Specie) {
 				value = specie.Types[1]
 			}
 		case LEVEL:
+			if data.values[LEVEL] != "" {
+				// keep a level which was already set by the user (field was present before)
+				continue
+			}
+
 			value = fmt.Sprintf("%d", models.Level100)
 		}
 

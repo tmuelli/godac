@@ -11,13 +11,13 @@ import (
 )
 
 type configKeyMap struct {
-	NextTab		key.Binding
-	PrevTab		key.Binding
+	NextTab key.Binding
+	PrevTab key.Binding
 }
 
 var configKeys = configKeyMap{
-	NextTab:		key.NewBinding(key.WithKeys("tab"), key.WithHelp("tab", "next tab")),
-	PrevTab:		key.NewBinding(key.WithKeys("shift+tab"), key.WithHelp("shift+tab", "prev tab")),
+	NextTab: key.NewBinding(key.WithKeys("tab"), key.WithHelp("tab", "next tab")),
+	PrevTab: key.NewBinding(key.WithKeys("shift+tab"), key.WithHelp("shift+tab", "prev tab")),
 }
 
 func (k configKeyMap) ShortHelp() []key.Binding {
@@ -31,17 +31,17 @@ func (k configKeyMap) FullHelp() [][]key.Binding {
 }
 
 type tabContent interface {
-	Init()									tea.Cmd
-	Update(msg tea.Msg, side Side)	(tabContent, tea.Cmd)
-	View(side Side)					string
+	Init() tea.Cmd
+	Update(msg tea.Msg, side Side) (tabContent, tea.Cmd)
+	View(side Side) string
 }
 
 type configModel struct {
-	tabs		[]string
-	tabContent	[]tabContent
-	activeTab	int
-	styles		*styles
-	data		*models.Data
+	tabs       []string
+	tabContent []tabContent
+	activeTab  int
+	styles     *styles
+	data       *models.Data
 }
 
 func newConfigModel(s *styles, data *models.Data) configModel {
@@ -54,11 +54,11 @@ func newConfigModel(s *styles, data *models.Data) configModel {
 	}
 
 	return configModel{
-		tabs:		tabs,
-		tabContent:	tabContent,
-		activeTab:	0,
-		styles:		s,
-		data:		data,
+		tabs:       tabs,
+		tabContent: tabContent,
+		activeTab:  0,
+		styles:     s,
+		data:       data,
 	}
 }
 
@@ -68,6 +68,17 @@ func (m configModel) Init() tea.Cmd {
 
 func (m configModel) Update(msg tea.Msg, side Side) (configModel, tea.Cmd) {
 	switch msg := msg.(type) {
+	case setLevelRequestMsg:
+		var cmds []tea.Cmd
+
+		for _, s := range []Side{LeftSide, RightSide} {
+			var cmd tea.Cmd
+			m.tabContent[basicsTab], cmd = m.tabContent[basicsTab].Update(msg, s)
+			cmds = append(cmds, cmd)
+		}
+
+		return m, tea.Batch(cmds...)
+
 	case metronomeColVisibleRequestMsg:
 		var cmd tea.Cmd
 		m.tabContent[movesTab], cmd = m.tabContent[movesTab].Update(msg, side)
@@ -134,7 +145,7 @@ func (m configModel) Body(side Side) string {
 	if m.styles == nil {
 		return ""
 	}
-	
+
 	doc := strings.Builder{}
 	s := m.styles
 
@@ -164,24 +175,24 @@ func (m configModel) Input(side Side, reqInfo *calcRequestInfo) *models.UserInpu
 	}
 
 	return &models.UserInput{
-		Name:				m.Name(side),
-		Level:				m.Level(side),
-		Nature:				m.Nature(side),
-		Gender:				m.Gender(side),
-		AttackMove:			attackMove,
-		Moves:				m.Moves(side),
-		HealthPercent:		m.HealthPercent(side),
+		Name:          m.Name(side),
+		Level:         m.Level(side),
+		Nature:        m.Nature(side),
+		Gender:        m.Gender(side),
+		AttackMove:    attackMove,
+		Moves:         m.Moves(side),
+		HealthPercent: m.HealthPercent(side),
 		// TODO: implement shortcut iv settings (optimal, worstcase) input option
-		IvSetting:			"custom",
-		IvCustom:			m.IvCustomStats(side),
+		IvSetting: "custom",
+		IvCustom:  m.IvCustomStats(side),
 		// TODO: implement shortcut ev settings (optimal, worstcase) input option
-		EvSetting:			"custom",
-		EvCustom:			m.EvCustomStats(side),
-		Item:				m.Item(side),
-		Status:				m.Status(side),
-		Hits:				m.Hits(side, attackMove),
-		MetronomeHits:		m.MetronomeHits(side, attackMove),
-		Boosts:				m.Boosts(side),
-		InputSide:			m.InputSide(side),
+		EvSetting:     "custom",
+		EvCustom:      m.EvCustomStats(side),
+		Item:          m.Item(side),
+		Status:        m.Status(side),
+		Hits:          m.Hits(side, attackMove),
+		MetronomeHits: m.MetronomeHits(side, attackMove),
+		Boosts:        m.Boosts(side),
+		InputSide:     m.InputSide(side),
 	}
 }

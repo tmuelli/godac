@@ -8,32 +8,32 @@ import (
 type EditMode int
 
 const (
-	NumberEditMode		EditMode = iota
+	NumberEditMode EditMode = iota
 	SelectEditMode
 )
 
 type editRequestMsg struct {
-	fieldID		string
-	initial		string
+	fieldID string
+	initial string
 
-	mode		EditMode
-	min, max	int
-	options		[]string
+	mode     EditMode
+	min, max int
+	options  []string
 }
 
 type editConfirmMsg struct {
-	fieldID		string
-	value		string
+	fieldID string
+	value   string
 }
 
 func requestNumberInput(fieldID, initial string, min, max int) tea.Cmd {
 	return func() tea.Msg {
 		return editRequestMsg{
-			fieldID:	fieldID,
-			initial:	initial,
-			min:		min,
-			max:		max,
-			mode:		NumberEditMode,
+			fieldID: fieldID,
+			initial: initial,
+			min:     min,
+			max:     max,
+			mode:    NumberEditMode,
 		}
 	}
 }
@@ -41,10 +41,10 @@ func requestNumberInput(fieldID, initial string, min, max int) tea.Cmd {
 func requestSelectInput(fieldID, initial string, options []string) tea.Cmd {
 	return func() tea.Msg {
 		return editRequestMsg{
-			fieldID:	fieldID,
-			initial:	initial,
-			options:	options,
-			mode:		SelectEditMode,
+			fieldID: fieldID,
+			initial: initial,
+			options: options,
+			mode:    SelectEditMode,
 		}
 	}
 }
@@ -52,61 +52,73 @@ func requestSelectInput(fieldID, initial string, options []string) tea.Cmd {
 func requestTextInput(fieldID, initial string) tea.Cmd {
 	return func() tea.Msg {
 		return editRequestMsg{
-			fieldID:	fieldID,
-			initial:	initial,
+			fieldID: fieldID,
+			initial: initial,
 		}
 	}
 }
 
 type UserInput struct {
-	fieldInput	models.UserFieldInput
-	leftInput	models.UserInput
-	rightInput	models.UserInput
+	fieldInput models.UserFieldInput
+	leftInput  models.UserInput
+	rightInput models.UserInput
 }
 
 type userInputMsg struct {
-	input		*UserInput
+	input *UserInput
 }
 
 type calcRequestMsg struct {
-	usedMoveIndex	int
-	usedSide		Side
+	usedMoveIndex int
+	usedSide      Side
 }
 
 type calcRequestInfo struct {
-	usedMove	string
-	usedSide	Side
+	usedMove string
+	usedSide Side
 }
 
 func requestCalc(moveIndex int, side Side) tea.Cmd {
 	return func() tea.Msg {
 		return calcRequestMsg{
-			usedMoveIndex:	moveIndex,
-			usedSide:		side,
+			usedMoveIndex: moveIndex,
+			usedSide:      side,
 		}
 	}
 }
 
 type autoFillForSpecieRequestMsg struct {
-	specie		*models.Specie
+	specie *models.Specie
 }
 
 func requestAutoFillForSpecie(specie *models.Specie) tea.Cmd {
 	return func() tea.Msg {
 		return autoFillForSpecieRequestMsg{
-			specie:		specie,
+			specie: specie,
 		}
 	}
 }
 
 type metronomeColVisibleRequestMsg struct {
-	visible		bool
+	visible bool
 }
 
 func requestMetronomeColVisible(visible bool) tea.Cmd {
 	return func() tea.Msg {
 		return metronomeColVisibleRequestMsg{
-			visible:	visible,
+			visible: visible,
+		}
+	}
+}
+
+type setLevelRequestMsg struct {
+	level int
+}
+
+func requestSetLevel(level int) tea.Cmd {
+	return func() tea.Msg {
+		return setLevelRequestMsg{
+			level: level,
 		}
 	}
 }

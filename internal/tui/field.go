@@ -6,6 +6,12 @@ import (
 	"github.com/tmuelli/godac/internal/models"
 )
 
+var fieldLevels = map[string]int{
+	"Level 100": 100,
+	"Level 50":  50,
+	"Level 5":   5,
+}
+
 type Setting int
 
 const (
@@ -13,7 +19,7 @@ const (
 	SidesSetting
 )
 
-type fieldKeyMap struct {}
+type fieldKeyMap struct{}
 
 var fieldKeys = fieldKeyMap{}
 
@@ -26,19 +32,19 @@ func (k fieldKeyMap) FullHelp() [][]key.Binding {
 }
 
 type fieldModel struct {
-	general		[]generalGroup
-	generalRow	int
-	sides		[]sidesGroup
-	sidesRow	int
-	setting		Setting
-	styles		*styles
-	data		*models.Data
+	general    []generalGroup
+	generalRow int
+	sides      []sidesGroup
+	sidesRow   int
+	setting    Setting
+	styles     *styles
+	data       *models.Data
 }
 
 // TODO: implement value getter for spikes
 func (m fieldModel) SideGroupValue(label string, side Side) bool {
 	value := false
-	
+
 	for _, s := range m.sides {
 		if s.label == label {
 			value = s.Value(side)
@@ -49,9 +55,14 @@ func (m fieldModel) SideGroupValue(label string, side Side) bool {
 }
 
 func newFieldModel(s *styles, data *models.Data) fieldModel {
+	levelGroup := newGeneralGroup(s, "Level", 0, []string{"Level 100", "Level 50", "Level 5"})
+	levelGroup.onChange = func(value string) tea.Cmd {
+		return requestSetLevel(fieldLevels[value])
+	}
+
 	general := []generalGroup{
 		newGeneralGroup(s, "BattleMode", 0, []string{"Singles", "Doubles"}),
-		newGeneralGroup(s, "Level", 0, []string{"Level 100", "Level 50", "Level 5"}),
+		levelGroup,
 		newGeneralGroup(s, "Weather", 0, []string{"None", "Sun", "Rain", "Sand", "Hail"}),
 	}
 	general[0].focused = true
@@ -74,13 +85,13 @@ func newFieldModel(s *styles, data *models.Data) fieldModel {
 	sides[0].groupFocused = true
 
 	return fieldModel{
-		general: general,
+		general:    general,
 		generalRow: 0,
-		sides: sides,
-		sidesRow: 0,
-		setting: GeneralSetting,
-		styles: s,
-		data:	data,
+		sides:      sides,
+		sidesRow:   0,
+		setting:    GeneralSetting,
+		styles:     s,
+		data:       data,
 	}
 }
 
@@ -99,12 +110,12 @@ func (m fieldModel) Update(msg tea.Msg) (fieldModel, tea.Cmd) {
 				return m, nil
 			case "up":
 				m.general[m.generalRow].focused = false
-				m.generalRow = max(m.generalRow - 1, 0)
+				m.generalRow = max(m.generalRow-1, 0)
 				m.general[m.generalRow].focused = true
 				return m, nil
 			case "down":
 				m.general[m.generalRow].focused = false
-				m.generalRow = min(m.generalRow + 1, len(m.general) - 1)
+				m.generalRow = min(m.generalRow+1, len(m.general)-1)
 				m.general[m.generalRow].focused = true
 				return m, nil
 			}
@@ -115,18 +126,18 @@ func (m fieldModel) Update(msg tea.Msg) (fieldModel, tea.Cmd) {
 				return m, nil
 			case "up":
 				m.sides[m.sidesRow].groupFocused = false
-				m.sidesRow = max(m.sidesRow - 1, 0)
+				m.sidesRow = max(m.sidesRow-1, 0)
 				m.sides[m.sidesRow].groupFocused = true
 				return m, nil
 			case "down":
 				m.sides[m.sidesRow].groupFocused = false
-				m.sidesRow = min(m.sidesRow + 1, len(m.sides) - 1)
+				m.sidesRow = min(m.sidesRow+1, len(m.sides)-1)
 				m.sides[m.sidesRow].groupFocused = true
 				return m, nil
 			}
 		}
 	}
-	
+
 	switch m.setting {
 	case GeneralSetting:
 		var cmd tea.Cmd
@@ -161,21 +172,21 @@ func (m fieldModel) Body() string {
 
 func (m fieldModel) SideInput(side Side) *models.UserFieldSideInput {
 	input := models.UserFieldSideInput{
-		StealthRocks:	m.SideGroupValue("Stealth Rock", side),
+		StealthRocks: m.SideGroupValue("Stealth Rock", side),
 		// TODO: implement value getter for spikes
-		Spikes:			0,
-		Reflect:		m.SideGroupValue("Reflect", side),
-		LightScreen:	m.SideGroupValue("Light Screen", side),
-		Protect:		m.SideGroupValue("Protect", side),
-		LeechSeed:		m.SideGroupValue("Leech Seed", side),
-		Foresight:		m.SideGroupValue("Foresight", side),
-		HelpingHand: 	m.SideGroupValue("Helping Hand", side),
-		Tailwind:		m.SideGroupValue("Tailwind", side),
-		FlowerGift:		m.SideGroupValue("Flower Gift", side),
-		PowerTrick:		m.SideGroupValue("Power Trick", side),
-		SwitchingOut:	m.SideGroupValue("Switching Out", side),
+		Spikes:       0,
+		Reflect:      m.SideGroupValue("Reflect", side),
+		LightScreen:  m.SideGroupValue("Light Screen", side),
+		Protect:      m.SideGroupValue("Protect", side),
+		LeechSeed:    m.SideGroupValue("Leech Seed", side),
+		Foresight:    m.SideGroupValue("Foresight", side),
+		HelpingHand:  m.SideGroupValue("Helping Hand", side),
+		Tailwind:     m.SideGroupValue("Tailwind", side),
+		FlowerGift:   m.SideGroupValue("Flower Gift", side),
+		PowerTrick:   m.SideGroupValue("Power Trick", side),
+		SwitchingOut: m.SideGroupValue("Switching Out", side),
 	}
-	
+
 	return &input
 }
 
@@ -184,27 +195,20 @@ func (m fieldModel) Input() *models.UserFieldInput {
 	fieldType := m.general[0].Value()
 
 	// level
-	var level int
-	switch m.general[1].Value() {
-	case "Level 100":
-		level = 100
-	case "Level 50":
-		level = 50
-	case "Level 5":
-		level = 5
-	}
+	// TODO: constant
+	level := fieldLevels[m.general[1].Value()]
 
 	// terrain
 	terrain := m.general[2].Value()
 
 	fieldInput := models.UserFieldInput{
-		Type:		fieldType,
-		Level:		level,
-		Terrain:	terrain,
-		IsGravity:	false,	// TODO implement later in field view
-		Left:		*m.SideInput(LeftSide),
-		Right:		*m.SideInput(RightSide),
+		Type:      fieldType,
+		Level:     level,
+		Terrain:   terrain,
+		IsGravity: false, // TODO implement later in field view
+		Left:      *m.SideInput(LeftSide),
+		Right:     *m.SideInput(RightSide),
 	}
-	
+
 	return &fieldInput
 }

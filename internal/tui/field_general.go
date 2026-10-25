@@ -6,20 +6,21 @@ import (
 )
 
 type generalGroup struct {
-	label		string
-	settings	[]string
-	index		int
-	focused		bool
+	label    string
+	settings []string
+	index    int
+	focused  bool
+	onChange func(value string) tea.Cmd
 
-	styles		*styles
+	styles *styles
 }
 
 func newGeneralGroup(s *styles, label string, defaultIndex int, settings []string) generalGroup {
 	return generalGroup{
-		label: label,
+		label:    label,
 		settings: settings,
-		index: defaultIndex,
-		styles: s,
+		index:    defaultIndex,
+		styles:   s,
 	}
 }
 
@@ -28,16 +29,22 @@ func (g generalGroup) Update(msg tea.Msg) (generalGroup, tea.Cmd) {
 		return g, nil
 	}
 
+	prevIndex := g.index
+
 	switch msg := msg.(type) {
 	case tea.KeyPressMsg:
 		switch msg.String() {
 		case "left":
-			g.index = max(g.index - 1, 0)
+			g.index = max(g.index-1, 0)
 		case "right":
-			g.index = min(g.index + 1, len(g.settings) - 1)
+			g.index = min(g.index+1, len(g.settings)-1)
 		}
 	}
-	
+
+	if g.onChange != nil && g.index != prevIndex {
+		return g, g.onChange(g.settings[g.index])
+	}
+
 	return g, nil
 }
 
@@ -78,7 +85,7 @@ func (m fieldModel) FormatGeneralSettings() string {
 	for _, g := range m.general {
 		lines = append(lines, g.View())
 	}
-	
+
 	return titleStyle.Render(title) + ":\n" + lipgloss.JoinVertical(lipgloss.Left, lines...)
 }
 

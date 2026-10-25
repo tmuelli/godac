@@ -1,10 +1,7 @@
 CALC:
 	TODOS:
-		- health hp input
-		- health hp progress bar
 		- input values override master data => move or specie has different type than default
 		- calculation TODOS
-			- level input / field level => precedence or last edited wins
 			- percentage result output
 			- double battle calculation
 			- nature power terrain basepower calculation
@@ -26,6 +23,8 @@ CALC:
 			- shared keys
 			- constants for fields
 			- second specie type => maybe unable to set or handle if set and specie originally only has one type
+			- health hp input
+			- health hp progress bar
 
 
 	FUTURE FEATURES:

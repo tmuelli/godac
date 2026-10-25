@@ -15,25 +15,25 @@ import (
 type View int
 
 const (
-	CalcView	View = iota
+	CalcView View = iota
 	ConfigView
 	FieldView
 )
 
 type globalKeyMap struct {
-	Calc		key.Binding
-	Config		key.Binding
-	Field		key.Binding
-	Help		key.Binding
-	Quit		key.Binding
+	Calc   key.Binding
+	Config key.Binding
+	Field  key.Binding
+	Help   key.Binding
+	Quit   key.Binding
 }
 
 var globalKeys = globalKeyMap{
-	Calc:		key.NewBinding(key.WithKeys("c"), key.WithHelp("c", "calc view")),
-	Config:		key.NewBinding(key.WithKeys("r", "l"), key.WithHelp("r/l", "config view")),
-	Field:		key.NewBinding(key.WithKeys("f"), key.WithHelp("f", "field view")),
-	Help:		key.NewBinding(key.WithKeys("?"), key.WithHelp("?", "help")),
-	Quit:		key.NewBinding(key.WithKeys("ctrl+c", "q", "esc"), key.WithHelp("q", "quit")),
+	Calc:   key.NewBinding(key.WithKeys("c"), key.WithHelp("c", "calc view")),
+	Config: key.NewBinding(key.WithKeys("r", "l"), key.WithHelp("r/l", "config view")),
+	Field:  key.NewBinding(key.WithKeys("f"), key.WithHelp("f", "field view")),
+	Help:   key.NewBinding(key.WithKeys("?"), key.WithHelp("?", "help")),
+	Quit:   key.NewBinding(key.WithKeys("ctrl+c", "q", "esc"), key.WithHelp("q", "quit")),
 }
 
 func (k globalKeyMap) ShortHelp() []key.Binding {
@@ -48,40 +48,40 @@ func (k globalKeyMap) FullHelp() [][]key.Binding {
 }
 
 type model struct {
-	current		View
-	calc		calcModel
-	configSide	Side
-	config		configModel
-	field		fieldModel
+	current    View
+	calc       calcModel
+	configSide Side
+	config     configModel
+	field      fieldModel
 
-	styles		*styles
-	data		*models.Data
+	styles *styles
+	data   *models.Data
 
-	editing				bool
-	editMode			EditMode
-	editID				string
-	editOptions			[]string
-	editMin, editMax	int
-	input				textinput.Model
-	inputValid			bool
+	editing          bool
+	editMode         EditMode
+	editID           string
+	editOptions      []string
+	editMin, editMax int
+	input            textinput.Model
+	inputValid       bool
 
-	calcRequestInfo		calcRequestInfo
+	calcRequestInfo calcRequestInfo
 
-	help		help.Model
+	help help.Model
 }
 
 func NewModel(data *models.Data) model {
 	s := newStyles(true)
 
 	return model{
-		current:	CalcView,
-		calc:		newCalcModel(s, data),
-		config:		newConfigModel(s, data),
-		field:		newFieldModel(s, data),
-		data:		data,
-		styles:		s,
-		inputValid:	true,
-		help:		help.New(),
+		current:    CalcView,
+		calc:       newCalcModel(s, data),
+		config:     newConfigModel(s, data),
+		field:      newFieldModel(s, data),
+		data:       data,
+		styles:     s,
+		inputValid: true,
+		help:       help.New(),
 	}
 }
 
@@ -100,6 +100,11 @@ func (m model) Init() tea.Cmd {
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case setLevelRequestMsg:
+		var cmd tea.Cmd
+		m.config, cmd = m.config.Update(msg, m.configSide)
+		return m, cmd
+
 	case calcRequestMsg:
 		moveSettings := m.config.MoveSettings(msg.usedSide)
 		moves := m.config.Moves(msg.usedSide)
@@ -113,7 +118,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		userInput := m.Input()
 		inputMsg := userInputMsg{
-			input:	userInput,
+			input: userInput,
 		}
 
 		var cmd tea.Cmd
@@ -137,7 +142,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.editMin = msg.min
 			m.editMax = msg.max
 		}
-		
+
 		// m.input.SetValue(msg.initial)
 		// m.input.Placeholder = msg.initial
 		m.input.Focus()
@@ -159,7 +164,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 				case NumberEditMode:
 					n, err := strconv.Atoi(value)
-					if err != nil || n < m.editMin || n >m.editMax {
+					if err != nil || n < m.editMin || n > m.editMax {
 						m.inputValid = false
 						return m, nil
 					}
@@ -245,10 +250,10 @@ func (m model) View() tea.View {
 	switch m.current {
 	case CalcView:
 		ctx := calcContext{
-			leftName:			m.config.Name(LeftSide),
-			rightName:			m.config.Name(RightSide),
-			leftMoves:			m.config.Moves(LeftSide),
-			rightMoves:			m.config.Moves(RightSide),
+			leftName:   m.config.Name(LeftSide),
+			rightName:  m.config.Name(RightSide),
+			leftMoves:  m.config.Moves(LeftSide),
+			rightMoves: m.config.Moves(RightSide),
 		}
 		content = m.calc.View(ctx)
 
@@ -285,9 +290,9 @@ func (m model) View() tea.View {
 
 func (m model) Input() *UserInput {
 	input := UserInput{
-		leftInput:	*m.config.Input(LeftSide, &m.calcRequestInfo),
-		rightInput:	*m.config.Input(RightSide, &m.calcRequestInfo),
-		fieldInput:	*m.field.Input(),
+		leftInput:  *m.config.Input(LeftSide, &m.calcRequestInfo),
+		rightInput: *m.config.Input(RightSide, &m.calcRequestInfo),
+		fieldInput: *m.field.Input(),
 	}
 
 	return &input
