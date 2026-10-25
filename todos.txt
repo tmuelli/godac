@@ -1,26 +1,31 @@
 CALC:
 	TODOS:
-		- input values override master data => move or specie has different type than default
 		- calculation TODOS
-			- add logging
+			- add logging mechanism => and write to log files, maybe bind it to debug flag or something or detail level
 		- clean up / bugfix TODOS
 			- same implementation for types => specie has type
 			- check type capitalization => change to lower case like all other ids
 				- check capitalization throughout the entire codebase
-			- check the use of validItemCondition function and the need of it => refactor this part with context and stuff when metronome logic comes in
 			- checkMultihitBoost => effective stats in dropStats case
 			- use only ability IsActive function or member field Active
 			- modifiedStat function attacker and defender combine logic of cases
-			- UI overhaul
+			- remaining CALC TODOs
 		- tests
 			- triple kick => hit accounting
+			- add valid, specific and detailed test cases
 		- tui TODOS
 			- shared keys
 			- constants for fields
-			- second specie type => maybe unable to set or handle if set and specie originally only has one type
+			- second specie type => maybe unable to set or handle if set and specie originally only has one type (see and compare with CHECKS)
 			- health hp input
 			- health hp progress bar
+			- UI overhaul
+			- remaining TUI TODOs
 
+
+	CHECKS:
+		- input values override master data => move or specie has different type than default
+			- does this gets automatically implemented if default values are overridden, especially if input from tui gets parsed/converted?
 
 	FUTURE FEATURES:
 		- final dot accounting into damage calculation (specifically after calculation)
