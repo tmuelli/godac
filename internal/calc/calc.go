@@ -3,6 +3,7 @@ package calc
 import (
 	"fmt"
 	"math"
+	"slices"
 
 	"github.com/tmuelli/godac/internal/models"
 )
@@ -254,19 +255,25 @@ func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 	screenMod := 1.0
 	weatherMod := 1.0
 	flashFireMod := 1.0
-
-	// TODO: implement conditions
 	targetsMod := 1.0
 
 	if c.attacker.status == Burned && c.attacker.usedMove.Category == string(Physical) && c.attacker.ability.Id != "guts" {
 		burnMod = 0.5
 	}
 
-	// TODO: implement double battles as well => reduced screen mod
 	// check light screen or reflect
 	if (c.attacker.usedMove.Category == string(Physical) && c.field.Right.Reflect) ||
 		(c.attacker.usedMove.Category == string(Special) && c.field.Right.LightScreen) {
-		screenMod = 0.5
+		if c.field.Type == models.Doubles {
+			screenMod = 2.0 / 3.0
+		} else {
+			screenMod = 0.5
+		}
+	}
+
+	// check only in double battles if used move hit multiple targets
+	if c.field.Type == models.Doubles && slices.Contains([]string{"allAdjacent", "allAdjacentFoes"}, c.attacker.usedMove.Target) {
+		targetsMod = 0.75
 	}
 
 	// check weather

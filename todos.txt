@@ -2,7 +2,6 @@ CALC:
 	TODOS:
 		- input values override master data => move or specie has different type than default
 		- calculation TODOS
-			- double battle calculation
 			- add logging
 		- clean up / bugfix TODOS
 			- same implementation for types => specie has type
