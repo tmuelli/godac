@@ -12,7 +12,7 @@ import (
 type MoveColumnType int
 
 const (
-	MOVE_COL		MoveColumnType = iota
+	MOVE_COL MoveColumnType = iota
 	BP_COL
 	MOVE_TYPE_COL
 	CATEGORY_COL
@@ -22,14 +22,14 @@ const (
 )
 
 type moveRowSettings struct {
-	isSet	bool
+	isSet bool
 }
 
 type movesModel struct {
-	tab				side[gridData]
-	rowSettings		side[[]moveRowSettings]
-	styles			*styles
-	data			*models.Data
+	tab         side[gridData]
+	rowSettings side[[]moveRowSettings]
+	styles      *styles
+	data        *models.Data
 }
 
 func newMovesModel(s *styles, data *models.Data) movesModel {
@@ -55,26 +55,26 @@ func newMovesModel(s *styles, data *models.Data) movesModel {
 	rowData := make([]moveRowSettings, len(rows))
 
 	return movesModel{
-		tab:		side[gridData]{
-			left:	gridData{
-				columns:	cloneColumns(columns),
-				rows:		cloneRows(rows),
-				row:		0,
-				col:		initialColIndex,
+		tab: side[gridData]{
+			left: gridData{
+				columns: cloneColumns(columns),
+				rows:    cloneRows(rows),
+				row:     0,
+				col:     initialColIndex,
 			},
-			right:	gridData{
-				columns:	cloneColumns(columns),
-				rows:		cloneRows(rows),
-				row:		0,
-				col:		initialColIndex,
+			right: gridData{
+				columns: cloneColumns(columns),
+				rows:    cloneRows(rows),
+				row:     0,
+				col:     initialColIndex,
 			},
 		},
 		rowSettings: side[[]moveRowSettings]{
-			left:	append([]moveRowSettings{}, rowData...),
-			right:	append([]moveRowSettings{}, rowData...),
+			left:  append([]moveRowSettings{}, rowData...),
+			right: append([]moveRowSettings{}, rowData...),
 		},
-		styles:		s,
-		data:		data,
+		styles: s,
+		data:   data,
 	}
 }
 
@@ -85,7 +85,7 @@ func (m movesModel) Init() tea.Cmd {
 func (m movesModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 	data := m.tab.GetPtr(side)
 	rowSettings := m.rowSettings.GetPtr(side)
-	
+
 	switch msg := msg.(type) {
 	case metronomeColVisibleRequestMsg:
 		data.columns[METR_HITS_COL].visible = msg.visible
@@ -127,7 +127,7 @@ func (m movesModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 			return m, m.requestInput(key, value)
 		}
 	}
-	
+
 	return m, nil
 }
 

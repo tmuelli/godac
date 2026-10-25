@@ -7,9 +7,9 @@ import (
 )
 
 type TypeEffectivness struct {
-	typeMod1		float64
-	typeMod2		float64
-	activeValue		float64
+	typeMod1    float64
+	typeMod2    float64
+	activeValue float64
 }
 
 func calcTypeModifier(moveType, defType *models.Type, canHitGhostType, isGravity bool) float64 {
@@ -35,8 +35,8 @@ func (c *Calculation) setTypeModifier() error {
 	atkType, err := getTypeFromName(c.data, c.attacker.usedMove.Type)
 	if err != nil {
 		c.typeEff = TypeEffectivness{
-			typeMod1: 0.0,
-			typeMod2: 0.0,
+			typeMod1:    0.0,
+			typeMod2:    0.0,
 			activeValue: 0.0,
 		}
 		return fmt.Errorf("Error during type damage modifier calc: %v\n", err)
@@ -57,7 +57,7 @@ func (c *Calculation) setTypeModifier() error {
 
 	// handle special case => ability 'Klutz'
 	if typeMod == 0.0 && atkType.ID == "ground" &&
-	   c.defender.hasItem("ironball") && !c.defender.hasAbility("klutz") {
+		c.defender.hasItem("ironball") && !c.defender.hasAbility("klutz") {
 		if typeMod1 == 0.0 {
 			typeMod1 = 1.0
 		} else if defHasSecondType && typeMod2 == 0.0 {
@@ -69,7 +69,7 @@ func (c *Calculation) setTypeModifier() error {
 		typeMod1: typeMod1,
 		typeMod2: typeMod2,
 	}
-	
+
 	c.typeEff.activeValue = c.typeEff.typeMod1 * c.typeEff.typeMod2
 
 	return nil
@@ -110,7 +110,7 @@ func getTypesFromSpecie(data *models.Data, s *models.Specie) ([]*models.Type, er
 	if data == nil || s == nil {
 		return nil, fmt.Errorf("invalid parameters: getTypeFromSpecie")
 	}
-	
+
 	var specieTypes []*models.Type
 	for _, st := range s.Types {
 		t, ok := data.Types[st]

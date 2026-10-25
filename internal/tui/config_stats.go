@@ -9,9 +9,9 @@ import (
 )
 
 type statsModel struct {
-	tab			side[gridData]
-	styles		*styles
-	data		*models.Data
+	tab    side[gridData]
+	styles *styles
+	data   *models.Data
 }
 
 func newStatsModel(s *styles, data *models.Data) statsModel {
@@ -36,22 +36,22 @@ func newStatsModel(s *styles, data *models.Data) statsModel {
 	initialColIndex := firstEditableCol(columns)
 
 	return statsModel{
-		tab:		side[gridData]{
-			left:	gridData{
-				columns:	cloneColumns(columns),
-				rows:		cloneRows(rows),
-				row:		0,
-				col:		initialColIndex,
+		tab: side[gridData]{
+			left: gridData{
+				columns: cloneColumns(columns),
+				rows:    cloneRows(rows),
+				row:     0,
+				col:     initialColIndex,
 			},
-			right:	gridData{
-				columns:	cloneColumns(columns),
-				rows:		cloneRows(rows),
-				row:		0,
-				col:		initialColIndex,
+			right: gridData{
+				columns: cloneColumns(columns),
+				rows:    cloneRows(rows),
+				row:     0,
+				col:     initialColIndex,
 			},
 		},
-		styles:		s,
-		data:		data,
+		styles: s,
+		data:   data,
 	}
 }
 
@@ -90,7 +90,7 @@ func (m statsModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 			return m, m.requestInput(key, value)
 		}
 	}
-	
+
 	return m, nil
 }
 
@@ -131,8 +131,8 @@ func (m statsModel) requestInput(key, value string) tea.Cmd {
 
 func (m statsModel) columnValues(side Side, col int) map[string]int {
 	data := m.tab.Get(side)
-	values := map[string]int {
-		"Hp": 0,
+	values := map[string]int{
+		"Hp":  0,
 		"Atk": 0,
 		"Def": 0,
 		"Spa": 0,

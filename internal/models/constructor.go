@@ -34,12 +34,12 @@ func NewData() (*Data, error) {
 	}
 
 	data := Data{
-		Abilities:	utils.SliceToMap(abilities, Ability.Key),
-		Items:		utils.SliceToMap(items, Item.Key),
-		Moves:		utils.SliceToMap(moves, Move.Key),
-		Natures:	utils.SliceToMap(natures, Nature.Key),
-		Species:	utils.SliceToMap(species, Specie.Key),
-		Types:		utils.SliceToMap(types, Type.Key),
+		Abilities: utils.SliceToMap(abilities, Ability.Key),
+		Items:     utils.SliceToMap(items, Item.Key),
+		Moves:     utils.SliceToMap(moves, Move.Key),
+		Natures:   utils.SliceToMap(natures, Nature.Key),
+		Species:   utils.SliceToMap(species, Specie.Key),
+		Types:     utils.SliceToMap(types, Type.Key),
 	}
 	return &data, nil
 }

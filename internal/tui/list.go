@@ -8,9 +8,9 @@ import (
 )
 
 type list struct {
-	values		map[string]string
-	options		[]string
-	activeIndex	int
+	values      map[string]string
+	options     []string
+	activeIndex int
 }
 
 func (l *list) SetValue(fieldID, value string) {
@@ -18,7 +18,7 @@ func (l *list) SetValue(fieldID, value string) {
 }
 
 func (l *list) SetActiveRow(rowIndex int) {
-	l.activeIndex = max(0, min(l.activeIndex + rowIndex, len(l.options) - 1))
+	l.activeIndex = max(0, min(l.activeIndex+rowIndex, len(l.options)-1))
 }
 
 func renderList(l list, s *styles) string {
@@ -46,21 +46,21 @@ func renderList(l list, s *styles) string {
 }
 
 type fieldSpec struct {
-	key				string
-	isNumeric		bool
-	min				int
-	max				int
-	options			func(*models.Data) []string
-	defaultValue	string
-	onConfirm		func(data *list, value string, d *models.Data) tea.Cmd
+	key          string
+	isNumeric    bool
+	min          int
+	max          int
+	options      func(*models.Data) []string
+	defaultValue string
+	onConfirm    func(data *list, value string, d *models.Data) tea.Cmd
 }
 
 type fieldListModel struct {
-	fields			side[list]
-	specs			[]fieldSpec
-	styles			*styles
-	data			*models.Data
-	customUpdate	func(msg tea.Msg, data *list, d *models.Data) (tea.Cmd, bool)
+	fields       side[list]
+	specs        []fieldSpec
+	styles       *styles
+	data         *models.Data
+	customUpdate func(msg tea.Msg, data *list, d *models.Data) (tea.Cmd, bool)
 }
 
 func newFieldListModel(s *styles, data *models.Data, specs []fieldSpec) fieldListModel {
@@ -73,13 +73,13 @@ func newFieldListModel(s *styles, data *models.Data, specs []fieldSpec) fieldLis
 	}
 
 	return fieldListModel{
-		fields:	side[list]{
-			left:	list{ values: maps.Clone(template), options: options, activeIndex: 0, },
-			right:	list{ values: maps.Clone(template), options: options, activeIndex: 0, },
+		fields: side[list]{
+			left:  list{values: maps.Clone(template), options: options, activeIndex: 0},
+			right: list{values: maps.Clone(template), options: options, activeIndex: 0},
 		},
-		specs:		specs,
-		styles:		s,
-		data:		data,
+		specs:  specs,
+		styles: s,
+		data:   data,
 	}
 }
 

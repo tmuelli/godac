@@ -9,7 +9,7 @@ func getNatureModifier(stat StatKind, nature *models.Nature) float64 {
 		return 1.0
 	}
 
-	switch(string(stat)) {
+	switch string(stat) {
 	case nature.Plus:
 		return 1.1
 	case nature.Minus:

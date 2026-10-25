@@ -6,20 +6,20 @@ import (
 )
 
 type gridColumn struct {
-	col			table.Column
-	editable	bool
-	visible		bool
+	col      table.Column
+	editable bool
+	visible  bool
 }
 
 type gridData struct {
-	columns		[]gridColumn
-	rows		[][]string
-	row			int
-	col			int
+	columns []gridColumn
+	rows    [][]string
+	row     int
+	col     int
 }
 
 func (g *gridData) MoveRow(rowDelta int) {
-	g.row = max(0, min(g.row + rowDelta, len(g.rows) - 1))
+	g.row = max(0, min(g.row+rowDelta, len(g.rows)-1))
 }
 
 func (g *gridData) MoveCol(colDelta int) {

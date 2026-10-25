@@ -6,26 +6,26 @@ import (
 )
 
 const (
-	CHECKED = "[x]"
+	CHECKED   = "[x]"
 	UNCHECKED = "[ ]"
 )
 
 type sidesGroup struct {
-	label			string
-	left			bool
-	right			bool
-	focused			Side
-	groupFocused	bool
-	styles			*styles
+	label        string
+	left         bool
+	right        bool
+	focused      Side
+	groupFocused bool
+	styles       *styles
 }
 
 func newSidesGroup(s *styles, label string, defaultFocus Side, defaultLeft bool, defaultRight bool) sidesGroup {
 	return sidesGroup{
-		label: label,
-		left: defaultLeft,
-		right: defaultRight,
+		label:   label,
+		left:    defaultLeft,
+		right:   defaultRight,
 		focused: defaultFocus,
-		styles: s,
+		styles:  s,
 	}
 }
 
@@ -49,7 +49,7 @@ func (g sidesGroup) Update(msg tea.Msg) (sidesGroup, tea.Cmd) {
 			}
 		}
 	}
-	
+
 	return g, nil
 }
 
@@ -123,4 +123,3 @@ func (m fieldModel) FormatSideSettings() string {
 
 	return "\n" + titleStyle.Render(title) + ":\n" + lipgloss.JoinVertical(lipgloss.Left, lines...)
 }
-

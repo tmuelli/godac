@@ -6,8 +6,8 @@ import (
 )
 
 type helpKeyMap struct {
-	global		globalKeyMap
-	view		help.KeyMap
+	global globalKeyMap
+	view   help.KeyMap
 }
 
 func (h helpKeyMap) ShortHelp() []key.Binding {

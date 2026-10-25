@@ -5,8 +5,8 @@ import (
 )
 
 type side[T any] struct {
-	left	T
-	right	T
+	left  T
+	right T
 }
 
 func (s *side[T]) GetPtr(side Side) *T {
@@ -39,7 +39,7 @@ func (m configModel) Name(side Side) string {
 func (m configModel) Gender(side Side) *string {
 	basics := m.tabContent[basicsTab].(fieldListModel)
 	gender := basics.fields.Get(side).values[GENDER]
-	
+
 	var result string
 	switch gender {
 	case "Male":
@@ -170,12 +170,12 @@ func (m configModel) IvCustomStats(side Side) *models.IvStats {
 	values := stats.columnValues(side, 2)
 	s := models.IvStats{
 		BaseStats: models.BaseStats{
-			Hp:		values["Hp"],
-			Atk:	values["Atk"],
-			Def:	values["Def"],
-			Spa:	values["Spa"],
-			Spd:	values["Spd"],
-			Spe:	values["Spe"],
+			Hp:  values["Hp"],
+			Atk: values["Atk"],
+			Def: values["Def"],
+			Spa: values["Spa"],
+			Spd: values["Spd"],
+			Spe: values["Spe"],
 		},
 	}
 
@@ -187,12 +187,12 @@ func (m configModel) EvCustomStats(side Side) *models.EvStats {
 	values := stats.columnValues(side, 3)
 	s := models.EvStats{
 		BaseStats: models.BaseStats{
-			Hp:		values["Hp"],
-			Atk:	values["Atk"],
-			Def:	values["Def"],
-			Spa:	values["Spa"],
-			Spd:	values["Spd"],
-			Spe:	values["Spe"],
+			Hp:  values["Hp"],
+			Atk: values["Atk"],
+			Def: values["Def"],
+			Spa: values["Spa"],
+			Spd: values["Spd"],
+			Spe: values["Spe"],
 		},
 	}
 
@@ -203,11 +203,11 @@ func (m configModel) Boosts(side Side) models.UserInputBoosts {
 	stats := m.tabContent[statsTab].(statsModel)
 	values := stats.columnValues(side, 5)
 	s := models.UserInputBoosts{
-		Atk:	values["Atk"],
-		Def:	values["Def"],
-		Spa:	values["Spa"],
-		Spd:	values["Spd"],
-		Spe:	values["Spe"],
+		Atk: values["Atk"],
+		Def: values["Def"],
+		Spa: values["Spa"],
+		Spd: values["Spd"],
+		Spe: values["Spe"],
 	}
 
 	return s

@@ -9,10 +9,10 @@ import (
 
 // TODO: implement current health in hp
 const (
-	NATURE = "Nature"
-	ABILTIY = "Abiltiy"
-	ITEM = "Item"
-	STATUS = "Status"
+	NATURE         = "Nature"
+	ABILTIY        = "Abiltiy"
+	ITEM           = "Item"
+	STATUS         = "Status"
 	HEALTH_PERCENT = "Health Percent"
 	CURRENT_HEALTH = "Current Health"
 )
@@ -21,7 +21,7 @@ var miscSpecs = []fieldSpec{
 	{key: NATURE, options: func(d *models.Data) []string { return d.NatureNames() }},
 	{key: ABILTIY, options: func(d *models.Data) []string { return d.AbilityNames() }},
 	{
-		key: ITEM,
+		key:     ITEM,
 		options: func(d *models.Data) []string { return d.ItemNames() },
 		onConfirm: func(data *list, value string, d *models.Data) tea.Cmd {
 			isMetronomeColVisible := value == "Metronome"
@@ -29,8 +29,10 @@ var miscSpecs = []fieldSpec{
 		},
 	},
 	// TODO: constants
-	{key: STATUS, options: func(d *models.Data) []string { return []string{"Healthy", "Poisoned", "Badly Poisoned", "Burned", "Paralyzed", "Asleep", "Frozen"} }},
-	{key: HEALTH_PERCENT, isNumeric: true, min: 1, max: 100, defaultValue: fmt.Sprintf("%d", models.Level100) },
+	{key: STATUS, options: func(d *models.Data) []string {
+		return []string{"Healthy", "Poisoned", "Badly Poisoned", "Burned", "Paralyzed", "Asleep", "Frozen"}
+	}},
+	{key: HEALTH_PERCENT, isNumeric: true, min: 1, max: 100, defaultValue: fmt.Sprintf("%d", models.Level100)},
 }
 
 func newMiscModel(s *styles, data *models.Data) fieldListModel {

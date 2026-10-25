@@ -153,12 +153,12 @@ func (d *CalcData) berryModifier(options models.ItemModifierOptions) (float64, e
 	}
 
 	cond := d.item.Condition.ToFlag()
-	if cond & models.ItemConTypeReduction == 0 {
+	if cond&models.ItemConTypeReduction == 0 {
 		return 1.0, nil
 	}
 
 	// all type reducing berries can only reduce super effective moves (except chilan berry)
-	if (cond & models.ItemConSuperEffective == 0) && options.TypeMod <= 1 {
+	if (cond&models.ItemConSuperEffective == 0) && options.TypeMod <= 1 {
 		return 1.0, nil
 	}
 
@@ -181,11 +181,11 @@ func (d *CalcData) finalItemModifier(options models.ItemModifierOptions) (float6
 		if d.item.Condition != nil {
 			cond := d.item.Condition.ToFlag()
 
-			if cond & models.ItemConMetronome != 0 {
+			if cond&models.ItemConMetronome != 0 {
 				return metronomeMultiplier(d.metrHits), nil
 			}
 
-			if cond & models.ItemConLifeOrb != 0 {
+			if cond&models.ItemConLifeOrb != 0 {
 				return d.item.Multiplier, nil
 			}
 		}
@@ -200,7 +200,7 @@ func (d *CalcData) finalItemModifier(options models.ItemModifierOptions) (float6
 
 		if d.item.Condition != nil {
 			cond := d.item.Condition.ToFlag()
-			if cond & models.ItemConSuperEffective != 0 && options.TypeMod > 1 {
+			if cond&models.ItemConSuperEffective != 0 && options.TypeMod > 1 {
 				return d.item.Multiplier, nil
 			}
 		}
@@ -224,12 +224,12 @@ func (d *CalcData) itemModifier(kind *StatKind, stage models.ItemEffect, options
 	if d.item == nil {
 		return 1.0, nil
 	}
-	
+
 	if d.item.Effect != stage {
 		return 1.0, nil
 	}
 
-	switch (d.item.Effect) {
+	switch d.item.Effect {
 	case models.StatEffect:
 		if kind == nil {
 			return 1.0, fmt.Errorf("unknown kind in base item mod calc")

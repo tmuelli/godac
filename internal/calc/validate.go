@@ -7,15 +7,15 @@ import (
 )
 
 func (s *StatusCondition) IsValid() bool {
-	condMap := map[string]StatusCondition {
-		"none":				NoneStatus,
-		"healthy":			Healthy,
-		"poisoned":			Poisoned,
-		"badly poisoned":	BadlyPoisoned,
-		"burned":			Burned,
-		"paralyzed":		Paralyzed,
-		"asleep":			Asleep,
-		"frozen":			Frozen,
+	condMap := map[string]StatusCondition{
+		"none":           NoneStatus,
+		"healthy":        Healthy,
+		"poisoned":       Poisoned,
+		"badly poisoned": BadlyPoisoned,
+		"burned":         Burned,
+		"paralyzed":      Paralyzed,
+		"asleep":         Asleep,
+		"frozen":         Frozen,
 	}
 
 	con, ok := condMap[string(*s)]
@@ -40,17 +40,17 @@ func validateFieldSideInput(input *models.UserFieldSideInput) (*models.FieldSide
 
 	// successfully validated side input
 	side := models.FieldSide{
-		Spikes: spikes,
+		Spikes:       spikes,
 		StealthRocks: input.StealthRocks,
-		Reflect: input.Reflect,
-		LightScreen: input.LightScreen,
-		Protect: input.Protect,
-		LeechSeed: input.LightScreen,
-		Foresight: input.Foresight,
-		HelpingHand: input.HelpingHand,
-		Tailwind: input.Tailwind,
-		FlowerGift: input.FlowerGift,
-		PowerTrick: input.PowerTrick,
+		Reflect:      input.Reflect,
+		LightScreen:  input.LightScreen,
+		Protect:      input.Protect,
+		LeechSeed:    input.LightScreen,
+		Foresight:    input.Foresight,
+		HelpingHand:  input.HelpingHand,
+		Tailwind:     input.Tailwind,
+		FlowerGift:   input.FlowerGift,
+		PowerTrick:   input.PowerTrick,
 		SwitchingOut: input.SwitchingOut,
 	}
 	return &side, nil
@@ -60,7 +60,7 @@ func validateFieldInput(input *models.UserFieldInput) (*models.Field, error) {
 	if input == nil {
 		return nil, fmt.Errorf("internal error: Invalid pointer to user field input")
 	}
-	
+
 	// field type
 	ft := models.FieldType(input.Type)
 	if !ft.IsValid() {
@@ -93,12 +93,12 @@ func validateFieldInput(input *models.UserFieldInput) (*models.Field, error) {
 
 	// successfully validated field input
 	field := models.Field{
-		Type: ft,
-		Level: fl,
-		Terrain: t,
+		Type:      ft,
+		Level:     fl,
+		Terrain:   t,
 		IsGravity: input.IsGravity,
-		Left: *left,
-		Right: *right,
+		Left:      *left,
+		Right:     *right,
 	}
 
 	return &field, nil
@@ -212,11 +212,11 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 
 	// iv settings
 	var ivSettings *models.IvStats
-	switch (IvOption(input.IvSetting)) {
+	switch IvOption(input.IvSetting) {
 	case IvOptimal:
 		ivSettings = &models.IvStats{
 			BaseStats: models.BaseStats{
-				Hp: 31,
+				Hp:  31,
 				Atk: 31,
 				Def: 31,
 				Spa: 31,
@@ -227,7 +227,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	case IvWorstCase:
 		ivSettings = &models.IvStats{
 			BaseStats: models.BaseStats{
-				Hp: 0,
+				Hp:  0,
 				Atk: 0,
 				Def: 0,
 				Spa: 0,
@@ -250,11 +250,11 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 
 	// ev settings
 	var evSettings *models.EvStats
-	switch (EvOption(input.EvSetting)) {
+	switch EvOption(input.EvSetting) {
 	case EvOptimal:
 		evSettings = &models.EvStats{
 			BaseStats: models.BaseStats{
-				Hp: 31,
+				Hp:  31,
 				Atk: 31,
 				Def: 31,
 				Spa: 31,
@@ -265,7 +265,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	case EvWorstCase:
 		evSettings = &models.EvStats{
 			BaseStats: models.BaseStats{
-				Hp: 0,
+				Hp:  0,
 				Atk: 0,
 				Def: 0,
 				Spa: 0,
@@ -341,21 +341,21 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 
 	// successful validation of user input
 	calcData := CalcData{
-		specie: specie,
+		specie:      specie,
 		specieTypes: specieTypes,
-		level: input.Level,
-		health: input.HealthPercent,
-		nature: nature,
-		ability: ability,
-		item: item,
-		usedMove: usedMove,
-		ivs: ivSettings,
-		evs: evSettings,
-		status: statusCon,
-		boosts: &boosts,
-		gender: &gender,
-		dataType: calcType,
-		metrHits: *input.MetronomeHits,
+		level:       input.Level,
+		health:      input.HealthPercent,
+		nature:      nature,
+		ability:     ability,
+		item:        item,
+		usedMove:    usedMove,
+		ivs:         ivSettings,
+		evs:         evSettings,
+		status:      statusCon,
+		boosts:      &boosts,
+		gender:      &gender,
+		dataType:    calcType,
+		metrHits:    *input.MetronomeHits,
 	}
 	return &calcData, nil
 }

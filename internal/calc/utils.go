@@ -22,7 +22,7 @@ func combineMods(mods []int, lowerBound, upperBound int) float64 {
 // Game Freak rounds down on .5
 func pokeRound(number float64) int {
 	var roundedValue float64
-	
+
 	if math.Mod(number, 1) > 0.5 {
 		roundedValue = math.Ceil(number)
 	} else {

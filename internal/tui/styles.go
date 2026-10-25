@@ -7,10 +7,10 @@ import (
 )
 
 type styles struct {
-	doc			lipgloss.Style
-	highlight	color.Color
-	tab			lipgloss.Style
-	window		lipgloss.Style
+	doc       lipgloss.Style
+	highlight color.Color
+	tab       lipgloss.Style
+	window    lipgloss.Style
 }
 
 func newStyles(bgIsDark bool) *styles {
