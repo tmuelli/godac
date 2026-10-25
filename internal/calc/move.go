@@ -26,7 +26,7 @@ func (c *Calculation) checkMultihitBoost(usedItems *models.MultihitItemUsage) {
 			boosts := c.attacker.boosts.Get(string(stat))
 			boostDrop := c.attacker.usedMove.GetBoostDrop(string(stat))
 
-			effectiveBoosts := int(math.Max(-6, float64(boosts - (boostDrop * atkSimple))))
+			effectiveBoosts := int(math.Max(-6, float64(boosts-(boostDrop*atkSimple))))
 
 			if c.attacker.hasItem("whiteherb") && boosts < 0 && !usedItems.HasAtkUsedItem {
 				effectiveBoosts += (boostDrop * atkSimple)
@@ -53,20 +53,20 @@ func (c *Calculation) moveBasePower(hitCount int) int {
 
 	switch c.attacker.usedMove.ID {
 	case "brine":
-		if float64(c.defender.health) <= float64(defHp / 2) {
+		if float64(c.defender.health) <= float64(defHp/2) {
 			basePower *= 2
 		}
 	case "eruption", "waterspout":
-		basePower = int(math.Max(1, math.Floor(float64(basePower * c.attacker.health) / float64(atkHp))))
+		basePower = int(math.Max(1, math.Floor(float64(basePower*c.attacker.health)/float64(atkHp))))
 	case "facade":
 		if c.attacker.status == BadlyPoisoned ||
-		   c.attacker.status == Burned ||
-		   c.attacker.status == Paralyzed ||
-		   c.attacker.status == Poisoned {
+			c.attacker.status == Burned ||
+			c.attacker.status == Paralyzed ||
+			c.attacker.status == Poisoned {
 			basePower *= 2
 		}
 	case "flail", "reversal":
-		perc := math.Floor(float64(64 * c.attacker.health) / float64(atkHp))
+		perc := math.Floor(float64(64*c.attacker.health) / float64(atkHp))
 		if perc <= 1 {
 			basePower = 200
 		} else if perc <= 5 {
@@ -103,7 +103,7 @@ func (c *Calculation) moveBasePower(hitCount int) int {
 		atkSpeed := c.attacker.effectiveSpeedStat(c.field)
 		defSpeed := c.attacker.effectiveSpeedStat(c.field)
 
-		basePower = int(math.Min(150.0, math.Floor(float64((25 * defSpeed) / atkSpeed))))
+		basePower = int(math.Min(150.0, math.Floor(float64((25*defSpeed)/atkSpeed))))
 	case "payback":
 		atkSpeed := c.attacker.effectiveSpeedStat(c.field)
 		defSpeed := c.attacker.effectiveSpeedStat(c.field)
@@ -112,7 +112,7 @@ func (c *Calculation) moveBasePower(hitCount int) int {
 			basePower *= 2
 		}
 	case "punishment":
-		basePower = int(math.Min(200.0, float64(60 + (20 * c.defender.sumStatBoosts()))))
+		basePower = int(math.Min(200.0, float64(60+(20*c.defender.sumStatBoosts()))))
 	case "pursuit":
 		if c.field.Right.SwitchingOut {
 			basePower *= 2
@@ -122,11 +122,10 @@ func (c *Calculation) moveBasePower(hitCount int) int {
 			basePower *= 2
 		}
 	case "naturepower":
-		// TODO: handle naturepower special base power case
-		// damage-calc repo also doesnt implement further terrain checks
+		// FEATURE IN FUTURE: implement terrain check for naturepower => base power is 80 if terrain is not clear
 		basePower = 80
 	case "crushgrip", "wringout":
-		basePower = int(math.Floor(float64(c.defender.health * 120) / float64(defHp)) + 1)
+		basePower = int(math.Floor(float64(c.defender.health*120)/float64(defHp)) + 1)
 	case "triplekick":
 		// TODO: implement hits field on move
 		basePower = hitCount * 10
@@ -170,24 +169,24 @@ func (c *Calculation) modifiedMovePower(basePower float64) (float64, error) {
 
 	// ability reckless and iron fist
 	if (c.attacker.hasAbility("reckless") && (len(c.attacker.usedMove.Recoil) > 1 || c.attacker.usedMove.HasCrashDamage)) ||
-	   (c.attacker.hasAbility("ironfist") && c.attacker.usedMove.Flags.Punch != 0) {
+		(c.attacker.hasAbility("ironfist") && c.attacker.usedMove.Flags.Punch != 0) {
 		basePower = math.Floor(basePower * 1.2)
 	}
 
 	// ability overgrow, blaze, torrent, swarm
 	atkHp := c.attacker.effectiveHpStat()
-	if float64(c.attacker.health) <= float64(atkHp / 3) {
+	if float64(c.attacker.health) <= float64(atkHp/3) {
 		if (c.attacker.hasAbility("overgrow") && c.attacker.usedMove.HasType("grass")) ||
-		   (c.attacker.hasAbility("blaze") && c.attacker.usedMove.HasType("fire")) ||
-		   (c.attacker.hasAbility("torrent") && c.attacker.usedMove.HasType("water")) ||
-		   (c.attacker.hasAbility("swarm") && c.attacker.usedMove.HasType("bug")) {
+			(c.attacker.hasAbility("blaze") && c.attacker.usedMove.HasType("fire")) ||
+			(c.attacker.hasAbility("torrent") && c.attacker.usedMove.HasType("water")) ||
+			(c.attacker.hasAbility("swarm") && c.attacker.usedMove.HasType("bug")) {
 			basePower = math.Floor(basePower * 1.5)
 		}
 	}
 
 	// ability heatproff and thick fat
 	if (c.defender.hasAbility("heatproof") && c.attacker.usedMove.HasType("fire")) ||
-	   (c.defender.hasAbility("thickfat") && (c.attacker.usedMove.HasType("fire", "ice"))) {
+		(c.defender.hasAbility("thickfat") && (c.attacker.usedMove.HasType("fire", "ice"))) {
 		basePower = math.Floor(basePower * 0.5)
 	}
 

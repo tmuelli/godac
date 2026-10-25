@@ -3,7 +3,6 @@ CALC:
 		- input values override master data => move or specie has different type than default
 		- calculation TODOS
 			- double battle calculation
-			- nature power terrain basepower calculation
 			- checkItem implementation => ability Klutz = except iron ball in gen 4 and not ev items => setup func
 			- add logging
 		- clean up / bugfix TODOS
@@ -28,3 +27,5 @@ CALC:
 	FUTURE FEATURES:
 		- final dot accounting into damage calculation (specifically after calculation)
 		- loading and saving settings / calculation data etc.
+		- nature power terrain basepower calculation
+			- needs location support for non-competitive (online battle) terrain for the player
