@@ -105,8 +105,6 @@ func (c *Calculation) setup() error {
 		return err
 	}
 
-	// TODO: checkItem implementation => ability Klutz = except iron ball in gen 4 and not ev items
-
 	// check powertrick
 	if c.field.Left.PowerTrick {
 		c.attacker.specie.BaseStats.Atk, c.attacker.specie.BaseStats.Def = c.attacker.specie.BaseStats.Def, c.attacker.specie.BaseStats.Atk
