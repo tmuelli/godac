@@ -20,31 +20,31 @@ func getEVItems() []string {
 
 func getModifiedStat(stat float64, boost int) float64 {
 	boostTable := [][]float64{
-    	{2, 8},
-    	{2, 7},
-    	{2, 6},
-    	{2, 5},
-    	{2, 4},
-    	{2, 3},
-    	{2, 2},
-    	{3, 2},
-    	{4, 2},
-    	{5, 2},
-    	{6, 2},
-    	{7, 2},
-    	{8, 2},
+		{2, 8},
+		{2, 7},
+		{2, 6},
+		{2, 5},
+		{2, 4},
+		{2, 3},
+		{2, 2},
+		{3, 2},
+		{4, 2},
+		{5, 2},
+		{6, 2},
+		{7, 2},
+		{8, 2},
 	}
 
 	// implemented OF16 and OF32 to be cartridge "correct" => following smogon damage calculation logic which implements this as well
 	// technically this should never overflow because stats cant be that high => there are exceptions though e.g. hacked mons
-	modStat := OF16(stat * boostTable[6 + boost][0]);
-	modStat = math.Floor(stat / boostTable[6 + boost][1]);
+	modStat := OF16(stat * boostTable[6+boost][0])
+	modStat = math.Floor(stat / boostTable[6+boost][1])
 
 	return modStat
 }
 
 func getSimpleModifiedStat(stat float64, boost int) float64 {
-	simpleMod := math.Min(6, math.Max(-6, float64(boost * 2)))
+	simpleMod := math.Min(6, math.Max(-6, float64(boost*2)))
 
 	if simpleMod > 0 {
 		return math.Floor((stat * (2 + simpleMod)) / 2)
@@ -60,19 +60,19 @@ func (d *CalcData) effectiveHpStat() int {
 	iv := float64(d.ivs.Hp)
 	ev := float64(d.evs.Hp)
 
-	hp := math.Floor(math.Floor(2 * base) + iv + math.Floor(math.Floor(ev / 4) * float64(d.level)) / 100) + float64(d.level) + 10
+	hp := math.Floor(math.Floor(2*base)+iv+math.Floor(math.Floor(ev/4)*float64(d.level))/100) + float64(d.level) + 10
 	return int(hp)
 }
 
 func getBaseSpeed(base, iv, ev float64, level int, nature *models.Nature) float64 {
 	// nature modifier
 	n := getNatureModifier(StatSpe, nature)
-	return math.Floor((math.Floor((((2 * base) + iv + math.Floor(ev / 4)) * float64(level)) / 100) + 5) * n)
+	return math.Floor((math.Floor((((2*base)+iv+math.Floor(ev/4))*float64(level))/100) + 5) * n)
 }
 
 func (d *CalcData) effectiveSpeedStat(field *models.Field) int {
 	speedMods := []int{}
-	
+
 	// first calculate base speed with base stat, iv and ev and nature
 	baseSpeed := getBaseSpeed(
 		float64(d.specie.BaseStats.Spe),
@@ -85,14 +85,14 @@ func (d *CalcData) effectiveSpeedStat(field *models.Field) int {
 	baseModifiedSpeed := getModifiedStat(baseSpeed, d.boosts.Get(string(StatSpe)))
 
 	if (d.dataType == Attacker && field.Left.Tailwind) ||
-	   (d.dataType == Defender && field.Right.Tailwind) {
+		(d.dataType == Defender && field.Right.Tailwind) {
 		speedMods = append(speedMods, SPEED_MOD_2X)
 	}
 
 	if d.ability.Active {
 		if d.hasAbility("unburden") ||
-		   (d.hasAbility("chlorophyll") && field.Terrain == models.Sun) ||
-		   (d.hasAbility("swiftswim") && field.Terrain == models.Rain) {
+			(d.hasAbility("chlorophyll") && field.Terrain == models.Sun) ||
+			(d.hasAbility("swiftswim") && field.Terrain == models.Rain) {
 			speedMods = append(speedMods, SPEED_MOD_2X)
 		} else if d.hasAbility("quickfeet") && d.status != NoneStatus {
 			speedMods = append(speedMods, SPEED_MOD_1_5X)
@@ -101,7 +101,7 @@ func (d *CalcData) effectiveSpeedStat(field *models.Field) int {
 		}
 	}
 
-	if !d.ability.Active && !d.hasAbility("unburden") {
+	if d.ability.Active && !d.hasAbility("unburden") {
 		if d.hasItem("choicescarf") {
 			speedMods = append(speedMods, SPEED_MOD_1_5X)
 		} else if d.hasItem(append([]string{"ironball"}, getEVItems()...)...) {
@@ -112,11 +112,11 @@ func (d *CalcData) effectiveSpeedStat(field *models.Field) int {
 	}
 
 	modSpeed := OF32(pokeRound((baseModifiedSpeed * combineMods(speedMods, COMBINE_MODS_MIN, COMBINE_MODS_MAX)) / FIXED_POINT_SCALE_BASE))
-	
+
 	if d.status == Paralyzed && !d.hasAbility("quickfeet") {
-		modSpeed = int(math.Floor(float64(OF32(modSpeed * 25) / 100)))
+		modSpeed = int(math.Floor(float64(OF32(modSpeed*25) / 100)))
 	}
-	
+
 	effSpeed := math.Min(float64(MAX_SPEED), float64(modSpeed))
 	return int(math.Max(0, effSpeed))
 }
@@ -127,34 +127,34 @@ func (d *CalcData) effectiveStat(kind StatKind, usedMove *models.Move, hasOppone
 	ev := 0.0
 
 	// TODO: maybe put base, iv, ef stat into same form as boosts to get the stats more conveniently
-	switch (kind) {
-		case StatHp:
-			return d.effectiveHpStat()
-		case StatAtk:
-			base = float64(d.specie.BaseStats.Atk)
-			iv = float64(d.ivs.Atk)
-			ev = float64(d.evs.Atk)
-		case StatDef:
-			base = float64(d.specie.BaseStats.Def)
-			iv = float64(d.ivs.Def)
-			ev = float64(d.evs.Def)
-		case StatSpa:
-			base = float64(d.specie.BaseStats.Spa)
-			iv = float64(d.ivs.Spa)
-			ev = float64(d.evs.Spa)
-		case StatSpd:
-			base = float64(d.specie.BaseStats.Spd)
-			iv = float64(d.ivs.Spd)
-			ev = float64(d.evs.Spd)
-		case StatSpe:
-			return d.effectiveSpeedStat(field)
+	switch kind {
+	case StatHp:
+		return d.effectiveHpStat()
+	case StatAtk:
+		base = float64(d.specie.BaseStats.Atk)
+		iv = float64(d.ivs.Atk)
+		ev = float64(d.evs.Atk)
+	case StatDef:
+		base = float64(d.specie.BaseStats.Def)
+		iv = float64(d.ivs.Def)
+		ev = float64(d.evs.Def)
+	case StatSpa:
+		base = float64(d.specie.BaseStats.Spa)
+		iv = float64(d.ivs.Spa)
+		ev = float64(d.evs.Spa)
+	case StatSpd:
+		base = float64(d.specie.BaseStats.Spd)
+		iv = float64(d.ivs.Spd)
+		ev = float64(d.evs.Spd)
+	case StatSpe:
+		return d.effectiveSpeedStat(field)
 	}
 
 	// get nature modifier
 	nature := getNatureModifier(kind, d.nature)
 
 	// calculate effective stat
-	baseEffStat := math.Floor((math.Floor((((2 * base) + iv + math.Floor(ev / 4)) * float64(d.level)) / 100) + 5) * nature)
+	baseEffStat := math.Floor((math.Floor((((2*base)+iv+math.Floor(ev/4))*float64(d.level))/100) + 5) * nature)
 
 	// check ability stats modifications
 	modStat := d.modifiedStat(kind, hasOpponentUnaware, usedMove, baseEffStat, field)
@@ -187,7 +187,7 @@ func (d *CalcData) modifiedStat(kind StatKind, hasOpponentUnaware bool, usedMove
 			statValue = getSimpleModifiedStat(statValue, statBoosts)
 		} else {
 			if (d.dataType == Attacker && (statBoosts > 0 || (!usedMove.Critical && statBoosts < 0))) ||
-			(d.dataType == Defender && (statBoosts < 0 || (!usedMove.Critical && statBoosts > 0))) {
+				(d.dataType == Defender && (statBoosts < 0 || (!usedMove.Critical && statBoosts > 0))) {
 				statValue = getModifiedStat(statValue, statBoosts)
 			}
 		}
@@ -202,11 +202,11 @@ func (d *CalcData) modifiedStat(kind StatKind, hasOpponentUnaware bool, usedMove
 				statValue *= 2
 			} else if field.Terrain == models.Sun {
 				if (isPhysical && d.hasAbility("flowergift")) ||
-				(!isPhysical && d.hasAbility("solarpower")) {
+					(!isPhysical && d.hasAbility("solarpower")) {
 					statValue = math.Floor(statValue * 1.5)
 				}
 			} else if (isPhysical && (d.hasAbility("hustle", "guts")) && d.status != NoneStatus) ||
-					(!isPhysical && (d.hasAbility("plus", "minus"))) {
+				(!isPhysical && (d.hasAbility("plus", "minus"))) {
 				statValue = math.Floor(statValue * 1.5)
 			} else if isPhysical && d.hasAbility("slowstart") {
 				statValue = math.Floor(statValue / 2)
@@ -244,7 +244,7 @@ func (d *CalcData) modifiedStat(kind StatKind, hasOpponentUnaware bool, usedMove
 func (d *CalcData) sumStatBoosts() int {
 	sum := 0
 	boosts := []string{string(StatAtk), string(StatDef), string(StatSpa), string(StatSpd), string(StatSpe)}
-	
+
 	for _, b := range boosts {
 		boost := d.boosts.Get(b)
 		if boost > 0 {
