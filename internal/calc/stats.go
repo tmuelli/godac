@@ -124,7 +124,6 @@ func (d *CalcData) effectiveStat(kind StatKind, usedMove *models.Move, hasOppone
 	iv := 0.0
 	ev := 0.0
 
-	// TODO: maybe put base, iv, ef stat into same form as boosts to get the stats more conveniently
 	switch kind {
 	case StatHp:
 		return d.effectiveHpStat()

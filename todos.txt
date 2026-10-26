@@ -1,21 +1,18 @@
-CALC:
-	TODOS:
-		- calculation TODOS
-			- add logging mechanism => and write to log files, maybe bind it to debug flag or something or detail level
-		- clean up / bugfix TODOS
-			- remaining CALC TODOs
-		- tests
-			- triple kick => hit accounting
-			- add valid, specific and detailed test cases
-		- tui TODOS
-			- shared keys
-			- constants for fields
-			- second specie type => maybe unable to set or handle if set and specie originally only has one type (see and compare with CHECKS)
-			- health hp input
-			- health hp progress bar
-			- UI overhaul
-			- remaining TUI TODOs
-
+TODOS:
+	- calculation TODOS
+		- add logging mechanism => and write to log files, maybe bind it to debug flag or something or detail level
+	- models TODOS:
+		- remaining MODELS TODOs
+	- tests
+		- triple kick => hit accounting
+		- add valid, specific and detailed test cases
+	- tui TODOS
+		- shared keys
+		- constants for fields
+		- second specie type => maybe unable to set or handle if set and specie originally only has one type (see and compare with CHECKS)
+		- health hp input and hp progress bar
+		- UI overhaul
+		- remaining TUI TODOs
 
 	CHECKS:
 		- input values override master data => move or specie has different type than default
