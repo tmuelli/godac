@@ -10,27 +10,27 @@ import (
 // TODO: implement current health in hp
 const (
 	NATURE         = "Nature"
-	ABILTIY        = "Abiltiy"
+	ABILITIY       = "Abiltiy"
 	ITEM           = "Item"
 	STATUS         = "Status"
 	HEALTH_PERCENT = "Health Percent"
 	CURRENT_HEALTH = "Current Health"
+	METRONOME      = "Metronome"
 )
 
 var miscSpecs = []fieldSpec{
 	{key: NATURE, options: func(d *models.Data) []string { return d.NatureNames() }},
-	{key: ABILTIY, options: func(d *models.Data) []string { return d.AbilityNames() }},
+	{key: ABILITIY, options: func(d *models.Data) []string { return d.AbilityNames() }},
 	{
 		key:     ITEM,
 		options: func(d *models.Data) []string { return d.ItemNames() },
 		onConfirm: func(data *list, value string, d *models.Data) tea.Cmd {
-			isMetronomeColVisible := value == "Metronome"
+			isMetronomeColVisible := value == METRONOME
 			return requestMetronomeColVisible(isMetronomeColVisible)
 		},
 	},
-	// TODO: constants
 	{key: STATUS, options: func(d *models.Data) []string {
-		return []string{"Healthy", "Poisoned", "Badly Poisoned", "Burned", "Paralyzed", "Asleep", "Frozen"}
+		return STATUS_DISPLAY_NAMES
 	}},
 	{key: HEALTH_PERCENT, isNumeric: true, min: 1, max: 100, defaultValue: fmt.Sprintf("%d", models.Level100)},
 }
@@ -58,11 +58,10 @@ func fillMiscDefaults(data *list, specie *models.Specie) {
 	for k := range data.values {
 		var value string
 		switch k {
-		case ABILTIY:
+		case ABILITIY:
 			value = specie.Abilities["0"]
 		case STATUS:
-			// TODO: constant
-			value = "healthy"
+			value = DISPLAY_STATUS_HEALTHY
 		case HEALTH_PERCENT:
 			value = fmt.Sprintf("%d%%", 100)
 		case NATURE:

@@ -183,25 +183,9 @@ func (m movesModel) requestInput(key, value string) tea.Cmd {
 	case "Crit":
 		options = []string{"Yes", "No"}
 	case "Hits":
-		// TODO: better solution
-		options = []string{"Once", "Twice", "3 times", "4 times", "5 times",
-			"1 hits", "2 hits", "3 hits", "4 hits", "5 hits",
-		}
+		options = hitLabels(hitOptions)
 	case "Metr. Hits":
-		// TODO: better solution
-		options = []string{
-			"Never",
-			"Once",
-			"Twice",
-			"3 times",
-			"4 times",
-			"5 times",
-			"6 times",
-			"7 times",
-			"8 times",
-			"9 times",
-			"10 times",
-		}
+		options = hitLabels(metronomeHitOptions)
 	}
 
 	if isNumeric {

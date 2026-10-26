@@ -31,8 +31,11 @@ var basicsSpec = []fieldSpec{
 			return requestAutoFillForSpecie(&specieData)
 		},
 	},
-	// TODO: constants
-	{key: GENDER, options: func(d *models.Data) []string { return []string{"Male", "Female"} }},
+	{key: GENDER, options: func(d *models.Data) []string {
+		return []string{
+			DISPLAY_MALE_NAME, DISPLAY_FEMALE_NAME,
+		}
+	}},
 	{key: TYPE1, options: func(d *models.Data) []string { return d.TypeNames() }},
 	{key: TYPE2, options: func(d *models.Data) []string { return d.TypeNames() }},
 	{key: LEVEL, isNumeric: true, min: 1, max: 100, defaultValue: fmt.Sprintf("%d", models.Level100)},

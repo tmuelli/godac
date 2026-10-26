@@ -42,11 +42,11 @@ func (m configModel) Gender(side Side) *string {
 
 	var result string
 	switch gender {
-	case "Male":
+	case DISPLAY_MALE_NAME:
 		result = "M"
-	case "Female":
+	case DISPLAY_FEMALE_NAME:
 		result = "F"
-	case "Genderless":
+	case DISPLAY_GENDERLESS_NAME:
 		result = "N"
 	}
 
@@ -80,21 +80,9 @@ func (m configModel) Hits(side Side, move string) *int {
 
 	var hits int
 
-	for _, m := range data.rows {
-		// TODO: use constants here
-		if m[0] == move {
-			switch m[5] {
-			case "Once", "1 hits":
-				hits = 1
-			case "Twice", "2 hits":
-				hits = 2
-			case "3 times", "3 hits":
-				hits = 3
-			case "4 times", "4 hits":
-				hits = 4
-			case "5 times", "5 hits":
-				hits = 5
-			}
+	for _, row := range data.rows {
+		if row[MOVE_COL] == move {
+			hits = hitCount(hitOptions, row[HITS_COL])
 		}
 	}
 
@@ -108,31 +96,9 @@ func (m configModel) MetronomeHits(side Side, move string) *int {
 	var metrHits int
 
 	if data.columns[METR_HITS_COL].visible {
-		for _, m := range data.rows {
-			// TODO: use constants here
-			if m[0] == move {
-				switch m[6] {
-				case "Once":
-					metrHits = 1
-				case "Twice":
-					metrHits = 2
-				case "3 times":
-					metrHits = 3
-				case "4 times":
-					metrHits = 4
-				case "5 times":
-					metrHits = 5
-				case "6 times":
-					metrHits = 6
-				case "7 times":
-					metrHits = 7
-				case "8 times":
-					metrHits = 8
-				case "9 times":
-					metrHits = 9
-				case "10 times":
-					metrHits = 10
-				}
+		for _, row := range data.rows {
+			if row[MOVE_COL] == move {
+				metrHits = hitCount(metronomeHitOptions, row[METR_HITS_COL])
 			}
 		}
 	}
