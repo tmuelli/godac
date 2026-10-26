@@ -19,16 +19,24 @@ const (
 	SidesSetting
 )
 
-type fieldKeyMap struct{}
+type fieldKeyMap struct {
+	General key.Binding
+	Side    key.Binding
+}
 
-var fieldKeys = fieldKeyMap{}
+var fieldKeys = fieldKeyMap{
+	General: key.NewBinding(key.WithKeys("general"), key.WithHelp("general", "general settings")),
+	Side:    key.NewBinding(key.WithKeys("side"), key.WithHelp("side", "field side settings")),
+}
 
 func (k fieldKeyMap) ShortHelp() []key.Binding {
 	return []key.Binding{}
 }
 
 func (k fieldKeyMap) FullHelp() [][]key.Binding {
-	return [][]key.Binding{{}}
+	return [][]key.Binding{
+		{k.General, k.Side},
+	}
 }
 
 type fieldModel struct {
@@ -104,32 +112,32 @@ func (m fieldModel) Update(msg tea.Msg) (fieldModel, tea.Cmd) {
 	case tea.KeyPressMsg:
 		switch m.setting {
 		case GeneralSetting:
-			switch msg.String() {
-			case "s":
+			switch {
+			case key.Matches(msg, fieldKeys.Side):
 				m.setting = SidesSetting
 				return m, nil
-			case "up":
+			case key.Matches(msg, globalKeys.Up):
 				m.general[m.generalRow].focused = false
 				m.generalRow = max(m.generalRow-1, 0)
 				m.general[m.generalRow].focused = true
 				return m, nil
-			case "down":
+			case key.Matches(msg, globalKeys.Down):
 				m.general[m.generalRow].focused = false
 				m.generalRow = min(m.generalRow+1, len(m.general)-1)
 				m.general[m.generalRow].focused = true
 				return m, nil
 			}
 		case SidesSetting:
-			switch msg.String() {
-			case "g":
+			switch {
+			case key.Matches(msg, fieldKeys.General):
 				m.setting = GeneralSetting
 				return m, nil
-			case "up":
+			case key.Matches(msg, globalKeys.Up):
 				m.sides[m.sidesRow].groupFocused = false
 				m.sidesRow = max(m.sidesRow-1, 0)
 				m.sides[m.sidesRow].groupFocused = true
 				return m, nil
-			case "down":
+			case key.Matches(msg, globalKeys.Down):
 				m.sides[m.sidesRow].groupFocused = false
 				m.sidesRow = min(m.sidesRow+1, len(m.sides)-1)
 				m.sides[m.sidesRow].groupFocused = true

@@ -97,9 +97,8 @@ func (m configModel) Update(msg tea.Msg, side Side) (configModel, tea.Cmd) {
 		return m, tea.Batch(cmds...)
 
 	case tea.KeyPressMsg:
-		switch msg.String() {
-		case "tab":
-			// m.activeTab = min(m.activeTab+1, len(m.tabs)-1)
+		switch {
+		case key.Matches(msg, configKeys.NextTab):
 			if (m.activeTab + 1) > (len(m.tabs) - 1) {
 				m.activeTab = 0
 			} else {
@@ -107,8 +106,7 @@ func (m configModel) Update(msg tea.Msg, side Side) (configModel, tea.Cmd) {
 			}
 			return m, nil
 
-		case "shift+tab":
-			// m.activeTab = max(m.activeTab-1, 0)
+		case key.Matches(msg, configKeys.PrevTab):
 			if (m.activeTab - 1) < 0 {
 				m.activeTab = len(m.tabs) - 1
 			} else {

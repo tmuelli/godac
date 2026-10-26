@@ -83,16 +83,16 @@ func (m calcModel) Update(msg tea.Msg) (calcModel, tea.Cmd) {
 		m.Calculate(msg.input)
 		return m, nil
 	case tea.KeyPressMsg:
-		switch msg.String() {
-		case "up":
+		switch {
+		case key.Matches(msg, globalKeys.Up):
 			m.grid.MoveRow(-1)
-		case "down":
+		case key.Matches(msg, globalKeys.Down):
 			m.grid.MoveRow(1)
-		case "left":
+		case key.Matches(msg, globalKeys.Left):
 			m.grid.MoveCol(-1)
-		case "right":
+		case key.Matches(msg, globalKeys.Right):
 			m.grid.MoveCol(1)
-		case "enter":
+		case key.Matches(msg, globalKeys.Confirm):
 			usedSide := Side(m.grid.col)
 			usedMoveIndex := m.grid.row
 			return m, requestCalc(usedMoveIndex, usedSide)

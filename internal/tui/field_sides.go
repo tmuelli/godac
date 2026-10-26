@@ -1,6 +1,7 @@
 package tui
 
 import (
+	"charm.land/bubbles/v2/key"
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 )
@@ -36,12 +37,12 @@ func (g sidesGroup) Update(msg tea.Msg) (sidesGroup, tea.Cmd) {
 
 	switch msg := msg.(type) {
 	case tea.KeyPressMsg:
-		switch msg.String() {
-		case "left":
+		switch {
+		case key.Matches(msg, globalKeys.Left):
 			g.focused = LeftSide
-		case "right":
+		case key.Matches(msg, globalKeys.Right):
 			g.focused = RightSide
-		case "enter":
+		case key.Matches(msg, globalKeys.Confirm):
 			if g.focused == LeftSide {
 				g.left = !g.left
 			} else {

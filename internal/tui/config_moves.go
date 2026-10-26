@@ -3,6 +3,7 @@ package tui
 import (
 	"fmt"
 
+	"charm.land/bubbles/v2/key"
 	"charm.land/bubbles/v2/table"
 	tea "charm.land/bubbletea/v2"
 	"github.com/tmuelli/godac/internal/models"
@@ -108,16 +109,16 @@ func (m movesModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 
 		return m, nil
 	case tea.KeyPressMsg:
-		switch msg.String() {
-		case "up":
+		switch {
+		case key.Matches(msg, globalKeys.Up):
 			data.MoveRow(-1)
-		case "down":
+		case key.Matches(msg, globalKeys.Down):
 			data.MoveRow(1)
-		case "left":
+		case key.Matches(msg, globalKeys.Left):
 			data.MoveCol(-1)
-		case "right":
+		case key.Matches(msg, globalKeys.Right):
 			data.MoveCol(1)
-		case "enter":
+		case key.Matches(msg, globalKeys.Confirm):
 			if !data.columns[data.col].editable {
 				return m, nil
 			}

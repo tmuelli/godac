@@ -1,6 +1,7 @@
 package tui
 
 import (
+	"charm.land/bubbles/v2/key"
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 	"github.com/tmuelli/godac/internal/models"
@@ -118,12 +119,12 @@ func (m fieldListModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 
 		return m, nil
 	case tea.KeyPressMsg:
-		switch msg.String() {
-		case "up":
+		switch {
+		case key.Matches(msg, globalKeys.Up):
 			data.SetActiveRow(-1)
-		case "down":
+		case key.Matches(msg, globalKeys.Down):
 			data.SetActiveRow(1)
-		case "enter":
+		case key.Matches(msg, globalKeys.Confirm):
 			key := data.options[data.activeIndex]
 			value := data.values[key]
 			return m, m.requestInput(key, value)

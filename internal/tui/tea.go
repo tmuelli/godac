@@ -20,33 +20,6 @@ const (
 	FieldView
 )
 
-type globalKeyMap struct {
-	Calc   key.Binding
-	Config key.Binding
-	Field  key.Binding
-	Help   key.Binding
-	Quit   key.Binding
-}
-
-var globalKeys = globalKeyMap{
-	Calc:   key.NewBinding(key.WithKeys("c"), key.WithHelp("c", "calc view")),
-	Config: key.NewBinding(key.WithKeys("r", "l"), key.WithHelp("r/l", "config view")),
-	Field:  key.NewBinding(key.WithKeys("f"), key.WithHelp("f", "field view")),
-	Help:   key.NewBinding(key.WithKeys("?"), key.WithHelp("?", "help")),
-	Quit:   key.NewBinding(key.WithKeys("ctrl+c", "q", "esc"), key.WithHelp("q", "quit")),
-}
-
-func (k globalKeyMap) ShortHelp() []key.Binding {
-	return []key.Binding{k.Help, k.Quit}
-}
-
-func (k globalKeyMap) FullHelp() [][]key.Binding {
-	return [][]key.Binding{
-		{k.Calc, k.Config, k.Field},
-		{k.Help, k.Quit},
-	}
-}
-
 type model struct {
 	current    View
 	calc       calcModel
@@ -150,8 +123,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case tea.KeyPressMsg:
 		if m.editing {
-			switch msg.String() {
-			case "enter":
+			switch {
+			case key.Matches(msg, globalKeys.Confirm):
 				value := m.input.Value()
 				m.inputValid = true
 
@@ -186,7 +159,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.field, cmd = m.field.Update(editMsg)
 				}
 				return m, cmd
-			case "esc":
+			case key.Matches(msg, globalKeys.Cancel):
 				m.editing = false
 				return m, nil
 			}
@@ -196,31 +169,31 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, cmd
 		}
 
-		// TODO: change to key.Matches()
-		switch msg.String() {
+		switch {
 		// quit terminal repl
-		case "q", "esc", "ctrl+c":
+		case key.Matches(msg, globalKeys.Quit):
 			return m, tea.Quit
 
-		case "c":
+		case key.Matches(msg, globalKeys.Calc):
 			m.current = CalcView
 			return m, nil
 
-		case "r":
-			m.current = ConfigView
-			m.configSide = RightSide
-			return m, nil
+		case key.Matches(msg, globalKeys.Config):
+			if msg.String() == "r" {
+				m.current = ConfigView
+				m.configSide = RightSide
+				return m, nil
+			} else {
+				m.current = ConfigView
+				m.configSide = LeftSide
+				return m, nil
+			}
 
-		case "l":
-			m.current = ConfigView
-			m.configSide = LeftSide
-			return m, nil
-
-		case "f":
+		case key.Matches(msg, globalKeys.Field):
 			m.current = FieldView
 			return m, nil
 
-		case "?":
+		case key.Matches(msg, globalKeys.Help):
 			m.help.ShowAll = !m.help.ShowAll
 			return m, nil
 		}
