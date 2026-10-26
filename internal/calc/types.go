@@ -21,7 +21,7 @@ func calcTypeModifier(moveType, defType *models.Type, canHitGhostType, isGravity
 		return 1.0
 	}
 
-	mod := moveType.Effectiveness[defType.Name]
+	mod := moveType.Effectiveness[defType.ID]
 	// if !ok {
 	// 	// TODO: add to logging
 	// 	// fmt.Printf("Error trying to look up type %s in type map while trying to calc type modifier\n", defType.Name)
@@ -32,7 +32,7 @@ func calcTypeModifier(moveType, defType *models.Type, canHitGhostType, isGravity
 
 func (c *Calculation) setTypeModifier() error {
 	// get used move type
-	atkType, err := getTypeFromName(c.data, c.attacker.usedMove.Type)
+	atkType, err := getTypeFromID(c.data, c.attacker.usedMove.Type)
 	if err != nil {
 		c.typeEff = TypeEffectivness{
 			typeMod1:    0.0,
@@ -77,7 +77,7 @@ func (c *Calculation) setTypeModifier() error {
 
 func (d *CalcData) stabModifier() (float64, error) {
 	for _, t := range d.specieTypes {
-		if d.usedMove.HasType(t.Name) {
+		if d.usedMove.HasType(t.ID) {
 			if d.hasAbility("adaptability") {
 				return 2.0, nil
 			} else {
@@ -89,18 +89,18 @@ func (d *CalcData) stabModifier() (float64, error) {
 	return 1.0, nil
 }
 
-func getTypeFromName(data *models.Data, name string) (*models.Type, error) {
+func getTypeFromID(data *models.Data, id string) (*models.Type, error) {
 	if data == nil {
-		return nil, fmt.Errorf("invalid parameters: getTypeFromName")
+		return nil, fmt.Errorf("invalid parameters: getTypeFromID")
 	}
 
 	var result *models.Type
-	if t, ok := data.Types[name]; ok {
+	if t, ok := data.Types[id]; ok {
 		result = &t
 	}
 
 	if result == nil {
-		return nil, fmt.Errorf("invalid input: Unknown type %s", name)
+		return nil, fmt.Errorf("invalid input: Unknown type %s", id)
 	}
 
 	return result, nil

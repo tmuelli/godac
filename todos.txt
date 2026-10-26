@@ -4,8 +4,6 @@ CALC:
 			- add logging mechanism => and write to log files, maybe bind it to debug flag or something or detail level
 		- clean up / bugfix TODOS
 			- same implementation for types => specie has type
-			- check type capitalization => change to lower case like all other ids
-				- check capitalization throughout the entire codebase
 			- remaining CALC TODOs
 		- tests
 			- triple kick => hit accounting

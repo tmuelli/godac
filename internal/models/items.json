@@ -11,7 +11,7 @@
     "name": "Black Belt",
     "effect": "move",
     "types": [
-      "Fighting"
+      "fighting"
     ],
     "multiplier": 1.2,
     "flingPower": 30
@@ -22,7 +22,7 @@
     "name": "Black Glasses",
     "effect": "move",
     "types": [
-      "Dark"
+      "dark"
     ],
     "multiplier": 1.2,
     "flingPower": 30
@@ -39,7 +39,7 @@
     "name": "Charcoal",
     "effect": "move",
     "types": [
-      "Fire"
+      "fire"
     ],
     "multiplier": 1.2,
     "flingPower": 30
@@ -50,7 +50,7 @@
     "name": "Dragon Fang",
     "effect": "move",
     "types": [
-      "Dragon"
+      "dragon"
     ],
     "multiplier": 1.2,
     "flingPower": 70
@@ -97,7 +97,7 @@
     "name": "Hard Stone",
     "effect": "move",
     "types": [
-      "Rock"
+      "rock"
     ],
     "multiplier": 1.2,
     "flingPower": 100
@@ -173,7 +173,7 @@
     "name": "Magnet",
     "effect": "move",
     "types": [
-      "Electric"
+      "electric"
     ],
     "multiplier": 1.2,
     "flingPower": 30
@@ -196,7 +196,7 @@
     "name": "Metal Coat",
     "effect": "move",
     "types": [
-      "Steel"
+      "steel"
     ],
     "multiplier": 1.2,
     "flingPower": 30
@@ -226,7 +226,7 @@
     "name": "Miracle Seed",
     "effect": "move",
     "types": [
-      "Grass"
+      "grass"
     ],
     "multiplier": 1.2,
     "flingPower": 30
@@ -249,7 +249,7 @@
     "name": "Mystic Water",
     "effect": "move",
     "types": [
-      "Water"
+      "water"
     ],
     "multiplier": 1.2,
     "flingPower": 30
@@ -260,7 +260,7 @@
     "name": "Never-Melt Ice",
     "effect": "move",
     "types": [
-      "Ice"
+      "ice"
     ],
     "multiplier": 1.2,
     "flingPower": 30
@@ -271,7 +271,7 @@
     "name": "Poison Barb",
     "effect": "move",
     "types": [
-      "Poison"
+      "poison"
     ],
     "multiplier": 1.2,
     "flingPower": 70
@@ -306,7 +306,7 @@
     "name": "Sharp Beak",
     "effect": "move",
     "types": [
-      "Flying"
+      "flying"
     ],
     "multiplier": 1.2,
     "flingPower": 50
@@ -317,7 +317,7 @@
     "name": "Silver Powder",
     "effect": "move",
     "types": [
-      "Bug"
+      "bug"
     ],
     "multiplier": 1.2,
     "flingPower": 10
@@ -328,7 +328,7 @@
     "name": "Soft Sand",
     "effect": "move",
     "types": [
-      "Ground"
+      "ground"
     ],
     "multiplier": 1.2,
     "flingPower": 10
@@ -339,7 +339,7 @@
     "name": "Spell Tag",
     "effect": "move",
     "types": [
-      "Ghost"
+      "ghost"
     ],
     "multiplier": 1.2,
     "flingPower": 30
@@ -391,7 +391,7 @@
     "name": "Twisted Spoon",
     "effect": "move",
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "multiplier": 1.2,
     "flingPower": 30
@@ -421,7 +421,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Dragon"
+      "type": "dragon"
     },
     "flingPower": 10
   },
@@ -432,7 +432,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 80,
-      "type": "Ground"
+      "type": "ground"
     },
     "flingPower": 10
   },
@@ -443,7 +443,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Ice"
+      "type": "ice"
     },
     "flingPower": 10
   },
@@ -454,7 +454,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 80,
-      "type": "Electric"
+      "type": "electric"
     },
     "flingPower": 10
   },
@@ -465,7 +465,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 70,
-      "type": "Fire"
+      "type": "fire"
     },
     "flingPower": 10
   },
@@ -476,7 +476,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Fire"
+      "type": "fire"
     },
     "flingPower": 10
   },
@@ -487,7 +487,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Water"
+      "type": "water"
     },
     "flingPower": 10
   },
@@ -515,7 +515,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 70,
-      "type": "Bug"
+      "type": "bug"
     },
     "flingPower": 10
   },
@@ -570,7 +570,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 80,
-      "type": "Water"
+      "type": "water"
     },
     "flingPower": 10
   },
@@ -581,7 +581,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 80,
-      "type": "Bug"
+      "type": "bug"
     },
     "flingPower": 10
   },
@@ -592,7 +592,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Bug"
+      "type": "bug"
     },
     "flingPower": 10
   },
@@ -603,7 +603,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 80,
-      "type": "Ice"
+      "type": "ice"
     },
     "flingPower": 10
   },
@@ -614,7 +614,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 70,
-      "type": "Flying"
+      "type": "flying"
     },
     "flingPower": 10
   },
@@ -631,7 +631,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 70,
-      "type": "Ground"
+      "type": "ground"
     },
     "flingPower": 10
   },
@@ -642,7 +642,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Dark"
+      "type": "dark"
     },
     "flingPower": 10
   },
@@ -653,7 +653,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 70,
-      "type": "Fighting"
+      "type": "fighting"
     },
     "flingPower": 10
   },
@@ -664,7 +664,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 80,
-      "type": "Flying"
+      "type": "flying"
     },
     "flingPower": 10
   },
@@ -681,7 +681,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Fighting"
+      "type": "fighting"
     },
     "flingPower": 10
   },
@@ -692,7 +692,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 80,
-      "type": "Grass"
+      "type": "grass"
     },
     "flingPower": 10
   },
@@ -703,7 +703,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Flying"
+      "type": "flying"
     },
     "flingPower": 10
   },
@@ -726,7 +726,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Ghost"
+      "type": "ghost"
     },
     "flingPower": 10
   },
@@ -737,7 +737,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 70,
-      "type": "Rock"
+      "type": "rock"
     },
     "flingPower": 10
   },
@@ -754,7 +754,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 70,
-      "type": "Water"
+      "type": "water"
     },
     "flingPower": 10
   },
@@ -777,7 +777,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 70,
-      "type": "Dragon"
+      "type": "dragon"
     },
     "flingPower": 10
   },
@@ -794,7 +794,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Poison"
+      "type": "poison"
     },
     "flingPower": 10
   },
@@ -805,7 +805,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 70,
-      "type": "Steel"
+      "type": "steel"
     },
     "flingPower": 10
   },
@@ -816,7 +816,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Electric"
+      "type": "electric"
     },
     "flingPower": 10
   },
@@ -827,7 +827,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Ground"
+      "type": "ground"
     },
     "flingPower": 10
   },
@@ -838,7 +838,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 80,
-      "type": "Poison"
+      "type": "poison"
     },
     "flingPower": 10
   },
@@ -849,7 +849,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 70,
-      "type": "Grass"
+      "type": "grass"
     },
     "flingPower": 10
   },
@@ -860,7 +860,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 70,
-      "type": "Ice"
+      "type": "ice"
     },
     "flingPower": 10
   },
@@ -877,7 +877,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 70,
-      "type": "Poison"
+      "type": "poison"
     },
     "flingPower": 10
   },
@@ -888,7 +888,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 70,
-      "type": "Ghost"
+      "type": "ghost"
     },
     "flingPower": 10
   },
@@ -899,7 +899,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Grass"
+      "type": "grass"
     },
     "flingPower": 10
   },
@@ -910,7 +910,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Steel"
+      "type": "steel"
     },
     "flingPower": 10
   },
@@ -933,7 +933,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 80,
-      "type": "Fighting"
+      "type": "fighting"
     },
     "flingPower": 10
   },
@@ -955,7 +955,7 @@
     "name": "Silk Scarf",
     "effect": "move",
     "types": [
-      "Normal"
+      "normal"
     ],
     "multiplier": 1.2,
     "flingPower": 10
@@ -967,7 +967,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Psychic"
+      "type": "psychic"
     },
     "flingPower": 10
   },
@@ -996,7 +996,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 70,
-      "type": "Dark"
+      "type": "dark"
     },
     "flingPower": 10
   },
@@ -1007,7 +1007,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 80,
-      "type": "Psychic"
+      "type": "psychic"
     },
     "flingPower": 10
   },
@@ -1018,7 +1018,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 70,
-      "type": "Psychic"
+      "type": "psychic"
     },
     "flingPower": 10
   },
@@ -1035,7 +1035,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 80,
-      "type": "Fire"
+      "type": "fire"
     },
     "flingPower": 10
   },
@@ -1046,7 +1046,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 70,
-      "type": "Electric"
+      "type": "electric"
     },
     "flingPower": 10
   },
@@ -1063,7 +1063,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Rock"
+      "type": "rock"
     },
     "flingPower": 10
   },
@@ -1073,8 +1073,8 @@
     "name": "Adamant Orb",
     "effect": "move",
     "types": [
-      "Dragon",
-      "Steel"
+      "dragon",
+      "steel"
     ],
     "multiplier": 1.2,
     "restrictions": {
@@ -1097,11 +1097,11 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Steel"
+      "type": "steel"
     },
     "effect": "damage",
     "types": [
-      "Steel"
+      "steel"
     ],
     "multiplier": 0.5,
     "condition": {
@@ -1128,7 +1128,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Rock"
+      "type": "rock"
     },
     "flingPower": 10
   },
@@ -1145,11 +1145,11 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Normal"
+      "type": "normal"
     },
     "effect": "damage",
     "types": [
-      "Normal"
+      "normal"
     ],
     "multiplier": 0.5,
     "condition": {
@@ -1186,11 +1186,11 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Fighting"
+      "type": "fighting"
     },
     "effect": "damage",
     "types": [
-      "Fighting"
+      "fighting"
     ],
     "multiplier": 0.5,
     "condition": {
@@ -1205,11 +1205,11 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Flying"
+      "type": "flying"
     },
     "effect": "damage",
     "types": [
-      "Flying"
+      "flying"
     ],
     "multiplier": 0.5,
     "condition": {
@@ -1224,11 +1224,11 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Dark"
+      "type": "dark"
     },
     "effect": "damage",
     "types": [
-      "Dark"
+      "dark"
     ],
     "multiplier": 0.5,
     "condition": {
@@ -1243,7 +1243,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 80,
-      "type": "Ghost"
+      "type": "ghost"
     },
     "flingPower": 10
   },
@@ -1360,8 +1360,8 @@
     "name": "Griseous Orb",
     "effect": "move",
     "types": [
-      "Dragon",
-      "Ghost"
+      "dragon",
+      "ghost"
     ],
     "multiplier": 1.2,
     "restrictions": {
@@ -1378,11 +1378,11 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Dragon"
+      "type": "dragon"
     },
     "effect": "damage",
     "types": [
-      "Dragon"
+      "dragon"
     ],
     "multiplier": 0.5,
     "condition": {
@@ -1439,7 +1439,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 80,
-      "type": "Dragon"
+      "type": "dragon"
     },
     "flingPower": 10
   },
@@ -1450,11 +1450,11 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Ghost"
+      "type": "ghost"
     },
     "effect": "damage",
     "types": [
-      "Ghost"
+      "ghost"
     ],
     "multiplier": 0.5,
     "condition": {
@@ -1469,11 +1469,11 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Poison"
+      "type": "poison"
     },
     "effect": "damage",
     "types": [
-      "Poison"
+      "poison"
     ],
     "multiplier": 0.5,
     "condition": {
@@ -1510,8 +1510,8 @@
     "name": "Lustrous Orb",
     "effect": "move",
     "types": [
-      "Dragon",
-      "Water"
+      "dragon",
+      "water"
     ],
     "multiplier": 1.2,
     "restrictions": {
@@ -1551,7 +1551,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 80,
-      "type": "Rock"
+      "type": "rock"
     },
     "flingPower": 10
   },
@@ -1579,11 +1579,11 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Fire"
+      "type": "fire"
     },
     "effect": "damage",
     "types": [
-      "Fire"
+      "fire"
     ],
     "multiplier": 0.5,
     "condition": {
@@ -1616,11 +1616,11 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Water"
+      "type": "water"
     },
     "effect": "damage",
     "types": [
-      "Water"
+      "water"
     ],
     "multiplier": 0.5,
     "condition": {
@@ -1635,11 +1635,11 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Psychic"
+      "type": "psychic"
     },
     "effect": "damage",
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "multiplier": 0.5,
     "condition": {
@@ -1751,11 +1751,11 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Grass"
+      "type": "grass"
     },
     "effect": "damage",
     "types": [
-      "Grass"
+      "grass"
     ],
     "multiplier": 0.5,
     "condition": {
@@ -1782,7 +1782,7 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 80,
-      "type": "Dark"
+      "type": "dark"
     },
     "flingPower": 10
   },
@@ -1805,11 +1805,11 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Ground"
+      "type": "ground"
     },
     "effect": "damage",
     "types": [
-      "Ground"
+      "ground"
     ],
     "multiplier": 0.5,
     "condition": {
@@ -1866,11 +1866,11 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Bug"
+      "type": "bug"
     },
     "effect": "damage",
     "types": [
-      "Bug"
+      "bug"
     ],
     "multiplier": 0.5,
     "condition": {
@@ -1897,11 +1897,11 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Electric"
+      "type": "electric"
     },
     "effect": "damage",
     "types": [
-      "Electric"
+      "electric"
     ],
     "multiplier": 0.5,
     "condition": {
@@ -1939,11 +1939,11 @@
     "isBerry": true,
     "naturalGift": {
       "basePower": 60,
-      "type": "Ice"
+      "type": "ice"
     },
     "effect": "damage",
     "types": [
-      "Ice"
+      "ice"
     ],
     "multiplier": 0.5,
     "condition": {

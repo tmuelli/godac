@@ -15,17 +15,17 @@ func (c *Calculation) weatherModifier() float64 {
 	case models.Clear:
 	case models.Sun:
 		switch c.attacker.usedMove.Type {
-		case "Fire":
+		case "fire":
 			return 1.5
-		case "Water":
+		case "water":
 			return 0.5
 		}
 
 	case models.Rain:
 		switch c.attacker.usedMove.Type {
-		case "Water":
+		case "water":
 			return 1.5
-		case "Fire":
+		case "fire":
 			return 0.5
 		}
 
@@ -43,14 +43,14 @@ func (c *Calculation) weatherModifier() float64 {
 func getTypeStringFromWeather(terrain models.FieldTerrain) string {
 	switch terrain {
 	case models.Sun:
-		return "Fire"
+		return "fire"
 	case models.Rain:
-		return "Water"
+		return "water"
 	case models.Hail:
-		return "Ice"
+		return "ice"
 	case models.Sand:
-		return "Rock"
+		return "rock"
 	default:
-		return "Normal"
+		return "normal"
 	}
 }

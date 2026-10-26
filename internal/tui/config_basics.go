@@ -27,7 +27,7 @@ var basicsSpec = []fieldSpec{
 				return nil
 			}
 
-			fillBasicDefaults(data, &specieData)
+			fillBasicDefaults(data, &specieData, d)
 			return requestAutoFillForSpecie(&specieData)
 		},
 	},
@@ -52,7 +52,7 @@ func newBasicsModel(s *styles, data *models.Data) fieldListModel {
 	return m
 }
 
-func fillBasicDefaults(data *list, specie *models.Specie) {
+func fillBasicDefaults(data *list, specie *models.Specie, calcData *models.Data) {
 	if specie == nil {
 		// internal error
 		return
@@ -74,10 +74,10 @@ func fillBasicDefaults(data *list, specie *models.Specie) {
 				value = DEFAULT_GENDER
 			}
 		case TYPE1:
-			value = specie.Types[0]
+			value = calcData.TypeName(specie.Types[0])
 		case TYPE2:
 			if len(specie.Types) > 1 {
-				value = specie.Types[1]
+				value = calcData.TypeName(specie.Types[1])
 			}
 		case LEVEL:
 			if data.values[LEVEL] != "" {

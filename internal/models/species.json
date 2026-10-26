@@ -12,7 +12,7 @@
       "spe": 90
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 19.5,
     "nfe": true,
@@ -33,8 +33,8 @@
       "spe": 130
     },
     "types": [
-      "Rock",
-      "Flying"
+      "rock",
+      "flying"
     ],
     "weightkg": 59,
     "abilities": {
@@ -54,7 +54,7 @@
       "spe": 120
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 48,
     "abilities": {
@@ -74,7 +74,7 @@
       "spe": 80
     },
     "types": [
-      "Poison"
+      "poison"
     ],
     "weightkg": 65,
     "abilities": {
@@ -94,7 +94,7 @@
       "spe": 95
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 155,
     "abilities": {
@@ -114,8 +114,8 @@
       "spe": 85
     },
     "types": [
-      "Ice",
-      "Flying"
+      "ice",
+      "flying"
     ],
     "weightkg": 55.4,
     "gender": "N",
@@ -136,8 +136,8 @@
       "spe": 75
     },
     "types": [
-      "Bug",
-      "Poison"
+      "bug",
+      "poison"
     ],
     "weightkg": 29.5,
     "abilities": {
@@ -157,8 +157,8 @@
       "spe": 40
     },
     "types": [
-      "Grass",
-      "Poison"
+      "grass",
+      "poison"
     ],
     "weightkg": 4,
     "nfe": true,
@@ -179,7 +179,7 @@
       "spe": 78
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 85.5,
     "abilities": {
@@ -199,8 +199,8 @@
       "spe": 45
     },
     "types": [
-      "Grass",
-      "Poison"
+      "grass",
+      "poison"
     ],
     "weightkg": 6.9,
     "nfe": true,
@@ -221,8 +221,8 @@
       "spe": 70
     },
     "types": [
-      "Bug",
-      "Flying"
+      "bug",
+      "flying"
     ],
     "weightkg": 32,
     "abilities": {
@@ -242,7 +242,7 @@
       "spe": 45
     },
     "types": [
-      "Bug"
+      "bug"
     ],
     "weightkg": 2.9,
     "nfe": true,
@@ -263,7 +263,7 @@
       "spe": 50
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 34.6,
     "gender": "F",
@@ -285,8 +285,8 @@
       "spe": 100
     },
     "types": [
-      "Fire",
-      "Flying"
+      "fire",
+      "flying"
     ],
     "weightkg": 90.5,
     "abilities": {
@@ -306,7 +306,7 @@
       "spe": 65
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 8.5,
     "nfe": true,
@@ -327,7 +327,7 @@
       "spe": 80
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 19,
     "nfe": true,
@@ -348,7 +348,7 @@
       "spe": 60
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 40,
     "abilities": {
@@ -368,7 +368,7 @@
       "spe": 35
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 7.5,
     "nfe": true,
@@ -389,8 +389,8 @@
       "spe": 70
     },
     "types": [
-      "Water",
-      "Ice"
+      "water",
+      "ice"
     ],
     "weightkg": 132.5,
     "abilities": {
@@ -410,7 +410,7 @@
       "spe": 35
     },
     "types": [
-      "Ground"
+      "ground"
     ],
     "weightkg": 6.5,
     "nfe": true,
@@ -431,8 +431,8 @@
       "spe": 70
     },
     "types": [
-      "Water",
-      "Ice"
+      "water",
+      "ice"
     ],
     "weightkg": 120,
     "abilities": {
@@ -452,7 +452,7 @@
       "spe": 95
     },
     "types": [
-      "Ground"
+      "ground"
     ],
     "weightkg": 0.8,
     "nfe": true,
@@ -473,7 +473,7 @@
       "spe": 48
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 4,
     "gender": "N",
@@ -494,8 +494,8 @@
       "spe": 100
     },
     "types": [
-      "Normal",
-      "Flying"
+      "normal",
+      "flying"
     ],
     "weightkg": 85.2,
     "abilities": {
@@ -515,8 +515,8 @@
       "spe": 75
     },
     "types": [
-      "Normal",
-      "Flying"
+      "normal",
+      "flying"
     ],
     "weightkg": 39.2,
     "nfe": true,
@@ -537,7 +537,7 @@
       "spe": 70
     },
     "types": [
-      "Dragon"
+      "dragon"
     ],
     "weightkg": 16.5,
     "nfe": true,
@@ -558,8 +558,8 @@
       "spe": 80
     },
     "types": [
-      "Dragon",
-      "Flying"
+      "dragon",
+      "flying"
     ],
     "weightkg": 210,
     "abilities": {
@@ -579,7 +579,7 @@
       "spe": 50
     },
     "types": [
-      "Dragon"
+      "dragon"
     ],
     "weightkg": 3.3,
     "nfe": true,
@@ -600,7 +600,7 @@
       "spe": 42
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 32.4,
     "nfe": true,
@@ -621,7 +621,7 @@
       "spe": 120
     },
     "types": [
-      "Ground"
+      "ground"
     ],
     "weightkg": 33.3,
     "abilities": {
@@ -641,7 +641,7 @@
       "spe": 55
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 6.5,
     "nfe": true,
@@ -662,7 +662,7 @@
       "spe": 55
     },
     "types": [
-      "Poison"
+      "poison"
     ],
     "weightkg": 6.9,
     "nfe": true,
@@ -683,7 +683,7 @@
       "spe": 105
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 30,
     "abilities": {
@@ -704,7 +704,7 @@
       "spe": 140
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 66.6,
     "gender": "N",
@@ -725,8 +725,8 @@
       "spe": 40
     },
     "types": [
-      "Grass",
-      "Psychic"
+      "grass",
+      "psychic"
     ],
     "weightkg": 2.5,
     "nfe": true,
@@ -747,8 +747,8 @@
       "spe": 55
     },
     "types": [
-      "Grass",
-      "Psychic"
+      "grass",
+      "psychic"
     ],
     "weightkg": 120,
     "abilities": {
@@ -768,8 +768,8 @@
       "spe": 60
     },
     "types": [
-      "Normal",
-      "Flying"
+      "normal",
+      "flying"
     ],
     "weightkg": 15,
     "abilities": {
@@ -789,8 +789,8 @@
       "spe": 100
     },
     "types": [
-      "Normal",
-      "Flying"
+      "normal",
+      "flying"
     ],
     "weightkg": 38,
     "abilities": {
@@ -810,7 +810,7 @@
       "spe": 65
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 25,
     "abilities": {
@@ -830,8 +830,8 @@
       "spe": 80
     },
     "types": [
-      "Ghost",
-      "Poison"
+      "ghost",
+      "poison"
     ],
     "weightkg": 0.1,
     "nfe": true,
@@ -852,8 +852,8 @@
       "spe": 110
     },
     "types": [
-      "Ghost",
-      "Poison"
+      "ghost",
+      "poison"
     ],
     "weightkg": 40.5,
     "abilities": {
@@ -873,8 +873,8 @@
       "spe": 20
     },
     "types": [
-      "Rock",
-      "Ground"
+      "rock",
+      "ground"
     ],
     "weightkg": 20,
     "nfe": true,
@@ -895,8 +895,8 @@
       "spe": 40
     },
     "types": [
-      "Grass",
-      "Poison"
+      "grass",
+      "poison"
     ],
     "weightkg": 8.6,
     "nfe": true,
@@ -917,8 +917,8 @@
       "spe": 90
     },
     "types": [
-      "Poison",
-      "Flying"
+      "poison",
+      "flying"
     ],
     "weightkg": 55,
     "nfe": true,
@@ -939,7 +939,7 @@
       "spe": 63
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 15,
     "nfe": true,
@@ -960,7 +960,7 @@
       "spe": 85
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 76.6,
     "abilities": {
@@ -980,8 +980,8 @@
       "spe": 45
     },
     "types": [
-      "Rock",
-      "Ground"
+      "rock",
+      "ground"
     ],
     "weightkg": 300,
     "abilities": {
@@ -1001,8 +1001,8 @@
       "spe": 35
     },
     "types": [
-      "Rock",
-      "Ground"
+      "rock",
+      "ground"
     ],
     "weightkg": 105,
     "nfe": true,
@@ -1023,7 +1023,7 @@
       "spe": 25
     },
     "types": [
-      "Poison"
+      "poison"
     ],
     "weightkg": 30,
     "nfe": true,
@@ -1044,7 +1044,7 @@
       "spe": 60
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 19,
     "nfe": true,
@@ -1065,8 +1065,8 @@
       "spe": 81
     },
     "types": [
-      "Water",
-      "Flying"
+      "water",
+      "flying"
     ],
     "weightkg": 235,
     "abilities": {
@@ -1086,8 +1086,8 @@
       "spe": 95
     },
     "types": [
-      "Ghost",
-      "Poison"
+      "ghost",
+      "poison"
     ],
     "weightkg": 0.1,
     "nfe": true,
@@ -1108,7 +1108,7 @@
       "spe": 76
     },
     "types": [
-      "Fighting"
+      "fighting"
     ],
     "weightkg": 50.2,
     "gender": "M",
@@ -1129,7 +1129,7 @@
       "spe": 87
     },
     "types": [
-      "Fighting"
+      "fighting"
     ],
     "weightkg": 49.8,
     "gender": "M",
@@ -1150,7 +1150,7 @@
       "spe": 60
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 8,
     "nfe": true,
@@ -1171,7 +1171,7 @@
       "spe": 67
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 75.6,
     "abilities": {
@@ -1191,8 +1191,8 @@
       "spe": 60
     },
     "types": [
-      "Grass",
-      "Poison"
+      "grass",
+      "poison"
     ],
     "weightkg": 13,
     "nfe": true,
@@ -1213,7 +1213,7 @@
       "spe": 20
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 5.5,
     "nfe": true,
@@ -1234,7 +1234,7 @@
       "spe": 130
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 24.5,
     "abilities": {
@@ -1254,8 +1254,8 @@
       "spe": 95
     },
     "types": [
-      "Ice",
-      "Psychic"
+      "ice",
+      "psychic"
     ],
     "weightkg": 40.6,
     "gender": "F",
@@ -1276,8 +1276,8 @@
       "spe": 55
     },
     "types": [
-      "Rock",
-      "Water"
+      "rock",
+      "water"
     ],
     "weightkg": 11.5,
     "nfe": true,
@@ -1298,8 +1298,8 @@
       "spe": 80
     },
     "types": [
-      "Rock",
-      "Water"
+      "rock",
+      "water"
     ],
     "weightkg": 40.5,
     "abilities": {
@@ -1319,7 +1319,7 @@
       "spe": 105
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 56.5,
     "nfe": true,
@@ -1340,8 +1340,8 @@
       "spe": 35
     },
     "types": [
-      "Bug",
-      "Poison"
+      "bug",
+      "poison"
     ],
     "weightkg": 10,
     "nfe": true,
@@ -1362,7 +1362,7 @@
       "spe": 90
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 80,
     "gender": "F",
@@ -1383,7 +1383,7 @@
       "spe": 75
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 60,
     "abilities": {
@@ -1403,7 +1403,7 @@
       "spe": 35
     },
     "types": [
-      "Poison"
+      "poison"
     ],
     "weightkg": 1,
     "nfe": true,
@@ -1424,7 +1424,7 @@
       "spe": 50
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 6.5,
     "nfe": true,
@@ -1445,8 +1445,8 @@
       "spe": 60
     },
     "types": [
-      "Water",
-      "Ice"
+      "water",
+      "ice"
     ],
     "weightkg": 220,
     "abilities": {
@@ -1466,7 +1466,7 @@
       "spe": 30
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 65.5,
     "abilities": {
@@ -1487,7 +1487,7 @@
       "spe": 55
     },
     "types": [
-      "Fighting"
+      "fighting"
     ],
     "weightkg": 130,
     "abilities": {
@@ -1507,7 +1507,7 @@
       "spe": 45
     },
     "types": [
-      "Fighting"
+      "fighting"
     ],
     "weightkg": 70.5,
     "nfe": true,
@@ -1528,7 +1528,7 @@
       "spe": 35
     },
     "types": [
-      "Fighting"
+      "fighting"
     ],
     "weightkg": 19.5,
     "nfe": true,
@@ -1549,7 +1549,7 @@
       "spe": 80
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 10,
     "nfe": true,
@@ -1570,7 +1570,7 @@
       "spe": 93
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 44.5,
     "abilities": {
@@ -1591,8 +1591,8 @@
       "spe": 45
     },
     "types": [
-      "Electric",
-      "Steel"
+      "electric",
+      "steel"
     ],
     "weightkg": 6,
     "nfe": true,
@@ -1614,8 +1614,8 @@
       "spe": 70
     },
     "types": [
-      "Electric",
-      "Steel"
+      "electric",
+      "steel"
     ],
     "weightkg": 60,
     "gender": "N",
@@ -1637,7 +1637,7 @@
       "spe": 70
     },
     "types": [
-      "Fighting"
+      "fighting"
     ],
     "weightkg": 28,
     "nfe": true,
@@ -1658,7 +1658,7 @@
       "spe": 45
     },
     "types": [
-      "Ground"
+      "ground"
     ],
     "weightkg": 45,
     "abilities": {
@@ -1678,7 +1678,7 @@
       "spe": 90
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 4.2,
     "nfe": true,
@@ -1699,7 +1699,7 @@
       "spe": 30
     },
     "types": [
-      "Bug"
+      "bug"
     ],
     "weightkg": 9.9,
     "nfe": true,
@@ -1720,7 +1720,7 @@
       "spe": 100
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 4,
     "gender": "N",
@@ -1741,7 +1741,7 @@
       "spe": 130
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 122,
     "gender": "N",
@@ -1762,8 +1762,8 @@
       "spe": 90
     },
     "types": [
-      "Fire",
-      "Flying"
+      "fire",
+      "flying"
     ],
     "weightkg": 60,
     "gender": "N",
@@ -1784,7 +1784,7 @@
       "spe": 90
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 54.5,
     "abilities": {
@@ -1804,7 +1804,7 @@
       "spe": 50
     },
     "types": [
-      "Poison"
+      "poison"
     ],
     "weightkg": 30,
     "abilities": {
@@ -1824,8 +1824,8 @@
       "spe": 85
     },
     "types": [
-      "Poison",
-      "Ground"
+      "poison",
+      "ground"
     ],
     "weightkg": 62,
     "gender": "M",
@@ -1846,8 +1846,8 @@
       "spe": 76
     },
     "types": [
-      "Poison",
-      "Ground"
+      "poison",
+      "ground"
     ],
     "weightkg": 60,
     "gender": "F",
@@ -1868,7 +1868,7 @@
       "spe": 41
     },
     "types": [
-      "Poison"
+      "poison"
     ],
     "weightkg": 7,
     "nfe": true,
@@ -1890,7 +1890,7 @@
       "spe": 50
     },
     "types": [
-      "Poison"
+      "poison"
     ],
     "weightkg": 9,
     "nfe": true,
@@ -1912,7 +1912,7 @@
       "spe": 56
     },
     "types": [
-      "Poison"
+      "poison"
     ],
     "weightkg": 20,
     "nfe": true,
@@ -1934,7 +1934,7 @@
       "spe": 65
     },
     "types": [
-      "Poison"
+      "poison"
     ],
     "weightkg": 19.5,
     "nfe": true,
@@ -1956,7 +1956,7 @@
       "spe": 100
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 19.9,
     "abilities": {
@@ -1976,8 +1976,8 @@
       "spe": 30
     },
     "types": [
-      "Grass",
-      "Poison"
+      "grass",
+      "poison"
     ],
     "weightkg": 5.4,
     "nfe": true,
@@ -1998,8 +1998,8 @@
       "spe": 35
     },
     "types": [
-      "Rock",
-      "Water"
+      "rock",
+      "water"
     ],
     "weightkg": 7.5,
     "nfe": true,
@@ -2020,8 +2020,8 @@
       "spe": 55
     },
     "types": [
-      "Rock",
-      "Water"
+      "rock",
+      "water"
     ],
     "weightkg": 35,
     "abilities": {
@@ -2041,8 +2041,8 @@
       "spe": 70
     },
     "types": [
-      "Rock",
-      "Ground"
+      "rock",
+      "ground"
     ],
     "weightkg": 210,
     "nfe": true,
@@ -2063,8 +2063,8 @@
       "spe": 25
     },
     "types": [
-      "Bug",
-      "Grass"
+      "bug",
+      "grass"
     ],
     "weightkg": 5.4,
     "nfe": true,
@@ -2085,8 +2085,8 @@
       "spe": 30
     },
     "types": [
-      "Bug",
-      "Grass"
+      "bug",
+      "grass"
     ],
     "weightkg": 29.5,
     "abilities": {
@@ -2106,7 +2106,7 @@
       "spe": 115
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 32,
     "abilities": {
@@ -2126,8 +2126,8 @@
       "spe": 91
     },
     "types": [
-      "Normal",
-      "Flying"
+      "normal",
+      "flying"
     ],
     "weightkg": 39.5,
     "abilities": {
@@ -2147,8 +2147,8 @@
       "spe": 71
     },
     "types": [
-      "Normal",
-      "Flying"
+      "normal",
+      "flying"
     ],
     "weightkg": 30,
     "nfe": true,
@@ -2169,8 +2169,8 @@
       "spe": 56
     },
     "types": [
-      "Normal",
-      "Flying"
+      "normal",
+      "flying"
     ],
     "weightkg": 1.8,
     "nfe": true,
@@ -2191,7 +2191,7 @@
       "spe": 90
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 6,
     "nfe": true,
@@ -2212,7 +2212,7 @@
       "spe": 85
     },
     "types": [
-      "Bug"
+      "bug"
     ],
     "weightkg": 55,
     "abilities": {
@@ -2232,7 +2232,7 @@
       "spe": 90
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 12.4,
     "nfe": true,
@@ -2253,7 +2253,7 @@
       "spe": 90
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 20,
     "nfe": true,
@@ -2274,8 +2274,8 @@
       "spe": 70
     },
     "types": [
-      "Water",
-      "Fighting"
+      "water",
+      "fighting"
     ],
     "weightkg": 54,
     "abilities": {
@@ -2295,7 +2295,7 @@
       "spe": 90
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 30,
     "nfe": true,
@@ -2316,7 +2316,7 @@
       "spe": 40
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 36.5,
     "gender": "N",
@@ -2338,7 +2338,7 @@
       "spe": 95
     },
     "types": [
-      "Fighting"
+      "fighting"
     ],
     "weightkg": 32,
     "abilities": {
@@ -2358,7 +2358,7 @@
       "spe": 55
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 19.6,
     "nfe": true,
@@ -2379,7 +2379,7 @@
       "spe": 100
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 30,
     "abilities": {
@@ -2399,7 +2399,7 @@
       "spe": 105
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 95,
     "abilities": {
@@ -2419,7 +2419,7 @@
       "spe": 97
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 18.5,
     "abilities": {
@@ -2439,7 +2439,7 @@
       "spe": 72
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 3.5,
     "nfe": true,
@@ -2460,8 +2460,8 @@
       "spe": 40
     },
     "types": [
-      "Ground",
-      "Rock"
+      "ground",
+      "rock"
     ],
     "weightkg": 120,
     "abilities": {
@@ -2482,8 +2482,8 @@
       "spe": 25
     },
     "types": [
-      "Ground",
-      "Rock"
+      "ground",
+      "rock"
     ],
     "weightkg": 115,
     "nfe": true,
@@ -2504,7 +2504,7 @@
       "spe": 40
     },
     "types": [
-      "Ground"
+      "ground"
     ],
     "weightkg": 12,
     "nfe": true,
@@ -2525,7 +2525,7 @@
       "spe": 65
     },
     "types": [
-      "Ground"
+      "ground"
     ],
     "weightkg": 29.5,
     "abilities": {
@@ -2545,8 +2545,8 @@
       "spe": 105
     },
     "types": [
-      "Bug",
-      "Flying"
+      "bug",
+      "flying"
     ],
     "weightkg": 56,
     "nfe": true,
@@ -2567,7 +2567,7 @@
       "spe": 85
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 25,
     "nfe": true,
@@ -2588,7 +2588,7 @@
       "spe": 68
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 39,
     "abilities": {
@@ -2608,7 +2608,7 @@
       "spe": 45
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 90,
     "nfe": true,
@@ -2629,7 +2629,7 @@
       "spe": 40
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 4,
     "nfe": true,
@@ -2650,8 +2650,8 @@
       "spe": 30
     },
     "types": [
-      "Water",
-      "Psychic"
+      "water",
+      "psychic"
     ],
     "weightkg": 78.5,
     "abilities": {
@@ -2671,8 +2671,8 @@
       "spe": 15
     },
     "types": [
-      "Water",
-      "Psychic"
+      "water",
+      "psychic"
     ],
     "weightkg": 36,
     "nfe": true,
@@ -2693,7 +2693,7 @@
       "spe": 30
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 460,
     "abilities": {
@@ -2713,8 +2713,8 @@
       "spe": 70
     },
     "types": [
-      "Normal",
-      "Flying"
+      "normal",
+      "flying"
     ],
     "weightkg": 2,
     "nfe": true,
@@ -2735,7 +2735,7 @@
       "spe": 43
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 9,
     "nfe": true,
@@ -2756,8 +2756,8 @@
       "spe": 115
     },
     "types": [
-      "Water",
-      "Psychic"
+      "water",
+      "psychic"
     ],
     "weightkg": 80,
     "gender": "N",
@@ -2778,7 +2778,7 @@
       "spe": 85
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 34.5,
     "nfe": true,
@@ -2800,7 +2800,7 @@
       "spe": 60
     },
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 35,
     "abilities": {
@@ -2821,7 +2821,7 @@
       "spe": 110
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 88.4,
     "gender": "M",
@@ -2842,8 +2842,8 @@
       "spe": 70
     },
     "types": [
-      "Water",
-      "Poison"
+      "water",
+      "poison"
     ],
     "weightkg": 45.5,
     "nfe": true,
@@ -2864,8 +2864,8 @@
       "spe": 100
     },
     "types": [
-      "Water",
-      "Poison"
+      "water",
+      "poison"
     ],
     "weightkg": 55,
     "abilities": {
@@ -2885,7 +2885,7 @@
       "spe": 65
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 29,
     "abilities": {
@@ -2905,8 +2905,8 @@
       "spe": 90
     },
     "types": [
-      "Bug",
-      "Poison"
+      "bug",
+      "poison"
     ],
     "weightkg": 12.5,
     "abilities": {
@@ -2926,8 +2926,8 @@
       "spe": 45
     },
     "types": [
-      "Bug",
-      "Poison"
+      "bug",
+      "poison"
     ],
     "weightkg": 30,
     "nfe": true,
@@ -2948,8 +2948,8 @@
       "spe": 80
     },
     "types": [
-      "Grass",
-      "Poison"
+      "grass",
+      "poison"
     ],
     "weightkg": 100,
     "abilities": {
@@ -2969,8 +2969,8 @@
       "spe": 70
     },
     "types": [
-      "Grass",
-      "Poison"
+      "grass",
+      "poison"
     ],
     "weightkg": 15.5,
     "abilities": {
@@ -2990,8 +2990,8 @@
       "spe": 50
     },
     "types": [
-      "Grass",
-      "Poison"
+      "grass",
+      "poison"
     ],
     "weightkg": 18.6,
     "abilities": {
@@ -3011,7 +3011,7 @@
       "spe": 100
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 10.4,
     "nfe": true,
@@ -3033,7 +3033,7 @@
       "spe": 65
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 9.9,
     "nfe": true,
@@ -3054,7 +3054,7 @@
       "spe": 58
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 22.5,
     "nfe": true,
@@ -3075,8 +3075,8 @@
       "spe": 50
     },
     "types": [
-      "Bug",
-      "Poison"
+      "bug",
+      "poison"
     ],
     "weightkg": 3.2,
     "nfe": true,
@@ -3097,8 +3097,8 @@
       "spe": 55
     },
     "types": [
-      "Grass",
-      "Poison"
+      "grass",
+      "poison"
     ],
     "weightkg": 6.4,
     "nfe": true,
@@ -3119,7 +3119,7 @@
       "spe": 60
     },
     "types": [
-      "Poison"
+      "poison"
     ],
     "weightkg": 9.5,
     "abilities": {
@@ -3139,7 +3139,7 @@
       "spe": 45
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 12,
     "abilities": {
@@ -3159,8 +3159,8 @@
       "spe": 100
     },
     "types": [
-      "Electric",
-      "Flying"
+      "electric",
+      "flying"
     ],
     "weightkg": 52.6,
     "gender": "N",
@@ -3181,8 +3181,8 @@
       "spe": 55
     },
     "types": [
-      "Poison",
-      "Flying"
+      "poison",
+      "flying"
     ],
     "weightkg": 7.5,
     "nfe": true,
@@ -3203,7 +3203,7 @@
       "spe": 85
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 11.5,
     "abilities": {
@@ -3224,7 +3224,7 @@
       "spe": 55
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 61.5,
     "abilities": {
@@ -3244,8 +3244,8 @@
       "spe": 40
     },
     "types": [
-      "Bug",
-      "Poison"
+      "bug",
+      "poison"
     ],
     "weightkg": 33.5,
     "abilities": {
@@ -3265,7 +3265,7 @@
       "spe": 50
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 28.5,
     "abilities": {
@@ -3285,7 +3285,7 @@
       "spe": 60
     },
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 15.8,
     "nfe": true,
@@ -3306,7 +3306,7 @@
       "spe": 50
     },
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 5.8,
     "abilities": {
@@ -3326,7 +3326,7 @@
       "spe": 55
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 46.8,
     "gender": "F",
@@ -3347,8 +3347,8 @@
       "spe": 100
     },
     "types": [
-      "Psychic",
-      "Grass"
+      "psychic",
+      "grass"
     ],
     "weightkg": 5,
     "gender": "N",
@@ -3369,7 +3369,7 @@
       "spe": 45
     },
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 6.4,
     "nfe": true,
@@ -3390,8 +3390,8 @@
       "spe": 67
     },
     "types": [
-      "Water",
-      "Electric"
+      "water",
+      "electric"
     ],
     "weightkg": 12,
     "nfe": true,
@@ -3412,7 +3412,7 @@
       "spe": 15
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 3,
     "nfe": true,
@@ -3433,8 +3433,8 @@
       "spe": 35
     },
     "types": [
-      "Water",
-      "Rock"
+      "water",
+      "rock"
     ],
     "weightkg": 5,
     "abilities": {
@@ -3454,8 +3454,8 @@
       "spe": 130
     },
     "types": [
-      "Poison",
-      "Flying"
+      "poison",
+      "flying"
     ],
     "weightkg": 75,
     "abilities": {
@@ -3475,7 +3475,7 @@
       "spe": 58
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 25,
     "nfe": true,
@@ -3496,7 +3496,7 @@
       "spe": 65
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 7.9,
     "nfe": true,
@@ -3517,8 +3517,8 @@
       "spe": 75
     },
     "types": [
-      "Ice",
-      "Flying"
+      "ice",
+      "flying"
     ],
     "weightkg": 16,
     "abilities": {
@@ -3538,7 +3538,7 @@
       "spe": 50
     },
     "types": [
-      "Ground"
+      "ground"
     ],
     "weightkg": 120,
     "abilities": {
@@ -3558,7 +3558,7 @@
       "spe": 45
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 14,
     "abilities": {
@@ -3578,7 +3578,7 @@
       "spe": 95
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 23.5,
     "nfe": true,
@@ -3599,7 +3599,7 @@
       "spe": 100
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 198,
     "gender": "N",
@@ -3620,7 +3620,7 @@
       "spe": 110
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 26.5,
     "abilities": {
@@ -3640,7 +3640,7 @@
       "spe": 78
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 88.8,
     "abilities": {
@@ -3660,7 +3660,7 @@
       "spe": 45
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 13.3,
     "nfe": true,
@@ -3681,8 +3681,8 @@
       "spe": 40
     },
     "types": [
-      "Bug",
-      "Steel"
+      "bug",
+      "steel"
     ],
     "weightkg": 125.8,
     "abilities": {
@@ -3702,7 +3702,7 @@
       "spe": 90
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 32.5,
     "abilities": {
@@ -3722,8 +3722,8 @@
       "spe": 85
     },
     "types": [
-      "Normal",
-      "Psychic"
+      "normal",
+      "psychic"
     ],
     "weightkg": 41.5,
     "abilities": {
@@ -3743,8 +3743,8 @@
       "spe": 85
     },
     "types": [
-      "Ground",
-      "Flying"
+      "ground",
+      "flying"
     ],
     "weightkg": 64.8,
     "abilities": {
@@ -3765,7 +3765,7 @@
       "spe": 45
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 48.7,
     "abilities": {
@@ -3785,8 +3785,8 @@
       "spe": 85
     },
     "types": [
-      "Bug",
-      "Fighting"
+      "bug",
+      "fighting"
     ],
     "weightkg": 54,
     "abilities": {
@@ -3806,7 +3806,7 @@
       "spe": 70
     },
     "types": [
-      "Fighting"
+      "fighting"
     ],
     "weightkg": 48,
     "gender": "M",
@@ -3827,8 +3827,8 @@
       "spe": 90
     },
     "types": [
-      "Fire",
-      "Flying"
+      "fire",
+      "flying"
     ],
     "weightkg": 199,
     "gender": "N",
@@ -3849,8 +3849,8 @@
       "spe": 50
     },
     "types": [
-      "Normal",
-      "Flying"
+      "normal",
+      "flying"
     ],
     "weightkg": 21.2,
     "nfe": true,
@@ -3871,8 +3871,8 @@
       "spe": 50
     },
     "types": [
-      "Grass",
-      "Flying"
+      "grass",
+      "flying"
     ],
     "weightkg": 0.5,
     "nfe": true,
@@ -3893,8 +3893,8 @@
       "spe": 95
     },
     "types": [
-      "Dark",
-      "Fire"
+      "dark",
+      "fire"
     ],
     "weightkg": 35,
     "abilities": {
@@ -3914,8 +3914,8 @@
       "spe": 65
     },
     "types": [
-      "Dark",
-      "Fire"
+      "dark",
+      "fire"
     ],
     "weightkg": 10.8,
     "nfe": true,
@@ -3936,7 +3936,7 @@
       "spe": 15
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 1,
     "nfe": true,
@@ -3957,8 +3957,8 @@
       "spe": 110
     },
     "types": [
-      "Grass",
-      "Flying"
+      "grass",
+      "flying"
     ],
     "weightkg": 3,
     "abilities": {
@@ -3978,8 +3978,8 @@
       "spe": 85
     },
     "types": [
-      "Water",
-      "Dragon"
+      "water",
+      "dragon"
     ],
     "weightkg": 152,
     "abilities": {
@@ -3999,8 +3999,8 @@
       "spe": 67
     },
     "types": [
-      "Water",
-      "Electric"
+      "water",
+      "electric"
     ],
     "weightkg": 22.5,
     "abilities": {
@@ -4020,8 +4020,8 @@
       "spe": 41
     },
     "types": [
-      "Rock",
-      "Ground"
+      "rock",
+      "ground"
     ],
     "weightkg": 72,
     "nfe": true,
@@ -4042,8 +4042,8 @@
       "spe": 85
     },
     "types": [
-      "Bug",
-      "Flying"
+      "bug",
+      "flying"
     ],
     "weightkg": 35.6,
     "abilities": {
@@ -4063,8 +4063,8 @@
       "spe": 55
     },
     "types": [
-      "Bug",
-      "Flying"
+      "bug",
+      "flying"
     ],
     "weightkg": 10.8,
     "nfe": true,
@@ -4085,8 +4085,8 @@
       "spe": 110
     },
     "types": [
-      "Psychic",
-      "Flying"
+      "psychic",
+      "flying"
     ],
     "weightkg": 216,
     "gender": "N",
@@ -4107,7 +4107,7 @@
       "spe": 83
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 21.4,
     "nfe": true,
@@ -4128,8 +4128,8 @@
       "spe": 30
     },
     "types": [
-      "Fire",
-      "Rock"
+      "fire",
+      "rock"
     ],
     "weightkg": 55,
     "abilities": {
@@ -4149,8 +4149,8 @@
       "spe": 70
     },
     "types": [
-      "Water",
-      "Flying"
+      "water",
+      "flying"
     ],
     "weightkg": 220,
     "abilities": {
@@ -4170,7 +4170,7 @@
       "spe": 35
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 7.8,
     "nfe": true,
@@ -4191,7 +4191,7 @@
       "spe": 40
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 8.5,
     "nfe": true,
@@ -4212,7 +4212,7 @@
       "spe": 80
     },
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 100.5,
     "abilities": {
@@ -4232,7 +4232,7 @@
       "spe": 100
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 75.5,
     "gender": "F",
@@ -4253,7 +4253,7 @@
       "spe": 85
     },
     "types": [
-      "Ghost"
+      "ghost"
     ],
     "weightkg": 1,
     "abilities": {
@@ -4274,8 +4274,8 @@
       "spe": 91
     },
     "types": [
-      "Dark",
-      "Flying"
+      "dark",
+      "flying"
     ],
     "weightkg": 2.1,
     "abilities": {
@@ -4296,8 +4296,8 @@
       "spe": 70
     },
     "types": [
-      "Psychic",
-      "Flying"
+      "psychic",
+      "flying"
     ],
     "weightkg": 2,
     "nfe": true,
@@ -4318,8 +4318,8 @@
       "spe": 70
     },
     "types": [
-      "Normal",
-      "Flying"
+      "normal",
+      "flying"
     ],
     "weightkg": 40.8,
     "abilities": {
@@ -4339,7 +4339,7 @@
       "spe": 45
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 28.5,
     "abilities": {
@@ -4359,7 +4359,7 @@
       "spe": 40
     },
     "types": [
-      "Ground"
+      "ground"
     ],
     "weightkg": 33.5,
     "nfe": true,
@@ -4383,7 +4383,7 @@
       "Pichu-Spiky-eared"
     ],
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 2,
     "nfe": true,
@@ -4404,8 +4404,8 @@
       "spe": 50
     },
     "types": [
-      "Ice",
-      "Ground"
+      "ice",
+      "ground"
     ],
     "weightkg": 55.8,
     "abilities": {
@@ -4426,7 +4426,7 @@
       "spe": 15
     },
     "types": [
-      "Bug"
+      "bug"
     ],
     "weightkg": 7.2,
     "nfe": true,
@@ -4447,7 +4447,7 @@
       "spe": 70
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 33.9,
     "abilities": {
@@ -4467,7 +4467,7 @@
       "spe": 60
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 32.5,
     "gender": "N",
@@ -4489,8 +4489,8 @@
       "spe": 51
     },
     "types": [
-      "Rock",
-      "Ground"
+      "rock",
+      "ground"
     ],
     "weightkg": 152,
     "nfe": true,
@@ -4511,8 +4511,8 @@
       "spe": 35
     },
     "types": [
-      "Water",
-      "Ground"
+      "water",
+      "ground"
     ],
     "weightkg": 75,
     "abilities": {
@@ -4532,7 +4532,7 @@
       "spe": 80
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 19,
     "nfe": true,
@@ -4553,8 +4553,8 @@
       "spe": 85
     },
     "types": [
-      "Water",
-      "Poison"
+      "water",
+      "poison"
     ],
     "weightkg": 3.9,
     "abilities": {
@@ -4574,7 +4574,7 @@
       "spe": 115
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 178,
     "gender": "N",
@@ -4595,7 +4595,7 @@
       "spe": 65
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 12,
     "nfe": true,
@@ -4616,8 +4616,8 @@
       "spe": 65
     },
     "types": [
-      "Bug",
-      "Steel"
+      "bug",
+      "steel"
     ],
     "weightkg": 118,
     "abilities": {
@@ -4637,7 +4637,7 @@
       "spe": 20
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 6,
     "nfe": true,
@@ -4658,8 +4658,8 @@
       "spe": 5
     },
     "types": [
-      "Bug",
-      "Rock"
+      "bug",
+      "rock"
     ],
     "weightkg": 20.5,
     "abilities": {
@@ -4679,8 +4679,8 @@
       "spe": 70
     },
     "types": [
-      "Steel",
-      "Flying"
+      "steel",
+      "flying"
     ],
     "weightkg": 50.5,
     "abilities": {
@@ -4700,8 +4700,8 @@
       "spe": 80
     },
     "types": [
-      "Grass",
-      "Flying"
+      "grass",
+      "flying"
     ],
     "weightkg": 1,
     "nfe": true,
@@ -4722,8 +4722,8 @@
       "spe": 30
     },
     "types": [
-      "Water",
-      "Psychic"
+      "water",
+      "psychic"
     ],
     "weightkg": 79.5,
     "abilities": {
@@ -4743,7 +4743,7 @@
       "spe": 20
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 35,
     "nfe": true,
@@ -4764,7 +4764,7 @@
       "spe": 75
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 58,
     "abilities": {
@@ -4784,8 +4784,8 @@
       "spe": 65
     },
     "types": [
-      "Ice",
-      "Psychic"
+      "ice",
+      "psychic"
     ],
     "weightkg": 6,
     "gender": "F",
@@ -4807,8 +4807,8 @@
       "spe": 115
     },
     "types": [
-      "Dark",
-      "Ice"
+      "dark",
+      "ice"
     ],
     "weightkg": 28,
     "abilities": {
@@ -4829,7 +4829,7 @@
       "spe": 30
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 7.8,
     "nfe": true,
@@ -4850,8 +4850,8 @@
       "spe": 30
     },
     "types": [
-      "Bug",
-      "Poison"
+      "bug",
+      "poison"
     ],
     "weightkg": 8.5,
     "nfe": true,
@@ -4872,7 +4872,7 @@
       "spe": 85
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 71.2,
     "abilities": {
@@ -4892,8 +4892,8 @@
       "spe": 30
     },
     "types": [
-      "Steel",
-      "Ground"
+      "steel",
+      "ground"
     ],
     "weightkg": 400,
     "abilities": {
@@ -4913,7 +4913,7 @@
       "spe": 30
     },
     "types": [
-      "Rock"
+      "rock"
     ],
     "weightkg": 38,
     "abilities": {
@@ -4933,7 +4933,7 @@
       "spe": 85
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 187,
     "gender": "N",
@@ -4954,7 +4954,7 @@
       "spe": 30
     },
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 8.5,
     "abilities": {
@@ -4974,7 +4974,7 @@
       "spe": 30
     },
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 1.8,
     "nfe": true,
@@ -4995,8 +4995,8 @@
       "spe": 50
     },
     "types": [
-      "Ice",
-      "Ground"
+      "ice",
+      "ground"
     ],
     "weightkg": 6.5,
     "nfe": true,
@@ -5017,7 +5017,7 @@
       "spe": 40
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 8.8,
     "nfe": true,
@@ -5038,7 +5038,7 @@
       "spe": 20
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 1.5,
     "nfe": true,
@@ -5059,8 +5059,8 @@
       "spe": 40
     },
     "types": [
-      "Normal",
-      "Flying"
+      "normal",
+      "flying"
     ],
     "weightkg": 3.2,
     "abilities": {
@@ -5081,7 +5081,7 @@
       "spe": 43
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 9.5,
     "nfe": true,
@@ -5102,7 +5102,7 @@
       "spe": 100
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 79.5,
     "abilities": {
@@ -5122,8 +5122,8 @@
       "spe": 61
     },
     "types": [
-      "Rock",
-      "Dark"
+      "rock",
+      "dark"
     ],
     "weightkg": 202,
     "abilities": {
@@ -5143,7 +5143,7 @@
       "spe": 35
     },
     "types": [
-      "Fighting"
+      "fighting"
     ],
     "weightkg": 21,
     "gender": "M",
@@ -5165,7 +5165,7 @@
       "spe": 65
     },
     "types": [
-      "Dark"
+      "dark"
     ],
     "weightkg": 27,
     "abilities": {
@@ -5185,7 +5185,7 @@
       "spe": 48
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 5,
     "gender": "N",
@@ -5206,7 +5206,7 @@
       "spe": 55
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 125.8,
     "abilities": {
@@ -5226,7 +5226,7 @@
       "spe": 33
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 28.5,
     "abilities": {
@@ -5246,8 +5246,8 @@
       "spe": 15
     },
     "types": [
-      "Water",
-      "Ground"
+      "water",
+      "ground"
     ],
     "weightkg": 8.5,
     "nfe": true,
@@ -5268,8 +5268,8 @@
       "spe": 95
     },
     "types": [
-      "Psychic",
-      "Flying"
+      "psychic",
+      "flying"
     ],
     "weightkg": 15,
     "abilities": {
@@ -5289,8 +5289,8 @@
       "spe": 95
     },
     "types": [
-      "Bug",
-      "Flying"
+      "bug",
+      "flying"
     ],
     "weightkg": 38,
     "abilities": {
@@ -5311,7 +5311,7 @@
       "spe": 75
     },
     "types": [
-      "Dark"
+      "dark"
     ],
     "weightkg": 47,
     "abilities": {
@@ -5331,8 +5331,8 @@
       "spe": 50
     },
     "types": [
-      "Steel",
-      "Rock"
+      "steel",
+      "rock"
     ],
     "weightkg": 360,
     "abilities": {
@@ -5352,8 +5352,8 @@
       "spe": 80
     },
     "types": [
-      "Dragon",
-      "Flying"
+      "dragon",
+      "flying"
     ],
     "weightkg": 20.6,
     "abilities": {
@@ -5373,8 +5373,8 @@
       "spe": 75
     },
     "types": [
-      "Rock",
-      "Bug"
+      "rock",
+      "bug"
     ],
     "weightkg": 12.5,
     "nfe": true,
@@ -5395,8 +5395,8 @@
       "spe": 45
     },
     "types": [
-      "Rock",
-      "Bug"
+      "rock",
+      "bug"
     ],
     "weightkg": 68.2,
     "abilities": {
@@ -5416,8 +5416,8 @@
       "spe": 30
     },
     "types": [
-      "Steel",
-      "Rock"
+      "steel",
+      "rock"
     ],
     "weightkg": 60,
     "nfe": true,
@@ -5438,7 +5438,7 @@
       "spe": 20
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 2,
     "nfe": true,
@@ -5459,7 +5459,7 @@
       "spe": 50
     },
     "types": [
-      "Dragon"
+      "dragon"
     ],
     "weightkg": 42.1,
     "nfe": true,
@@ -5480,8 +5480,8 @@
       "spe": 55
     },
     "types": [
-      "Ground",
-      "Psychic"
+      "ground",
+      "psychic"
     ],
     "weightkg": 21.5,
     "gender": "N",
@@ -5503,7 +5503,7 @@
       "spe": 65
     },
     "types": [
-      "Ghost"
+      "ghost"
     ],
     "weightkg": 12.5,
     "abilities": {
@@ -5523,8 +5523,8 @@
       "spe": 60
     },
     "types": [
-      "Water",
-      "Ground"
+      "water",
+      "ground"
     ],
     "weightkg": 1.9,
     "nfe": true,
@@ -5545,8 +5545,8 @@
       "spe": 65
     },
     "types": [
-      "Bug",
-      "Flying"
+      "bug",
+      "flying"
     ],
     "weightkg": 28.4,
     "abilities": {
@@ -5566,8 +5566,8 @@
       "spe": 30
     },
     "types": [
-      "Steel",
-      "Psychic"
+      "steel",
+      "psychic"
     ],
     "weightkg": 95.2,
     "gender": "N",
@@ -5589,8 +5589,8 @@
       "spe": 80
     },
     "types": [
-      "Fire",
-      "Fighting"
+      "fire",
+      "fighting"
     ],
     "weightkg": 52,
     "abilities": {
@@ -5610,8 +5610,8 @@
       "spe": 70
     },
     "types": [
-      "Grass",
-      "Fighting"
+      "grass",
+      "fighting"
     ],
     "weightkg": 39.2,
     "abilities": {
@@ -5631,7 +5631,7 @@
       "spe": 35
     },
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 51.3,
     "nfe": true,
@@ -5652,8 +5652,8 @@
       "spe": 55
     },
     "types": [
-      "Grass",
-      "Dark"
+      "grass",
+      "dark"
     ],
     "weightkg": 77.4,
     "abilities": {
@@ -5673,8 +5673,8 @@
       "spe": 40
     },
     "types": [
-      "Fire",
-      "Ground"
+      "fire",
+      "ground"
     ],
     "weightkg": 220,
     "abilities": {
@@ -5694,8 +5694,8 @@
       "spe": 65
     },
     "types": [
-      "Water",
-      "Dark"
+      "water",
+      "dark"
     ],
     "weightkg": 20.8,
     "nfe": true,
@@ -5716,7 +5716,7 @@
       "spe": 15
     },
     "types": [
-      "Bug"
+      "bug"
     ],
     "weightkg": 11.5,
     "abilities": {
@@ -5742,7 +5742,7 @@
       "Castform-Sunny"
     ],
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 0.8,
     "abilities": {
@@ -5762,7 +5762,7 @@
       "spe": 70
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 0.8,
     "abilities": {
@@ -5785,7 +5785,7 @@
       "spe": 70
     },
     "types": [
-      "Ice"
+      "ice"
     ],
     "weightkg": 0.8,
     "abilities": {
@@ -5808,7 +5808,7 @@
       "spe": 70
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 0.8,
     "abilities": {
@@ -5831,7 +5831,7 @@
       "spe": 65
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 1,
     "abilities": {
@@ -5851,7 +5851,7 @@
       "spe": 32
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 52.5,
     "nfe": true,
@@ -5872,8 +5872,8 @@
       "spe": 75
     },
     "types": [
-      "Ground",
-      "Psychic"
+      "ground",
+      "psychic"
     ],
     "weightkg": 108,
     "gender": "N",
@@ -5894,8 +5894,8 @@
       "spe": 55
     },
     "types": [
-      "Fire",
-      "Fighting"
+      "fire",
+      "fighting"
     ],
     "weightkg": 19.5,
     "nfe": true,
@@ -5916,7 +5916,7 @@
       "spe": 35
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 11.5,
     "nfe": true,
@@ -5937,8 +5937,8 @@
       "spe": 43
     },
     "types": [
-      "Rock",
-      "Grass"
+      "rock",
+      "grass"
     ],
     "weightkg": 60.4,
     "abilities": {
@@ -5958,8 +5958,8 @@
       "spe": 55
     },
     "types": [
-      "Water",
-      "Dark"
+      "water",
+      "dark"
     ],
     "weightkg": 32.8,
     "abilities": {
@@ -5979,7 +5979,7 @@
       "spe": 70
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 32.6,
     "abilities": {
@@ -6004,7 +6004,7 @@
       "Deoxys-Speed"
     ],
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 60.8,
     "gender": "N",
@@ -6025,7 +6025,7 @@
       "spe": 150
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 60.8,
     "gender": "N",
@@ -6049,7 +6049,7 @@
       "spe": 90
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 60.8,
     "gender": "N",
@@ -6073,7 +6073,7 @@
       "spe": 180
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 60.8,
     "gender": "N",
@@ -6097,7 +6097,7 @@
       "spe": 25
     },
     "types": [
-      "Ghost"
+      "ghost"
     ],
     "weightkg": 30.6,
     "abilities": {
@@ -6118,7 +6118,7 @@
       "spe": 25
     },
     "types": [
-      "Ghost"
+      "ghost"
     ],
     "weightkg": 15,
     "nfe": true,
@@ -6139,8 +6139,8 @@
       "spe": 65
     },
     "types": [
-      "Bug",
-      "Poison"
+      "bug",
+      "poison"
     ],
     "weightkg": 31.6,
     "abilities": {
@@ -6160,7 +6160,7 @@
       "spe": 65
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 15.2,
     "nfe": true,
@@ -6181,7 +6181,7 @@
       "spe": 68
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 84,
     "abilities": {
@@ -6201,7 +6201,7 @@
       "spe": 80
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 7.4,
     "nfe": true,
@@ -6222,8 +6222,8 @@
       "spe": 100
     },
     "types": [
-      "Ground",
-      "Dragon"
+      "ground",
+      "dragon"
     ],
     "weightkg": 82,
     "abilities": {
@@ -6243,7 +6243,7 @@
       "spe": 80
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 48.4,
     "abilities": {
@@ -6263,7 +6263,7 @@
       "spe": 80
     },
     "types": [
-      "Ice"
+      "ice"
     ],
     "weightkg": 256.5,
     "abilities": {
@@ -6283,7 +6283,7 @@
       "spe": 52
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 22.6,
     "abilities": {
@@ -6303,7 +6303,7 @@
       "spe": 90
     },
     "types": [
-      "Ground"
+      "ground"
     ],
     "weightkg": 950,
     "gender": "N",
@@ -6324,7 +6324,7 @@
       "spe": 95
     },
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 21.6,
     "nfe": true,
@@ -6345,7 +6345,7 @@
       "spe": 80
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 71.5,
     "abilities": {
@@ -6365,7 +6365,7 @@
       "spe": 40
     },
     "types": [
-      "Poison"
+      "poison"
     ],
     "weightkg": 10.3,
     "nfe": true,
@@ -6386,7 +6386,7 @@
       "spe": 50
     },
     "types": [
-      "Fighting"
+      "fighting"
     ],
     "weightkg": 253.8,
     "abilities": {
@@ -6406,7 +6406,7 @@
       "spe": 52
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 27,
     "abilities": {
@@ -6426,7 +6426,7 @@
       "spe": 85
     },
     "types": [
-      "Bug"
+      "bug"
     ],
     "weightkg": 17.7,
     "gender": "F",
@@ -6447,8 +6447,8 @@
       "spe": 100
     },
     "types": [
-      "Steel",
-      "Psychic"
+      "steel",
+      "psychic"
     ],
     "weightkg": 1.1,
     "gender": "N",
@@ -6469,7 +6469,7 @@
       "spe": 40
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 22,
     "abilities": {
@@ -6489,7 +6489,7 @@
       "spe": 50
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 20.2,
     "nfe": true,
@@ -6510,7 +6510,7 @@
       "spe": 90
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 352,
     "gender": "N",
@@ -6531,8 +6531,8 @@
       "spe": 40
     },
     "types": [
-      "Steel",
-      "Rock"
+      "steel",
+      "rock"
     ],
     "weightkg": 120,
     "nfe": true,
@@ -6553,8 +6553,8 @@
       "spe": 110
     },
     "types": [
-      "Dragon",
-      "Psychic"
+      "dragon",
+      "psychic"
     ],
     "weightkg": 40,
     "gender": "F",
@@ -6575,8 +6575,8 @@
       "spe": 110
     },
     "types": [
-      "Dragon",
-      "Psychic"
+      "dragon",
+      "psychic"
     ],
     "weightkg": 60,
     "gender": "M",
@@ -6597,8 +6597,8 @@
       "spe": 23
     },
     "types": [
-      "Rock",
-      "Grass"
+      "rock",
+      "grass"
     ],
     "weightkg": 23.8,
     "nfe": true,
@@ -6619,7 +6619,7 @@
       "spe": 100
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 32.5,
     "abilities": {
@@ -6639,8 +6639,8 @@
       "spe": 50
     },
     "types": [
-      "Water",
-      "Grass"
+      "water",
+      "grass"
     ],
     "weightkg": 32.5,
     "nfe": true,
@@ -6661,8 +6661,8 @@
       "spe": 30
     },
     "types": [
-      "Water",
-      "Grass"
+      "water",
+      "grass"
     ],
     "weightkg": 2.6,
     "nfe": true,
@@ -6683,7 +6683,7 @@
       "spe": 48
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 40.5,
     "nfe": true,
@@ -6704,8 +6704,8 @@
       "spe": 70
     },
     "types": [
-      "Water",
-      "Grass"
+      "water",
+      "grass"
     ],
     "weightkg": 55,
     "abilities": {
@@ -6725,8 +6725,8 @@
       "spe": 70
     },
     "types": [
-      "Rock",
-      "Psychic"
+      "rock",
+      "psychic"
     ],
     "weightkg": 168,
     "gender": "N",
@@ -6747,7 +6747,7 @@
       "spe": 97
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 8.7,
     "abilities": {
@@ -6767,7 +6767,7 @@
       "spe": 25
     },
     "types": [
-      "Fighting"
+      "fighting"
     ],
     "weightkg": 86.4,
     "nfe": true,
@@ -6788,7 +6788,7 @@
       "spe": 105
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 40.2,
     "abilities": {
@@ -6808,8 +6808,8 @@
       "spe": 50
     },
     "types": [
-      "Water",
-      "Ground"
+      "water",
+      "ground"
     ],
     "weightkg": 28,
     "nfe": true,
@@ -6830,8 +6830,8 @@
       "spe": 60
     },
     "types": [
-      "Bug",
-      "Flying"
+      "bug",
+      "flying"
     ],
     "weightkg": 3.6,
     "abilities": {
@@ -6851,7 +6851,7 @@
       "spe": 50
     },
     "types": [
-      "Steel"
+      "steel"
     ],
     "weightkg": 11.5,
     "abilities": {
@@ -6871,8 +6871,8 @@
       "spe": 80
     },
     "types": [
-      "Fighting",
-      "Psychic"
+      "fighting",
+      "psychic"
     ],
     "weightkg": 31.5,
     "abilities": {
@@ -6892,8 +6892,8 @@
       "spe": 60
     },
     "types": [
-      "Fighting",
-      "Psychic"
+      "fighting",
+      "psychic"
     ],
     "weightkg": 11.2,
     "nfe": true,
@@ -6914,8 +6914,8 @@
       "spe": 70
     },
     "types": [
-      "Steel",
-      "Psychic"
+      "steel",
+      "psychic"
     ],
     "weightkg": 550,
     "gender": "N",
@@ -6936,8 +6936,8 @@
       "spe": 50
     },
     "types": [
-      "Steel",
-      "Psychic"
+      "steel",
+      "psychic"
     ],
     "weightkg": 202.5,
     "gender": "N",
@@ -6959,7 +6959,7 @@
       "spe": 70
     },
     "types": [
-      "Dark"
+      "dark"
     ],
     "weightkg": 37,
     "abilities": {
@@ -6979,7 +6979,7 @@
       "spe": 81
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 162,
     "abilities": {
@@ -6999,7 +6999,7 @@
       "spe": 95
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 4.2,
     "abilities": {
@@ -7019,7 +7019,7 @@
       "spe": 40
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 7.6,
     "nfe": true,
@@ -7040,8 +7040,8 @@
       "spe": 40
     },
     "types": [
-      "Bug",
-      "Ground"
+      "bug",
+      "ground"
     ],
     "weightkg": 5.5,
     "nfe": true,
@@ -7062,8 +7062,8 @@
       "spe": 160
     },
     "types": [
-      "Bug",
-      "Flying"
+      "bug",
+      "flying"
     ],
     "weightkg": 12,
     "abilities": {
@@ -7083,7 +7083,7 @@
       "spe": 30
     },
     "types": [
-      "Rock"
+      "rock"
     ],
     "weightkg": 97,
     "abilities": {
@@ -7104,8 +7104,8 @@
       "spe": 35
     },
     "types": [
-      "Fire",
-      "Ground"
+      "fire",
+      "ground"
     ],
     "weightkg": 24,
     "nfe": true,
@@ -7126,8 +7126,8 @@
       "spe": 60
     },
     "types": [
-      "Grass",
-      "Dark"
+      "grass",
+      "dark"
     ],
     "weightkg": 28,
     "nfe": true,
@@ -7148,8 +7148,8 @@
       "spe": 65
     },
     "types": [
-      "Water",
-      "Flying"
+      "water",
+      "flying"
     ],
     "weightkg": 28,
     "abilities": {
@@ -7169,7 +7169,7 @@
       "spe": 95
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 4.2,
     "abilities": {
@@ -7189,7 +7189,7 @@
       "spe": 35
     },
     "types": [
-      "Dark"
+      "dark"
     ],
     "weightkg": 13.6,
     "nfe": true,
@@ -7210,7 +7210,7 @@
       "spe": 40
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 6.6,
     "nfe": true,
@@ -7231,8 +7231,8 @@
       "spe": 95
     },
     "types": [
-      "Dragon",
-      "Flying"
+      "dragon",
+      "flying"
     ],
     "weightkg": 206.5,
     "gender": "N",
@@ -7253,7 +7253,7 @@
       "spe": 50
     },
     "types": [
-      "Ice"
+      "ice"
     ],
     "weightkg": 175,
     "gender": "N",
@@ -7274,7 +7274,7 @@
       "spe": 50
     },
     "types": [
-      "Rock"
+      "rock"
     ],
     "weightkg": 230,
     "gender": "N",
@@ -7295,7 +7295,7 @@
       "spe": 50
     },
     "types": [
-      "Steel"
+      "steel"
     ],
     "weightkg": 205,
     "gender": "N",
@@ -7316,8 +7316,8 @@
       "spe": 55
     },
     "types": [
-      "Water",
-      "Rock"
+      "water",
+      "rock"
     ],
     "weightkg": 23.4,
     "abilities": {
@@ -7337,8 +7337,8 @@
       "spe": 65
     },
     "types": [
-      "Grass",
-      "Poison"
+      "grass",
+      "poison"
     ],
     "weightkg": 2,
     "abilities": {
@@ -7359,8 +7359,8 @@
       "spe": 50
     },
     "types": [
-      "Dark",
-      "Ghost"
+      "dark",
+      "ghost"
     ],
     "weightkg": 11,
     "abilities": {
@@ -7380,8 +7380,8 @@
       "spe": 100
     },
     "types": [
-      "Dragon",
-      "Flying"
+      "dragon",
+      "flying"
     ],
     "weightkg": 102.6,
     "abilities": {
@@ -7401,7 +7401,7 @@
       "spe": 120
     },
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 52.2,
     "abilities": {
@@ -7421,8 +7421,8 @@
       "spe": 45
     },
     "types": [
-      "Ice",
-      "Water"
+      "ice",
+      "water"
     ],
     "weightkg": 87.6,
     "nfe": true,
@@ -7443,7 +7443,7 @@
       "spe": 30
     },
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 4,
     "nfe": true,
@@ -7464,7 +7464,7 @@
       "spe": 65
     },
     "types": [
-      "Poison"
+      "poison"
     ],
     "weightkg": 52.5,
     "abilities": {
@@ -7484,8 +7484,8 @@
       "spe": 95
     },
     "types": [
-      "Water",
-      "Dark"
+      "water",
+      "dark"
     ],
     "weightkg": 88.8,
     "abilities": {
@@ -7505,8 +7505,8 @@
       "spe": 40
     },
     "types": [
-      "Bug",
-      "Ghost"
+      "bug",
+      "ghost"
     ],
     "weightkg": 1.2,
     "gender": "N",
@@ -7527,7 +7527,7 @@
       "spe": 50
     },
     "types": [
-      "Dragon"
+      "dragon"
     ],
     "weightkg": 110.5,
     "nfe": true,
@@ -7548,8 +7548,8 @@
       "spe": 80
     },
     "types": [
-      "Grass",
-      "Dark"
+      "grass",
+      "dark"
     ],
     "weightkg": 59.6,
     "abilities": {
@@ -7569,7 +7569,7 @@
       "spe": 35
     },
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 4.5,
     "nfe": true,
@@ -7590,7 +7590,7 @@
       "spe": 45
     },
     "types": [
-      "Ghost"
+      "ghost"
     ],
     "weightkg": 2.3,
     "nfe": true,
@@ -7611,7 +7611,7 @@
       "spe": 15
     },
     "types": [
-      "Bug"
+      "bug"
     ],
     "weightkg": 10,
     "nfe": true,
@@ -7632,7 +7632,7 @@
       "spe": 50
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 11,
     "nfe": true,
@@ -7653,7 +7653,7 @@
       "spe": 100
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 130.5,
     "abilities": {
@@ -7673,7 +7673,7 @@
       "spe": 30
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 24,
     "nfe": true,
@@ -7694,7 +7694,7 @@
       "spe": 50
     },
     "types": [
-      "Ice"
+      "ice"
     ],
     "weightkg": 16.8,
     "nfe": true,
@@ -7715,8 +7715,8 @@
       "spe": 70
     },
     "types": [
-      "Rock",
-      "Psychic"
+      "rock",
+      "psychic"
     ],
     "weightkg": 154,
     "gender": "N",
@@ -7737,8 +7737,8 @@
       "spe": 25
     },
     "types": [
-      "Ice",
-      "Water"
+      "ice",
+      "water"
     ],
     "weightkg": 39.5,
     "nfe": true,
@@ -7759,7 +7759,7 @@
       "spe": 60
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 5,
     "abilities": {
@@ -7779,7 +7779,7 @@
       "spe": 60
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 30.6,
     "nfe": true,
@@ -7800,8 +7800,8 @@
       "spe": 65
     },
     "types": [
-      "Bug",
-      "Water"
+      "bug",
+      "water"
     ],
     "weightkg": 1.7,
     "nfe": true,
@@ -7822,8 +7822,8 @@
       "spe": 50
     },
     "types": [
-      "Normal",
-      "Flying"
+      "normal",
+      "flying"
     ],
     "weightkg": 1.2,
     "nfe": true,
@@ -7844,7 +7844,7 @@
       "spe": 55
     },
     "types": [
-      "Poison"
+      "poison"
     ],
     "weightkg": 80,
     "abilities": {
@@ -7864,8 +7864,8 @@
       "spe": 60
     },
     "types": [
-      "Water",
-      "Ground"
+      "water",
+      "ground"
     ],
     "weightkg": 81.9,
     "abilities": {
@@ -7885,8 +7885,8 @@
       "spe": 125
     },
     "types": [
-      "Normal",
-      "Flying"
+      "normal",
+      "flying"
     ],
     "weightkg": 19.8,
     "abilities": {
@@ -7906,8 +7906,8 @@
       "spe": 85
     },
     "types": [
-      "Normal",
-      "Flying"
+      "normal",
+      "flying"
     ],
     "weightkg": 2.3,
     "nfe": true,
@@ -7928,7 +7928,7 @@
       "spe": 45
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 2.5,
     "nfe": true,
@@ -7949,7 +7949,7 @@
       "spe": 20
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 80.4,
     "abilities": {
@@ -7969,7 +7969,7 @@
       "spe": 10
     },
     "types": [
-      "Ground"
+      "ground"
     ],
     "weightkg": 15,
     "nfe": true,
@@ -7990,7 +7990,7 @@
       "spe": 70
     },
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 5,
     "nfe": true,
@@ -8011,8 +8011,8 @@
       "spe": 51
     },
     "types": [
-      "Grass",
-      "Flying"
+      "grass",
+      "flying"
     ],
     "weightkg": 100,
     "abilities": {
@@ -8032,8 +8032,8 @@
       "spe": 70
     },
     "types": [
-      "Ground",
-      "Dragon"
+      "ground",
+      "dragon"
     ],
     "weightkg": 15.3,
     "nfe": true,
@@ -8054,7 +8054,7 @@
       "spe": 90
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 46.5,
     "nfe": true,
@@ -8075,7 +8075,7 @@
       "spe": 85
     },
     "types": [
-      "Bug"
+      "bug"
     ],
     "weightkg": 17.7,
     "gender": "M",
@@ -8096,7 +8096,7 @@
       "spe": 60
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 130,
     "nfe": true,
@@ -8117,7 +8117,7 @@
       "spe": 60
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 398,
     "abilities": {
@@ -8137,8 +8137,8 @@
       "spe": 65
     },
     "types": [
-      "Ice",
-      "Water"
+      "ice",
+      "water"
     ],
     "weightkg": 150.6,
     "abilities": {
@@ -8158,8 +8158,8 @@
       "spe": 60
     },
     "types": [
-      "Water",
-      "Ground"
+      "water",
+      "ground"
     ],
     "weightkg": 23.6,
     "abilities": {
@@ -8179,7 +8179,7 @@
       "spe": 28
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 16.3,
     "nfe": true,
@@ -8200,8 +8200,8 @@
       "spe": 85
     },
     "types": [
-      "Water",
-      "Flying"
+      "water",
+      "flying"
     ],
     "weightkg": 9.5,
     "nfe": true,
@@ -8222,7 +8222,7 @@
       "spe": 20
     },
     "types": [
-      "Bug"
+      "bug"
     ],
     "weightkg": 3.6,
     "nfe": true,
@@ -8243,7 +8243,7 @@
       "spe": 23
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 14,
     "nfe": true,
@@ -8264,7 +8264,7 @@
       "spe": 90
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 40.3,
     "abilities": {
@@ -8284,7 +8284,7 @@
       "spe": 60
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 17.5,
     "nfe": true,
@@ -8305,8 +8305,8 @@
       "spe": 60
     },
     "types": [
-      "Grass",
-      "Ice"
+      "grass",
+      "ice"
     ],
     "weightkg": 135.5,
     "abilities": {
@@ -8326,7 +8326,7 @@
       "spe": 115
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 20.3,
     "abilities": {
@@ -8364,7 +8364,7 @@
       "Arceus-Water"
     ],
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 320,
     "gender": "N",
@@ -8385,7 +8385,7 @@
       "spe": 120
     },
     "types": [
-      "Bug"
+      "bug"
     ],
     "weightkg": 320,
     "gender": "N",
@@ -8409,7 +8409,7 @@
       "spe": 120
     },
     "types": [
-      "Dark"
+      "dark"
     ],
     "weightkg": 320,
     "gender": "N",
@@ -8433,7 +8433,7 @@
       "spe": 120
     },
     "types": [
-      "Dragon"
+      "dragon"
     ],
     "weightkg": 320,
     "gender": "N",
@@ -8457,7 +8457,7 @@
       "spe": 120
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 320,
     "gender": "N",
@@ -8481,7 +8481,7 @@
       "spe": 120
     },
     "types": [
-      "Fighting"
+      "fighting"
     ],
     "weightkg": 320,
     "gender": "N",
@@ -8505,7 +8505,7 @@
       "spe": 120
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 320,
     "gender": "N",
@@ -8529,7 +8529,7 @@
       "spe": 120
     },
     "types": [
-      "Flying"
+      "flying"
     ],
     "weightkg": 320,
     "gender": "N",
@@ -8553,7 +8553,7 @@
       "spe": 120
     },
     "types": [
-      "Ghost"
+      "ghost"
     ],
     "weightkg": 320,
     "gender": "N",
@@ -8577,7 +8577,7 @@
       "spe": 120
     },
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 320,
     "gender": "N",
@@ -8601,7 +8601,7 @@
       "spe": 120
     },
     "types": [
-      "Ground"
+      "ground"
     ],
     "weightkg": 320,
     "gender": "N",
@@ -8625,7 +8625,7 @@
       "spe": 120
     },
     "types": [
-      "Ice"
+      "ice"
     ],
     "weightkg": 320,
     "gender": "N",
@@ -8649,7 +8649,7 @@
       "spe": 120
     },
     "types": [
-      "Poison"
+      "poison"
     ],
     "weightkg": 320,
     "gender": "N",
@@ -8673,7 +8673,7 @@
       "spe": 120
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 320,
     "gender": "N",
@@ -8697,7 +8697,7 @@
       "spe": 120
     },
     "types": [
-      "Rock"
+      "rock"
     ],
     "weightkg": 320,
     "gender": "N",
@@ -8721,7 +8721,7 @@
       "spe": 120
     },
     "types": [
-      "Steel"
+      "steel"
     ],
     "weightkg": 320,
     "gender": "N",
@@ -8745,7 +8745,7 @@
       "spe": 120
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 320,
     "gender": "N",
@@ -8769,8 +8769,8 @@
       "spe": 75
     },
     "types": [
-      "Water",
-      "Fighting"
+      "water",
+      "fighting"
     ],
     "weightkg": 151,
     "abilities": {
@@ -8790,7 +8790,7 @@
       "spe": 115
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 0.3,
     "gender": "N",
@@ -8811,8 +8811,8 @@
       "spe": 30
     },
     "types": [
-      "Rock",
-      "Steel"
+      "rock",
+      "steel"
     ],
     "weightkg": 149.5,
     "abilities": {
@@ -8832,8 +8832,8 @@
       "spe": 71
     },
     "types": [
-      "Normal",
-      "Water"
+      "normal",
+      "water"
     ],
     "weightkg": 31.5,
     "abilities": {
@@ -8853,7 +8853,7 @@
       "spe": 31
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 20,
     "nfe": true,
@@ -8874,7 +8874,7 @@
       "spe": 10
     },
     "types": [
-      "Rock"
+      "rock"
     ],
     "weightkg": 15,
     "nfe": true,
@@ -8895,8 +8895,8 @@
       "spe": 75
     },
     "types": [
-      "Poison",
-      "Flying"
+      "poison",
+      "flying"
     ],
     "weightkg": 0.6,
     "nfe": true,
@@ -8917,8 +8917,8 @@
       "spe": 33
     },
     "types": [
-      "Steel",
-      "Psychic"
+      "steel",
+      "psychic"
     ],
     "weightkg": 187,
     "gender": "N",
@@ -8939,8 +8939,8 @@
       "spe": 23
     },
     "types": [
-      "Steel",
-      "Psychic"
+      "steel",
+      "psychic"
     ],
     "weightkg": 60.5,
     "gender": "N",
@@ -8962,8 +8962,8 @@
       "spe": 55
     },
     "types": [
-      "Grass",
-      "Poison"
+      "grass",
+      "poison"
     ],
     "weightkg": 1.2,
     "nfe": true,
@@ -8984,7 +8984,7 @@
       "spe": 85
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 29.5,
     "nfe": true,
@@ -9005,7 +9005,7 @@
       "spe": 85
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 5.5,
     "nfe": true,
@@ -9026,7 +9026,7 @@
       "spe": 36
     },
     "types": [
-      "Bug"
+      "bug"
     ],
     "weightkg": 3.4,
     "nfe": true,
@@ -9047,7 +9047,7 @@
       "spe": 46
     },
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 27,
     "abilities": {
@@ -9067,8 +9067,8 @@
       "spe": 91
     },
     "types": [
-      "Normal",
-      "Flying"
+      "normal",
+      "flying"
     ],
     "weightkg": 1.9,
     "abilities": {
@@ -9091,7 +9091,7 @@
       "Cherrim-Sunshine"
     ],
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 9.3,
     "abilities": {
@@ -9111,7 +9111,7 @@
       "spe": 85
     },
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 9.3,
     "abilities": {
@@ -9134,7 +9134,7 @@
       "spe": 35
     },
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 3.3,
     "nfe": true,
@@ -9155,7 +9155,7 @@
       "spe": 61
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 6.2,
     "nfe": true,
@@ -9176,7 +9176,7 @@
       "spe": 45
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 0.6,
     "nfe": true,
@@ -9197,8 +9197,8 @@
       "spe": 95
     },
     "types": [
-      "Ground",
-      "Dark"
+      "ground",
+      "dark"
     ],
     "weightkg": 683.6,
     "abilities": {
@@ -9218,8 +9218,8 @@
       "spe": 70
     },
     "types": [
-      "Bug",
-      "Flying"
+      "bug",
+      "flying"
     ],
     "weightkg": 5.5,
     "nfe": true,
@@ -9240,7 +9240,7 @@
       "spe": 58
     },
     "types": [
-      "Rock"
+      "rock"
     ],
     "weightkg": 31.5,
     "nfe": true,
@@ -9261,7 +9261,7 @@
       "spe": 85
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 85.6,
     "gender": "F",
@@ -9282,8 +9282,8 @@
       "spe": 50
     },
     "types": [
-      "Poison",
-      "Fighting"
+      "poison",
+      "fighting"
     ],
     "weightkg": 23,
     "nfe": true,
@@ -9304,8 +9304,8 @@
       "spe": 80
     },
     "types": [
-      "Electric",
-      "Dragon"
+      "electric",
+      "dragon"
     ],
     "weightkg": 59,
     "abilities": {
@@ -9325,7 +9325,7 @@
       "spe": 125
     },
     "types": [
-      "Dark"
+      "dark"
     ],
     "weightkg": 50.5,
     "gender": "N",
@@ -9346,8 +9346,8 @@
       "spe": 90
     },
     "types": [
-      "Steel",
-      "Dragon"
+      "steel",
+      "dragon"
     ],
     "weightkg": 683,
     "gender": "N",
@@ -9368,7 +9368,7 @@
       "spe": 65
     },
     "types": [
-      "Ground"
+      "ground"
     ],
     "weightkg": 145,
     "nfe": true,
@@ -9389,8 +9389,8 @@
       "spe": 95
     },
     "types": [
-      "Poison",
-      "Dark"
+      "poison",
+      "dark"
     ],
     "weightkg": 61.5,
     "abilities": {
@@ -9410,8 +9410,8 @@
       "spe": 80
     },
     "types": [
-      "Ghost",
-      "Flying"
+      "ghost",
+      "flying"
     ],
     "weightkg": 15,
     "abilities": {
@@ -9431,8 +9431,8 @@
       "spe": 70
     },
     "types": [
-      "Ghost",
-      "Flying"
+      "ghost",
+      "flying"
     ],
     "weightkg": 1.2,
     "nfe": true,
@@ -9453,8 +9453,8 @@
       "spe": 60
     },
     "types": [
-      "Electric",
-      "Dragon"
+      "electric",
+      "dragon"
     ],
     "weightkg": 19.2,
     "nfe": true,
@@ -9475,7 +9475,7 @@
       "spe": 45
     },
     "types": [
-      "Ghost"
+      "ghost"
     ],
     "weightkg": 106.6,
     "abilities": {
@@ -9495,7 +9495,7 @@
       "spe": 95
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 138.6,
     "abilities": {
@@ -9515,8 +9515,8 @@
       "spe": 60
     },
     "types": [
-      "Fire",
-      "Grass"
+      "fire",
+      "grass"
     ],
     "weightkg": 15,
     "nfe": true,
@@ -9537,8 +9537,8 @@
       "spe": 60
     },
     "types": [
-      "Water",
-      "Steel"
+      "water",
+      "steel"
     ],
     "weightkg": 84.5,
     "abilities": {
@@ -9558,8 +9558,8 @@
       "spe": 105
     },
     "types": [
-      "Poison",
-      "Ground"
+      "poison",
+      "ground"
     ],
     "weightkg": 53,
     "abilities": {
@@ -9579,7 +9579,7 @@
       "spe": 66
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 7,
     "nfe": true,
@@ -9600,8 +9600,8 @@
       "spe": 40
     },
     "types": [
-      "Fire",
-      "Grass"
+      "fire",
+      "grass"
     ],
     "weightkg": 73,
     "nfe": true,
@@ -9622,7 +9622,7 @@
       "spe": 115
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 33.5,
     "abilities": {
@@ -9642,8 +9642,8 @@
       "spe": 110
     },
     "types": [
-      "Ice",
-      "Ghost"
+      "ice",
+      "ghost"
     ],
     "weightkg": 26.6,
     "gender": "F",
@@ -9664,8 +9664,8 @@
       "spe": 82
     },
     "types": [
-      "Dragon",
-      "Ground"
+      "dragon",
+      "ground"
     ],
     "weightkg": 56,
     "nfe": true,
@@ -9686,8 +9686,8 @@
       "spe": 80
     },
     "types": [
-      "Psychic",
-      "Fighting"
+      "psychic",
+      "fighting"
     ],
     "weightkg": 52,
     "gender": "M",
@@ -9708,8 +9708,8 @@
       "spe": 102
     },
     "types": [
-      "Dragon",
-      "Ground"
+      "dragon",
+      "ground"
     ],
     "weightkg": 95,
     "abilities": {
@@ -9729,8 +9729,8 @@
       "spe": 39
     },
     "types": [
-      "Water",
-      "Ground"
+      "water",
+      "ground"
     ],
     "weightkg": 29.9,
     "abilities": {
@@ -9750,8 +9750,8 @@
       "spe": 42
     },
     "types": [
-      "Dragon",
-      "Ground"
+      "dragon",
+      "ground"
     ],
     "weightkg": 20.5,
     "nfe": true,
@@ -9775,8 +9775,8 @@
       "Giratina-Origin"
     ],
     "types": [
-      "Ghost",
-      "Dragon"
+      "ghost",
+      "dragon"
     ],
     "weightkg": 750,
     "gender": "N",
@@ -9797,8 +9797,8 @@
       "spe": 90
     },
     "types": [
-      "Ghost",
-      "Dragon"
+      "ghost",
+      "dragon"
     ],
     "weightkg": 650,
     "gender": "N",
@@ -9822,7 +9822,7 @@
       "spe": 65
     },
     "types": [
-      "Ice"
+      "ice"
     ],
     "weightkg": 25.9,
     "abilities": {
@@ -9842,7 +9842,7 @@
       "spe": 85
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 3.9,
     "nfe": true,
@@ -9863,8 +9863,8 @@
       "spe": 95
     },
     "types": [
-      "Ground",
-      "Flying"
+      "ground",
+      "flying"
     ],
     "weightkg": 42.5,
     "abilities": {
@@ -9884,7 +9884,7 @@
       "spe": 36
     },
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 97,
     "nfe": true,
@@ -9905,7 +9905,7 @@
       "spe": 30
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 24.4,
     "gender": "F",
@@ -9927,8 +9927,8 @@
       "spe": 77
     },
     "types": [
-      "Fire",
-      "Steel"
+      "fire",
+      "steel"
     ],
     "weightkg": 430,
     "abilities": {
@@ -9948,7 +9948,7 @@
       "spe": 32
     },
     "types": [
-      "Ground"
+      "ground"
     ],
     "weightkg": 49.5,
     "nfe": true,
@@ -9969,7 +9969,7 @@
       "spe": 47
     },
     "types": [
-      "Ground"
+      "ground"
     ],
     "weightkg": 300,
     "abilities": {
@@ -9989,8 +9989,8 @@
       "spe": 71
     },
     "types": [
-      "Dark",
-      "Flying"
+      "dark",
+      "flying"
     ],
     "weightkg": 27.3,
     "abilities": {
@@ -10010,8 +10010,8 @@
       "spe": 108
     },
     "types": [
-      "Fire",
-      "Fighting"
+      "fire",
+      "fighting"
     ],
     "weightkg": 55,
     "abilities": {
@@ -10031,8 +10031,8 @@
       "spe": 110
     },
     "types": [
-      "Ghost",
-      "Steel"
+      "ghost",
+      "steel"
     ],
     "weightkg": 51,
     "abilities": {
@@ -10052,7 +10052,7 @@
       "spe": 25
     },
     "types": [
-      "Bug"
+      "bug"
     ],
     "weightkg": 2.2,
     "nfe": true,
@@ -10073,7 +10073,7 @@
       "spe": 65
     },
     "types": [
-      "Bug"
+      "bug"
     ],
     "weightkg": 25.5,
     "abilities": {
@@ -10093,8 +10093,8 @@
       "spe": 105
     },
     "types": [
-      "Electric",
-      "Water"
+      "electric",
+      "water"
     ],
     "weightkg": 10.6,
     "abilities": {
@@ -10114,7 +10114,7 @@
       "spe": 95
     },
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 25.5,
     "abilities": {
@@ -10134,7 +10134,7 @@
       "spe": 50
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 140,
     "abilities": {
@@ -10154,7 +10154,7 @@
       "spe": 105
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 33.3,
     "abilities": {
@@ -10174,8 +10174,8 @@
       "spe": 90
     },
     "types": [
-      "Fighting",
-      "Steel"
+      "fighting",
+      "steel"
     ],
     "weightkg": 54,
     "abilities": {
@@ -10195,7 +10195,7 @@
       "spe": 91
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 24,
     "abilities": {
@@ -10215,7 +10215,7 @@
       "spe": 60
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 30.5,
     "nfe": true,
@@ -10236,7 +10236,7 @@
       "spe": 70
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 42,
     "abilities": {
@@ -10256,7 +10256,7 @@
       "spe": 83
     },
     "types": [
-      "Fire"
+      "fire"
     ],
     "weightkg": 68,
     "abilities": {
@@ -10276,8 +10276,8 @@
       "spe": 60
     },
     "types": [
-      "Electric",
-      "Steel"
+      "electric",
+      "steel"
     ],
     "weightkg": 180,
     "gender": "N",
@@ -10298,8 +10298,8 @@
       "spe": 80
     },
     "types": [
-      "Ice",
-      "Ground"
+      "ice",
+      "ground"
     ],
     "weightkg": 291,
     "abilities": {
@@ -10319,7 +10319,7 @@
       "spe": 100
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 1.4,
     "gender": "N",
@@ -10340,8 +10340,8 @@
       "spe": 50
     },
     "types": [
-      "Water",
-      "Flying"
+      "water",
+      "flying"
     ],
     "weightkg": 65,
     "nfe": true,
@@ -10362,7 +10362,7 @@
       "spe": 80
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 0.3,
     "gender": "N",
@@ -10383,7 +10383,7 @@
       "spe": 60
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 13,
     "nfe": true,
@@ -10404,7 +10404,7 @@
       "spe": 105
     },
     "types": [
-      "Ghost"
+      "ghost"
     ],
     "weightkg": 4.4,
     "abilities": {
@@ -10424,8 +10424,8 @@
       "spe": 81
     },
     "types": [
-      "Fire",
-      "Fighting"
+      "fire",
+      "fighting"
     ],
     "weightkg": 22,
     "nfe": true,
@@ -10446,7 +10446,7 @@
       "spe": 55
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 4.1,
     "nfe": true,
@@ -10467,8 +10467,8 @@
       "spe": 66
     },
     "types": [
-      "Bug",
-      "Flying"
+      "bug",
+      "flying"
     ],
     "weightkg": 23.3,
     "gender": "M",
@@ -10489,7 +10489,7 @@
       "spe": 5
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 105,
     "nfe": true,
@@ -10510,7 +10510,7 @@
       "spe": 80
     },
     "types": [
-      "Ghost"
+      "ghost"
     ],
     "weightkg": 5.9,
     "nfe": true,
@@ -10531,7 +10531,7 @@
       "spe": 95
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 3.9,
     "abilities": {
@@ -10551,8 +10551,8 @@
       "spe": 100
     },
     "types": [
-      "Water",
-      "Dragon"
+      "water",
+      "dragon"
     ],
     "weightkg": 336,
     "gender": "N",
@@ -10573,7 +10573,7 @@
       "spe": 80
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 3.1,
     "gender": "N",
@@ -10594,7 +10594,7 @@
       "spe": 60
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 2,
     "abilities": {
@@ -10617,7 +10617,7 @@
       "spe": 40
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 5.2,
     "nfe": true,
@@ -10638,7 +10638,7 @@
       "spe": 90
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 34,
     "gender": "N",
@@ -10659,7 +10659,7 @@
       "spe": 50
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 23,
     "nfe": true,
@@ -10680,8 +10680,8 @@
       "spe": 45
     },
     "types": [
-      "Water",
-      "Fighting"
+      "water",
+      "fighting"
     ],
     "weightkg": 35,
     "nfe": true,
@@ -10702,8 +10702,8 @@
       "spe": 40
     },
     "types": [
-      "Rock",
-      "Steel"
+      "rock",
+      "steel"
     ],
     "weightkg": 340,
     "abilities": {
@@ -10723,8 +10723,8 @@
       "spe": 65
     },
     "types": [
-      "Electric",
-      "Water"
+      "electric",
+      "water"
     ],
     "weightkg": 0.1,
     "nfe": true,
@@ -10745,7 +10745,7 @@
       "spe": 112
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 43.8,
     "abilities": {
@@ -10765,8 +10765,8 @@
       "spe": 60
     },
     "types": [
-      "Fire",
-      "Grass"
+      "fire",
+      "grass"
     ],
     "weightkg": 168,
     "abilities": {
@@ -10786,7 +10786,7 @@
       "spe": 58
     },
     "types": [
-      "Rock"
+      "rock"
     ],
     "weightkg": 102.5,
     "abilities": {
@@ -10806,7 +10806,7 @@
       "spe": 80
     },
     "types": [
-      "Rock"
+      "rock"
     ],
     "weightkg": 7,
     "gender": "N",
@@ -10828,7 +10828,7 @@
       "spe": 100
     },
     "types": [
-      "Normal"
+      "normal"
     ],
     "weightkg": 420,
     "gender": "N",
@@ -10849,8 +10849,8 @@
       "spe": 65
     },
     "types": [
-      "Ghost",
-      "Fighting"
+      "ghost",
+      "fighting"
     ],
     "weightkg": 44,
     "abilities": {
@@ -10870,8 +10870,8 @@
       "spe": 40
     },
     "types": [
-      "Ground",
-      "Rock"
+      "ground",
+      "rock"
     ],
     "weightkg": 282.8,
     "abilities": {
@@ -10891,7 +10891,7 @@
       "spe": 60
     },
     "types": [
-      "Fighting"
+      "fighting"
     ],
     "weightkg": 20.2,
     "nfe": true,
@@ -10912,8 +10912,8 @@
       "spe": 90
     },
     "types": [
-      "Grass",
-      "Poison"
+      "grass",
+      "poison"
     ],
     "weightkg": 14.5,
     "abilities": {
@@ -10940,8 +10940,8 @@
       "Rotom-Wash"
     ],
     "types": [
-      "Electric",
-      "Ghost"
+      "electric",
+      "ghost"
     ],
     "weightkg": 0.3,
     "gender": "N",
@@ -10962,8 +10962,8 @@
       "spe": 86
     },
     "types": [
-      "Electric",
-      "Ghost"
+      "electric",
+      "ghost"
     ],
     "weightkg": 0.3,
     "gender": "N",
@@ -10987,8 +10987,8 @@
       "spe": 86
     },
     "types": [
-      "Electric",
-      "Ghost"
+      "electric",
+      "ghost"
     ],
     "weightkg": 0.3,
     "gender": "N",
@@ -11012,8 +11012,8 @@
       "spe": 86
     },
     "types": [
-      "Electric",
-      "Ghost"
+      "electric",
+      "ghost"
     ],
     "weightkg": 0.3,
     "gender": "N",
@@ -11037,8 +11037,8 @@
       "spe": 86
     },
     "types": [
-      "Electric",
-      "Ghost"
+      "electric",
+      "ghost"
     ],
     "weightkg": 0.3,
     "gender": "N",
@@ -11062,8 +11062,8 @@
       "spe": 86
     },
     "types": [
-      "Electric",
-      "Ghost"
+      "electric",
+      "ghost"
     ],
     "weightkg": 0.3,
     "gender": "N",
@@ -11090,7 +11090,7 @@
       "Shaymin-Sky"
     ],
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 2.1,
     "gender": "N",
@@ -11111,8 +11111,8 @@
       "spe": 127
     },
     "types": [
-      "Grass",
-      "Flying"
+      "grass",
+      "flying"
     ],
     "weightkg": 5.2,
     "gender": "N",
@@ -11136,7 +11136,7 @@
       "spe": 34
     },
     "types": [
-      "Water"
+      "water"
     ],
     "weightkg": 6.3,
     "nfe": true,
@@ -11157,8 +11157,8 @@
       "spe": 30
     },
     "types": [
-      "Rock",
-      "Steel"
+      "rock",
+      "steel"
     ],
     "weightkg": 57,
     "nfe": true,
@@ -11179,7 +11179,7 @@
       "spe": 45
     },
     "types": [
-      "Electric"
+      "electric"
     ],
     "weightkg": 9.5,
     "nfe": true,
@@ -11200,8 +11200,8 @@
       "spe": 65
     },
     "types": [
-      "Poison",
-      "Bug"
+      "poison",
+      "bug"
     ],
     "weightkg": 12,
     "nfe": true,
@@ -11222,8 +11222,8 @@
       "spe": 84
     },
     "types": [
-      "Poison",
-      "Dark"
+      "poison",
+      "dark"
     ],
     "weightkg": 38,
     "abilities": {
@@ -11243,8 +11243,8 @@
       "spe": 40
     },
     "types": [
-      "Grass",
-      "Ice"
+      "grass",
+      "ice"
     ],
     "weightkg": 50.5,
     "nfe": true,
@@ -11265,8 +11265,8 @@
       "spe": 35
     },
     "types": [
-      "Ghost",
-      "Dark"
+      "ghost",
+      "dark"
     ],
     "weightkg": 108,
     "abilities": {
@@ -11286,8 +11286,8 @@
       "spe": 100
     },
     "types": [
-      "Normal",
-      "Flying"
+      "normal",
+      "flying"
     ],
     "weightkg": 24.9,
     "abilities": {
@@ -11307,8 +11307,8 @@
       "spe": 80
     },
     "types": [
-      "Normal",
-      "Flying"
+      "normal",
+      "flying"
     ],
     "weightkg": 15.5,
     "nfe": true,
@@ -11329,8 +11329,8 @@
       "spe": 60
     },
     "types": [
-      "Normal",
-      "Flying"
+      "normal",
+      "flying"
     ],
     "weightkg": 2,
     "nfe": true,
@@ -11351,7 +11351,7 @@
       "spe": 130
     },
     "types": [
-      "Rock"
+      "rock"
     ],
     "weightkg": 45,
     "gender": "N",
@@ -11372,8 +11372,8 @@
       "spe": 74
     },
     "types": [
-      "Poison",
-      "Dark"
+      "poison",
+      "dark"
     ],
     "weightkg": 19.2,
     "nfe": true,
@@ -11394,8 +11394,8 @@
       "spe": 121
     },
     "types": [
-      "Ice",
-      "Bug"
+      "ice",
+      "bug"
     ],
     "weightkg": 52,
     "abilities": {
@@ -11415,8 +11415,8 @@
       "spe": 91
     },
     "types": [
-      "Ice",
-      "Bug"
+      "ice",
+      "bug"
     ],
     "weightkg": 4,
     "nfe": true,
@@ -11437,7 +11437,7 @@
       "spe": 95
     },
     "types": [
-      "Rock"
+      "rock"
     ],
     "weightkg": 16,
     "gender": "N",
@@ -11459,7 +11459,7 @@
       "spe": 50
     },
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 128.6,
     "abilities": {
@@ -11479,8 +11479,8 @@
       "spe": 80
     },
     "types": [
-      "Normal",
-      "Flying"
+      "normal",
+      "flying"
     ],
     "weightkg": 38,
     "abilities": {
@@ -11500,8 +11500,8 @@
       "spe": 56
     },
     "types": [
-      "Grass",
-      "Ground"
+      "grass",
+      "ground"
     ],
     "weightkg": 310,
     "abilities": {
@@ -11521,8 +11521,8 @@
       "spe": 85
     },
     "types": [
-      "Poison",
-      "Fighting"
+      "poison",
+      "fighting"
     ],
     "weightkg": 44.4,
     "abilities": {
@@ -11542,7 +11542,7 @@
       "spe": 31
     },
     "types": [
-      "Grass"
+      "grass"
     ],
     "weightkg": 10.2,
     "nfe": true,
@@ -11563,7 +11563,7 @@
       "spe": 95
     },
     "types": [
-      "Psychic"
+      "psychic"
     ],
     "weightkg": 0.3,
     "gender": "N",
@@ -11584,8 +11584,8 @@
       "spe": 40
     },
     "types": [
-      "Bug",
-      "Flying"
+      "bug",
+      "flying"
     ],
     "weightkg": 38.5,
     "gender": "F",
@@ -11606,8 +11606,8 @@
       "spe": 70
     },
     "types": [
-      "Normal",
-      "Dark"
+      "normal",
+      "dark"
     ],
     "weightkg": 25,
     "nfe": true,
@@ -11628,8 +11628,8 @@
       "spe": 110
     },
     "types": [
-      "Fighting",
-      "Dark"
+      "fighting",
+      "dark"
     ],
     "weightkg": 75.5,
     "abilities": {
@@ -11649,8 +11649,8 @@
       "spe": 125
     },
     "types": [
-      "Dark",
-      "Ice"
+      "dark",
+      "ice"
     ],
     "weightkg": 34,
     "abilities": {
@@ -11674,8 +11674,8 @@
       "Wormadam-Trash"
     ],
     "types": [
-      "Bug",
-      "Grass"
+      "bug",
+      "grass"
     ],
     "weightkg": 6.5,
     "gender": "F",
@@ -11696,8 +11696,8 @@
       "spe": 36
     },
     "types": [
-      "Bug",
-      "Ground"
+      "bug",
+      "ground"
     ],
     "weightkg": 6.5,
     "gender": "F",
@@ -11721,8 +11721,8 @@
       "spe": 36
     },
     "types": [
-      "Bug",
-      "Steel"
+      "bug",
+      "steel"
     ],
     "weightkg": 6.5,
     "gender": "F",
@@ -11746,8 +11746,8 @@
       "spe": 95
     },
     "types": [
-      "Bug",
-      "Flying"
+      "bug",
+      "flying"
     ],
     "weightkg": 51.5,
     "abilities": {

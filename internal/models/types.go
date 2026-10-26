@@ -230,10 +230,10 @@ func (a *Ability) IsPreventingDamage(move *Move, defItem *Item, typeEffectivness
 	}
 
 	if ((move.HasType("???") || move.ID == "firefang") && a.Id == "wonderguard" && typeEffectivness <= 1.0) ||
-		(move.HasType("Fire") && a.Id == "flashfire") ||
-		(move.HasType("Water") && (a.Id == "dryskin" || a.Id == "waterabsorb")) ||
-		(move.HasType("Electric") && (a.Id == "motordrive" || a.Id == "voltabsorb")) ||
-		(move.HasType("Ground") && !isGravity && defItem != nil && defItem.Id != "ironball" && a.Id == "levitate") ||
+		(move.HasType("fire") && a.Id == "flashfire") ||
+		(move.HasType("water") && (a.Id == "dryskin" || a.Id == "waterabsorb")) ||
+		(move.HasType("electric") && (a.Id == "motordrive" || a.Id == "voltabsorb")) ||
+		(move.HasType("ground") && !isGravity && defItem != nil && defItem.Id != "ironball" && a.Id == "levitate") ||
 		(move.Flags.Sound != 0 && a.Id == "soundproof") {
 		return true
 	}
@@ -344,39 +344,39 @@ func (c *ItemCondition) ToFlag() ItemConditionFlag {
 func (i *Item) GetPlateBoostType() string {
 	switch i.Id {
 	case "fistplate":
-		return "Fighting"
+		return "fighting"
 	case "skyplate":
-		return "Flying"
+		return "flying"
 	case "toxicplate":
-		return "Posion"
+		return "poison"
 	case "earthplate":
-		return "Ground"
+		return "ground"
 	case "stoneplate":
-		return "Rock"
+		return "rock"
 	case "insectplate":
-		return "Bug"
+		return "bug"
 	case "spookyplate":
-		return "Ghost"
+		return "ghost"
 	case "ironplate":
-		return "Steel"
+		return "steel"
 	case "flameplate":
-		return "Fire"
+		return "fire"
 	case "splashplate":
-		return "Water"
+		return "water"
 	case "meadowplate":
-		return "Grass"
+		return "grass"
 	case "zapplate":
-		return "Electric"
+		return "electric"
 	case "mindplate":
-		return "Psychic"
+		return "psychic"
 	case "icicleplate":
-		return "Ice"
+		return "ice"
 	case "dracoplate":
-		return "Dragon"
+		return "dragon"
 	case "dreadplate":
-		return "Dark"
+		return "dark"
 	default:
-		return "Normal"
+		return "normal"
 	}
 }
 
@@ -506,7 +506,7 @@ type Type struct {
 }
 
 func (t Type) Key() string {
-	return t.Name
+	return t.ID
 }
 
 /* Specie */
@@ -560,6 +560,16 @@ func (d *Data) TypeNames() []string {
 
 func (d *Data) SpecieNames() []string {
 	return utils.SliceFromMapValue(d.Species, func(s Specie) string { return s.Name })
+}
+
+func (d *Data) TypeName(id string) string {
+	t, ok := d.Types[id]
+	if ok {
+		return t.Name
+	}
+
+	// fallback
+	return id
 }
 
 /* Field */

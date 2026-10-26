@@ -25,7 +25,7 @@ func (c *Calculation) handleForecast(side *CalcData) error {
 		case models.Sun, models.Rain, models.Hail, models.Clear:
 			new = getTypeStringFromWeather(c.field.Terrain)
 		default:
-			new = "Normal"
+			new = "normal"
 		}
 
 		newType, ok := c.data.Types[new]
@@ -153,7 +153,7 @@ func (c *Calculation) setup() error {
 
 	// check normalize
 	if c.attacker.hasAbility("normalize") && c.attacker.usedMove.ID != "struggle" {
-		c.attacker.usedMove.Type = "Normal"
+		c.attacker.usedMove.Type = "normal"
 	}
 
 	return nil

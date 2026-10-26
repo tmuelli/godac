@@ -228,7 +228,7 @@ func (m movesModel) fillMovesDefaults(data *gridData, moveName string) {
 		case BP_COL:
 			value = fmt.Sprintf("%d", moveData.BasePower)
 		case MOVE_TYPE_COL:
-			value = moveData.Type
+			value = m.data.TypeName(moveData.Type)
 		case CATEGORY_COL:
 			value = moveData.Category
 		case HITS_COL:
