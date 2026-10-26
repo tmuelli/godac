@@ -216,7 +216,7 @@ func (d *CalcData) modifiedStat(kind StatKind, hasOpponentUnaware bool, usedMove
 			statValue = math.Floor(statValue * 1.5)
 		}
 
-		if field.Terrain == models.Sand && (d.specieTypes[0].ID == "rock" || (len(d.specieTypes) > 1 && d.specieTypes[1].ID == "rock")) && !isPhysical {
+		if field.Terrain == models.Sand && d.hasType("rock") && !isPhysical {
 			statValue = math.Floor(statValue * 1.5)
 		}
 

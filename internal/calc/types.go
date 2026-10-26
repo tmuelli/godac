@@ -2,6 +2,7 @@ package calc
 
 import (
 	"fmt"
+	"slices"
 
 	"github.com/tmuelli/godac/internal/models"
 )
@@ -76,13 +77,11 @@ func (c *Calculation) setTypeModifier() error {
 }
 
 func (d *CalcData) stabModifier() (float64, error) {
-	for _, t := range d.specieTypes {
-		if d.usedMove.HasType(t.ID) {
-			if d.hasAbility("adaptability") {
-				return 2.0, nil
-			} else {
-				return 1.5, nil
-			}
+	if d.hasType(d.usedMove.Type) {
+		if d.hasAbility("adaptability") {
+			return 2.0, nil
+		} else {
+			return 1.5, nil
 		}
 	}
 
@@ -122,4 +121,14 @@ func getTypesFromSpecie(data *models.Data, s *models.Specie) ([]*models.Type, er
 	}
 
 	return specieTypes, nil
+}
+
+func (d *CalcData) hasType(ids ...string) bool {
+	for _, t := range d.specieTypes {
+		if slices.Contains(ids, t.ID) {
+			return true
+		}
+	}
+
+	return false
 }

@@ -3,7 +3,6 @@ CALC:
 		- calculation TODOS
 			- add logging mechanism => and write to log files, maybe bind it to debug flag or something or detail level
 		- clean up / bugfix TODOS
-			- same implementation for types => specie has type
 			- remaining CALC TODOs
 		- tests
 			- triple kick => hit accounting
