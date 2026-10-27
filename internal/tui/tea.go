@@ -1,6 +1,7 @@
 package tui
 
 import (
+	"fmt"
 	"slices"
 	"strconv"
 	"strings"
@@ -244,8 +245,7 @@ func (m model) View() tea.View {
 		doc.WriteString(m.input.View())
 
 		if !m.inputValid {
-			// TODO: better error message and better visualization
-			doc.WriteString("\nInvalid input. Please try again.\n")
+			fmt.Fprintf(&doc, "\n%s\n", ERR_INVALID_INPUT)
 		}
 	}
 

@@ -26,12 +26,10 @@ const (
 	DISPLAY_DEFAULT_BASEPOWER3 = "BP3"
 	DISPLAY_DEFAULT_BASEPOWER4 = "BP4"
 
-	// TODO: check if they can be combine with constants from models or calc
 	DISPLAY_FEMALE_NAME     = "Female"
 	DISPLAY_MALE_NAME       = "Male"
 	DISPLAY_GENDERLESS_NAME = "Genderless"
 
-	// TODO: check if they can be combine with constants from models or calc
 	DISPLAY_STATUS_HEALTHY        = "Healthy"
 	DISPLAY_STATUS_POISONED       = "Poisoned"
 	DISPLAY_STATUS_BADLY_POISONED = "Badly Poisoned"
@@ -40,7 +38,6 @@ const (
 	DISPLAY_STATUS_ASLEEP         = "Asleep"
 	DISPLAY_STATUS_FROZEN         = "Frozen"
 
-	// TODO: check if they can be combine with constants from models or calc
 	DISPLAY_PHYSICAL_CATEGORY = "Physical"
 	DISPLAY_SPECIAL_CATEGORY  = "Special"
 
