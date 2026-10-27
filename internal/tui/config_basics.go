@@ -38,7 +38,16 @@ var basicsSpec = []fieldSpec{
 	}},
 	{key: TYPE1, options: func(d *models.Data) []string { return d.TypeNames() }},
 	{key: TYPE2, options: func(d *models.Data) []string { return d.TypeNames() }},
-	{key: LEVEL, isNumeric: true, min: 1, max: 100, defaultValue: fmt.Sprintf("%d", models.Level100)},
+	{
+		key:          LEVEL,
+		isNumeric:    true,
+		min:          1,
+		max:          100,
+		defaultValue: fmt.Sprintf("%d", models.Level100),
+		onConfirm: func(data *list, value string, d *models.Data) tea.Cmd {
+			return requestHpRefresh()
+		},
+	},
 }
 
 func newBasicsModel(s *styles, data *models.Data) fieldListModel {

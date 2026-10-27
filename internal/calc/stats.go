@@ -4,6 +4,7 @@ import (
 	"math"
 
 	"github.com/tmuelli/godac/internal/models"
+	"github.com/tmuelli/godac/internal/utils"
 )
 
 func getEVItems() []string {
@@ -60,7 +61,7 @@ func (d *CalcData) effectiveHpStat() int {
 	iv := float64(d.ivs.Hp)
 	ev := float64(d.evs.Hp)
 
-	hp := math.Floor(math.Floor(2*base)+iv+math.Floor(math.Floor(ev/4)*float64(d.level))/100) + float64(d.level) + 10
+	hp := utils.GetMaxHP(base, iv, ev, d.level)
 	return int(hp)
 }
 

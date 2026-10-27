@@ -75,6 +75,10 @@ func (m configModel) Init() tea.Cmd {
 
 func (m configModel) Update(msg tea.Msg, side Side) (configModel, tea.Cmd) {
 	switch msg := msg.(type) {
+	case hpInputsChangedMsg:
+		m.refreshMaxHP(side)
+		return m, nil
+
 	case setLevelRequestMsg:
 		var cmds []tea.Cmd
 
@@ -83,6 +87,9 @@ func (m configModel) Update(msg tea.Msg, side Side) (configModel, tea.Cmd) {
 			m.tabContent[basicsTab], cmd = m.tabContent[basicsTab].Update(msg, s)
 			cmds = append(cmds, cmd)
 		}
+
+		m.refreshMaxHP(LeftSide)
+		m.refreshMaxHP(RightSide)
 
 		return m, tea.Batch(cmds...)
 
@@ -100,6 +107,8 @@ func (m configModel) Update(msg tea.Msg, side Side) (configModel, tea.Cmd) {
 
 		m.tabContent[miscTab], cmd = m.tabContent[miscTab].Update(msg, side)
 		cmds = append(cmds, cmd)
+
+		m.refreshMaxHP(side)
 
 		return m, tea.Batch(cmds...)
 

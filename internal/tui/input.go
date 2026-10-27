@@ -122,3 +122,11 @@ func requestSetLevel(level int) tea.Cmd {
 		}
 	}
 }
+
+type hpInputsChangedMsg struct{}
+
+func requestHpRefresh() tea.Cmd {
+	return func() tea.Msg {
+		return hpInputsChangedMsg{}
+	}
+}

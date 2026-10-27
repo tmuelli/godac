@@ -33,6 +33,15 @@ const (
 	BOOST_COL_NAME = "Boost"
 )
 
+const (
+	HP_ROW = iota
+	ATK_ROW
+	DEF_ROW
+	SPA_ROW
+	SPD_ROW
+	SPE_ROW
+)
+
 func newStatsModel(s *styles, data *models.Data) statsModel {
 	columns := []gridColumn{
 		{col: table.Column{Title: STAT_COL_NAME, Width: 15}, editable: false, visible: true},
@@ -88,6 +97,9 @@ func (m statsModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 
 	case editConfirmMsg:
 		data.Set(data.row, data.col, msg.value)
+		if data.row == HP_ROW && msg.value != "" {
+			return m, requestHpRefresh()
+		}
 		return m, nil
 	case tea.KeyPressMsg:
 		switch {

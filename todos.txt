@@ -8,7 +8,7 @@ TODOS:
 		- add valid, specific and detailed test cases
 	- tui TODOS
 		- second specie type => maybe unable to set or handle if set and specie originally only has one type (see and compare with CHECKS)
-		- health hp input and hp progress bar
+		- hp progress bar
 		- UI overhaul
 		- remaining TUI TODOs
 

@@ -1,6 +1,8 @@
 package tui
 
-import "strconv"
+import (
+	"strconv"
+)
 
 func cloneRows(rows [][]string) [][]string {
 	output := make([][]string, len(rows))

@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/tmuelli/godac/internal/models"
+	"github.com/tmuelli/godac/internal/utils"
 )
 
 type side[T any] struct {
@@ -61,6 +62,20 @@ func (m configModel) Level(side Side) int {
 	// level
 	level := atoiOrZero(basics.fields.Get(side).values[LEVEL])
 	return level
+}
+
+func (m configModel) MaxHP(side Side) int {
+	stats := m.tabContent[statsTab].(statsModel)
+	base := stats.columnValues(side, BASE_COL)[DISPLAY_HP]
+	iv := stats.columnValues(side, IV_COL)[DISPLAY_HP]
+	ev := stats.columnValues(side, EV_COL)[DISPLAY_HP]
+	return utils.GetMaxHP(float64(base), float64(iv), float64(ev), m.Level(side))
+}
+
+func (m configModel) refreshMaxHP(side Side) {
+	misc := m.tabContent[miscTab].(miscModel)
+	misc.setMaxHP(side, m.MaxHP(side))
+	m.tabContent[miscTab] = misc
 }
 
 // TODO: setting types / using types from input
