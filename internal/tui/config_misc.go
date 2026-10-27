@@ -2,10 +2,13 @@ package tui
 
 import (
 	"fmt"
+	"image/color"
 	"math"
 
 	"charm.land/bubbles/v2/key"
+	"charm.land/bubbles/v2/progress"
 	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 	"github.com/tmuelli/godac/internal/models"
 )
 
@@ -17,11 +20,33 @@ const (
 	HEALTH         = "Health"
 	HEALTH_PERCENT = "Health Percent"
 	METRONOME      = "Metronome"
+
+	// colors
+	HP_BAR_WIDTH    = 30
+	HP_GREEN_ABOVE  = 0.5
+	HP_YELLOW_ABOVE = 0.2
+
+	COLOR_HP_BAR_GREEN  = "#00dd60"
+	COLOR_HP_BAR_YELLOW = "#f5d538"
+	COLOR_HP_BAR_RED    = "#ee4928"
+	COLOR_HP_BAR_EMPTY  = "#444444"
 )
+
+func hpBarColor(total, _ float64) color.Color {
+	switch {
+	case total > HP_GREEN_ABOVE:
+		return lipgloss.Color(COLOR_HP_BAR_GREEN)
+	case total > HP_YELLOW_ABOVE:
+		return lipgloss.Color(COLOR_HP_BAR_YELLOW)
+	default:
+		return lipgloss.Color(COLOR_HP_BAR_RED)
+	}
+}
 
 type miscModel struct {
 	fieldListModel
 	maxHP side[int]
+	hpBar progress.Model
 }
 
 var miscSpecs = []fieldSpec{
@@ -43,6 +68,14 @@ var miscSpecs = []fieldSpec{
 }
 
 func newMiscModel(s *styles, data *models.Data) miscModel {
+	bar := progress.New(
+		progress.WithColorFunc(hpBarColor),
+		progress.WithWidth(HP_BAR_WIDTH),
+		progress.WithoutPercentage(),
+		progress.WithFillCharacters('█', '░'),
+	)
+	bar.EmptyColor = lipgloss.Color(COLOR_HP_BAR_EMPTY)
+
 	model := newFieldListModel(s, data, miscSpecs)
 	model.customUpdate = func(msg tea.Msg, data *list, d *models.Data) (tea.Cmd, bool) {
 		if customMsg, ok := msg.(autoFillForSpecieRequestMsg); ok {
@@ -52,7 +85,7 @@ func newMiscModel(s *styles, data *models.Data) miscModel {
 		return nil, false
 	}
 
-	return miscModel{fieldListModel: model}
+	return miscModel{fieldListModel: model, hpBar: bar}
 }
 
 func (m miscModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
@@ -91,6 +124,12 @@ func (m miscModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 	}
 
 	return m, cmd
+}
+
+func (m miscModel) View(side Side) string {
+	listView := m.fieldListModel.View(side)
+	perc := healthPercent(m.fields.Get(side))
+	return listView + "\n" + m.hpBar.ViewAs(float64(perc)/100)
 }
 
 func (m *miscModel) setMaxHP(side Side, maxHP int) {
