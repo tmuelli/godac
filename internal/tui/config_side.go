@@ -124,15 +124,12 @@ func (m configModel) MetronomeHits(side Side, move string) *int {
 }
 
 func (m configModel) HealthPercent(side Side) int {
-	misc := m.tabContent[miscTab].(fieldListModel)
-	// remove percent sign from string value
-	healthString := misc.fields.Get(side).values[HEALTH_PERCENT]
-	health := atoiOrZero(healthString[:len(healthString)-1])
-	return health
+	misc := m.tabContent[miscTab].(miscModel)
+	return healthPercent(misc.fields.Get(side))
 }
 
 func (m configModel) Item(side Side) *string {
-	misc := m.tabContent[miscTab].(fieldListModel)
+	misc := m.tabContent[miscTab].(miscModel)
 	item := misc.fields.Get(side).values[ITEM]
 
 	if item == "" {
@@ -143,7 +140,7 @@ func (m configModel) Item(side Side) *string {
 }
 
 func (m configModel) Status(side Side) *string {
-	misc := m.tabContent[miscTab].(fieldListModel)
+	misc := m.tabContent[miscTab].(miscModel)
 	status := misc.fields.Get(side).values[STATUS]
 	status = strings.ToLower(status)
 	return &status
@@ -198,7 +195,7 @@ func (m configModel) Boosts(side Side) models.UserInputBoosts {
 }
 
 func (m configModel) Nature(side Side) string {
-	misc := m.tabContent[miscTab].(fieldListModel)
+	misc := m.tabContent[miscTab].(miscModel)
 	return misc.fields.Get(side).values[NATURE]
 }
 

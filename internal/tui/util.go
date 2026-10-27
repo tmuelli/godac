@@ -2,6 +2,7 @@ package tui
 
 import (
 	"strconv"
+	"strings"
 )
 
 func cloneRows(rows [][]string) [][]string {
@@ -19,4 +20,8 @@ func cloneColumns(columns []gridColumn) []gridColumn {
 func atoiOrZero(value string) int {
 	n, _ := strconv.Atoi(value)
 	return n
+}
+
+func healthPercent(l list) int {
+	return atoiOrZero(strings.TrimSuffix(l.values[HEALTH_PERCENT], "%"))
 }

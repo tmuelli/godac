@@ -3,7 +3,6 @@ package tui
 import (
 	"fmt"
 	"math"
-	"strings"
 
 	"charm.land/bubbles/v2/key"
 	tea "charm.land/bubbletea/v2"
@@ -98,13 +97,12 @@ func (m *miscModel) setMaxHP(side Side, maxHP int) {
 	m.maxHP.Set(side, maxHP)
 
 	list := m.fields.GetPtr(side)
-	percStr := strings.TrimSuffix(list.values[HEALTH_PERCENT], "%")
-	if percStr == "" {
+	if list.values[HEALTH_PERCENT] == "" {
 		// not filled
 		return
 	}
 
-	list.SetValue(HEALTH, fmt.Sprintf("%d", percentToHealth(atoiOrZero(percStr), maxHP)))
+	list.SetValue(HEALTH, fmt.Sprintf("%d", percentToHealth(healthPercent(*list), maxHP)))
 }
 
 func fillMiscDefaults(data *list, specie *models.Specie) {
