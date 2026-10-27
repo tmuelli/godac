@@ -21,3 +21,5 @@ TODOS:
 		- loading and saving settings / calculation data etc.
 		- nature power terrain basepower calculation
 			- needs location support for non-competitive (online battle) terrain for the player
+		- convenience functions:
+			- setting max / min iv ev with shortcut
