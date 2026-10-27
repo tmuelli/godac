@@ -129,14 +129,12 @@ func (m statsModel) View(side Side) string {
 	return renderGrid(m.tab.Get(side), m.styles)
 }
 
-// TODO: maybe make general requestInput
 func (m statsModel) requestInput(key, value string) tea.Cmd {
 	min := 0
 	max := 0
 	var options []string
 	isNumeric := true
 
-	// TODO: maybe use SliceFROmMapValue somewhere before to not do this everytime again
 	switch key {
 	case BASE_COL_NAME:
 		min = models.BASE_MIN

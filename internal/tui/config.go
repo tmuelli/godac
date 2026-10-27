@@ -196,10 +196,9 @@ func (m configModel) Input(side Side, reqInfo *calcRequestInfo) *models.UserInpu
 		AttackMove:    attackMove,
 		Moves:         m.Moves(side),
 		HealthPercent: m.HealthPercent(side),
-		// TODO: implement shortcut iv settings (optimal, worstcase) input option
-		IvSetting: "custom",
-		IvCustom:  m.IvCustomStats(side),
-		// TODO: implement shortcut ev settings (optimal, worstcase) input option
+		// FUTURE FEATURES: implement shortcut iv and ev settings (optimal, worstcase) input option
+		IvSetting:     "custom",
+		IvCustom:      m.IvCustomStats(side),
 		EvSetting:     "custom",
 		EvCustom:      m.EvCustomStats(side),
 		Item:          m.Item(side),

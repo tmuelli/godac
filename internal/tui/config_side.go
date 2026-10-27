@@ -78,8 +78,6 @@ func (m configModel) refreshMaxHP(side Side) {
 	m.tabContent[miscTab] = misc
 }
 
-// TODO: setting types / using types from input
-
 func (m configModel) Moves(side Side) []string {
 	moves := m.tabContent[movesTab].(movesModel)
 	settings := m.MoveSettings(side)

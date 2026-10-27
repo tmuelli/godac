@@ -7,7 +7,6 @@ import (
 	"charm.land/bubbles/v2/table"
 	tea "charm.land/bubbletea/v2"
 	"github.com/tmuelli/godac/internal/models"
-	"github.com/tmuelli/godac/internal/utils"
 )
 
 type MoveColumnType int
@@ -163,28 +162,21 @@ func (m movesModel) MoveRowSettings(side Side) []moveRowSettings {
 	return m.rowSettings.Get(side)
 }
 
-// TODO: maybe make general requestInput
 func (m movesModel) requestInput(key, value string) tea.Cmd {
 	min := 0
 	max := 0
 	var options []string
 	isNumeric := false
 
-	// TODO: maybe use SliceFROmMapValue somewhere before to not do this everytime again
 	switch key {
 	case MOVE_COL_NAME:
-		options = utils.SliceFromMapValue(m.data.Moves, func(m models.Move) string {
-			return m.Name
-		})
+		options = m.data.MoveNames()
 	case BASE_POWER_COL_NAME:
 		isNumeric = true
 		min = models.MOVE_BASE_POWER_MIN
-		// TODO: numeric input with only one limit => set sane limit?
 		max = models.MOVE_BASE_POWER_MAX
 	case TYPE_COL_NAME:
-		options = utils.SliceFromMapValue(m.data.Types, func(t models.Type) string {
-			return t.Name
-		})
+		options = m.data.TypeNames()
 	case CATEGORY_COL_NAME:
 		options = []string{DISPLAY_PHYSICAL_CATEGORY, DISPLAY_SPECIAL_CATEGORY}
 	case CRIT_COL_NAME:
