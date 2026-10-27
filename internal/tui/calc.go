@@ -110,7 +110,7 @@ func (m calcModel) View(ctx calcContext) string {
 }
 
 func (m calcModel) Title() string {
-	return "Calculation overview"
+	return CALC_TITLE
 }
 
 func (m calcModel) Body(ctx calcContext) string {

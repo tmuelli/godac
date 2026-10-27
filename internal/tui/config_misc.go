@@ -65,7 +65,7 @@ func fillMiscDefaults(data *list, specie *models.Specie) {
 		case HEALTH_PERCENT:
 			value = fmt.Sprintf("%d%%", 100)
 		case NATURE:
-			value = DEFAULT_NATURE
+			value = DISPLAY_DEFAULT_NATURE
 		}
 
 		data.SetValue(k, value)

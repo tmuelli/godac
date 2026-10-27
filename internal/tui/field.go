@@ -7,16 +7,53 @@ import (
 )
 
 var fieldLevels = map[string]int{
-	"Level 100": 100,
-	"Level 50":  50,
-	"Level 5":   5,
+	DISPLAY_LEVEL_100: int(models.Level100),
+	DISPLAY_LEVEL_50:  int(models.Level50),
+	DISPLAY_LEVEL_5:   int(models.Level5),
 }
 
 type Setting int
+type GeneralRow int
 
 const (
 	GeneralSetting Setting = iota
 	SidesSetting
+
+	DISPLAY_GENERAL_GROUP_LEVEL   = "Level"
+	DISPLAY_GENERAL_GROUP_MODE    = "BattleMode"
+	DISPLAY_GENERAL_GROUP_WEATHER = "Weather"
+)
+
+const (
+	FieldStealthRock = iota
+	FieldReflect
+	FieldLightScreen
+	FieldProtect
+	FieldLeechSeed
+	FieldForesight
+	FieldHelpingHand
+	FieldTailwind
+	FieldFlowerGift
+	FieldPowerTrick
+	FieldSwichtingOut
+
+	DISPLAY_STEALTH_ROCK  = "Stealth Rock"
+	DISPLAY_REFLECT       = "Reflect"
+	DISPLAY_LIGHT_SCREEN  = "Light Screen"
+	DISPLAY_PROTECT       = "Protect"
+	DISPLAY_LEECH_SEED    = "Leech Seed"
+	DISPLAY_FORESIGHT     = "Foresight"
+	DISPLAY_HELPING_HAND  = "Helping Hand"
+	DISPLAY_TAILWIND      = "Tailwind"
+	DISPLAY_FLOWER_GIFT   = "Flower Gift"
+	DISPLAY_POWER_TRICK   = "Power Trick"
+	DISPLAY_SWITCHING_OUT = "Switching Out"
+)
+
+const (
+	FieldBattleMode GeneralRow = iota
+	FieldLevel
+	FieldWeather
 )
 
 type fieldKeyMap struct {
@@ -63,34 +100,40 @@ func (m fieldModel) SideGroupValue(label string, side Side) bool {
 }
 
 func newFieldModel(s *styles, data *models.Data) fieldModel {
-	levelGroup := newGeneralGroup(s, "Level", 0, []string{"Level 100", "Level 50", "Level 5"})
+	levelGroup := newGeneralGroup(s, DISPLAY_GENERAL_GROUP_LEVEL, 0, []string{DISPLAY_LEVEL_100, DISPLAY_LEVEL_50, DISPLAY_LEVEL_5})
 	levelGroup.onChange = func(value string) tea.Cmd {
 		return requestSetLevel(fieldLevels[value])
 	}
 
 	general := []generalGroup{
-		newGeneralGroup(s, "BattleMode", 0, []string{"Singles", "Doubles"}),
+		newGeneralGroup(s, DISPLAY_GENERAL_GROUP_MODE, 0, []string{string(models.Singles), string(models.Doubles)}),
 		levelGroup,
-		newGeneralGroup(s, "Weather", 0, []string{"None", "Sun", "Rain", "Sand", "Hail"}),
+		newGeneralGroup(s, DISPLAY_GENERAL_GROUP_WEATHER, 0, []string{
+			string(models.Clear),
+			string(models.Sun),
+			string(models.Rain),
+			string(models.Sand),
+			string(models.Hail),
+		}),
 	}
-	general[0].focused = true
+	general[FieldBattleMode].focused = true
 
 	// TODO: add spikes settings
 	defaultSide := LeftSide
 	sides := []sidesGroup{
-		newSidesGroup(s, "Stealth Rock", defaultSide, false, false),
-		newSidesGroup(s, "Reflect", defaultSide, false, false),
-		newSidesGroup(s, "Light Screen", defaultSide, false, false),
-		newSidesGroup(s, "Protect", defaultSide, false, false),
-		newSidesGroup(s, "Leech Seed", defaultSide, false, false),
-		newSidesGroup(s, "Foresight", defaultSide, false, false),
-		newSidesGroup(s, "Helping Hand", defaultSide, false, false),
-		newSidesGroup(s, "Tailwind", defaultSide, false, false),
-		newSidesGroup(s, "Flower Gift", defaultSide, false, false),
-		newSidesGroup(s, "Power Trick", defaultSide, false, false),
-		newSidesGroup(s, "Switching Out", defaultSide, false, false),
+		newSidesGroup(s, DISPLAY_STEALTH_ROCK, defaultSide, false, false),
+		newSidesGroup(s, DISPLAY_REFLECT, defaultSide, false, false),
+		newSidesGroup(s, DISPLAY_LIGHT_SCREEN, defaultSide, false, false),
+		newSidesGroup(s, DISPLAY_PROTECT, defaultSide, false, false),
+		newSidesGroup(s, DISPLAY_LEECH_SEED, defaultSide, false, false),
+		newSidesGroup(s, DISPLAY_FORESIGHT, defaultSide, false, false),
+		newSidesGroup(s, DISPLAY_HELPING_HAND, defaultSide, false, false),
+		newSidesGroup(s, DISPLAY_TAILWIND, defaultSide, false, false),
+		newSidesGroup(s, DISPLAY_FLOWER_GIFT, defaultSide, false, false),
+		newSidesGroup(s, DISPLAY_POWER_TRICK, defaultSide, false, false),
+		newSidesGroup(s, DISPLAY_SWITCHING_OUT, defaultSide, false, false),
 	}
-	sides[0].groupFocused = true
+	sides[FieldStealthRock].groupFocused = true
 
 	return fieldModel{
 		general:    general,
@@ -169,7 +212,7 @@ func (m fieldModel) View() string {
 }
 
 func (m fieldModel) Title() string {
-	return "Field configuration"
+	return FIELD_TITLE
 }
 
 func (m fieldModel) Body() string {
@@ -180,19 +223,19 @@ func (m fieldModel) Body() string {
 
 func (m fieldModel) SideInput(side Side) *models.UserFieldSideInput {
 	input := models.UserFieldSideInput{
-		StealthRocks: m.SideGroupValue("Stealth Rock", side),
+		StealthRocks: m.SideGroupValue(DISPLAY_STEALTH_ROCK, side),
 		// TODO: implement value getter for spikes
 		Spikes:       0,
-		Reflect:      m.SideGroupValue("Reflect", side),
-		LightScreen:  m.SideGroupValue("Light Screen", side),
-		Protect:      m.SideGroupValue("Protect", side),
-		LeechSeed:    m.SideGroupValue("Leech Seed", side),
-		Foresight:    m.SideGroupValue("Foresight", side),
-		HelpingHand:  m.SideGroupValue("Helping Hand", side),
-		Tailwind:     m.SideGroupValue("Tailwind", side),
-		FlowerGift:   m.SideGroupValue("Flower Gift", side),
-		PowerTrick:   m.SideGroupValue("Power Trick", side),
-		SwitchingOut: m.SideGroupValue("Switching Out", side),
+		Reflect:      m.SideGroupValue(DISPLAY_REFLECT, side),
+		LightScreen:  m.SideGroupValue(DISPLAY_LIGHT_SCREEN, side),
+		Protect:      m.SideGroupValue(DISPLAY_PROTECT, side),
+		LeechSeed:    m.SideGroupValue(DISPLAY_LEECH_SEED, side),
+		Foresight:    m.SideGroupValue(DISPLAY_FORESIGHT, side),
+		HelpingHand:  m.SideGroupValue(DISPLAY_HELPING_HAND, side),
+		Tailwind:     m.SideGroupValue(DISPLAY_TAILWIND, side),
+		FlowerGift:   m.SideGroupValue(DISPLAY_FLOWER_GIFT, side),
+		PowerTrick:   m.SideGroupValue(DISPLAY_POWER_TRICK, side),
+		SwitchingOut: m.SideGroupValue(DISPLAY_SWITCHING_OUT, side),
 	}
 
 	return &input
@@ -200,14 +243,13 @@ func (m fieldModel) SideInput(side Side) *models.UserFieldSideInput {
 
 func (m fieldModel) Input() *models.UserFieldInput {
 	// type
-	fieldType := m.general[0].Value()
+	fieldType := m.general[FieldBattleMode].Value()
 
 	// level
-	// TODO: constant
-	level := fieldLevels[m.general[1].Value()]
+	level := fieldLevels[m.general[FieldLevel].Value()]
 
 	// terrain
-	terrain := m.general[2].Value()
+	terrain := m.general[FieldWeather].Value()
 
 	fieldInput := models.UserFieldInput{
 		Type:      fieldType,

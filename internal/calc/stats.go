@@ -84,8 +84,8 @@ func (d *CalcData) effectiveSpeedStat(field *models.Field) int {
 
 	baseModifiedSpeed := getModifiedStat(baseSpeed, d.boosts.Get(string(StatSpe)))
 
-	if (d.dataType == Attacker && field.Left.Tailwind) ||
-		(d.dataType == Defender && field.Right.Tailwind) {
+	if (d.dataType == models.Attacker && field.Left.Tailwind) ||
+		(d.dataType == models.Defender && field.Right.Tailwind) {
 		speedMods = append(speedMods, SPEED_MOD_2X)
 	}
 
@@ -183,8 +183,8 @@ func (d *CalcData) modifiedStat(kind StatKind, hasOpponentUnaware bool, usedMove
 		if d.hasAbility("simple") {
 			statValue = getSimpleModifiedStat(statValue, statBoosts)
 		} else {
-			if (d.dataType == Attacker && (statBoosts > 0 || (!usedMove.Critical && statBoosts < 0))) ||
-				(d.dataType == Defender && (statBoosts < 0 || (!usedMove.Critical && statBoosts > 0))) {
+			if (d.dataType == models.Attacker && (statBoosts > 0 || (!usedMove.Critical && statBoosts < 0))) ||
+				(d.dataType == models.Defender && (statBoosts < 0 || (!usedMove.Critical && statBoosts > 0))) {
 				statValue = getModifiedStat(statValue, statBoosts)
 			}
 		}
@@ -193,7 +193,7 @@ func (d *CalcData) modifiedStat(kind StatKind, hasOpponentUnaware bool, usedMove
 	isPhysical := usedMove.Category == string(Physical)
 
 	switch d.dataType {
-	case Attacker:
+	case models.Attacker:
 		if isPhysical && d.hasAbility("purepower", "hugepower") {
 			statValue *= 2
 		} else if (field.Terrain == models.Sun) && ((isPhysical && d.hasAbility("flowergift")) || (!isPhysical && d.hasAbility("solarpower"))) {
@@ -208,7 +208,7 @@ func (d *CalcData) modifiedStat(kind StatKind, hasOpponentUnaware bool, usedMove
 		if field.Left.FlowerGift && !d.hasAbility("flowergift") && field.Terrain == models.Sun && isPhysical {
 			statValue = math.Floor(statValue * 1.5)
 		}
-	case Defender:
+	case models.Defender:
 		if isPhysical && d.status != NoneStatus && d.hasAbility("marvelscale") {
 			statValue = math.Floor(statValue * 1.5)
 		} else if !isPhysical && (field.Right.FlowerGift || d.hasAbility("flowergift")) && field.Terrain == models.Sun {

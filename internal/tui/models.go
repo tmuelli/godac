@@ -8,8 +8,23 @@ const (
 	LeftSide Side = iota
 	RightSide
 
-	DEFAULT_GENDER = "Female"
-	DEFAULT_NATURE = "Hardy"
+	DISPLAY_DEFAULT_GENDER = "Female"
+	DISPLAY_DEFAULT_NATURE = "Hardy"
+
+	DISPLAY_DEFAULT_MOVE1 = "Move1"
+	DISPLAY_DEFAULT_MOVE2 = "Move2"
+	DISPLAY_DEFAULT_MOVE3 = "Move3"
+	DISPLAY_DEFAULT_MOVE4 = "Move4"
+
+	DISPLAY_DEFAULT_MOVE_TYPE1 = "Type1"
+	DISPLAY_DEFAULT_MOVE_TYPE2 = "Type2"
+	DISPLAY_DEFAULT_MOVE_TYPE3 = "Type3"
+	DISPLAY_DEFAULT_MOVE_TYPE4 = "Type4"
+
+	DISPLAY_DEFAULT_BASEPOWER1 = "BP1"
+	DISPLAY_DEFAULT_BASEPOWER2 = "BP2"
+	DISPLAY_DEFAULT_BASEPOWER3 = "BP3"
+	DISPLAY_DEFAULT_BASEPOWER4 = "BP4"
 
 	// TODO: check if they can be combine with constants from models or calc
 	DISPLAY_FEMALE_NAME     = "Female"
@@ -24,6 +39,26 @@ const (
 	DISPLAY_STATUS_PARALYZED      = "Paralyzed"
 	DISPLAY_STATUS_ASLEEP         = "Asleep"
 	DISPLAY_STATUS_FROZEN         = "Frozen"
+
+	// TODO: check if they can be combine with constants from models or calc
+	DISPLAY_PHYSICAL_CATEGORY = "Physical"
+	DISPLAY_SPECIAL_CATEGORY  = "Special"
+
+	DISPLAY_YES = "Yes"
+	DISPLAY_NO  = "No"
+
+	DISPLAY_NONE = "None"
+
+	DISPLAY_HP  = "Hp"
+	DISPLAY_ATK = "Atk"
+	DISPLAY_DEF = "Def"
+	DISPLAY_SPA = "Spa"
+	DISPLAY_SPD = "Spd"
+	DISPLAY_SPE = "Spe"
+
+	DISPLAY_LEVEL_100 = "Level 100"
+	DISPLAY_LEVEL_50  = "Level 50"
+	DISPLAY_LEVEL_5   = "Level 5"
 )
 
 var STATUS_DISPLAY_NAMES = []string{

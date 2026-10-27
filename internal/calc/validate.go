@@ -114,12 +114,12 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	}
 
 	// input side
-	var calcType CalcDataType
+	var calcType models.CalcDataType
 	switch input.InputSide {
-	case "attacker":
-		calcType = Attacker
-	case "defender":
-		calcType = Defender
+	case string(models.Attacker):
+		calcType = models.Attacker
+	case string(models.Defender):
+		calcType = models.Defender
 	default:
 		return nil, fmt.Errorf("invalid input: Unknown input side %s", input.InputSide)
 	}
@@ -162,7 +162,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	var move *string
 	var usedMove *models.Move
 
-	if calcType == Attacker {
+	if calcType == models.Attacker {
 		for i, m := range input.Moves {
 			if m == input.AttackMove {
 				move = &input.Moves[i]

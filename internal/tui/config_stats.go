@@ -9,29 +9,47 @@ import (
 	"github.com/tmuelli/godac/internal/models"
 )
 
+var displayBoosts = []string{"-6", "-5", "-4", "-3", "-2", "-1", "0", "+1", "+2", "+3", "+4", "+5", "+6"}
+
 type statsModel struct {
 	tab    side[gridData]
 	styles *styles
 	data   *models.Data
 }
 
+const (
+	STAT_COL = iota
+	BASE_COL
+	IV_COL
+	EV_COL
+	TOTAL_COL
+	BOOST_COL
+
+	STAT_COL_NAME  = "Stat"
+	BASE_COL_NAME  = "Base"
+	IV_COL_NAME    = "IV"
+	EV_COL_NAME    = "EV"
+	TOTAL_COL_NAME = "Total"
+	BOOST_COL_NAME = "Boost"
+)
+
 func newStatsModel(s *styles, data *models.Data) statsModel {
 	columns := []gridColumn{
-		{col: table.Column{Title: "Stat", Width: 15}, editable: false, visible: true},
-		{col: table.Column{Title: "Base", Width: 15}, editable: true, visible: true},
-		{col: table.Column{Title: "IV", Width: 15}, editable: true, visible: true},
-		{col: table.Column{Title: "EV", Width: 15}, editable: true, visible: true},
-		{col: table.Column{Title: "Total", Width: 15}, editable: false, visible: true},
-		{col: table.Column{Title: "Boost", Width: 15}, editable: true, visible: true},
+		{col: table.Column{Title: STAT_COL_NAME, Width: 15}, editable: false, visible: true},
+		{col: table.Column{Title: BASE_COL_NAME, Width: 15}, editable: true, visible: true},
+		{col: table.Column{Title: IV_COL_NAME, Width: 15}, editable: true, visible: true},
+		{col: table.Column{Title: EV_COL_NAME, Width: 15}, editable: true, visible: true},
+		{col: table.Column{Title: TOTAL_COL_NAME, Width: 15}, editable: false, visible: true},
+		{col: table.Column{Title: BOOST_COL_NAME, Width: 15}, editable: true, visible: true},
 	}
 
 	rows := [][]string{
-		{"Hp", "0", "0", "0", "0", "0"},
-		{"Atk", "0", "0", "0", "0", "0"},
-		{"Def", "0", "0", "0", "0", "0"},
-		{"Spa", "0", "0", "0", "0", "0"},
-		{"Spd", "0", "0", "0", "0", "0"},
-		{"Spe", "0", "0", "0", "0", "0"},
+		{DISPLAY_HP, "0", "0", "0", "0", "0"},
+		{DISPLAY_ATK, "0", "0", "0", "0", "0"},
+		{DISPLAY_DEF, "0", "0", "0", "0", "0"},
+		{DISPLAY_SPA, "0", "0", "0", "0", "0"},
+		{DISPLAY_SPD, "0", "0", "0", "0", "0"},
+		{DISPLAY_SPE, "0", "0", "0", "0", "0"},
 	}
 
 	initialColIndex := firstEditableCol(columns)
@@ -107,20 +125,19 @@ func (m statsModel) requestInput(key, value string) tea.Cmd {
 	isNumeric := true
 
 	// TODO: maybe use SliceFROmMapValue somewhere before to not do this everytime again
-	// TODO: change to constants where its reasonable
 	switch key {
-	case "Base":
-		min = 1
-		max = 255
-	case "IV":
-		min = 0
-		max = 31
-	case "EV":
-		min = 0
-		max = 252
-	case "Boost":
+	case BASE_COL_NAME:
+		min = models.BASE_MIN
+		max = models.BASE_MAX
+	case IV_COL_NAME:
+		min = models.IV_MIN
+		max = models.IV_MAX
+	case EV_COL_NAME:
+		min = models.EV_MIN
+		max = models.EV_MAX
+	case BOOST_COL_NAME:
 		isNumeric = false
-		options = []string{"-6", "-5", "-4", "-3", "-2", "-1", "0", "+1", "+2", "+3", "+4", "+5", "+6"}
+		options = displayBoosts
 	}
 
 	if isNumeric {
@@ -133,17 +150,17 @@ func (m statsModel) requestInput(key, value string) tea.Cmd {
 func (m statsModel) columnValues(side Side, col int) map[string]int {
 	data := m.tab.Get(side)
 	values := map[string]int{
-		"Hp":  0,
-		"Atk": 0,
-		"Def": 0,
-		"Spa": 0,
-		"Spd": 0,
-		"Spe": 0,
+		DISPLAY_HP:  0,
+		DISPLAY_ATK: 0,
+		DISPLAY_DEF: 0,
+		DISPLAY_SPA: 0,
+		DISPLAY_SPD: 0,
+		DISPLAY_SPE: 0,
 	}
 
 	for _, row := range data.rows {
 		value := atoiOrZero(row[col])
-		values[row[0]] = value
+		values[row[STAT_COL]] = value
 	}
 
 	return values
@@ -160,18 +177,18 @@ func (m statsModel) fillStatsDefaults(data *gridData, specie *models.Specie) {
 	for rowIndex := range data.rows {
 		// set base stats
 		var value string
-		switch data.rows[rowIndex][0] {
-		case "Hp":
+		switch data.rows[rowIndex][STAT_COL] {
+		case DISPLAY_HP:
 			value = fmt.Sprintf("%d", baseStats.Hp)
-		case "Atk":
+		case DISPLAY_ATK:
 			value = fmt.Sprintf("%d", baseStats.Atk)
-		case "Def":
+		case DISPLAY_DEF:
 			value = fmt.Sprintf("%d", baseStats.Def)
-		case "Spa":
+		case DISPLAY_SPA:
 			value = fmt.Sprintf("%d", baseStats.Spa)
-		case "Spd":
+		case DISPLAY_SPD:
 			value = fmt.Sprintf("%d", baseStats.Spd)
-		case "Spe":
+		case DISPLAY_SPE:
 			value = fmt.Sprintf("%d", baseStats.Spe)
 		default:
 			continue

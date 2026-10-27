@@ -20,6 +20,14 @@ const (
 	CRIT_COL
 	HITS_COL
 	METR_HITS_COL
+
+	MOVE_COL_NAME       = "Move"
+	BASE_POWER_COL_NAME = "Base Power"
+	TYPE_COL_NAME       = "Type"
+	CATEGORY_COL_NAME   = "Category"
+	CRIT_COL_NAME       = "Crit"
+	HITS_COL_NAME       = "Hits"
+	METR_HITS_COL_NAME  = "Metr. Hits"
 )
 
 type moveRowSettings struct {
@@ -35,20 +43,20 @@ type movesModel struct {
 
 func newMovesModel(s *styles, data *models.Data) movesModel {
 	columns := []gridColumn{
-		{col: table.Column{Title: "Move", Width: 15}, editable: true, visible: true},
-		{col: table.Column{Title: "Base Power", Width: 15}, editable: true, visible: true},
-		{col: table.Column{Title: "Type", Width: 10}, editable: true, visible: true},
-		{col: table.Column{Title: "Category", Width: 15}, editable: true, visible: true},
-		{col: table.Column{Title: "Crit", Width: 10}, editable: true, visible: true},
-		{col: table.Column{Title: "Hits", Width: 10}, editable: true, visible: true},
-		{col: table.Column{Title: "Metr. Hits", Width: 15}, editable: true, visible: false},
+		{col: table.Column{Title: MOVE_COL_NAME, Width: 15}, editable: true, visible: true},
+		{col: table.Column{Title: BASE_POWER_COL_NAME, Width: 15}, editable: true, visible: true},
+		{col: table.Column{Title: TYPE_COL_NAME, Width: 10}, editable: true, visible: true},
+		{col: table.Column{Title: CATEGORY_COL_NAME, Width: 15}, editable: true, visible: true},
+		{col: table.Column{Title: CRIT_COL_NAME, Width: 10}, editable: true, visible: true},
+		{col: table.Column{Title: HITS_COL_NAME, Width: 10}, editable: true, visible: true},
+		{col: table.Column{Title: METR_HITS_COL_NAME, Width: 15}, editable: true, visible: false},
 	}
 
 	rows := [][]string{
-		{"Move1", "BP1", "Type1", "None", "No", "0", "0"},
-		{"Move2", "BP2", "Type2", "None", "No", "0", "0"},
-		{"Move3", "BP3", "Type3", "None", "No", "0", "0"},
-		{"Move4", "BP4", "Type4", "None", "No", "0", "0"},
+		{DISPLAY_DEFAULT_MOVE1, DISPLAY_DEFAULT_BASEPOWER1, DISPLAY_DEFAULT_MOVE_TYPE1, DISPLAY_NONE, DISPLAY_NO, "0", "0"},
+		{DISPLAY_DEFAULT_MOVE2, DISPLAY_DEFAULT_BASEPOWER2, DISPLAY_DEFAULT_MOVE_TYPE2, DISPLAY_NONE, DISPLAY_NO, "0", "0"},
+		{DISPLAY_DEFAULT_MOVE3, DISPLAY_DEFAULT_BASEPOWER3, DISPLAY_DEFAULT_MOVE_TYPE3, DISPLAY_NONE, DISPLAY_NO, "0", "0"},
+		{DISPLAY_DEFAULT_MOVE4, DISPLAY_DEFAULT_BASEPOWER4, DISPLAY_DEFAULT_MOVE_TYPE4, DISPLAY_NONE, DISPLAY_NO, "0", "0"},
 	}
 
 	initialColIndex := firstEditableCol(columns)
@@ -100,7 +108,7 @@ func (m movesModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 			(*rowSettings)[data.row].isSet = true
 
 			// automatically fill move row only when move name changes
-			if msg.fieldID == "Move" {
+			if msg.fieldID == MOVE_COL_NAME {
 				m.fillMovesDefaults(data, msg.value)
 			}
 		} else {
@@ -145,7 +153,7 @@ func (m movesModel) Names(side Side, settings []moveRowSettings) []string {
 			continue
 		}
 
-		names = append(names, row[0])
+		names = append(names, row[MOVE_COL])
 	}
 
 	return names
@@ -163,28 +171,27 @@ func (m movesModel) requestInput(key, value string) tea.Cmd {
 	isNumeric := false
 
 	// TODO: maybe use SliceFROmMapValue somewhere before to not do this everytime again
-	// TODO: change to constants where its reasonable
 	switch key {
-	case "Move":
+	case MOVE_COL_NAME:
 		options = utils.SliceFromMapValue(m.data.Moves, func(m models.Move) string {
 			return m.Name
 		})
-	case "Base Power":
+	case BASE_POWER_COL_NAME:
 		isNumeric = true
-		min = 0
+		min = models.MOVE_BASE_POWER_MIN
 		// TODO: numeric input with only one limit => set sane limit?
-		max = 1000
-	case "Type":
+		max = models.MOVE_BASE_POWER_MAX
+	case TYPE_COL_NAME:
 		options = utils.SliceFromMapValue(m.data.Types, func(t models.Type) string {
 			return t.Name
 		})
-	case "Category":
-		options = []string{"Physical", "Special"}
-	case "Crit":
-		options = []string{"Yes", "No"}
-	case "Hits":
+	case CATEGORY_COL_NAME:
+		options = []string{DISPLAY_PHYSICAL_CATEGORY, DISPLAY_SPECIAL_CATEGORY}
+	case CRIT_COL_NAME:
+		options = []string{DISPLAY_YES, DISPLAY_NO}
+	case HITS_COL_NAME:
 		options = hitLabels(hitOptions)
-	case "Metr. Hits":
+	case METR_HITS_COL_NAME:
 		options = hitLabels(metronomeHitOptions)
 	}
 

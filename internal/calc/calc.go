@@ -19,7 +19,7 @@ type CalcData struct {
 	evs         *models.EvStats
 	level       int
 	health      int
-	dataType    CalcDataType
+	dataType    models.CalcDataType
 	status      StatusCondition
 	boosts      *models.Boosts
 	gender      *Gender

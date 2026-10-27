@@ -116,7 +116,7 @@ func (m fieldModel) FormatSideSettings() string {
 		titleStyle.Foreground(lipgloss.NoColor{})
 	}
 
-	title = "Sides"
+	title = FIELD_SIDES_TITLE
 
 	for _, s := range m.sides {
 		lines = append(lines, s.View())

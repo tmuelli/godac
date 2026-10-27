@@ -10,6 +10,13 @@ import (
 	"github.com/tmuelli/godac/internal/models"
 )
 
+const (
+	DISPLAY_TAB_NAME_BASICS = "Basics"
+	DISPLAY_TAB_NAME_STATS  = "Stats"
+	DISPLAY_TAB_NAME_MISC   = "Misc."
+	DISPLAY_TAB_NAME_MOVES  = "Moves"
+)
+
 type configKeyMap struct {
 	NextTab key.Binding
 	PrevTab key.Binding
@@ -45,7 +52,7 @@ type configModel struct {
 }
 
 func newConfigModel(s *styles, data *models.Data) configModel {
-	tabs := []string{"Basics", "Stats", "Misc.", "Moves"}
+	tabs := []string{DISPLAY_TAB_NAME_BASICS, DISPLAY_TAB_NAME_STATS, DISPLAY_TAB_NAME_MISC, DISPLAY_TAB_NAME_MOVES}
 	tabContent := []tabContent{
 		newBasicsModel(s, data),
 		newStatsModel(s, data),
@@ -131,12 +138,12 @@ func (m configModel) View(side Side) string {
 func (m configModel) Title(side Side) string {
 	var sideDesc string
 	if side == LeftSide {
-		sideDesc = "attacker"
+		sideDesc = string(models.Attacker)
 	} else {
-		sideDesc = "defender"
+		sideDesc = string(models.Defender)
 	}
 
-	return fmt.Sprintf("Configuration of %s\n", sideDesc)
+	return fmt.Sprintf("%s %s\n", CONFIG_TITLE, sideDesc)
 }
 
 func (m configModel) Body(side Side) string {

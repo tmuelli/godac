@@ -4,7 +4,6 @@ type StatKind string
 type MoveCategory string
 type IvOption string
 type EvOption string
-type CalcDataType string
 type StatusCondition string
 type Gender string
 
@@ -31,10 +30,6 @@ const (
 	EvOptimal   EvOption = "optimal"
 	EvWorstCase EvOption = "worstCase"
 	EvCustom    EvOption = "custom"
-
-	// calc data type
-	Attacker CalcDataType = "attacker"
-	Defender CalcDataType = "defender"
 
 	// status condition
 	NoneStatus    StatusCondition = "none"

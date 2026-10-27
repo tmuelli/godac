@@ -81,7 +81,7 @@ func (m fieldModel) FormatGeneralSettings() string {
 		titleStyle.Foreground(lipgloss.NoColor{})
 	}
 
-	title = "General"
+	title = FIELD_GENERAL_TITLE
 
 	for _, g := range m.general {
 		lines = append(lines, g.View())

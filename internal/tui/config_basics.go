@@ -74,7 +74,7 @@ func fillBasicDefaults(data *list, specie *models.Specie, calcData *models.Data)
 
 			// if no value is given => default to female
 			if value == "" {
-				value = DEFAULT_GENDER
+				value = DISPLAY_DEFAULT_GENDER
 			}
 		case TYPE1:
 			value = calcData.TypeName(specie.Types[0])

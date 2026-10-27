@@ -104,6 +104,9 @@ const (
 
 	EV_MIN = 0
 	EV_MAX = 252
+
+	BASE_MIN = 1
+	BASE_MAX = 255
 )
 
 func IsValidStats(statType StatType, stats BaseStats) bool {
@@ -381,6 +384,11 @@ func (i *Item) GetPlateBoostType() string {
 }
 
 /* Move */
+const (
+	MOVE_BASE_POWER_MIN = 0
+	MOVE_BASE_POWER_MAX = 1000
+)
+
 type MoveFlags struct {
 	Contact int `json:"contact"`
 	Bite    int `json:"bite"`
@@ -529,6 +537,14 @@ func (s Specie) Key() string {
 }
 
 /* Data */
+type CalcDataType string
+
+const (
+	// calc data type
+	Attacker CalcDataType = "attacker"
+	Defender CalcDataType = "defender"
+)
+
 type Data struct {
 	Abilities map[string]Ability
 	Items     map[string]Item

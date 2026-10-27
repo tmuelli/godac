@@ -1,6 +1,8 @@
 package tui
 
 import (
+	"strings"
+
 	"github.com/tmuelli/godac/internal/models"
 )
 
@@ -128,20 +130,21 @@ func (m configModel) Item(side Side) *string {
 func (m configModel) Status(side Side) *string {
 	misc := m.tabContent[miscTab].(fieldListModel)
 	status := misc.fields.Get(side).values[STATUS]
+	status = strings.ToLower(status)
 	return &status
 }
 
 func (m configModel) IvCustomStats(side Side) *models.IvStats {
 	stats := m.tabContent[statsTab].(statsModel)
-	values := stats.columnValues(side, 2)
+	values := stats.columnValues(side, IV_COL)
 	s := models.IvStats{
 		BaseStats: models.BaseStats{
-			Hp:  values["Hp"],
-			Atk: values["Atk"],
-			Def: values["Def"],
-			Spa: values["Spa"],
-			Spd: values["Spd"],
-			Spe: values["Spe"],
+			Hp:  values[DISPLAY_HP],
+			Atk: values[DISPLAY_ATK],
+			Def: values[DISPLAY_DEF],
+			Spa: values[DISPLAY_SPA],
+			Spd: values[DISPLAY_SPD],
+			Spe: values[DISPLAY_SPE],
 		},
 	}
 
@@ -150,15 +153,15 @@ func (m configModel) IvCustomStats(side Side) *models.IvStats {
 
 func (m configModel) EvCustomStats(side Side) *models.EvStats {
 	stats := m.tabContent[statsTab].(statsModel)
-	values := stats.columnValues(side, 3)
+	values := stats.columnValues(side, EV_COL)
 	s := models.EvStats{
 		BaseStats: models.BaseStats{
-			Hp:  values["Hp"],
-			Atk: values["Atk"],
-			Def: values["Def"],
-			Spa: values["Spa"],
-			Spd: values["Spd"],
-			Spe: values["Spe"],
+			Hp:  values[DISPLAY_HP],
+			Atk: values[DISPLAY_ATK],
+			Def: values[DISPLAY_DEF],
+			Spa: values[DISPLAY_SPA],
+			Spd: values[DISPLAY_SPD],
+			Spe: values[DISPLAY_SPE],
 		},
 	}
 
@@ -167,13 +170,13 @@ func (m configModel) EvCustomStats(side Side) *models.EvStats {
 
 func (m configModel) Boosts(side Side) models.UserInputBoosts {
 	stats := m.tabContent[statsTab].(statsModel)
-	values := stats.columnValues(side, 5)
+	values := stats.columnValues(side, BOOST_COL)
 	s := models.UserInputBoosts{
-		Atk: values["Atk"],
-		Def: values["Def"],
-		Spa: values["Spa"],
-		Spd: values["Spd"],
-		Spe: values["Spe"],
+		Atk: values[DISPLAY_ATK],
+		Def: values[DISPLAY_DEF],
+		Spa: values[DISPLAY_SPA],
+		Spd: values[DISPLAY_SPD],
+		Spe: values[DISPLAY_SPE],
 	}
 
 	return s
@@ -186,7 +189,7 @@ func (m configModel) Nature(side Side) string {
 
 func (m configModel) InputSide(side Side) string {
 	if side == LeftSide {
-		return "attacker"
+		return string(models.Attacker)
 	}
-	return "defender"
+	return string(models.Defender)
 }

@@ -194,7 +194,7 @@ func (d *CalcData) finalItemModifier(options models.ItemModifierOptions) (float6
 
 	case models.DamageExpertBelt:
 		// expert belt => only on attacker side
-		if d.dataType != Attacker || d.item.IsBerry {
+		if d.dataType != models.Attacker || d.item.IsBerry {
 			return 1.0, nil
 		}
 
@@ -209,7 +209,7 @@ func (d *CalcData) finalItemModifier(options models.ItemModifierOptions) (float6
 
 	case models.DamageBerry:
 		// Berry only — defender side
-		if !d.item.IsBerry || (d.dataType != Defender) {
+		if !d.item.IsBerry || (d.dataType != models.Defender) {
 			return 1.0, nil
 		}
 
