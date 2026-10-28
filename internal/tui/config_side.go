@@ -89,6 +89,54 @@ func (m configModel) MoveSettings(side Side) []moveRowSettings {
 	return moves.MoveRowSettings(side)
 }
 
+func (m configModel) Types(side Side) []string {
+	basics := m.tabContent[basicsTab].(fieldListModel)
+	values := basics.fields.Get(side).values
+
+	var ids []string
+	for _, key := range []string{TYPE1, TYPE2} {
+		// second type is empty if specie only has one type
+		if values[key] != "" {
+			ids = append(ids, m.data.TypeID(values[key]))
+		}
+	}
+
+	return ids
+}
+
+func (m configModel) MoveOverride(side Side, move string) *models.UserMoveOverride {
+	if move == "" {
+		return nil
+	}
+
+	moves := m.tabContent[movesTab].(movesModel)
+	data := moves.tab.Get(side)
+
+	for _, row := range data.rows {
+		if row[MOVE_COL] != move {
+			continue
+		}
+
+		basePower := atoiOrZero(row[BP_COL])
+		critical := row[CRIT_COL] == DISPLAY_YES
+
+		override := models.UserMoveOverride{
+			BasePower: &basePower,
+			Type:      m.data.TypeID(row[MOVE_TYPE_COL]),
+			Critical:  &critical,
+		}
+
+		// category is when move is chosen
+		if row[CATEGORY_COL] != DISPLAY_NONE {
+			override.Category = row[CATEGORY_COL]
+		}
+
+		return &override
+	}
+
+	return nil
+}
+
 func (m configModel) Hits(side Side, move string) *int {
 	moves := m.tabContent[movesTab].(movesModel)
 	data := moves.tab.Get(side)

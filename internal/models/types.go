@@ -20,27 +20,37 @@ type UserInputBoosts struct {
 	Spe int `json:"spe"`
 }
 
+/* Users custom overrides for moves */
+type UserMoveOverride struct {
+	BasePower *int   `json:"basePower"`
+	Type      string `json:"type"`
+	Category  string `json:"category"`
+	Critical  *bool  `json:"critical"`
+}
+
 /* User input */
 type UserInput struct {
-	Name          string          `json:"name"`
-	Level         int             `json:"level"`
-	Nature        string          `json:"nature"`
-	AttackMove    string          `json:"attackMove"`
-	Moves         []string        `json:"moves"`
-	HealthPercent int             `json:"healthPercent"`
-	IvSetting     string          `json:"ivSetting"`
-	IvCustom      *IvStats        `json:"ivCustom"`
-	EvSetting     string          `json:"evSetting"`
-	EvCustom      *EvStats        `json:"evCustom"`
-	Ability       string          `json:"ability"`
-	AbilityOn     *bool           `json:"abilityOn"`
-	Item          *string         `json:"item"`
-	Status        *string         `json:"status"`
-	Gender        *string         `json:"gender"`
-	Hits          *int            `json:"hits"`
-	MetronomeHits *int            `json:"metronome_hits"`
-	Boosts        UserInputBoosts `json:"boosts"`
-	InputSide     string          `json:"inputSide"`
+	Name          string            `json:"name"`
+	Level         int               `json:"level"`
+	Nature        string            `json:"nature"`
+	AttackMove    string            `json:"attackMove"`
+	Moves         []string          `json:"moves"`
+	HealthPercent int               `json:"healthPercent"`
+	IvSetting     string            `json:"ivSetting"`
+	IvCustom      *IvStats          `json:"ivCustom"`
+	EvSetting     string            `json:"evSetting"`
+	EvCustom      *EvStats          `json:"evCustom"`
+	Types         []string          `json:"types"`
+	MoveOverride  *UserMoveOverride `json:"moveOverride"`
+	Ability       string            `json:"ability"`
+	AbilityOn     *bool             `json:"abilityOn"`
+	Item          *string           `json:"item"`
+	Status        *string           `json:"status"`
+	Gender        *string           `json:"gender"`
+	Hits          *int              `json:"hits"`
+	MetronomeHits *int              `json:"metronome_hits"`
+	Boosts        UserInputBoosts   `json:"boosts"`
+	InputSide     string            `json:"inputSide"`
 }
 
 /* User field input */
@@ -586,6 +596,16 @@ func (d *Data) TypeNames() []string {
 
 func (d *Data) SpecieNames() []string {
 	return utils.SliceFromMapValue(d.Species, func(s Specie) string { return s.Name })
+}
+
+func (d *Data) TypeID(name string) string {
+	for id, t := range d.Types {
+		if t.Name == name {
+			return id
+		}
+	}
+
+	return name
 }
 
 func (d *Data) TypeName(id string) string {

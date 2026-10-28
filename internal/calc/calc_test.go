@@ -18,6 +18,7 @@ type testCase struct {
 	atkAbility   string // empty = first ability of the specie
 	atkAbilityOn *bool  // nil = default state of the ability
 	atkNature    string
+	atkTypes     []string // type ids, empty = types of the specie
 	atkIVs       models.IvStats
 	atkEVs       models.EvStats
 	atkBoosts    models.UserInputBoosts
@@ -25,12 +26,13 @@ type testCase struct {
 	atkHealth    int
 
 	// move
-	atkMove     string
-	atkMoves    []string
-	atkMoveCrit bool
-	hits        int // multihit move hit count, 0 = default
-	defMove     string
-	defMoves    []string
+	atkMove      string
+	atkMoves     []string
+	atkMoveCrit  bool
+	moveOverride *models.UserMoveOverride
+	hits         int // multihit move hit count, 0 = default
+	defMove      string
+	defMoves     []string
 
 	// defender
 	defSpecies   string
@@ -39,6 +41,7 @@ type testCase struct {
 	defAbility   string
 	defAbilityOn *bool
 	defNature    string
+	defTypes     []string
 	defIVs       models.IvStats
 	defEVs       models.EvStats
 	defBoosts    models.UserInputBoosts
@@ -138,6 +141,8 @@ func calcFor(t *testing.T, data *models.Data, tc testCase) *Calculation {
 		AbilityOn:     tc.atkAbilityOn,
 		Item:          atkItem,
 		Nature:        tc.atkNature,
+		Types:         tc.atkTypes,
+		MoveOverride:  tc.moveOverride,
 		EvSetting:     atkEvSetting,
 		EvCustom:      atkEvCustom,
 		IvSetting:     atkIvSetting,
@@ -159,6 +164,7 @@ func calcFor(t *testing.T, data *models.Data, tc testCase) *Calculation {
 		AbilityOn:     tc.defAbilityOn,
 		Item:          defItem,
 		Nature:        tc.defNature,
+		Types:         tc.defTypes,
 		EvSetting:     defEvSetting,
 		EvCustom:      defEvCustom,
 		IvSetting:     defIvSetting,
@@ -679,5 +685,130 @@ func TestAbilityInputValidation(t *testing.T) {
 
 	if _, err := validateInput(data, input("Not An Ability")); err == nil {
 		t.Errorf("unknown ability should be invalid")
+	}
+}
+
+// Expected values for the override cases come from the smogon calc (gen 4) with overrides set
+// on the pokemon / move. Removing a type can not be compared: the smogon overrides are merged
+// by index and can not drop the second type.
+func TestGen4TypeOverrides(t *testing.T) {
+	zard := testCase{
+		atkSpecies: "Charizard", atkNature: "Modest", atkEVs: ev(0, 0, 0, 252, 0, 0),
+		atkMove: "Flamethrower", atkMoves: []string{"Flamethrower"},
+		defSpecies: "Metagross", defNature: "Impish", defEVs: ev(252, 0, 252, 0, 0, 0),
+	}
+
+	bothTypes := zard
+	bothTypes.desc, bothTypes.defTypes = "Both defender types replaced (Water/Fire)", []string{"water", "fire"}
+	bothTypes.wantMin, bothTypes.wantMax = 41, 48
+
+	garchomp := testCase{
+		atkSpecies: "Garchomp", atkNature: "Adamant", atkEVs: ev(0, 252, 0, 0, 0, 0),
+		atkMove: "Flamethrower", atkMoves: []string{"Flamethrower"},
+		defSpecies: "Metagross", defNature: "Impish", defEVs: ev(252, 0, 252, 0, 0, 0),
+	}
+
+	noStab := garchomp
+	noStab.desc, noStab.wantMin, noStab.wantMax = "Fire move without Fire type has no STAB", 112, 134
+
+	stab := garchomp
+	stab.desc, stab.atkTypes = "Attacker with Fire as second type gets STAB", []string{"dragon", "fire"}
+	stab.wantMin, stab.wantMax = 168, 200
+
+	runTests(t, []testCase{
+		bothTypes,
+		noStab,
+		stab,
+		{
+			desc:       "Defender with one type gets a second type",
+			atkSpecies: "Starmie", atkNature: "Modest", atkEVs: ev(0, 0, 0, 252, 0, 0), atkMove: "Surf", atkMoves: []string{"Surf"},
+			defSpecies: "Chansey", defNature: "Hardy", defTypes: []string{"normal", "fire"},
+			wantMin: 272, wantMax: 324,
+		},
+	})
+}
+
+func TestGen4MoveOverrides(t *testing.T) {
+	bp, crit := 200, true
+
+	earthquake := testCase{
+		atkSpecies: "Garchomp", atkNature: "Adamant", atkEVs: ev(0, 252, 0, 0, 0, 0),
+		atkMove: "Earthquake", atkMoves: []string{"Earthquake"},
+		defSpecies: "Metagross", defNature: "Impish", defEVs: ev(252, 0, 252, 0, 0, 0),
+	}
+
+	override := func(desc string, o models.UserMoveOverride, min, max int) testCase {
+		tc := earthquake
+		tc.desc, tc.moveOverride, tc.wantMin, tc.wantMax = desc, &o, min, max
+		return tc
+	}
+
+	runTests(t, []testCase{
+		override("Base power 200 instead of 100", models.UserMoveOverride{BasePower: &bp}, 432, 510),
+		override("Move type Fire instead of Ground (no STAB, super effective)", models.UserMoveOverride{Type: "fire"}, 146, 172),
+		override("Critical hit", models.UserMoveOverride{Critical: &crit}, 438, 516),
+		{
+			desc:       "Shadow Ball as physical move uses Atk and Def",
+			atkSpecies: "Gengar", atkNature: "Modest", atkEVs: ev(0, 0, 0, 252, 0, 0),
+			atkMove: "Shadow Ball", atkMoves: []string{"Shadow Ball"},
+			moveOverride: &models.UserMoveOverride{Category: "Physical"},
+			defSpecies:   "Metagross", defNature: "Impish", defEVs: ev(252, 0, 252, 0, 0, 0),
+			wantMin: 33, wantMax: 40,
+		},
+	})
+}
+
+func TestGetTypesFromIDs(t *testing.T) {
+	data := loadTestData(t)
+
+	for _, ids := range [][]string{{"fire"}, {"fire", "flying"}} {
+		if _, err := getTypesFromIDs(data, ids); err != nil {
+			t.Errorf("types %v should be valid: %v", ids, err)
+		}
+	}
+
+	for _, ids := range [][]string{nil, {"nope"}, {"fire", "fire"}, {"fire", "water", "grass"}} {
+		if _, err := getTypesFromIDs(data, ids); err == nil {
+			t.Errorf("types %v should be invalid", ids)
+		}
+	}
+}
+
+func TestMoveOverrideValidation(t *testing.T) {
+	data := loadTestData(t)
+
+	tooHigh := models.MOVE_BASE_POWER_MAX + 1
+	valid := 100
+
+	input := func(o *models.UserMoveOverride) *models.UserInput {
+		return &models.UserInput{
+			Name: "Garchomp", Level: 100, Nature: "Hardy",
+			AttackMove: "Earthquake", Moves: []string{"Earthquake"}, MoveOverride: o,
+			EvSetting: "worstCase", IvSetting: "optimal", HealthPercent: 100,
+			InputSide: string(models.Attacker),
+		}
+	}
+
+	for desc, o := range map[string]*models.UserMoveOverride{
+		"no override":  nil,
+		"empty":        {},
+		"base power":   {BasePower: &valid},
+		"type":         {Type: "fire"},
+		"category":     {Category: "Special"},
+		"status moves": {Category: "Status"},
+	} {
+		if _, err := validateInput(data, input(o)); err != nil {
+			t.Errorf("%s should be valid: %v", desc, err)
+		}
+	}
+
+	for desc, o := range map[string]*models.UserMoveOverride{
+		"base power out of range": {BasePower: &tooHigh},
+		"unknown type":            {Type: "nope"},
+		"unknown category":        {Category: "Mystic"},
+	} {
+		if _, err := validateInput(data, input(o)); err == nil {
+			t.Errorf("%s should be invalid", desc)
+		}
 	}
 }

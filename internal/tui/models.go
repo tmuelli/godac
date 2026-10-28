@@ -40,6 +40,7 @@ const (
 
 	DISPLAY_PHYSICAL_CATEGORY = "Physical"
 	DISPLAY_SPECIAL_CATEGORY  = "Special"
+	DISPLAY_STATUS_CATEGORY   = "Status"
 
 	DISPLAY_YES = "Yes"
 	DISPLAY_NO  = "No"

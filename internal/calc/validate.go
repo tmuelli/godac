@@ -199,6 +199,43 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 
 			usedMove.Hits = *input.Hits
 		}
+
+		// check for custom user overrides for moves
+		if o := input.MoveOverride; o != nil {
+			// changed base power
+			if o.BasePower != nil {
+				if *o.BasePower < models.MOVE_BASE_POWER_MIN || *o.BasePower > models.MOVE_BASE_POWER_MAX {
+					return nil, fmt.Errorf("invalid input: Move base power %d is out of range", *o.BasePower)
+				}
+
+				usedMove.BasePower = *o.BasePower
+			}
+
+			// changed type
+			if o.Type != "" {
+				t, err := getTypeFromID(data, o.Type)
+				if err != nil {
+					return nil, err
+				}
+
+				usedMove.Type = t.ID
+			}
+
+			// changed category
+			if o.Category != "" {
+				switch MoveCategory(o.Category) {
+				case Physical, Special, Status:
+					usedMove.Category = o.Category
+				default:
+					return nil, fmt.Errorf("invalid input: Unknown move category %s", o.Category)
+				}
+			}
+
+			// changed critical hit
+			if o.Critical != nil {
+				usedMove.Critical = *o.Critical
+			}
+		}
 	}
 
 	// level
@@ -292,6 +329,14 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	specieTypes, err := getTypesFromSpecie(data, specie)
 	if err != nil {
 		return nil, fmt.Errorf("internal error: Couldnt get type to specie")
+	}
+
+	// check for user given type overridings for specie
+	if len(input.Types) != 0 {
+		specieTypes, err = getTypesFromIDs(data, input.Types)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// specie ability

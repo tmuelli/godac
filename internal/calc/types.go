@@ -137,6 +137,30 @@ func getTypesFromSpecie(data *models.Data, s *models.Specie) ([]*models.Type, er
 	return specieTypes, nil
 }
 
+func getTypesFromIDs(data *models.Data, ids []string) ([]*models.Type, error) {
+	// check for valid type numbers
+	if len(ids) < 1 || len(ids) > 2 {
+		return nil, fmt.Errorf("invalid input: A specie can only have one or two types, got %d", len(ids))
+	}
+
+	// check if both types are the same
+	if len(ids) == 2 && ids[0] == ids[1] {
+		return nil, fmt.Errorf("invalid input: Types must differ, got %s twice", ids[0])
+	}
+
+	var types []*models.Type
+	for _, id := range ids {
+		t, err := getTypeFromID(data, id)
+		if err != nil {
+			return nil, err
+		}
+
+		types = append(types, t)
+	}
+
+	return types, nil
+}
+
 func (d *CalcData) hasType(ids ...string) bool {
 	for _, t := range d.specieTypes {
 		if slices.Contains(ids, t.ID) {

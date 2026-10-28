@@ -201,6 +201,8 @@ func (m configModel) Input(side Side, reqInfo *calcRequestInfo) *models.UserInpu
 		IvCustom:      m.IvCustomStats(side),
 		EvSetting:     "custom",
 		EvCustom:      m.EvCustomStats(side),
+		Types:         m.Types(side),
+		MoveOverride:  m.MoveOverride(side, attackMove),
 		Ability:       m.Ability(side),
 		AbilityOn:     m.AbilityOn(side),
 		Item:          m.Item(side),

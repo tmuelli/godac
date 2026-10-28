@@ -2,11 +2,6 @@ TODOS:
 	- tui TODOS
 		- UI overhaul
 
-	CHECKS:
-		- input values override master data => move or specie has different type than default
-			- does this gets automatically implemented if default values are overridden, especially if input from tui gets parsed/converted?
-			- second specie type => maybe unable to set or handle if set and specie originally only has one type (see and compare with CHECKS)
-
 	FUTURE FEATURES:
 		- final dot accounting into damage calculation (specifically after calculation)
 		- loading and saving settings / calculation data etc.

@@ -178,7 +178,7 @@ func (m movesModel) requestInput(key, value string) tea.Cmd {
 	case TYPE_COL_NAME:
 		options = m.data.TypeNames()
 	case CATEGORY_COL_NAME:
-		options = []string{DISPLAY_PHYSICAL_CATEGORY, DISPLAY_SPECIAL_CATEGORY}
+		options = []string{DISPLAY_PHYSICAL_CATEGORY, DISPLAY_SPECIAL_CATEGORY, DISPLAY_STATUS_CATEGORY}
 	case CRIT_COL_NAME:
 		options = []string{DISPLAY_YES, DISPLAY_NO}
 	case HITS_COL_NAME:
@@ -215,6 +215,11 @@ func (m movesModel) fillMovesDefaults(data *gridData, moveName string) {
 			value = m.data.TypeName(moveData.Type)
 		case CATEGORY_COL:
 			value = moveData.Category
+		case CRIT_COL:
+			value = DISPLAY_NO
+			if moveData.Critical {
+				value = DISPLAY_YES
+			}
 		case HITS_COL:
 			value = DEFAULT_HITS
 		default:
