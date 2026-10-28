@@ -160,7 +160,7 @@ func (d *CalcData) effectiveStat(kind StatKind, usedMove *models.Move, hasOppone
 	// get item modifier
 	item, err := d.itemModifier(&kind, models.StatEffect, nil)
 	if err != nil {
-		// TODO: add to logging
+		// FUTURE FEATURES: add to logging
 		// fmt.Println("Error during calculating effective stat:", err)
 		return 0
 	}

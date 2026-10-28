@@ -30,7 +30,7 @@ func calcTypeModifier(moveType, defType *models.Type, canHitGhostType, isGravity
 
 	mod := moveType.Effectiveness[defType.ID]
 	// if !ok {
-	// 	// TODO: add to logging
+	// 	// FUTURE FEATURES: add to logging
 	// 	// fmt.Printf("Error trying to look up type %s in type map while trying to calc type modifier\n", defType.Name)
 	// }
 

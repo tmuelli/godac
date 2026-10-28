@@ -1,6 +1,4 @@
 TODOS:
-	- calculation TODOS
-		- add logging mechanism => and write to log files, maybe bind it to debug flag or something or detail level
 	- tui TODOS
 		- UI overhaul
 
@@ -16,3 +14,4 @@ TODOS:
 			- needs location support for non-competitive (online battle) terrain for the player
 		- convenience functions:
 			- setting max / min iv ev with shortcut
+		- add logging mechanism => and write to log files, maybe bind it to debug flag or something or detail level
