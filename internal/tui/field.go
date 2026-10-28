@@ -22,6 +22,7 @@ const (
 	DISPLAY_GENERAL_GROUP_LEVEL   = "Level"
 	DISPLAY_GENERAL_GROUP_MODE    = "BattleMode"
 	DISPLAY_GENERAL_GROUP_WEATHER = "Weather"
+	DISPLAY_GENERAL_GROUP_GRAVITY = "Gravity"
 )
 
 const (
@@ -56,6 +57,7 @@ const (
 	FieldBattleMode GeneralRow = iota
 	FieldLevel
 	FieldWeather
+	FieldGravity
 )
 
 type fieldKeyMap struct {
@@ -128,6 +130,7 @@ func newFieldModel(s *styles, data *models.Data) fieldModel {
 			string(models.Sand),
 			string(models.Hail),
 		}),
+		newGeneralGroup(s, DISPLAY_GENERAL_GROUP_GRAVITY, 0, []string{DISPLAY_OFF, DISPLAY_ON}),
 	}
 	general[FieldBattleMode].focused = true
 
@@ -263,11 +266,18 @@ func (m fieldModel) Input() *models.UserFieldInput {
 	// terrain
 	terrain := m.general[FieldWeather].Value()
 
+	// gravity
+	var gravity bool
+	gravitySetting := m.general[FieldGravity].Value()
+	if gravitySetting == DISPLAY_ON {
+		gravity = true
+	}
+
 	fieldInput := models.UserFieldInput{
 		Type:      fieldType,
 		Level:     level,
 		Terrain:   terrain,
-		IsGravity: false, // TODO implement later in field view
+		IsGravity: gravity,
 		Left:      *m.SideInput(LeftSide),
 		Right:     *m.SideInput(RightSide),
 	}

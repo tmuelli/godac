@@ -44,6 +44,9 @@ const (
 	DISPLAY_YES = "Yes"
 	DISPLAY_NO  = "No"
 
+	DISPLAY_ON  = "On"
+	DISPLAY_OFF = "Off"
+
 	DISPLAY_NONE = "None"
 
 	DISPLAY_HP  = "Hp"
