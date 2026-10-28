@@ -26,6 +26,7 @@ const (
 
 const (
 	FieldStealthRock = iota
+	FieldSpikes
 	FieldReflect
 	FieldLightScreen
 	FieldProtect
@@ -38,6 +39,7 @@ const (
 	FieldSwichtingOut
 
 	DISPLAY_STEALTH_ROCK  = "Stealth Rock"
+	DISPLAY_SPIKES        = "Spikes"
 	DISPLAY_REFLECT       = "Reflect"
 	DISPLAY_LIGHT_SCREEN  = "Light Screen"
 	DISPLAY_PROTECT       = "Protect"
@@ -86,7 +88,18 @@ type fieldModel struct {
 	data       *models.Data
 }
 
-// TODO: implement value getter for spikes
+func (m fieldModel) SideGroupLevel(label string, side Side) int {
+	level := 0
+
+	for _, s := range m.sides {
+		if s.label == label {
+			level = s.Level(side)
+		}
+	}
+
+	return level
+}
+
 func (m fieldModel) SideGroupValue(label string, side Side) bool {
 	value := false
 
@@ -118,10 +131,10 @@ func newFieldModel(s *styles, data *models.Data) fieldModel {
 	}
 	general[FieldBattleMode].focused = true
 
-	// TODO: add spikes settings
 	defaultSide := LeftSide
 	sides := []sidesGroup{
 		newSidesGroup(s, DISPLAY_STEALTH_ROCK, defaultSide, false, false),
+		newSpikesGroup(s, defaultSide),
 		newSidesGroup(s, DISPLAY_REFLECT, defaultSide, false, false),
 		newSidesGroup(s, DISPLAY_LIGHT_SCREEN, defaultSide, false, false),
 		newSidesGroup(s, DISPLAY_PROTECT, defaultSide, false, false),
@@ -224,8 +237,7 @@ func (m fieldModel) Body() string {
 func (m fieldModel) SideInput(side Side) *models.UserFieldSideInput {
 	input := models.UserFieldSideInput{
 		StealthRocks: m.SideGroupValue(DISPLAY_STEALTH_ROCK, side),
-		// TODO: implement value getter for spikes
-		Spikes:       0,
+		Spikes:       m.SideGroupLevel(DISPLAY_SPIKES, side),
 		Reflect:      m.SideGroupValue(DISPLAY_REFLECT, side),
 		LightScreen:  m.SideGroupValue(DISPLAY_LIGHT_SCREEN, side),
 		Protect:      m.SideGroupValue(DISPLAY_PROTECT, side),
