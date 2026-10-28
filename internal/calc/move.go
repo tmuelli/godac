@@ -44,16 +44,14 @@ func (c *Calculation) checkMultihitBoost(usedItems *models.MultihitItemUsage) {
 
 func (c *Calculation) moveBasePower(hitCount int) int {
 	basePower := c.attacker.usedMove.BasePower
-	atkHp := c.attacker.effectiveHpStat()
-	defHp := c.defender.effectiveHpStat()
 
 	switch c.attacker.usedMove.ID {
 	case "brine":
-		if float64(c.defender.health) <= float64(defHp/2) {
+		if (c.defender.currentHealth * 2) <= c.defender.maxHealth {
 			basePower *= 2
 		}
 	case "eruption", "waterspout":
-		basePower = int(math.Max(1, math.Floor(float64(basePower*c.attacker.health)/float64(atkHp))))
+		basePower = int(math.Max(1, math.Floor(float64(basePower*c.attacker.currentHealth)/float64(c.attacker.maxHealth))))
 	case "facade":
 		if c.attacker.status == BadlyPoisoned ||
 			c.attacker.status == Burned ||
@@ -62,7 +60,7 @@ func (c *Calculation) moveBasePower(hitCount int) int {
 			basePower *= 2
 		}
 	case "flail", "reversal":
-		perc := math.Floor(float64(64*c.attacker.health) / float64(atkHp))
+		perc := math.Floor(float64(64*c.attacker.currentHealth) / float64(c.attacker.maxHealth))
 		if perc <= 1 {
 			basePower = 200
 		} else if perc <= 5 {
@@ -121,7 +119,7 @@ func (c *Calculation) moveBasePower(hitCount int) int {
 		// FEATURE IN FUTURE: implement terrain check for naturepower => base power is 80 if terrain is not clear
 		basePower = 80
 	case "crushgrip", "wringout":
-		basePower = int(math.Floor(float64(c.defender.health*120)/float64(defHp)) + 1)
+		basePower = int(math.Floor(float64(c.defender.currentHealth*120)/float64(c.defender.maxHealth)) + 1)
 	case "triplekick":
 		basePower = hitCount * 10
 	case "weatherball":
@@ -169,8 +167,7 @@ func (c *Calculation) modifiedMovePower(basePower float64) (float64, error) {
 	}
 
 	// ability overgrow, blaze, torrent, swarm
-	atkHp := c.attacker.effectiveHpStat()
-	if float64(c.attacker.health) <= float64(atkHp/3) {
+	if float64(c.attacker.currentHealth*3) <= float64(c.attacker.maxHealth) {
 		if (c.attacker.hasAbility("overgrow") && c.attacker.usedMove.HasType("grass")) ||
 			(c.attacker.hasAbility("blaze") && c.attacker.usedMove.HasType("fire")) ||
 			(c.attacker.hasAbility("torrent") && c.attacker.usedMove.HasType("water")) ||

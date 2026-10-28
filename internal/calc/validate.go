@@ -2,6 +2,7 @@ package calc
 
 import (
 	"fmt"
+	"math"
 
 	"github.com/tmuelli/godac/internal/models"
 )
@@ -344,21 +345,28 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 
 	// successful validation of user input
 	calcData := CalcData{
-		specie:      specie,
-		specieTypes: specieTypes,
-		level:       input.Level,
-		health:      input.HealthPercent,
-		nature:      nature,
-		ability:     ability,
-		item:        item,
-		usedMove:    usedMove,
-		ivs:         ivSettings,
-		evs:         evSettings,
-		status:      statusCon,
-		boosts:      &boosts,
-		gender:      &gender,
-		dataType:    calcType,
-		metrHits:    metronomeHits,
+		specie:        specie,
+		specieTypes:   specieTypes,
+		level:         input.Level,
+		percentHealth: input.HealthPercent,
+		currentHealth: 0,
+		maxHealth:     0,
+		nature:        nature,
+		ability:       ability,
+		item:          item,
+		usedMove:      usedMove,
+		ivs:           ivSettings,
+		evs:           evSettings,
+		status:        statusCon,
+		boosts:        &boosts,
+		gender:        &gender,
+		dataType:      calcType,
+		metrHits:      metronomeHits,
 	}
+
+	// absolute health from percentage
+	calcData.maxHealth = calcData.effectiveHpStat()
+	calcData.currentHealth = max(1, int(math.Round(float64(calcData.percentHealth)*float64(calcData.maxHealth)/100)))
+
 	return &calcData, nil
 }

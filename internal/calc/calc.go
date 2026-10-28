@@ -9,21 +9,23 @@ import (
 )
 
 type CalcData struct {
-	specie      *models.Specie
-	specieTypes []*models.Type
-	nature      *models.Nature
-	ability     *models.Ability
-	item        *models.Item
-	usedMove    *models.Move
-	ivs         *models.IvStats
-	evs         *models.EvStats
-	level       int
-	health      int
-	dataType    models.CalcDataType
-	status      StatusCondition
-	boosts      *models.Boosts
-	gender      *Gender
-	metrHits    int
+	specie        *models.Specie
+	specieTypes   []*models.Type
+	nature        *models.Nature
+	ability       *models.Ability
+	item          *models.Item
+	usedMove      *models.Move
+	ivs           *models.IvStats
+	evs           *models.EvStats
+	level         int
+	percentHealth int
+	currentHealth int
+	maxHealth     int
+	dataType      models.CalcDataType
+	status        StatusCondition
+	boosts        *models.Boosts
+	gender        *Gender
+	metrHits      int
 }
 
 type Calculation struct {
@@ -91,7 +93,7 @@ func (c *Calculation) Calc() error {
 
 	// handle pain split
 	if c.attacker.usedMove.ID == "painsplit" {
-		dmg := c.attacker.usedMove.HandlePainSplit(c.attacker.health, c.defender.health)
+		dmg := c.attacker.usedMove.HandlePainSplit(c.attacker.currentHealth, c.defender.currentHealth)
 		c.Result.Range = models.BattleResultRange{
 			Min:     dmg,
 			Max:     dmg,
