@@ -236,7 +236,7 @@ func (a *Ability) IsPreventingDamage(move *Move, defItem *Item, typeEffectivness
 		(move.HasType("fire") && a.Id == "flashfire") ||
 		(move.HasType("water") && (a.Id == "dryskin" || a.Id == "waterabsorb")) ||
 		(move.HasType("electric") && (a.Id == "motordrive" || a.Id == "voltabsorb")) ||
-		(move.HasType("ground") && !isGravity && defItem != nil && defItem.Id != "ironball" && a.Id == "levitate") ||
+		(move.HasType("ground") && !isGravity && (defItem == nil || defItem.Id != "ironball") && a.Id == "levitate") ||
 		(move.Flags.Sound != 0 && a.Id == "soundproof") {
 		return true
 	}
