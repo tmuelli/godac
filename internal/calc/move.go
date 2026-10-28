@@ -97,12 +97,12 @@ func (c *Calculation) moveBasePower(hitCount int) int {
 		}
 	case "gyroball":
 		atkSpeed := c.attacker.effectiveSpeedStat(c.field)
-		defSpeed := c.attacker.effectiveSpeedStat(c.field)
+		defSpeed := c.defender.effectiveSpeedStat(c.field)
 
 		basePower = int(math.Min(150.0, math.Floor(float64((25*defSpeed)/atkSpeed))))
 	case "payback":
 		atkSpeed := c.attacker.effectiveSpeedStat(c.field)
-		defSpeed := c.attacker.effectiveSpeedStat(c.field)
+		defSpeed := c.defender.effectiveSpeedStat(c.field)
 
 		if defSpeed >= atkSpeed {
 			basePower *= 2
