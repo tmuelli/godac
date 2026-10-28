@@ -276,7 +276,7 @@ func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 	// check weather
 	weatherMod = c.weatherModifier()
 
-	if c.attacker.hasAbility("flashfire") && c.attacker.usedMove.HasType("fire") {
+	if c.attacker.hasAbilityOn("flashfire") && c.attacker.usedMove.HasType("fire") {
 		flashFireMod = 1.5
 	}
 

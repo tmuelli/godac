@@ -296,12 +296,30 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 
 	// specie ability
 	var ability *models.Ability
-	ability, err = getAbilityFromSpecie(data, specie)
-	if err != nil {
-		return nil, fmt.Errorf("internal error: Couldnt get ability to specie")
+
+	// if no ability is given from the user => the default ability of the specie is used
+	if input.Ability != "" {
+		a, ok := data.Abilities[input.Ability]
+		if !ok {
+			return nil, fmt.Errorf("invalid input: Unknown ability %s", input.Ability)
+		}
+
+		ability = &a
+	} else {
+		ability, err = getAbilityFromSpecie(data, specie)
+		if err != nil {
+			return nil, fmt.Errorf("internal error: Couldnt get ability to specie")
+		}
 	}
+
 	// initial abilities are always active
 	ability.Active = true
+
+	// toggle ability defaults
+	ability.On = models.TogglableAbilities[ability.Id]
+	if input.AbilityOn != nil {
+		ability.On = *input.AbilityOn
+	}
 
 	// item
 	var item *models.Item

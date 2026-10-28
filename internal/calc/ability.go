@@ -33,3 +33,7 @@ func getAbilityFromSpecie(data *models.Data, s *models.Specie) (*models.Ability,
 func (d *CalcData) hasAbility(ids ...string) bool {
 	return d.ability.Active && slices.Contains(ids, d.ability.Id)
 }
+
+func (d *CalcData) hasAbilityOn(ids ...string) bool {
+	return d.hasAbility(ids...) && d.ability.On
+}

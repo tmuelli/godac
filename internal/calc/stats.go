@@ -90,17 +90,17 @@ func (d *CalcData) effectiveSpeedStat(field *models.Field) int {
 		speedMods = append(speedMods, SPEED_MOD_2X)
 	}
 
-	if d.hasAbility("unburden") ||
+	if d.hasAbilityOn("unburden") ||
 		(d.hasAbility("chlorophyll") && field.Terrain == models.Sun) ||
 		(d.hasAbility("swiftswim") && field.Terrain == models.Rain) {
 		speedMods = append(speedMods, SPEED_MOD_2X)
 	} else if d.hasAbility("quickfeet") && d.status != NoneStatus {
 		speedMods = append(speedMods, SPEED_MOD_1_5X)
-	} else if d.hasAbility("slowstart") {
+	} else if d.hasAbilityOn("slowstart") {
 		speedMods = append(speedMods, SPEED_MOD_0_5X)
 	}
 
-	if !d.hasAbility("unburden") {
+	if !d.hasAbilityOn("unburden") {
 		if d.hasItem("choicescarf") {
 			speedMods = append(speedMods, SPEED_MOD_1_5X)
 		} else if d.hasItem(append([]string{"ironball"}, getEVItems()...)...) {
@@ -200,9 +200,9 @@ func (d *CalcData) modifiedStat(kind StatKind, hasOpponentUnaware bool, usedMove
 		} else if (field.Terrain == models.Sun) && ((isPhysical && d.hasAbility("flowergift")) || (!isPhysical && d.hasAbility("solarpower"))) {
 			statValue = math.Floor(statValue * 1.5)
 		} else if (isPhysical && (d.hasAbility("hustle") || (d.hasAbility("guts") && d.status != NoneStatus))) ||
-			(!isPhysical && (d.hasAbility("plus", "minus"))) {
+			(!isPhysical && (d.hasAbilityOn("plus", "minus"))) {
 			statValue = math.Floor(statValue * 1.5)
-		} else if isPhysical && d.hasAbility("slowstart") {
+		} else if isPhysical && d.hasAbilityOn("slowstart") {
 			statValue = math.Floor(statValue / 2)
 		}
 

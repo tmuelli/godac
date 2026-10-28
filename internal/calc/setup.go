@@ -42,7 +42,7 @@ func (c *Calculation) handleForecast(side *CalcData) error {
 func (c *Calculation) handleItem(source *CalcData, target *CalcData) error {
 	blockAbilities := []string{"clearbody", "whitesmoke", "hypercutter"}
 
-	if source.hasAbility("intimidate") && !target.hasAbility(blockAbilities...) {
+	if source.hasAbilityOn("intimidate") && !target.hasAbility(blockAbilities...) {
 		if target.hasAbility("simple") {
 			target.boosts.Atk.Set(-2)
 		} else {

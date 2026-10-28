@@ -14,7 +14,8 @@ import (
 
 const (
 	NATURE         = "Nature"
-	ABILITIY       = "Abiltiy"
+	ABILITY        = "Ability"
+	ABILITY_ON     = "Ability On"
 	ITEM           = "Item"
 	STATUS         = "Status"
 	HEALTH         = "Health"
@@ -51,7 +52,15 @@ type miscModel struct {
 
 var miscSpecs = []fieldSpec{
 	{key: NATURE, options: func(d *models.Data) []string { return d.NatureNames() }},
-	{key: ABILITIY, options: func(d *models.Data) []string { return d.AbilityNames() }},
+	{
+		key:     ABILITY,
+		options: func(d *models.Data) []string { return d.AbilityNames() },
+		onConfirm: func(data *list, value string, d *models.Data) tea.Cmd {
+			setAbilityOn(data, d, value)
+			return nil
+		},
+	},
+	{key: ABILITY_ON, isToggle: true},
 	{
 		key:     ITEM,
 		options: func(d *models.Data) []string { return d.ItemNames() },
@@ -79,7 +88,7 @@ func newMiscModel(s *styles, data *models.Data) miscModel {
 	model := newFieldListModel(s, data, miscSpecs)
 	model.customUpdate = func(msg tea.Msg, data *list, d *models.Data) (tea.Cmd, bool) {
 		if customMsg, ok := msg.(autoFillForSpecieRequestMsg); ok {
-			fillMiscDefaults(data, customMsg.specie)
+			fillMiscDefaults(data, customMsg.specie, d)
 			return nil, true
 		}
 		return nil, false
@@ -144,7 +153,7 @@ func (m *miscModel) setMaxHP(side Side, maxHP int) {
 	list.SetValue(HEALTH, fmt.Sprintf("%d", percentToHealth(healthPercent(*list), maxHP)))
 }
 
-func fillMiscDefaults(data *list, specie *models.Specie) {
+func fillMiscDefaults(data *list, specie *models.Specie, d *models.Data) {
 	if specie == nil {
 		// internal error
 		return
@@ -153,8 +162,11 @@ func fillMiscDefaults(data *list, specie *models.Specie) {
 	for k := range data.values {
 		var value string
 		switch k {
-		case ABILITIY:
+		case ABILITY:
 			value = specie.Abilities["0"]
+		case ABILITY_ON:
+			setAbilityOn(data, d, specie.Abilities["0"])
+			continue
 		case STATUS:
 			value = DISPLAY_STATUS_HEALTHY
 		case HEALTH_PERCENT:
@@ -173,4 +185,30 @@ func percentToHealth(perc, maxHP int) int {
 
 func healthToPercent(hp, maxHP int) int {
 	return max(1, int(math.Ceil(float64(hp)*100/float64(maxHP))))
+}
+
+// default display value for toggle abilities => empty for abilities without toggle
+func abilityOnValue(d *models.Data, abilityName string) string {
+	ability, ok := d.Abilities[abilityName]
+	if !ok {
+		return ""
+	}
+
+	defaultOn, hasToggle := models.TogglableAbilities[ability.Id]
+	if !hasToggle {
+		return ""
+	}
+
+	if defaultOn {
+		return DISPLAY_YES
+	}
+
+	return DISPLAY_NO
+}
+
+// reset toggle row to abilities default
+func setAbilityOn(data *list, d *models.Data, abilityName string) {
+	value := abilityOnValue(d, abilityName)
+	data.SetValue(ABILITY_ON, value)
+	data.SetHidden(ABILITY_ON, value == "")
 }

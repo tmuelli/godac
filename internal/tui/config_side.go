@@ -126,6 +126,28 @@ func (m configModel) HealthPercent(side Side) int {
 	return healthPercent(misc.fields.Get(side))
 }
 
+func (m configModel) Ability(side Side) string {
+	misc := m.tabContent[miscTab].(miscModel)
+	return misc.fields.Get(side).values[ABILITY]
+}
+
+func (m configModel) AbilityOn(side Side) *bool {
+	misc := m.tabContent[miscTab].(miscModel)
+
+	var on bool
+	switch misc.fields.Get(side).values[ABILITY_ON] {
+	case DISPLAY_YES:
+		on = true
+	case DISPLAY_NO:
+		on = false
+	default:
+		// not togglable
+		return nil
+	}
+
+	return &on
+}
+
 func (m configModel) Item(side Side) *string {
 	misc := m.tabContent[miscTab].(miscModel)
 	item := misc.fields.Get(side).values[ITEM]

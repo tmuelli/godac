@@ -12,6 +12,7 @@ type list struct {
 	values      map[string]string
 	options     []string
 	activeIndex int
+	hidden      map[string]bool
 }
 
 func (l *list) SetValue(fieldID, value string) {
@@ -19,24 +20,50 @@ func (l *list) SetValue(fieldID, value string) {
 }
 
 func (l *list) SetActiveRow(rowIndex int) {
-	l.activeIndex = max(0, min(l.activeIndex+rowIndex, len(l.options)-1))
+	i := l.activeIndex
+	for {
+		i += rowIndex
+
+		if i < 0 || i >= len(l.options) {
+			return
+		}
+
+		if !l.hidden[l.options[i]] {
+			l.activeIndex = i
+			return
+		}
+	}
+}
+
+func (l *list) SetHidden(fieldID string, hidden bool) {
+	l.hidden[fieldID] = hidden
+
+	if l.hidden[l.options[l.activeIndex]] {
+		l.SetActiveRow(-1)
+	}
 }
 
 func renderList(l list, s *styles) string {
 	var lines []string
+	var optionsIndexes []int
 	maxLineWidth := 0
 
-	// get max width and fill lines
-	for _, o := range l.options {
+	// get max width and fill lines => hidden rows are not rendered
+	for i, o := range l.options {
+		if l.hidden[o] {
+			continue
+		}
+
 		line := o + ": " + "[" + l.values[o] + "]"
 		maxLineWidth = max(maxLineWidth, len(line))
 		lines = append(lines, line)
+		optionsIndexes = append(optionsIndexes, i)
 	}
 
 	var styledLines []string
 	for i, line := range lines {
 		style := lipgloss.NewStyle().Width(maxLineWidth + 20)
-		if i == l.activeIndex {
+		if optionsIndexes[i] == l.activeIndex {
 			style = style.Bold(true)
 		}
 		styledLines = append(styledLines, style.Render(line))
@@ -53,6 +80,7 @@ type fieldSpec struct {
 	max          int
 	options      func(*models.Data) []string
 	defaultValue string
+	isToggle     bool
 	onConfirm    func(data *list, value string, d *models.Data) tea.Cmd
 }
 
@@ -75,8 +103,8 @@ func newFieldListModel(s *styles, data *models.Data, specs []fieldSpec) fieldLis
 
 	return fieldListModel{
 		fields: side[list]{
-			left:  list{values: maps.Clone(template), options: options, activeIndex: 0},
-			right: list{values: maps.Clone(template), options: options, activeIndex: 0},
+			left:  list{values: maps.Clone(template), options: options, activeIndex: 0, hidden: map[string]bool{}},
+			right: list{values: maps.Clone(template), options: options, activeIndex: 0, hidden: map[string]bool{}},
 		},
 		specs:  specs,
 		styles: s,
@@ -126,6 +154,11 @@ func (m fieldListModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 			data.SetActiveRow(1)
 		case key.Matches(msg, globalKeys.Confirm):
 			key := data.options[data.activeIndex]
+
+			if spec := m.specForKey(key); spec.isToggle {
+				return m, m.toggle(data, spec)
+			}
+
 			value := data.values[key]
 			return m, m.requestInput(key, value)
 		}
@@ -136,6 +169,26 @@ func (m fieldListModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 
 func (m fieldListModel) View(side Side) string {
 	return renderList(m.fields.Get(side), m.styles)
+}
+
+func (m fieldListModel) toggle(data *list, spec fieldSpec) tea.Cmd {
+	next := ""
+	switch data.values[spec.key] {
+	case DISPLAY_YES:
+		next = DISPLAY_NO
+	case DISPLAY_NO:
+		next = DISPLAY_YES
+	default:
+		return nil
+	}
+
+	data.SetValue(spec.key, next)
+
+	if spec.onConfirm != nil {
+		return spec.onConfirm(data, next, m.data)
+	}
+
+	return nil
 }
 
 func (m fieldListModel) requestInput(key, value string) tea.Cmd {

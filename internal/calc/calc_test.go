@@ -12,15 +12,17 @@ type testCase struct {
 	desc string // human readable, e.g. "Gengar Shadow Ball vs Blissey"
 
 	// attacker
-	atkSpecies string
-	atkLevel   int
-	atkItem    string
-	atkNature  string
-	atkIVs     models.IvStats
-	atkEVs     models.EvStats
-	atkBoosts  models.UserInputBoosts
-	atkStatus  string
-	atkHealth  int
+	atkSpecies   string
+	atkLevel     int
+	atkItem      string
+	atkAbility   string // empty = first ability of the specie
+	atkAbilityOn *bool  // nil = default state of the ability
+	atkNature    string
+	atkIVs       models.IvStats
+	atkEVs       models.EvStats
+	atkBoosts    models.UserInputBoosts
+	atkStatus    string
+	atkHealth    int
 
 	// move
 	atkMove     string
@@ -31,14 +33,16 @@ type testCase struct {
 	defMoves    []string
 
 	// defender
-	defSpecies string
-	defLevel   int
-	defItem    string
-	defNature  string
-	defIVs     models.IvStats
-	defEVs     models.EvStats
-	defBoosts  models.UserInputBoosts
-	defHealth  int
+	defSpecies   string
+	defLevel     int
+	defItem      string
+	defAbility   string
+	defAbilityOn *bool
+	defNature    string
+	defIVs       models.IvStats
+	defEVs       models.EvStats
+	defBoosts    models.UserInputBoosts
+	defHealth    int
 
 	// field
 	fieldType   string
@@ -130,6 +134,8 @@ func calcFor(t *testing.T, data *models.Data, tc testCase) *Calculation {
 	atkInput := &models.UserInput{
 		Name:          tc.atkSpecies,
 		Level:         atkLevel,
+		Ability:       tc.atkAbility,
+		AbilityOn:     tc.atkAbilityOn,
 		Item:          atkItem,
 		Nature:        tc.atkNature,
 		EvSetting:     atkEvSetting,
@@ -149,6 +155,8 @@ func calcFor(t *testing.T, data *models.Data, tc testCase) *Calculation {
 	defInput := &models.UserInput{
 		Name:          tc.defSpecies,
 		Level:         defLevel,
+		Ability:       tc.defAbility,
+		AbilityOn:     tc.defAbilityOn,
 		Item:          defItem,
 		Nature:        tc.defNature,
 		EvSetting:     defEvSetting,
@@ -530,5 +538,146 @@ func TestGen4TripleKickHits(t *testing.T) {
 	// reported range is the first hit
 	if first := calc.Result.DmgMatrix[0]; calc.Result.Range.Min != first[0] || calc.Result.Range.Max != first[15] {
 		t.Errorf("range %d-%d should match first hit %d-%d", calc.Result.Range.Min, calc.Result.Range.Max, first[0], first[15])
+	}
+}
+
+// Expected values for the ability cases come from the smogon calc (gen 4), except intimidate:
+// smogon calc ignores intimidate in gen 4, so the expectation is the same attack with -1 attack.
+func TestGen4AbilityInput(t *testing.T) {
+	on, off := true, false
+
+	// target for the toggle ability cases
+	metagross := testCase{defSpecies: "Metagross", defNature: "Impish", defEVs: ev(252, 0, 252, 0, 0, 0)}
+
+	flashFire := func(desc string, abilityOn *bool, min, max int) testCase {
+		tc := metagross
+		tc.desc = desc
+		tc.atkSpecies, tc.atkNature, tc.atkEVs = "Heatran", "Modest", ev(0, 0, 0, 252, 0, 0)
+		tc.atkMove, tc.atkMoves = "Eruption", []string{"Eruption"}
+		tc.atkAbilityOn = abilityOn
+		tc.wantMin, tc.wantMax = min, max
+		return tc
+	}
+
+	plus := func(desc string, abilityOn *bool, min, max int) testCase {
+		return testCase{
+			desc:       desc,
+			atkSpecies: "Plusle", atkNature: "Modest", atkEVs: ev(0, 0, 0, 252, 0, 0), atkAbilityOn: abilityOn,
+			atkMove: "Thunderbolt", atkMoves: []string{"Thunderbolt"},
+			defSpecies: "Starmie", defNature: "Bold", defEVs: ev(252, 0, 0, 0, 252, 0),
+			wantMin: min, wantMax: max,
+		}
+	}
+
+	slowStart := func(desc string, abilityOn *bool, min, max int) testCase {
+		tc := metagross
+		tc.desc = desc
+		tc.atkSpecies, tc.atkNature, tc.atkEVs = "Regigigas", "Adamant", ev(0, 252, 0, 0, 0, 0)
+		tc.atkMove, tc.atkMoves = "Facade", []string{"Facade"}
+		tc.atkAbilityOn = abilityOn
+		tc.wantMin, tc.wantMax = min, max
+		return tc
+	}
+
+	// unburden doubles the speed of the attacker, which halves the base power of gyro ball
+	unburden := func(desc string, abilityOn *bool, min, max int) testCase {
+		return testCase{
+			desc:       desc,
+			atkSpecies: "Metagross", atkNature: "Brave", atkEVs: ev(0, 252, 0, 0, 0, 0), atkAbility: "Unburden", atkAbilityOn: abilityOn,
+			atkMove: "Gyro Ball", atkMoves: []string{"Gyro Ball"},
+			defSpecies: "Garchomp", defNature: "Adamant", defEVs: ev(0, 252, 0, 0, 0, 0),
+			wantMin: min, wantMax: max,
+		}
+	}
+
+	// the defender intimidates the attacker, which lowers the attack of the attacker by one stage
+	intimidate := func(desc string, abilityOn *bool, min, max int) testCase {
+		return testCase{
+			desc:       desc,
+			atkSpecies: "Garchomp", atkNature: "Adamant", atkEVs: ev(0, 252, 0, 0, 0, 0),
+			atkMove: "Earthquake", atkMoves: []string{"Earthquake"},
+			defSpecies: "Metagross", defNature: "Impish", defEVs: ev(252, 0, 252, 0, 0, 0), defAbility: "Intimidate", defAbilityOn: abilityOn,
+			wantMin: min, wantMax: max,
+		}
+	}
+
+	runTests(t, []testCase{
+		{
+			desc:       "Technician boosts moves up to 60 base power",
+			atkSpecies: "Scizor", atkAbility: "Technician", atkNature: "Hardy",
+			atkMove: "Bug Bite", atkMoves: []string{"Bug Bite"},
+			defSpecies: "Chansey", defNature: "Hardy",
+			wantMin: 621, wantMax: 732,
+		},
+		{
+			desc:       "Specie default ability is used without ability input",
+			atkSpecies: "Scizor", atkNature: "Hardy",
+			atkMove: "Bug Bite", atkMoves: []string{"Bug Bite"},
+			defSpecies: "Chansey", defNature: "Hardy",
+			wantMin: 415, wantMax: 489,
+		},
+		{
+			desc:       "Pinsir Hyper Cutter Earthquake vs Levitate",
+			atkSpecies: "Pinsir", atkItem: "Choice Band", atkNature: "Adamant", atkEVs: ev(0, 252, 0, 0, 0, 0),
+			atkMove: "Earthquake", atkMoves: []string{"Earthquake"},
+			defSpecies: "Gengar", defItem: "Choice Specs", defNature: "Timid", defEVs: ev(0, 0, 0, 252, 0, 0), defBoosts: models.UserInputBoosts{Spa: 1},
+			wantMin: 0, wantMax: 0,
+		},
+		{
+			desc:       "Mold Breaker ignores Levitate (smogon calc test)",
+			atkSpecies: "Pinsir", atkItem: "Choice Band", atkAbility: "Mold Breaker", atkNature: "Adamant", atkEVs: ev(0, 252, 0, 0, 0, 0),
+			atkMove: "Earthquake", atkMoves: []string{"Earthquake"},
+			defSpecies: "Gengar", defItem: "Choice Specs", defNature: "Timid", defEVs: ev(0, 0, 0, 252, 0, 0), defBoosts: models.UserInputBoosts{Spa: 1},
+			wantMin: 528, wantMax: 622,
+		},
+		flashFire("Flash Fire off by default", nil, 588, 692),
+		flashFire("Flash Fire off", &off, 588, 692),
+		flashFire("Flash Fire on", &on, 878, 1034),
+		plus("Plus off by default", nil, 224, 266),
+		plus("Plus on", &on, 338, 398),
+		slowStart("Slow Start on by default", nil, 22, 27),
+		slowStart("Slow Start off", &off, 44, 52),
+		unburden("Unburden off by default", nil, 72, 85),
+		unburden("Unburden on", &on, 36, 43),
+		intimidate("Intimidate on by default", nil, 144, 170),
+		intimidate("Intimidate on", &on, 144, 170),
+		intimidate("Intimidate off", &off, 218, 258),
+	})
+}
+
+// needs the type boost of plates in items.json (move effect with the plate type)
+func TestGen4PlateWithTechnician(t *testing.T) {
+	runTests(t, []testCase{
+		{
+			desc:       "Technician boost applies before the item boost (smogon calc test)",
+			atkSpecies: "Scizor", atkItem: "Insect Plate", atkAbility: "Technician", atkNature: "Hardy",
+			atkMove: "Bug Bite", atkMoves: []string{"Bug Bite"},
+			defSpecies: "Chansey", defNature: "Hardy",
+			wantMin: 745, wantMax: 877,
+		},
+	})
+}
+
+func TestAbilityInputValidation(t *testing.T) {
+	data := loadTestData(t)
+
+	input := func(ability string) *models.UserInput {
+		return &models.UserInput{
+			Name: "Metagross", Level: 100, Nature: "Hardy", Ability: ability,
+			EvSetting: "worstCase", IvSetting: "optimal", HealthPercent: 100,
+			InputSide: string(models.Defender),
+		}
+	}
+
+	if _, err := validateInput(data, input("Technician")); err != nil {
+		t.Errorf("known ability should be valid: %v", err)
+	}
+
+	if _, err := validateInput(data, input("")); err != nil {
+		t.Errorf("empty ability should fall back to the specie ability: %v", err)
+	}
+
+	if _, err := validateInput(data, input("Not An Ability")); err == nil {
+		t.Errorf("unknown ability should be invalid")
 	}
 }

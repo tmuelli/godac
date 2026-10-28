@@ -32,6 +32,8 @@ type UserInput struct {
 	IvCustom      *IvStats        `json:"ivCustom"`
 	EvSetting     string          `json:"evSetting"`
 	EvCustom      *EvStats        `json:"evCustom"`
+	Ability       string          `json:"ability"`
+	AbilityOn     *bool           `json:"abilityOn"`
 	Item          *string         `json:"item"`
 	Status        *string         `json:"status"`
 	Gender        *string         `json:"gender"`
@@ -211,11 +213,21 @@ func (b *Boosts) Get(stat string) int {
 }
 
 /* Ability */
+var TogglableAbilities = map[string]bool{
+	"flashfire":  false,
+	"plus":       false,
+	"minus":      false,
+	"unburden":   false,
+	"slowstart":  true,
+	"intimidate": true,
+}
+
 type Ability struct {
 	Kind   string
 	Id     string
 	Name   string
 	Active bool
+	On     bool
 }
 
 func (a Ability) Key() string {
