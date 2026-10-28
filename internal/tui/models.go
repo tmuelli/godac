@@ -47,6 +47,8 @@ const (
 	DISPLAY_ON  = "On"
 	DISPLAY_OFF = "Off"
 
+	DISPLAY_HIT = "hit"
+
 	DISPLAY_NONE = "None"
 
 	DISPLAY_HP  = "Hp"

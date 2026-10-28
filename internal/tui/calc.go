@@ -2,6 +2,8 @@ package tui
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 
 	"charm.land/bubbles/v2/key"
 	"charm.land/bubbles/v2/table"
@@ -42,10 +44,11 @@ type calcResult struct {
 }
 
 type calcModel struct {
-	grid   gridData
-	styles *styles
-	data   *models.Data
-	result calcResult
+	grid     gridData
+	styles   *styles
+	data     *models.Data
+	result   calcResult
+	usedMove string
 }
 
 func newCalcModel(s *styles, data *models.Data) calcModel {
@@ -80,6 +83,7 @@ func (m calcModel) Init() tea.Cmd {
 func (m calcModel) Update(msg tea.Msg) (calcModel, tea.Cmd) {
 	switch msg := msg.(type) {
 	case userInputMsg:
+		m.usedMove = msg.move
 		m.Calculate(msg.input)
 		return m, nil
 	case tea.KeyPressMsg:
@@ -117,26 +121,87 @@ func (m calcModel) Body(ctx calcContext) string {
 	m.fillFromContext(ctx)
 
 	body := renderGrid(m.grid, m.styles)
-	body += "\n\nChoose one move\n"
-	body += m.ResultView()
+	body += fmt.Sprintf("\n\n%s\n", CHOOSE_MOVE)
+	body += m.ResultView(ctx)
 	return body
 }
 
-func (m calcModel) ResultView() string {
+func formatHitDisplayMsg(hitCount int) string {
+	return fmt.Sprintf("%d.%s", hitCount, DISPLAY_HIT)
+}
+
+func renderDmgRow(row []int) string {
+	var b strings.Builder
+	for i, dmg := range row {
+		if i > 0 {
+			b.WriteString(", ")
+		}
+
+		b.Write(strconv.AppendInt(nil, int64(dmg), 10))
+	}
+	return b.String()
+}
+
+func renderDmgMatrix(matrix [][]int) string {
+	result := ""
+	isMultihit := false
+
+	if len(matrix) == 0 {
+		return ERR_INVALID_OUTPUT
+	}
+
+	if len(matrix) > 1 {
+		isMultihit = true
+	}
+
+	// first damage row => always present
+	var prefix string
+	if isMultihit {
+		prefix = formatHitDisplayMsg(1)
+	}
+
+	result += fmt.Sprintf("\n%s\n", DAMAGE_AMOUNTS)
+	result += fmt.Sprintf("%s %s\n", prefix, renderDmgRow(matrix[0]))
+
+	// additional lines (multihit output)
+	if isMultihit {
+		var hitStr strings.Builder
+
+		for i, r := range matrix {
+			if i == 0 {
+				continue
+			}
+
+			fmt.Fprintf(&hitStr, "%s %s\n", formatHitDisplayMsg(i+1), renderDmgRow(r))
+		}
+
+		result += hitStr.String()
+	}
+
+	return result
+}
+
+func (m calcModel) buildBattleString(ctx calcContext) string {
+	return fmt.Sprintf("\n%s (%s) vs. %s:\n", ctx.leftName, m.usedMove, ctx.rightName)
+}
+
+func (m calcModel) ResultView(ctx calcContext) string {
 	if m.result.err != nil {
 		return fmt.Sprintf("Error: %v\n", m.result.err)
 	}
 
-	content := "\nPokemon1 (Move x) vs. Pokemon 2:\n"
-	content += fmt.Sprintf("%d - %d (%.2f%% - %.2f%%)\n",
-		m.result.r.Range.Min,
-		m.result.r.Range.Max,
-		m.result.r.Range.MinPerc,
-		m.result.r.Range.MaxPerc,
-	)
-	content += "\nPossible dmg amounts:\n"
-	// TODO: format damage matrix
-	return content
+	if len(m.result.r.DmgMatrix) > 0 {
+		content := m.buildBattleString(ctx)
+		content += fmt.Sprintf("%d - %d (%.2f%% - %.2f%%)\n",
+			m.result.r.Range.Min,
+			m.result.r.Range.Max,
+			m.result.r.Range.MinPerc,
+			m.result.r.Range.MaxPerc,
+		)
+		content += renderDmgMatrix(m.result.r.DmgMatrix)
+		return content
+	}
+	return ""
 }
 
 // FIXME: Move logic into Update rather than View => View should only render and not mutate

@@ -93,6 +93,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		userInput := m.Input()
 		inputMsg := userInputMsg{
 			input: userInput,
+			move:  m.calcRequestInfo.usedMove,
 		}
 
 		var cmd tea.Cmd
