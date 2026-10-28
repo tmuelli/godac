@@ -10,10 +10,10 @@ import (
 func (c *Calculation) isWeatherActive() bool {
 	if (c.attacker.hasAbility("airlock", "cloudnine")) ||
 		(c.defender.hasAbility("airlock", "cloudnine")) {
-		return true
+		return false
 	}
 
-	return false
+	return true
 }
 
 func (c *Calculation) handleForecast(side *CalcData) error {
