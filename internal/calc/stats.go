@@ -39,7 +39,7 @@ func getModifiedStat(stat float64, boost int) float64 {
 	// implemented OF16 and OF32 to be cartridge "correct" => following smogon damage calculation logic which implements this as well
 	// technically this should never overflow because stats cant be that high => there are exceptions though e.g. hacked mons
 	modStat := OF16(stat * boostTable[6+boost][0])
-	modStat = math.Floor(stat / boostTable[6+boost][1])
+	modStat = math.Floor(modStat / boostTable[6+boost][1])
 
 	return modStat
 }
