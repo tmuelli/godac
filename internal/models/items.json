@@ -941,6 +941,11 @@
     "kind": "Item",
     "id": "seaincense",
     "name": "Sea Incense",
+    "effect": "move",
+    "types": [
+      "water"
+    ],
+    "multiplier": 1.2,
     "flingPower": 10
   },
   {
@@ -1269,12 +1274,22 @@
     "kind": "Item",
     "id": "dracoplate",
     "name": "Draco Plate",
+    "effect": "move",
+    "types": [
+      "dragon"
+    ],
+    "multiplier": 1.2,
     "flingPower": 90
   },
   {
     "kind": "Item",
     "id": "dreadplate",
     "name": "Dread Plate",
+    "effect": "move",
+    "types": [
+      "dark"
+    ],
+    "multiplier": 1.2,
     "flingPower": 90
   },
   {
@@ -1299,6 +1314,11 @@
     "kind": "Item",
     "id": "earthplate",
     "name": "Earth Plate",
+    "effect": "move",
+    "types": [
+      "ground"
+    ],
+    "multiplier": 1.2,
     "flingPower": 90
   },
   {
@@ -1322,6 +1342,11 @@
     "kind": "Item",
     "id": "fistplate",
     "name": "Fist Plate",
+    "effect": "move",
+    "types": [
+      "fighting"
+    ],
+    "multiplier": 1.2,
     "flingPower": 90
   },
   {
@@ -1334,6 +1359,11 @@
     "kind": "Item",
     "id": "flameplate",
     "name": "Flame Plate",
+    "effect": "move",
+    "types": [
+      "fire"
+    ],
+    "multiplier": 1.2,
     "flingPower": 90
   },
   {
@@ -1406,6 +1436,11 @@
     "kind": "Item",
     "id": "icicleplate",
     "name": "Icicle Plate",
+    "effect": "move",
+    "types": [
+      "ice"
+    ],
+    "multiplier": 1.2,
     "flingPower": 90
   },
   {
@@ -1418,6 +1453,11 @@
     "kind": "Item",
     "id": "insectplate",
     "name": "Insect Plate",
+    "effect": "move",
+    "types": [
+      "bug"
+    ],
+    "multiplier": 1.2,
     "flingPower": 90
   },
   {
@@ -1430,6 +1470,11 @@
     "kind": "Item",
     "id": "ironplate",
     "name": "Iron Plate",
+    "effect": "move",
+    "types": [
+      "steel"
+    ],
+    "multiplier": 1.2,
     "flingPower": 90
   },
   {
@@ -1531,6 +1576,11 @@
     "kind": "Item",
     "id": "meadowplate",
     "name": "Meadow Plate",
+    "effect": "move",
+    "types": [
+      "grass"
+    ],
+    "multiplier": 1.2,
     "flingPower": 90
   },
   {
@@ -1559,6 +1609,11 @@
     "kind": "Item",
     "id": "mindplate",
     "name": "Mind Plate",
+    "effect": "move",
+    "types": [
+      "psychic"
+    ],
+    "multiplier": 1.2,
     "flingPower": 90
   },
   {
@@ -1595,6 +1650,11 @@
     "kind": "Item",
     "id": "oddincense",
     "name": "Odd Incense",
+    "effect": "move",
+    "types": [
+      "psychic"
+    ],
+    "multiplier": 1.2,
     "flingPower": 10
   },
   {
@@ -1767,12 +1827,22 @@
     "kind": "Item",
     "id": "rockincense",
     "name": "Rock Incense",
+    "effect": "move",
+    "types": [
+      "rock"
+    ],
+    "multiplier": 1.2,
     "flingPower": 10
   },
   {
     "kind": "Item",
     "id": "roseincense",
     "name": "Rose Incense",
+    "effect": "move",
+    "types": [
+      "grass"
+    ],
+    "multiplier": 1.2,
     "flingPower": 10
   },
   {
@@ -1827,6 +1897,11 @@
     "kind": "Item",
     "id": "skyplate",
     "name": "Sky Plate",
+    "effect": "move",
+    "types": [
+      "flying"
+    ],
+    "multiplier": 1.2,
     "flingPower": 90
   },
   {
@@ -1839,12 +1914,22 @@
     "kind": "Item",
     "id": "splashplate",
     "name": "Splash Plate",
+    "effect": "move",
+    "types": [
+      "water"
+    ],
+    "multiplier": 1.2,
     "flingPower": 90
   },
   {
     "kind": "Item",
     "id": "spookyplate",
     "name": "Spooky Plate",
+    "effect": "move",
+    "types": [
+      "ghost"
+    ],
+    "multiplier": 1.2,
     "flingPower": 90
   },
   {
@@ -1857,6 +1942,11 @@
     "kind": "Item",
     "id": "stoneplate",
     "name": "Stone Plate",
+    "effect": "move",
+    "types": [
+      "rock"
+    ],
+    "multiplier": 1.2,
     "flingPower": 90
   },
   {
@@ -1888,6 +1978,11 @@
     "kind": "Item",
     "id": "toxicplate",
     "name": "Toxic Plate",
+    "effect": "move",
+    "types": [
+      "poison"
+    ],
+    "multiplier": 1.2,
     "flingPower": 90
   },
   {
@@ -1913,6 +2008,11 @@
     "kind": "Item",
     "id": "waveincense",
     "name": "Wave Incense",
+    "effect": "move",
+    "types": [
+      "water"
+    ],
+    "multiplier": 1.2,
     "flingPower": 10
   },
   {
@@ -1955,6 +2055,11 @@
     "kind": "Item",
     "id": "zapplate",
     "name": "Zap Plate",
+    "effect": "move",
+    "types": [
+      "electric"
+    ],
+    "multiplier": 1.2,
     "flingPower": 90
   },
   {
