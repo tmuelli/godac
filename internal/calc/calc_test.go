@@ -26,6 +26,7 @@ type testCase struct {
 	atkMove     string
 	atkMoves    []string
 	atkMoveCrit bool
+	hits        int // multihit move hit count, 0 = default
 	defMove     string
 	defMoves    []string
 
@@ -54,7 +55,31 @@ type testCase struct {
 // defaultLevel so you don't repeat 100 everywhere
 const defaultLevel = 100
 
-func runTest(t *testing.T, data *models.Data, tc testCase) {
+// evSetting maps test EVs to the input setting: all zero means no EVs,
+// anything else is passed as custom values
+func evSetting(evs models.EvStats) (string, *models.EvStats) {
+	if evs == (models.EvStats{}) {
+		return "worstCase", nil
+	}
+	return "custom", &evs
+}
+
+// ivSetting maps test IVs to the input setting: all zero means default 31 IVs,
+// anything else is passed as custom values
+func ivSetting(ivs models.IvStats) (string, *models.IvStats) {
+	if ivs == (models.IvStats{}) {
+		return "optimal", nil
+	}
+	return "custom", &ivs
+}
+
+// ev builds an EV spread, in order hp, atk, def, spa, spd, spe
+func ev(hp, atk, def, spa, spd, spe int) models.EvStats {
+	return models.EvStats{BaseStats: models.BaseStats{Hp: hp, Atk: atk, Def: def, Spa: spa, Spd: spd, Spe: spe}}
+}
+
+// calcFor builds the inputs from the test case and runs the calculation
+func calcFor(t *testing.T, data *models.Data, tc testCase) *Calculation {
 	t.Helper() // makes failures point to the call site, not this function
 
 	atkLevel := tc.atkLevel
@@ -66,11 +91,21 @@ func runTest(t *testing.T, data *models.Data, tc testCase) {
 		defLevel = defaultLevel
 	}
 
-	atkEvSetting := "worstCase"
-	atkIvSetting := "optimal"
+	atkEvSetting, atkEvCustom := evSetting(tc.atkEVs)
+	atkIvSetting, atkIvCustom := ivSetting(tc.atkIVs)
 
-	defEvSetting := "worstCase"
-	defIvSetting := "optimal"
+	defEvSetting, defEvCustom := evSetting(tc.defEVs)
+	defIvSetting, defIvCustom := ivSetting(tc.defIVs)
+
+	var atkStatus *string
+	if tc.atkStatus != "" {
+		atkStatus = &tc.atkStatus
+	}
+
+	var hits *int
+	if tc.hits != 0 {
+		hits = &tc.hits
+	}
 
 	atkHp := tc.atkHealth
 	if atkHp == 0 {
@@ -98,11 +133,17 @@ func runTest(t *testing.T, data *models.Data, tc testCase) {
 		Item:          atkItem,
 		Nature:        tc.atkNature,
 		EvSetting:     atkEvSetting,
+		EvCustom:      atkEvCustom,
 		IvSetting:     atkIvSetting,
+		IvCustom:      atkIvCustom,
+		Status:        atkStatus,
+		Hits:          hits,
 		Boosts:        tc.atkBoosts,
 		AttackMove:    tc.atkMove,
 		Moves:         tc.atkMoves,
 		HealthPercent: atkHp,
+		InputSide:     string(models.Attacker),
+		MetronomeHits: nil,
 	}
 
 	defInput := &models.UserInput{
@@ -111,16 +152,20 @@ func runTest(t *testing.T, data *models.Data, tc testCase) {
 		Item:          defItem,
 		Nature:        tc.defNature,
 		EvSetting:     defEvSetting,
+		EvCustom:      defEvCustom,
 		IvSetting:     defIvSetting,
+		IvCustom:      defIvCustom,
 		Boosts:        tc.defBoosts,
 		HealthPercent: defHp,
 		AttackMove:    tc.defMove,
 		Moves:         tc.defMoves,
+		InputSide:     string(models.Defender),
+		MetronomeHits: nil,
 	}
 
 	terrain := tc.weather
 	if terrain == "" {
-		terrain = "Clear"
+		terrain = string(models.Clear)
 	}
 
 	fieldType := tc.fieldType
@@ -153,6 +198,14 @@ func runTest(t *testing.T, data *models.Data, tc testCase) {
 		t.Fatalf("[%s] Calc error: %v", tc.desc, err)
 	}
 
+	return calc
+}
+
+func runTest(t *testing.T, data *models.Data, tc testCase) {
+	t.Helper()
+
+	calc := calcFor(t, data, tc)
+
 	if calc.Result.Range.Min != tc.wantMin || calc.Result.Range.Max != tc.wantMax {
 		t.Errorf("[%s]\n  got  %d-%d\n  want %d-%d",
 			tc.desc, calc.Result.Range.Min, calc.Result.Range.Max, tc.wantMin, tc.wantMax)
@@ -180,29 +233,302 @@ func loadTestData(t *testing.T) *models.Data {
 	return testData
 }
 
-func TestGen4BasicDamage(t *testing.T) {
-	data := loadTestData(t) // see step 5
-
-	tests := []testCase{
-		{
-			desc:       "Poochyena vs Poochyena",
-			atkSpecies: "Poochyena",
-			atkNature:  "Hardy",
-			atkMove:    "Bite",
-			atkMoves:   []string{"Bite"},
-			defSpecies: "Poochyena",
-			defNature:  "Hardy",
-			defMove:    "Bite",
-			defMoves:   []string{"Bite"},
-			wantMin:    45,
-			wantMax:    53,
-		},
-		// add more cases here
-	}
+func runTests(t *testing.T, tests []testCase) {
+	t.Helper()
+	data := loadTestData(t)
 
 	for _, tc := range tests {
 		t.Run(tc.desc, func(t *testing.T) {
 			runTest(t, data, tc)
 		})
+	}
+}
+
+// Expected values in the tests below come from the Smogon damage calc (gen 4),
+// run with the same inputs. Defaults match: level 100, 31 IVs, no EVs unless given.
+// The attacker/defender ability is always the first ability of the specie.
+
+func TestGen4BasicDamage(t *testing.T) {
+	runTests(t, []testCase{
+		{
+			desc:       "Poochyena vs Poochyena",
+			atkSpecies: "Poochyena", atkNature: "Hardy", atkMove: "Bite", atkMoves: []string{"Bite"},
+			defSpecies: "Poochyena", defNature: "Hardy", defMove: "Bite", defMoves: []string{"Bite"},
+			wantMin: 45, wantMax: 53,
+		},
+		{
+			desc:       "Gengar Choice Specs +1 Focus Blast vs Chansey (smogon calc test)",
+			atkSpecies: "Gengar", atkItem: "Choice Specs", atkNature: "Timid", atkEVs: ev(0, 0, 0, 252, 0, 0),
+			atkBoosts: models.UserInputBoosts{Spa: 1}, atkMove: "Focus Blast", atkMoves: []string{"Focus Blast"},
+			defSpecies: "Chansey", defItem: "Leftovers", defNature: "Calm", defEVs: ev(252, 0, 0, 0, 252, 0),
+			wantMin: 408, wantMax: 482,
+		},
+		{
+			desc:       "Garchomp Earthquake vs Metagross (STAB, super effective)",
+			atkSpecies: "Garchomp", atkNature: "Adamant", atkEVs: ev(0, 252, 0, 0, 0, 0), atkMove: "Earthquake", atkMoves: []string{"Earthquake"},
+			defSpecies: "Metagross", defNature: "Impish", defEVs: ev(252, 0, 252, 0, 0, 0),
+			wantMin: 218, wantMax: 258,
+		},
+		{
+			desc:       "Garchomp Outrage vs Scizor (STAB, resisted)",
+			atkSpecies: "Garchomp", atkNature: "Adamant", atkEVs: ev(0, 252, 0, 0, 0, 0), atkMove: "Outrage", atkMoves: []string{"Outrage"},
+			defSpecies: "Scizor", defNature: "Impish", defEVs: ev(252, 0, 252, 0, 0, 0),
+			wantMin: 78, wantMax: 92,
+		},
+		{
+			desc:       "Nature: neutral Hardy instead of Adamant",
+			atkSpecies: "Garchomp", atkNature: "Hardy", atkEVs: ev(0, 252, 0, 0, 0, 0), atkMove: "Earthquake", atkMoves: []string{"Earthquake"},
+			defSpecies: "Metagross", defNature: "Impish", defEVs: ev(252, 0, 252, 0, 0, 0),
+			wantMin: 198, wantMax: 234,
+		},
+		{
+			desc:       "Level 50 vs level 50",
+			atkSpecies: "Garchomp", atkLevel: 50, atkNature: "Adamant", atkEVs: ev(0, 252, 0, 0, 0, 0), atkMove: "Earthquake", atkMoves: []string{"Earthquake"},
+			defSpecies: "Metagross", defLevel: 50, defNature: "Impish", defEVs: ev(252, 0, 252, 0, 0, 0),
+			wantMin: 116, wantMax: 138,
+		},
+	})
+}
+
+func TestGen4Immunities(t *testing.T) {
+	garchomp := testCase{
+		atkSpecies: "Garchomp", atkNature: "Adamant", atkEVs: ev(0, 252, 0, 0, 0, 0),
+		atkMove: "Earthquake", atkMoves: []string{"Earthquake"},
+	}
+	gengar := testCase{
+		atkSpecies: "Gengar", atkNature: "Modest", atkEVs: ev(0, 0, 0, 252, 0, 0),
+		atkMove: "Shadow Ball", atkMoves: []string{"Shadow Ball"},
+	}
+	zard := testCase{
+		atkSpecies: "Charizard", atkNature: "Modest", atkEVs: ev(0, 0, 0, 252, 0, 0),
+		atkMove: "Flamethrower", atkMoves: []string{"Flamethrower"},
+	}
+	starmie := testCase{
+		atkSpecies: "Starmie", atkNature: "Modest", atkEVs: ev(0, 0, 0, 252, 0, 0),
+		atkMove: "Surf", atkMoves: []string{"Surf"},
+	}
+
+	with := func(base testCase, desc, defSpecies, defNature string, defEVs models.EvStats) testCase {
+		base.desc, base.defSpecies, base.defNature, base.defEVs = desc, defSpecies, defNature, defEVs
+		return base
+	}
+
+	runTests(t, []testCase{
+		with(garchomp, "Ground vs Levitate (Gengar)", "Gengar", "Hardy", models.EvStats{}),
+		with(gengar, "Ghost vs Normal type (Chansey)", "Chansey", "Calm", ev(252, 0, 0, 0, 252, 0)),
+		with(gengar, "Ghost vs Normal type (Snorlax, also Immunity)", "Snorlax", "Careful", ev(252, 0, 0, 0, 252, 0)),
+		with(zard, "Fire vs Flash Fire (Heatran)", "Heatran", "Hardy", models.EvStats{}),
+		with(starmie, "Water vs Water Absorb (Vaporeon)", "Vaporeon", "Hardy", models.EvStats{}),
+	})
+}
+
+func TestGen4Abilities(t *testing.T) {
+	runTests(t, []testCase{
+		{
+			desc:       "Pure Power (Medicham) Brick Break vs Snorlax",
+			atkSpecies: "Medicham", atkNature: "Adamant", atkEVs: ev(0, 252, 0, 0, 0, 0), atkMove: "Brick Break", atkMoves: []string{"Brick Break"},
+			defSpecies: "Snorlax", defNature: "Careful", defEVs: ev(252, 0, 0, 0, 252, 0),
+			wantMin: 468, wantMax: 552,
+		},
+		{
+			desc:       "Thick Fat (Dewgong) halves Flamethrower",
+			atkSpecies: "Charizard", atkNature: "Modest", atkEVs: ev(0, 0, 0, 252, 0, 0), atkMove: "Flamethrower", atkMoves: []string{"Flamethrower"},
+			defSpecies: "Dewgong", defNature: "Hardy",
+			wantMin: 78, wantMax: 92,
+		},
+	})
+}
+
+func TestGen4Items(t *testing.T) {
+	garchomp := testCase{
+		atkSpecies: "Garchomp", atkNature: "Adamant", atkEVs: ev(0, 252, 0, 0, 0, 0),
+	}
+	metagross := testCase{
+		defSpecies: "Metagross", defNature: "Impish", defEVs: ev(252, 0, 252, 0, 0, 0),
+	}
+
+	choiceBand := garchomp
+	choiceBand.desc, choiceBand.atkItem = "Choice Band Earthquake vs Metagross", "Choice Band"
+	choiceBand.atkMove, choiceBand.atkMoves = "Earthquake", []string{"Earthquake"}
+	choiceBand.defSpecies, choiceBand.defNature, choiceBand.defEVs = metagross.defSpecies, metagross.defNature, metagross.defEVs
+	choiceBand.wantMin, choiceBand.wantMax = 324, 384
+
+	runTests(t, []testCase{
+		choiceBand,
+		{
+			desc:       "Life Orb Shadow Ball vs Starmie",
+			atkSpecies: "Gengar", atkItem: "Life Orb", atkNature: "Modest", atkEVs: ev(0, 0, 0, 252, 0, 0), atkMove: "Shadow Ball", atkMoves: []string{"Shadow Ball"},
+			defSpecies: "Starmie", defNature: "Bold", defEVs: ev(252, 0, 252, 0, 0, 0),
+			wantMin: 428, wantMax: 506,
+		},
+		{
+			desc:       "Type boosting item (Charcoal) Flamethrower vs Metagross",
+			atkSpecies: "Charizard", atkItem: "Charcoal", atkNature: "Modest", atkEVs: ev(0, 0, 0, 252, 0, 0), atkMove: "Flamethrower", atkMoves: []string{"Flamethrower"},
+			defSpecies: "Metagross", defNature: "Hardy",
+			wantMin: 396, wantMax: 468,
+		},
+		{
+			desc:       "Resist berry (Occa Berry) halves super effective Flamethrower",
+			atkSpecies: "Charizard", atkNature: "Modest", atkEVs: ev(0, 0, 0, 252, 0, 0), atkMove: "Flamethrower", atkMoves: []string{"Flamethrower"},
+			defSpecies: "Metagross", defNature: "Hardy", defItem: "Occa Berry",
+			wantMin: 165, wantMax: 195,
+		},
+	})
+}
+
+func TestGen4Weather(t *testing.T) {
+	zard := testCase{
+		atkSpecies: "Charizard", atkNature: "Modest", atkEVs: ev(0, 0, 0, 252, 0, 0), atkMove: "Flamethrower", atkMoves: []string{"Flamethrower"},
+		defSpecies: "Metagross", defNature: "Hardy",
+	}
+	starmie := testCase{
+		atkSpecies: "Starmie", atkNature: "Modest", atkEVs: ev(0, 0, 0, 252, 0, 0), atkMove: "Surf", atkMoves: []string{"Surf"},
+		defSpecies: "Charizard", defNature: "Bold", defEVs: ev(252, 0, 0, 0, 252, 0),
+	}
+
+	cases := []struct {
+		desc     string
+		tc       testCase
+		weather  string
+		min, max int
+	}{
+		{"Fire move, no weather", zard, "", 330, 390},
+		{"Fire move in sun", zard, "Sun", 492, 582},
+		{"Fire move in rain", zard, "Rain", 168, 198},
+		{"Water move in rain", starmie, "Rain", 372, 440},
+		{"Water move in sun", starmie, "Sun", 126, 150},
+	}
+
+	tests := make([]testCase, 0, len(cases))
+	for _, c := range cases {
+		c.tc.desc, c.tc.weather, c.tc.wantMin, c.tc.wantMax = c.desc, c.weather, c.min, c.max
+		tests = append(tests, c.tc)
+	}
+	runTests(t, tests)
+}
+
+func TestGen4FieldAndStatus(t *testing.T) {
+	garchomp := testCase{
+		atkSpecies: "Garchomp", atkNature: "Adamant", atkEVs: ev(0, 252, 0, 0, 0, 0), atkMove: "Earthquake", atkMoves: []string{"Earthquake"},
+		defSpecies: "Metagross", defNature: "Impish", defEVs: ev(252, 0, 252, 0, 0, 0),
+	}
+
+	reflect := garchomp
+	reflect.desc, reflect.reflect, reflect.wantMin, reflect.wantMax = "Reflect halves physical damage", true, 110, 132
+
+	burned := garchomp
+	burned.desc, burned.atkStatus, burned.wantMin, burned.wantMax = "Burn halves physical damage", "burned", 110, 132
+
+	doubles := garchomp
+	doubles.desc, doubles.fieldType, doubles.wantMin, doubles.wantMax = "Doubles spread move reduction", "Doubles", 164, 194
+
+	boosted := garchomp
+	boosted.desc, boosted.atkBoosts, boosted.wantMin, boosted.wantMax = "+2 attack", models.UserInputBoosts{Atk: 2}, 432, 510
+
+	lowered := garchomp
+	lowered.desc, lowered.defBoosts, lowered.wantMin, lowered.wantMax = "-1 defense on defender", models.UserInputBoosts{Def: -1}, 324, 384
+
+	lightScreen := testCase{
+		desc:       "Light Screen halves special damage",
+		atkSpecies: "Gengar", atkItem: "Choice Specs", atkNature: "Timid", atkEVs: ev(0, 0, 0, 252, 0, 0),
+		atkBoosts: models.UserInputBoosts{Spa: 1}, atkMove: "Focus Blast", atkMoves: []string{"Focus Blast"},
+		defSpecies: "Chansey", defItem: "Leftovers", defNature: "Calm", defEVs: ev(252, 0, 0, 0, 252, 0),
+		lightScreen: true,
+		wantMin:     204, wantMax: 242,
+	}
+
+	runTests(t, []testCase{reflect, burned, doubles, boosted, lowered, lightScreen})
+}
+
+func TestGen4FixedAndVariableDamage(t *testing.T) {
+	// Garchomp / Machamp / Heatran / etc. with setup common per case
+	runTests(t, []testCase{
+		{
+			desc:       "Seismic Toss deals level damage",
+			atkSpecies: "Garchomp", atkNature: "Adamant", atkEVs: ev(0, 252, 0, 0, 0, 0), atkMove: "Seismic Toss", atkMoves: []string{"Seismic Toss"},
+			defSpecies: "Metagross", defNature: "Impish", defEVs: ev(252, 0, 252, 0, 0, 0),
+			wantMin: 100, wantMax: 100,
+		},
+		{
+			desc:       "Dragon Rage deals 40",
+			atkSpecies: "Garchomp", atkNature: "Adamant", atkEVs: ev(0, 252, 0, 0, 0, 0), atkMove: "Dragon Rage", atkMoves: []string{"Dragon Rage"},
+			defSpecies: "Metagross", defNature: "Impish", defEVs: ev(252, 0, 252, 0, 0, 0),
+			wantMin: 40, wantMax: 40,
+		},
+		{
+			desc:       "Low Kick vs heavy target (Snorlax)",
+			atkSpecies: "Machamp", atkNature: "Adamant", atkEVs: ev(0, 252, 0, 0, 0, 0), atkMove: "Low Kick", atkMoves: []string{"Low Kick"},
+			defSpecies: "Snorlax", defNature: "Careful", defEVs: ev(252, 0, 0, 0, 252, 0),
+			wantMin: 612, wantMax: 722,
+		},
+		{
+			desc:       "Low Kick vs lighter target (Metagross)",
+			atkSpecies: "Machamp", atkNature: "Adamant", atkEVs: ev(0, 252, 0, 0, 0, 0), atkMove: "Low Kick", atkMoves: []string{"Low Kick"},
+			defSpecies: "Metagross", defNature: "Impish", defEVs: ev(252, 0, 252, 0, 0, 0),
+			wantMin: 128, wantMax: 152,
+		},
+		{
+			desc:       "Grass Knot vs Metagross",
+			atkSpecies: "Venusaur", atkNature: "Modest", atkEVs: ev(0, 0, 0, 252, 0, 0), atkMove: "Grass Knot", atkMoves: []string{"Grass Knot"},
+			defSpecies: "Metagross", defNature: "Impish", defEVs: ev(252, 0, 252, 0, 0, 0),
+			wantMin: 98, wantMax: 116,
+		},
+		{
+			desc:       "Gyro Ball slower attacker",
+			atkSpecies: "Metagross", atkNature: "Brave", atkEVs: ev(0, 252, 0, 0, 0, 0), atkMove: "Gyro Ball", atkMoves: []string{"Gyro Ball"},
+			defSpecies: "Garchomp", defNature: "Adamant", defEVs: ev(0, 252, 0, 0, 0, 0),
+			wantMin: 72, wantMax: 85,
+		},
+		{
+			desc:       "Eruption at full health",
+			atkSpecies: "Typhlosion", atkNature: "Modest", atkEVs: ev(0, 0, 0, 252, 0, 0), atkMove: "Eruption", atkMoves: []string{"Eruption"},
+			defSpecies: "Metagross", defNature: "Impish", defEVs: ev(252, 0, 252, 0, 0, 0),
+			wantMin: 522, wantMax: 614,
+		},
+		{
+			// 50% of 297 HP is 148.5, the tui rounds to 149 HP => 75 BP (smogon calc with 149 current HP)
+			desc:       "Eruption at 50% health",
+			atkSpecies: "Typhlosion", atkNature: "Modest", atkEVs: ev(0, 0, 0, 252, 0, 0), atkMove: "Eruption", atkMoves: []string{"Eruption"},
+			atkHealth:  50,
+			defSpecies: "Metagross", defNature: "Impish", defEVs: ev(252, 0, 252, 0, 0, 0),
+			wantMin: 260, wantMax: 308,
+		},
+	})
+}
+
+func TestGen4TripleKickHits(t *testing.T) {
+	data := loadTestData(t)
+
+	// the move data only allows 3 hits for triple kick, the smogon calc does not
+	// escalate the base power per hit so the expectation here is the cartridge rule:
+	// base power of 10 / 20 / 30 for hit 1 / 2 / 3
+	const hits = 3
+
+	tc := testCase{
+		desc:       "Triple Kick with 3 hits",
+		atkSpecies: "Hitmontop", atkNature: "Adamant", atkEVs: ev(0, 252, 0, 0, 0, 0),
+		atkMove: "Triple Kick", atkMoves: []string{"Triple Kick"}, hits: hits,
+		defSpecies: "Metagross", defNature: "Impish", defEVs: ev(252, 0, 252, 0, 0, 0),
+	}
+
+	calc := calcFor(t, data, tc)
+
+	if got := len(calc.Result.DmgMatrix); got != hits {
+		t.Fatalf("got %d damage rows, want %d", got, hits)
+	}
+
+	for i, row := range calc.Result.DmgMatrix {
+		if len(row) != 16 {
+			t.Fatalf("hit %d has %d rolls, want 16", i+1, len(row))
+		}
+
+		if i > 0 && row[15] <= calc.Result.DmgMatrix[i-1][15] {
+			t.Errorf("hit %d max %d should be higher than hit %d max %d", i+1, row[15], i, calc.Result.DmgMatrix[i-1][15])
+		}
+	}
+
+	// reported range is the first hit
+	if first := calc.Result.DmgMatrix[0]; calc.Result.Range.Min != first[0] || calc.Result.Range.Max != first[15] {
+		t.Errorf("range %d-%d should match first hit %d-%d", calc.Result.Range.Min, calc.Result.Range.Max, first[0], first[15])
 	}
 }

@@ -1,9 +1,6 @@
 TODOS:
 	- calculation TODOS
 		- add logging mechanism => and write to log files, maybe bind it to debug flag or something or detail level
-	- tests
-		- triple kick => hit accounting
-		- add valid, specific and detailed test cases
 	- tui TODOS
 		- UI overhaul
 
