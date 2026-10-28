@@ -343,7 +343,6 @@ func (c *ItemCondition) ToFlag() ItemConditionFlag {
 	return flag
 }
 
-// TODO: maybe move this logic into json structure => add type json member like other type boosting items
 func (i *Item) GetPlateBoostType() string {
 	switch i.Id {
 	case "fistplate":
@@ -401,7 +400,6 @@ type MoveFlags struct {
 	Wind    int `json:"wind"`
 }
 
-// TODO: maybe use stat type battle modifier later
 type MoveSelf struct {
 	Atk int `json:"atk"`
 	Def int `json:"def"`
