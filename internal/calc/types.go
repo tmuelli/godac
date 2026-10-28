@@ -13,6 +13,12 @@ type TypeEffectivness struct {
 	activeValue float64
 }
 
+// type precedence following smogons precedence rules
+var gen4TypePrecedence = []string{
+	"normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison", "ground",
+	"flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel",
+}
+
 func calcTypeModifier(moveType, defType *models.Type, canHitGhostType, isGravity bool) float64 {
 	if canHitGhostType && defType.ID == "ghost" && (moveType.ID == "normal" || moveType.ID == "fighting") {
 		return 1.0
@@ -44,14 +50,22 @@ func (c *Calculation) setTypeModifier() error {
 	}
 
 	canHitGhostType := c.field.Right.Foresight || c.attacker.hasAbility("scrappy")
-	defHasSecondType := len(c.defender.specieTypes) > 1
+
+	// check type precedence rules and swap if specie types doesnt match precedence
+	defTypes := slices.Clone(c.defender.specieTypes)
+	if (len(defTypes) > 1) && (defTypes[0].ID != defTypes[1].ID) &&
+		(slices.Index(gen4TypePrecedence, defTypes[0].ID) > slices.Index(gen4TypePrecedence, defTypes[1].ID)) {
+		defTypes[0], defTypes[1] = defTypes[1], defTypes[0]
+	}
+
+	defHasSecondType := len(defTypes) > 1
 	typeMod1 := 1.0
 	typeMod2 := 1.0
 
-	typeMod1 = calcTypeModifier(atkType, c.defender.specieTypes[0], canHitGhostType, c.field.IsGravity)
+	typeMod1 = calcTypeModifier(atkType, defTypes[0], canHitGhostType, c.field.IsGravity)
 
 	if defHasSecondType {
-		typeMod2 = calcTypeModifier(atkType, c.defender.specieTypes[1], canHitGhostType, c.field.IsGravity)
+		typeMod2 = calcTypeModifier(atkType, defTypes[1], canHitGhostType, c.field.IsGravity)
 	}
 
 	typeMod := typeMod1 * typeMod2
