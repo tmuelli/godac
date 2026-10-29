@@ -52,6 +52,7 @@ type calcResult struct {
 	attacker string
 	defender string
 	move     string
+	done     bool
 }
 
 type calcModel struct {
@@ -217,7 +218,7 @@ func (m calcModel) ResultView(width int) string {
 		return box(s.errText.Width(inner).Render("Error: " + r.err.Error()))
 	}
 
-	if len(r.r.DmgMatrix) == 0 {
+	if !r.done {
 		return s.dimText.Render(CHOOSE_MOVE)
 	}
 
@@ -230,8 +231,14 @@ func (m calcModel) ResultView(width int) string {
 	percRange := s.selected.
 		Render(fmt.Sprintf("(%.2f%% - %.2f%%)", r.r.Range.MinPerc, r.r.Range.MaxPerc))
 
-	lines := []string{heading, "", dmgRange + " " + percRange, "", s.dimText.Render(DAMAGE_AMOUNTS)}
-	lines = append(lines, m.dmgRollLines(inner)...)
+	lines := []string{heading, "", dmgRange + " " + percRange, ""}
+
+	if len(r.r.DmgMatrix) == 0 {
+		lines = append(lines, s.warnText.Width(inner).Render(NO_DAMAGE_MSG))
+	} else {
+		lines = append(lines, s.dimText.Render(DAMAGE_AMOUNTS))
+		lines = append(lines, m.dmgRollLines(inner)...)
+	}
 
 	return box(lipgloss.JoinVertical(lipgloss.Left, lines...))
 }
@@ -261,4 +268,5 @@ func (m *calcModel) Calculate(input *UserInput) {
 		},
 		DmgMatrix: calculation.Result.DmgMatrix,
 	}
+	m.result.done = true
 }

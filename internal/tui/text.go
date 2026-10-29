@@ -17,4 +17,6 @@ const (
 
 	ERR_INVALID_INPUT        = "%q is not a valid option"
 	ERR_INVALID_NUMBER_INPUT = "Enter a number between %d and %d"
+
+	NO_DAMAGE_MSG = "No damage: the move is a status move, the target is immune, or it is protected."
 )

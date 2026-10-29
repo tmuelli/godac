@@ -31,6 +31,7 @@ type styles struct {
 	okText   lipgloss.Style
 	errText  lipgloss.Style
 	selected lipgloss.Style
+	warnText lipgloss.Style
 
 	// container styles
 	doc    lipgloss.Style
@@ -65,6 +66,7 @@ func (s *styles) apply(bgIsDark bool) {
 	s.okText = lipgloss.NewStyle().Foreground(s.ok)
 	s.errText = lipgloss.NewStyle().Foreground(s.err)
 	s.selected = lipgloss.NewStyle().Bold(true).Foreground(s.accent)
+	s.warnText = lipgloss.NewStyle().Foreground(s.warn)
 
 	s.input = textinput.DefaultStyles(bgIsDark)
 	s.input.Focused.Prompt = lipgloss.NewStyle().Foreground(s.accent).Bold(true)
