@@ -138,7 +138,7 @@ func (m miscModel) Update(msg tea.Msg, side Side) (tabContent, tea.Cmd) {
 func (m miscModel) View(side Side) string {
 	listView := m.fieldListModel.View(side)
 	perc := healthPercent(m.fields.Get(side))
-	return listView + "\n" + m.hpBar.ViewAs(float64(perc)/100)
+	return listView + "\n\n" + UNSELECTED_MARKER + m.hpBar.ViewAs(float64(perc)/100)
 }
 
 func (m *miscModel) setMaxHP(side Side, maxHP int) {

@@ -44,12 +44,12 @@ const (
 
 func newStatsModel(s *styles, data *models.Data) statsModel {
 	columns := []gridColumn{
-		{col: table.Column{Title: STAT_COL_NAME, Width: 15}, editable: false, visible: true},
-		{col: table.Column{Title: BASE_COL_NAME, Width: 15}, editable: true, visible: true},
-		{col: table.Column{Title: IV_COL_NAME, Width: 15}, editable: true, visible: true},
-		{col: table.Column{Title: EV_COL_NAME, Width: 15}, editable: true, visible: true},
-		{col: table.Column{Title: TOTAL_COL_NAME, Width: 15}, editable: false, visible: true},
-		{col: table.Column{Title: BOOST_COL_NAME, Width: 15}, editable: true, visible: true},
+		{col: table.Column{Title: STAT_COL_NAME, Width: 5}, editable: false, visible: true},
+		{col: table.Column{Title: BASE_COL_NAME, Width: 5}, editable: true, visible: true, rightAligned: true},
+		{col: table.Column{Title: IV_COL_NAME, Width: 4}, editable: true, visible: true, rightAligned: true},
+		{col: table.Column{Title: EV_COL_NAME, Width: 4}, editable: true, visible: true, rightAligned: true},
+		{col: table.Column{Title: TOTAL_COL_NAME, Width: 5}, editable: false, visible: true, rightAligned: true},
+		{col: table.Column{Title: BOOST_COL_NAME, Width: 5}, editable: true, visible: true, rightAligned: true},
 	}
 
 	rows := [][]string{

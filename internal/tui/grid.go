@@ -1,14 +1,22 @@
 package tui
 
 import (
+	"strings"
+
 	"charm.land/bubbles/v2/table"
 	"charm.land/lipgloss/v2"
 )
 
+const (
+	COLUMN_GAP  = 2
+	EMPTY_VALUE = "-"
+)
+
 type gridColumn struct {
-	col      table.Column
-	editable bool
-	visible  bool
+	col          table.Column
+	editable     bool
+	visible      bool
+	rightAligned bool
 }
 
 type gridData struct {
@@ -16,6 +24,33 @@ type gridData struct {
 	rows    [][]string
 	row     int
 	col     int
+}
+
+func orDash(val string) string {
+	if val == "" {
+		return EMPTY_VALUE
+	}
+
+	return val
+}
+
+// set column widths to the largest width in col (header or column value)
+func columnWidths(data gridData) []int {
+	widths := make([]int, len(data.columns))
+	for i, c := range data.columns {
+		if !c.visible {
+			continue
+		}
+
+		w := max(c.col.Width, lipgloss.Width(c.col.Title))
+		for _, row := range data.rows {
+			w = max(w, lipgloss.Width(orDash(row[i])))
+		}
+
+		widths[i] = w
+	}
+
+	return widths
 }
 
 func (g *gridData) MoveRow(rowDelta int) {
@@ -56,20 +91,35 @@ func (g *gridData) SetNextValidCol() {
 }
 
 func renderGrid(data gridData, s *styles) string {
-	var lines []string
+	widths := columnWidths(data)
+	gap := strings.Repeat(" ", COLUMN_GAP)
 
-	headerCells := []string{UNSELECTED_MARKER}
-	for _, c := range data.columns {
+	cellStyle := func(i int) lipgloss.Style {
+		style := lipgloss.NewStyle().Width(widths[i])
+		if data.columns[i].rightAligned {
+			style = style.Align(lipgloss.Right)
+		}
+
+		return style
+	}
+
+	// header and seperators
+	var header []string
+	total := 0
+	for i, c := range data.columns {
 		if !c.visible {
 			continue
 		}
 
-		headerCells = append(headerCells, lipgloss.NewStyle().
-			Width(c.col.Width).
-			Bold(true).
-			Render(c.col.Title))
+		header = append(header, cellStyle(i).Bold(true).Render(c.col.Title))
+		total += widths[i]
 	}
-	lines = append(lines, lipgloss.JoinHorizontal(lipgloss.Top, headerCells...))
+	total += COLUMN_GAP * (len(header) - 1)
+
+	lines := []string{
+		UNSELECTED_MARKER + strings.Join(header, gap),
+		UNSELECTED_MARKER + lipgloss.NewStyle().Foreground(s.border).Render(strings.Repeat("─", total)),
+	}
 
 	for ri, row := range data.rows {
 		activeMarker := UNSELECTED_MARKER
@@ -77,20 +127,24 @@ func renderGrid(data gridData, s *styles) string {
 			activeMarker = s.selected.Render(SELECTED_MARKER)
 		}
 
-		cells := []string{activeMarker}
+		var cells []string
 		for ci, colVal := range row {
 			c := data.columns[ci]
 			if !c.visible {
 				continue
 			}
 
-			style := lipgloss.NewStyle().Width(c.col.Width)
-			if ri == data.row && ci == data.col {
-				style = s.selected.Width(c.col.Width)
+			style := cellStyle(ci)
+			switch {
+			case ri == data.row && ci == data.col:
+				style = style.Inherit(s.selected)
+			case !c.editable || colVal == "":
+				style = style.Inherit(s.dimText)
 			}
-			cells = append(cells, style.Render(colVal))
+
+			cells = append(cells, style.Render(orDash(colVal)))
 		}
-		lines = append(lines, lipgloss.JoinHorizontal(lipgloss.Top, cells...))
+		lines = append(lines, activeMarker+strings.Join(cells, gap))
 	}
 
 	return lipgloss.JoinVertical(lipgloss.Left, lines...)

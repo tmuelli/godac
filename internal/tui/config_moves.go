@@ -43,13 +43,13 @@ type movesModel struct {
 
 func newMovesModel(s *styles, data *models.Data) movesModel {
 	columns := []gridColumn{
-		{col: table.Column{Title: MOVE_COL_NAME, Width: 15}, editable: true, visible: true},
-		{col: table.Column{Title: BASE_POWER_COL_NAME, Width: 15}, editable: true, visible: true},
-		{col: table.Column{Title: TYPE_COL_NAME, Width: 10}, editable: true, visible: true},
-		{col: table.Column{Title: CATEGORY_COL_NAME, Width: 15}, editable: true, visible: true},
-		{col: table.Column{Title: CRIT_COL_NAME, Width: 10}, editable: true, visible: true},
-		{col: table.Column{Title: HITS_COL_NAME, Width: 10}, editable: true, visible: true},
-		{col: table.Column{Title: METR_HITS_COL_NAME, Width: 15}, editable: true, visible: false},
+		{col: table.Column{Title: MOVE_COL_NAME, Width: 16}, editable: true, visible: true},
+		{col: table.Column{Title: BASE_POWER_COL_NAME, Width: 10}, editable: true, visible: true, rightAligned: true},
+		{col: table.Column{Title: TYPE_COL_NAME, Width: 8}, editable: true, visible: true},
+		{col: table.Column{Title: CATEGORY_COL_NAME, Width: 8}, editable: true, visible: true},
+		{col: table.Column{Title: CRIT_COL_NAME, Width: 4}, editable: true, visible: true},
+		{col: table.Column{Title: HITS_COL_NAME, Width: 7}, editable: true, visible: true},
+		{col: table.Column{Title: METR_HITS_COL_NAME, Width: 10}, editable: true, visible: false},
 	}
 
 	rows := [][]string{

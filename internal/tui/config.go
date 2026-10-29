@@ -163,7 +163,8 @@ func (m configModel) Body(side Side) string {
 	doc.WriteString("\n")
 
 	content := m.tabContent[m.activeTab].View(side)
-	doc.WriteString(s.window.Width((lipgloss.Width(content))).Render(content))
+	width := lipgloss.Width(content) + s.window.GetHorizontalFrameSize()
+	doc.WriteString(s.window.Width(width).Render(content))
 	return doc.String()
 }
 

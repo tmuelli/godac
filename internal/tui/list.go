@@ -44,36 +44,44 @@ func (l *list) SetHidden(fieldID string, hidden bool) {
 }
 
 func renderList(l list, s *styles) string {
-	var lines []string
-	var optionsIndexes []int
-	maxLineWidth := 0
+	// label width of columns only for visible columns
+	labelWidth := 0
+	for _, o := range l.options {
+		if !l.hidden[o] {
+			labelWidth = max(labelWidth, lipgloss.Width(o))
+		}
+	}
+	labelWidth += COLUMN_GAP
 
-	// get max width and fill lines => hidden rows are not rendered
+	var rows []string
 	for i, o := range l.options {
 		if l.hidden[o] {
 			continue
 		}
 
-		line := o + ": " + "[" + l.values[o] + "]"
-		maxLineWidth = max(maxLineWidth, len(line))
-		lines = append(lines, line)
-		optionsIndexes = append(optionsIndexes, i)
-	}
+		cursor := i == l.activeIndex
+		marker := UNSELECTED_MARKER
+		labelStyle := lipgloss.NewStyle()
+		valueStyle := lipgloss.NewStyle()
 
-	var styledLines []string
-	for i, line := range lines {
-		style := lipgloss.NewStyle().Width(maxLineWidth + 20)
-		activeMarker := UNSELECTED_MARKER
-
-		if optionsIndexes[i] == l.activeIndex {
-			style = s.selected.Width(maxLineWidth + 20)
-			activeMarker = s.selected.Render(SELECTED_MARKER)
+		if cursor {
+			marker = s.selected.Render(SELECTED_MARKER)
+			labelStyle = s.selected
+			valueStyle = s.selected
 		}
-		styledLines = append(styledLines, activeMarker+style.Render(line))
+
+		value := l.values[o]
+		if value == "" {
+			value = EMPTY_VALUE
+			if !cursor {
+				valueStyle = s.dimText
+			}
+		}
+
+		rows = append(rows, marker+labelStyle.Width(labelWidth).Render(o)+valueStyle.Render(value))
 	}
 
-	rows := lipgloss.JoinVertical(lipgloss.Left, styledLines...)
-	return rows
+	return lipgloss.JoinVertical(lipgloss.Left, rows...)
 }
 
 type fieldSpec struct {
