@@ -162,9 +162,20 @@ func (m configModel) Body(side Side) string {
 	doc.WriteString(row)
 	doc.WriteString("\n")
 
+	w, h := 0, 0
+	for _, t := range m.tabContent {
+		v := t.View(side)
+		w = max(w, lipgloss.Width(v))
+		h = max(h, lipgloss.Height(v))
+	}
+
 	content := m.tabContent[m.activeTab].View(side)
-	width := lipgloss.Width(content) + s.window.GetHorizontalFrameSize()
-	doc.WriteString(s.window.Width(width).Render(content))
+	box := s.window.
+		Width(w + s.window.GetHorizontalFrameSize()).
+		Height(h + s.window.GetVerticalFrameSize()).
+		Render(content)
+
+	doc.WriteString(box)
 	return doc.String()
 }
 
