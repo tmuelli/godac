@@ -9,10 +9,10 @@ import (
 )
 
 const (
-	selectedMarker   = "▸ "
-	unselectedMarker = "  "
-	inputMarker      = " ▸ "
-	hintSeperator    = " · "
+	SELECTED_MARKER   = "▸ "
+	UNSELECTED_MARKER = "  "
+	INPUT_MARKER      = " ▸ "
+	HINT_SEPERATOR    = " · "
 )
 
 type styles struct {

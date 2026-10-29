@@ -63,11 +63,11 @@ func renderList(l list, s *styles) string {
 	var styledLines []string
 	for i, line := range lines {
 		style := lipgloss.NewStyle().Width(maxLineWidth + 20)
-		activeMarker := unselectedMarker
+		activeMarker := UNSELECTED_MARKER
 
 		if optionsIndexes[i] == l.activeIndex {
 			style = s.selected.Width(maxLineWidth + 20)
-			activeMarker = s.selected.Render(selectedMarker)
+			activeMarker = s.selected.Render(SELECTED_MARKER)
 		}
 		styledLines = append(styledLines, activeMarker+style.Render(line))
 	}

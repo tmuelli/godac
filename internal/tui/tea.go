@@ -132,7 +132,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		m.input = textinput.New()
 		m.input.SetStyles(m.styles.input)
-		m.input.Prompt = msg.fieldID + inputMarker
+		m.input.Prompt = msg.fieldID + INPUT_MARKER
 		m.input.Placeholder = msg.initial
 
 		switch m.editMode {
@@ -337,7 +337,7 @@ func (m model) editHint() string {
 	}
 
 	showAvailOpts := matches[:min(len(matches), DEFAULT_EDIT_HINTS)]
-	hint := strings.Join(showAvailOpts, hintSeperator)
+	hint := strings.Join(showAvailOpts, HINT_SEPERATOR)
 	if extendedOpts := len(matches) - len(showAvailOpts); extendedOpts > 0 {
 		hint += fmt.Sprintf(EDIT_TYPE_HINTS_EXTENDED, extendedOpts)
 	}
