@@ -4,12 +4,15 @@ import (
 	"image/color"
 
 	"charm.land/bubbles/v2/help"
+	"charm.land/bubbles/v2/textinput"
 	"charm.land/lipgloss/v2"
 )
 
 const (
 	selectedMarker   = "▸ "
 	unselectedMarker = "  "
+	inputMarker      = " ▸ "
+	hintSeperator    = " · "
 )
 
 type styles struct {
@@ -35,6 +38,9 @@ type styles struct {
 
 	// help styles
 	help help.Styles
+
+	// input styles
+	input textinput.Styles
 }
 
 func newStyles(bgIsDark bool) *styles {
@@ -58,6 +64,11 @@ func (s *styles) apply(bgIsDark bool) {
 	s.okText = lipgloss.NewStyle().Foreground(s.ok)
 	s.errText = lipgloss.NewStyle().Foreground(s.err)
 	s.selected = lipgloss.NewStyle().Bold(true).Foreground(s.accent)
+
+	s.input = textinput.DefaultStyles(bgIsDark)
+	s.input.Focused.Prompt = lipgloss.NewStyle().Foreground(s.accent).Bold(true)
+	s.input.Focused.Suggestion = lipgloss.NewStyle().Foreground(s.dim)
+	s.input.Focused.Placeholder = lipgloss.NewStyle().Foreground(s.dim)
 
 	s.doc = lipgloss.NewStyle().Padding(1, 2)
 

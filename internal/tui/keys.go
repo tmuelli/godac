@@ -47,6 +47,7 @@ var (
 	hintConfirm  = key.NewBinding(key.WithKeys("enter"), key.WithHelp("enter", "confirm"))
 	hintCancel   = key.NewBinding(key.WithKeys("esc"), key.WithHelp("esc", "cancel"))
 	hintType     = key.NewBinding(key.WithHelp("type", "to filter"))
+	hintComplete = key.NewBinding(key.WithKeys("tab"), key.WithHelp("tab", "complete"))
 )
 
 func (k globalKeyMap) ShortHelp() []key.Binding {

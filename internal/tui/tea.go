@@ -128,8 +128,12 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.editing = true
 		m.editID = msg.fieldID
 		m.editMode = msg.mode
+		m.inputValid = true
 
 		m.input = textinput.New()
+		m.input.SetStyles(m.styles.input)
+		m.input.Prompt = msg.fieldID + inputMarker
+		m.input.Placeholder = msg.initial
 
 		switch m.editMode {
 		case SelectEditMode:
@@ -142,8 +146,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.editMax = msg.max
 		}
 
-		// m.input.SetValue(msg.initial)
-		// m.input.Placeholder = msg.initial
 		m.input.Focus()
 		return m, nil
 
@@ -189,6 +191,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.editing = false
 				return m, nil
 			}
+
+			// reset errors (if any) on new keystroke
+			m.inputValid = true
 
 			var cmd tea.Cmd
 			m.input, cmd = m.input.Update(msg)
@@ -266,22 +271,14 @@ func (m model) View() tea.View {
 
 	doc.WriteString(content)
 
-	if m.editing {
-		doc.WriteString("\n\n")
-		doc.WriteString(m.input.View())
-
-		if !m.inputValid {
-			fmt.Fprintf(&doc, "\n%s\n", ERR_INVALID_INPUT)
-		}
-	}
-
 	// footer for help menu
 	footer := m.help.View(m.KeyMap())
+	bottom := m.editBar() + "\n" + footer
 	top := doc.String()
 
 	// pin the footer to the bottom
-	pad := max(0, m.height-2-lipgloss.Height(top)-lipgloss.Height(footer))
-	page := top + strings.Repeat("\n", pad) + footer
+	pad := max(0, m.height-2-lipgloss.Height(top)-lipgloss.Height(bottom))
+	page := top + strings.Repeat("\n", pad) + bottom
 
 	v := tea.NewView(m.styles.doc.Render(page))
 	v.AltScreen = true
@@ -300,7 +297,9 @@ func (m model) Input() *UserInput {
 
 func (m model) KeyMap() help.KeyMap {
 	if m.editing {
-		return editKeyMap{}
+		return editKeyMap{
+			selecting: m.editMode == SelectEditMode,
+		}
 	}
 
 	switch m.current {
@@ -311,4 +310,64 @@ func (m model) KeyMap() help.KeyMap {
 	default:
 		return helpKeyMap{global: globalKeys, view: calcKeys}
 	}
+}
+
+func (m model) editHint() string {
+	s := m.styles
+
+	if !m.inputValid {
+		switch m.editMode {
+		case NumberEditMode:
+			return s.errText.Render(fmt.Sprintf(ERR_INVALID_NUMBER_INPUT, m.editMin, m.editMax))
+		default:
+			return s.errText.Render(fmt.Sprintf(ERR_INVALID_INPUT, m.input.Value()))
+		}
+	}
+
+	if m.editMode == NumberEditMode {
+		return s.dimText.Render(fmt.Sprintf("%d-%d", m.editMin, m.editMax))
+	}
+
+	matches := m.input.MatchedSuggestions()
+	switch {
+	case m.input.Value() == "":
+		return s.dimText.Render(fmt.Sprintf(EDIT_TYPE_HINT, len(m.editOptions)))
+	case len(matches) == 0:
+		return s.dimText.Render(EDIT_TYPE_HINT_NO_OPTIONS)
+	}
+
+	showAvailOpts := matches[:min(len(matches), DEFAULT_EDIT_HINTS)]
+	hint := strings.Join(showAvailOpts, hintSeperator)
+	if extendedOpts := len(matches) - len(showAvailOpts); extendedOpts > 0 {
+		hint += fmt.Sprintf(EDIT_TYPE_HINTS_EXTENDED, extendedOpts)
+	}
+
+	return s.dimText.Render(hint)
+}
+
+func (m model) editBar() string {
+	s := m.styles
+
+	if !m.editing {
+		return lipgloss.NewStyle().Height(DEFAULT_EDIT_BAR_HEIGHT).Render("")
+	}
+
+	w := DEFAULT_WIDTH
+	if m.width > 0 {
+		w = min(max(m.width-HORIZONTAL_PADDING, DEFAULT_MIN_WIDTH), DEFAULT_WIDTH)
+	}
+
+	border := s.accent
+	if !m.inputValid {
+		border = s.err
+	}
+
+	box := lipgloss.NewStyle().
+		Border(lipgloss.NormalBorder()).
+		BorderForeground(border).
+		Padding(0, 1).
+		Width(w).
+		Render(m.input.View())
+
+	return box + "\n" + m.editHint()
 }

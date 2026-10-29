@@ -20,14 +20,20 @@ func (h helpKeyMap) FullHelp() [][]key.Binding {
 	return append(h.global.FullHelp(), h.view.FullHelp()...)
 }
 
-type editKeyMap struct{}
+type editKeyMap struct {
+	selecting bool
+}
 
-func (editKeyMap) ShortHelp() []key.Binding {
+func (k editKeyMap) ShortHelp() []key.Binding {
+	if k.selecting {
+		return []key.Binding{hintComplete, hintConfirm, hintCancel}
+	}
+
 	return []key.Binding{hintConfirm, hintCancel, hintType}
 }
 
-func (editKeyMap) FullHelp() [][]key.Binding {
+func (k editKeyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
-		{hintConfirm, hintCancel, hintType},
+		k.ShortHelp(),
 	}
 }
