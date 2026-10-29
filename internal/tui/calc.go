@@ -178,7 +178,7 @@ func (m calcModel) sidePanel(name string, slots []string, side Side) string {
 }
 
 func formatHitDisplayMsg(hitCount int) string {
-	return fmt.Sprintf("%d.%s", hitCount, DISPLAY_HIT)
+	return fmt.Sprintf("%d.%s:", hitCount, DISPLAY_HIT)
 }
 
 func renderDmgRow(row []int) string {

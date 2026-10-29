@@ -2,6 +2,7 @@ package tui
 
 import (
 	"fmt"
+	"slices"
 
 	"charm.land/bubbles/v2/key"
 	"charm.land/bubbles/v2/table"
@@ -222,6 +223,9 @@ func (m movesModel) fillMovesDefaults(data *gridData, moveName string) {
 			}
 		case HITS_COL:
 			value = DEFAULT_HITS
+			if len(moveData.Multihit) > 0 {
+				value = hitLabel(hitOptions, slices.Min(moveData.Multihit))
+			}
 		default:
 			continue
 		}

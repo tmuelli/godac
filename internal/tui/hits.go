@@ -34,3 +34,13 @@ func hitCount(opts []hitOption, label string) int {
 
 	return 0
 }
+
+func hitLabel(opts []hitOption, count int) string {
+	for _, o := range opts {
+		if o.count == count {
+			return o.label
+		}
+	}
+
+	return DEFAULT_HITS
+}
