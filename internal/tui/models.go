@@ -59,11 +59,11 @@ const (
 
 	DISPLAY_NONE = "None"
 
-	DISPLAY_HP  = "Hp"
+	DISPLAY_HP  = "HP"
 	DISPLAY_ATK = "Atk"
 	DISPLAY_DEF = "Def"
-	DISPLAY_SPA = "Spa"
-	DISPLAY_SPD = "Spd"
+	DISPLAY_SPA = "SpA"
+	DISPLAY_SPD = "SpD"
 	DISPLAY_SPE = "Spe"
 
 	DISPLAY_LEVEL_100 = "Level 100"
