@@ -1,12 +1,8 @@
-TODOS:
-	- tui TODOS
-		- UI overhaul
-
-	FUTURE FEATURES:
-		- final dot accounting into damage calculation (specifically after calculation)
-		- loading and saving settings / calculation data etc.
-		- nature power terrain basepower calculation
-			- needs location support for non-competitive (online battle) terrain for the player
-		- convenience functions:
-			- setting max / min iv ev with shortcut
-		- add logging mechanism => and write to log files, maybe bind it to debug flag or something or detail level
+FUTURE FEATURES:
+	- final dot accounting into damage calculation (specifically after calculation)
+	- loading and saving settings / calculation data etc.
+	- nature power terrain basepower calculation
+		- needs location support for non-competitive (online battle) terrain for the player
+	- convenience functions:
+		- setting max / min iv ev with shortcut
+	- add logging mechanism => and write to log files, maybe bind it to debug flag or something or detail level
