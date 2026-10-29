@@ -1,6 +1,8 @@
 package tui
 
 import (
+	"strings"
+
 	"charm.land/bubbles/v2/key"
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
@@ -49,45 +51,27 @@ func (g generalGroup) Update(msg tea.Msg) (generalGroup, tea.Cmd) {
 	return g, nil
 }
 
-func (g generalGroup) View() string {
-	var opts []string
+func (g generalGroup) View(active bool) string {
+	s := g.styles
 
-	for i, s := range g.settings {
-		style := g.styles.tab
+	marker := UNSELECTED_MARKER
+	label := lipgloss.NewStyle().Width(GENERAL_LABEL_WIDTH)
+
+	if active && g.focused {
+		marker = s.selected.Render(SELECTED_MARKER)
+		label = label.Bold(true)
+	}
+
+	opts := make([]string, len(g.settings))
+	for i, o := range g.settings {
 		if i == g.index {
-			style = style.BorderForeground(g.styles.accent).Bold(true)
+			opts[i] = s.selected.Render("[" + o + "]")
+		} else {
+			opts[i] = s.dimText.Render(" " + o + " ")
 		}
-		opts = append(opts, style.Render(s))
 	}
 
-	labelStyle := lipgloss.NewStyle().Padding(0, 1).Border(lipgloss.Border{Left: " ", Right: " "})
-	if g.focused {
-		labelStyle = labelStyle.Bold(true)
-	}
-
-	rowContent := append([]string{labelStyle.Render(g.label + ": ")}, opts...)
-	row := lipgloss.JoinHorizontal(lipgloss.Top, rowContent...)
-	return row
-}
-
-func (m fieldModel) FormatGeneralSettings() string {
-	var title string
-	var lines []string
-
-	titleStyle := lipgloss.NewStyle()
-	if m.setting == GeneralSetting {
-		titleStyle = m.styles.title
-	} else {
-		titleStyle = m.styles.dimText
-	}
-
-	title = FIELD_GENERAL_TITLE
-
-	for _, g := range m.general {
-		lines = append(lines, g.View())
-	}
-
-	return titleStyle.Render(title) + ":\n" + lipgloss.JoinVertical(lipgloss.Left, lines...)
+	return marker + label.Render(g.label) + strings.Join(opts, " ")
 }
 
 func (g generalGroup) Value() string {

@@ -266,7 +266,7 @@ func (m model) View() tea.View {
 		content = m.config.View(m.configSide)
 
 	case FieldView:
-		content = m.field.View()
+		content = m.field.View(m.width)
 	}
 
 	doc.WriteString(content)

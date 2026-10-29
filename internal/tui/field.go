@@ -1,8 +1,11 @@
 package tui
 
 import (
+	"strings"
+
 	"charm.land/bubbles/v2/key"
 	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 	"github.com/tmuelli/godac/internal/models"
 )
 
@@ -20,7 +23,7 @@ const (
 	SidesSetting
 
 	DISPLAY_GENERAL_GROUP_LEVEL   = "Level"
-	DISPLAY_GENERAL_GROUP_MODE    = "BattleMode"
+	DISPLAY_GENERAL_GROUP_MODE    = "Battle mode"
 	DISPLAY_GENERAL_GROUP_WEATHER = "Weather"
 	DISPLAY_GENERAL_GROUP_GRAVITY = "Gravity"
 )
@@ -58,6 +61,12 @@ const (
 	FieldLevel
 	FieldWeather
 	FieldGravity
+)
+
+const (
+	GENERAL_LABEL_WIDTH = 13
+	SIDES_LABEL_WIDTH   = 15
+	SIDE_COL_WIDTH      = 7
 )
 
 type fieldKeyMap struct {
@@ -220,14 +229,23 @@ func (m fieldModel) Update(msg tea.Msg) (fieldModel, tea.Cmd) {
 	return m, nil
 }
 
-func (m fieldModel) View() string {
-	return m.Body()
+func (m fieldModel) View(width int) string {
+	return m.Body(width)
 }
 
-func (m fieldModel) Body() string {
-	content := m.FormatGeneralSettings()
-	content += m.FormatSideSettings()
-	return content
+func (m fieldModel) Body(width int) string {
+	general := m.panel(FIELD_GENERAL_TITLE, m.generalRows(), m.setting == GeneralSetting)
+	sides := m.panel(FIELD_SIDES_TITLE, m.sideRows(), m.setting == SidesSetting)
+
+	row := lipgloss.JoinHorizontal(lipgloss.Top, general, " ", sides)
+
+	// render the general and sides views next to each other if width is enough
+	// otherwise render sides below general
+	if width == 0 || (lipgloss.Width(row)+HORIZONTAL_PADDING <= width) {
+		return row
+	}
+
+	return lipgloss.JoinVertical(lipgloss.Left, general, sides)
 }
 
 func (m fieldModel) SideInput(side Side) *models.UserFieldSideInput {
@@ -276,4 +294,49 @@ func (m fieldModel) Input() *models.UserFieldInput {
 	}
 
 	return &fieldInput
+}
+
+func (m fieldModel) generalRows() string {
+	active := m.setting == GeneralSetting
+
+	rows := make([]string, len(m.general))
+	for i, g := range m.general {
+		rows[i] = g.View(active)
+	}
+
+	return lipgloss.JoinVertical(lipgloss.Left, rows...)
+}
+
+func (m fieldModel) sideRows() string {
+	active := m.setting == SidesSetting
+	s := m.styles
+
+	header := UNSELECTED_MARKER +
+		strings.Repeat(" ", SIDES_LABEL_WIDTH) +
+		s.dimText.Width(SIDE_COL_WIDTH).Render(DISPLAY_FIELD_SIDE_LEFT) +
+		s.dimText.Width(SIDE_COL_WIDTH).Render(DISPLAY_FIELD_SIDE_RIGHT)
+
+	rows := []string{header}
+	for _, g := range m.sides {
+		rows = append(rows, g.View(active))
+	}
+
+	return lipgloss.JoinVertical(lipgloss.Left, rows...)
+}
+
+func (m fieldModel) panel(title, rows string, active bool) string {
+	s := m.styles
+
+	titleStyle := s.dimText
+	border := s.border
+
+	if active {
+		titleStyle = s.title
+		border = s.accent
+	}
+
+	return s.window.
+		Padding(0, 1).
+		BorderForeground(border).
+		Render(titleStyle.Render(title) + "\n\n" + rows)
 }

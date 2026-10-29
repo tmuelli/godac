@@ -69,6 +69,9 @@ const (
 	DISPLAY_LEVEL_100 = "Level 100"
 	DISPLAY_LEVEL_50  = "Level 50"
 	DISPLAY_LEVEL_5   = "Level 5"
+
+	DISPLAY_FIELD_SIDE_LEFT  = "Left"
+	DISPLAY_FIELD_SIDE_RIGHT = "Right"
 )
 
 var STATUS_DISPLAY_NAMES = []string{

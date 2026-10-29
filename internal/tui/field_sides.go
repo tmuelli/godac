@@ -87,36 +87,35 @@ func (g sidesGroup) cell(v int) string {
 	return fmt.Sprintf("[%d]", v)
 }
 
-func (g sidesGroup) View() string {
-	isGroupFocused := g.groupFocused
+func (g sidesGroup) View(active bool) string {
+	s := g.styles
+	isCursorRow := active && g.groupFocused
 
-	// left
-	leftCol := g.cell(g.values.left)
+	marker := UNSELECTED_MARKER
+	label := lipgloss.NewStyle().Width(SIDES_LABEL_WIDTH)
 
-	leftStyle := lipgloss.NewStyle().Bold(isGroupFocused)
-	if g.focused == LeftSide {
-		leftStyle = leftStyle.Foreground(g.styles.accent)
+	if isCursorRow {
+		marker = s.selected.Render(SELECTED_MARKER)
+		label = label.Bold(true)
 	}
 
-	// label
-	lableStyle := lipgloss.NewStyle().Bold(isGroupFocused)
+	cell := func(side Side) string {
+		val := g.values.Get(side)
 
-	// right
-	rightCol := g.cell(g.values.right)
+		style := s.dimText
 
-	rightStyle := lipgloss.NewStyle().Bold(isGroupFocused)
-	if g.focused == RightSide {
-		rightStyle = rightStyle.Foreground(g.styles.accent)
+		if val > 0 {
+			style = s.okText
+		}
+
+		if isCursorRow && g.focused == side {
+			style = s.selected
+		}
+
+		return style.Width(SIDE_COL_WIDTH).Render(g.cell(val))
 	}
 
-	return lipgloss.JoinHorizontal(
-		lipgloss.Top,
-		leftStyle.Render(leftCol),
-		" ",
-		lableStyle.Render(g.label),
-		" ",
-		rightStyle.Render(rightCol),
-	)
+	return marker + label.Render(g.label) + cell(LeftSide) + cell(RightSide)
 }
 
 func (g sidesGroup) Level(side Side) int {
@@ -125,24 +124,4 @@ func (g sidesGroup) Level(side Side) int {
 
 func (g sidesGroup) Value(side Side) bool {
 	return g.Level(side) > 0
-}
-
-func (m fieldModel) FormatSideSettings() string {
-	var title string
-	var lines []string
-
-	titleStyle := lipgloss.NewStyle()
-	if m.setting == SidesSetting {
-		titleStyle = m.styles.title
-	} else {
-		titleStyle = m.styles.dimText
-	}
-
-	title = FIELD_SIDES_TITLE
-
-	for _, s := range m.sides {
-		lines = append(lines, s.View())
-	}
-
-	return "\n" + titleStyle.Render(title) + ":\n" + lipgloss.JoinVertical(lipgloss.Left, lines...)
 }
