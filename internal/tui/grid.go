@@ -58,7 +58,7 @@ func (g *gridData) SetNextValidCol() {
 func renderGrid(data gridData, s *styles) string {
 	var lines []string
 
-	var headerCells []string
+	headerCells := []string{unselectedMarker}
 	for _, c := range data.columns {
 		if !c.visible {
 			continue
@@ -72,7 +72,12 @@ func renderGrid(data gridData, s *styles) string {
 	lines = append(lines, lipgloss.JoinHorizontal(lipgloss.Top, headerCells...))
 
 	for ri, row := range data.rows {
-		var cells []string
+		activeMarker := unselectedMarker
+		if ri == data.row {
+			activeMarker = s.selected.Render(selectedMarker)
+		}
+
+		cells := []string{activeMarker}
 		for ci, colVal := range row {
 			c := data.columns[ci]
 			if !c.visible {

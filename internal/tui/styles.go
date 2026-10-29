@@ -7,6 +7,11 @@ import (
 	"charm.land/lipgloss/v2"
 )
 
+const (
+	selectedMarker   = "▸ "
+	unselectedMarker = "  "
+)
+
 type styles struct {
 	// color palette
 	accent color.Color // selection, active color

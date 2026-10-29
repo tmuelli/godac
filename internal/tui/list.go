@@ -63,10 +63,13 @@ func renderList(l list, s *styles) string {
 	var styledLines []string
 	for i, line := range lines {
 		style := lipgloss.NewStyle().Width(maxLineWidth + 20)
+		activeMarker := unselectedMarker
+
 		if optionsIndexes[i] == l.activeIndex {
-			style = style.Bold(true)
+			style = s.selected.Width(maxLineWidth + 20)
+			activeMarker = s.selected.Render(selectedMarker)
 		}
-		styledLines = append(styledLines, style.Render(line))
+		styledLines = append(styledLines, activeMarker+style.Render(line))
 	}
 
 	rows := lipgloss.JoinVertical(lipgloss.Left, styledLines...)
