@@ -88,12 +88,7 @@ func (m calcModel) Init() tea.Cmd {
 func (m calcModel) Update(msg tea.Msg) (calcModel, tea.Cmd) {
 	switch msg := msg.(type) {
 	case userInputMsg:
-		attacker, defender := msg.input.leftInput.Name, msg.input.rightInput.Name
-
-		// swap if right side uses move
-		if msg.side == RightSide {
-			attacker, defender = defender, attacker
-		}
+		attacker, defender := msg.input.atkInput.Name, msg.input.defInput.Name
 
 		m.result = calcResult{attacker: attacker, defender: defender, move: msg.move}
 		m.Calculate(msg.input)
@@ -243,7 +238,7 @@ func (m calcModel) ResultView(width int) string {
 
 func (m *calcModel) Calculate(input *UserInput) {
 	// create new calculation
-	calculation, err := calc.NewCalc(m.data, &input.leftInput, &input.rightInput, &input.fieldInput)
+	calculation, err := calc.NewCalc(m.data, &input.atkInput, &input.defInput, &input.fieldInput)
 	if err != nil {
 		// log.Fatal("Error while initializing calculation data:", err)
 		m.result.err = err

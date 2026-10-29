@@ -60,14 +60,13 @@ func requestTextInput(fieldID, initial string) tea.Cmd {
 
 type UserInput struct {
 	fieldInput models.UserFieldInput
-	leftInput  models.UserInput
-	rightInput models.UserInput
+	atkInput   models.UserInput
+	defInput   models.UserInput
 }
 
 type userInputMsg struct {
 	input *UserInput
 	move  string
-	side  Side
 }
 
 type calcRequestMsg struct {

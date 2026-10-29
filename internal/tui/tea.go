@@ -117,7 +117,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		inputMsg := userInputMsg{
 			input: userInput,
 			move:  m.calcRequestInfo.usedMove,
-			side:  msg.usedSide,
 		}
 
 		var cmd tea.Cmd
@@ -286,13 +285,25 @@ func (m model) View() tea.View {
 }
 
 func (m model) Input() *UserInput {
-	input := UserInput{
-		leftInput:  *m.config.Input(LeftSide, &m.calcRequestInfo),
-		rightInput: *m.config.Input(RightSide, &m.calcRequestInfo),
-		fieldInput: *m.field.Input(),
+	atkSide, defSide := LeftSide, RightSide
+	field := *m.field.Input()
+
+	if m.calcRequestInfo.usedSide == RightSide {
+		atkSide, defSide = defSide, atkSide
+		field.Left, field.Right = field.Right, field.Left
 	}
 
-	return &input
+	atk := *m.config.Input(atkSide, &m.calcRequestInfo)
+	atk.InputSide = string(models.Attacker)
+
+	def := *m.config.Input(defSide, &m.calcRequestInfo)
+	def.InputSide = string(models.Defender)
+
+	return &UserInput{
+		atkInput:   atk,
+		defInput:   def,
+		fieldInput: field,
+	}
 }
 
 func (m model) KeyMap() help.KeyMap {
