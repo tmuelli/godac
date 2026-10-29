@@ -35,8 +35,22 @@ var globalKeys = globalKeyMap{
 	Right: key.NewBinding(key.WithKeys("right"), key.WithHelp("right", "navigate right")),
 }
 
+// display-only key bindings for help menu in footer => not used anywhere (e.g. key.Matches)
+var (
+	hintMove     = key.NewBinding(key.WithKeys("up", "down", "left", "right"), key.WithHelp("↑↓←→", "move"))
+	hintMoveRows = key.NewBinding(key.WithKeys("up", "down"), key.WithHelp("↑↓", "move"))
+	hintRows     = key.NewBinding(key.WithKeys("up", "down"), key.WithHelp("↑↓", "row"))
+	hintChange   = key.NewBinding(key.WithKeys("left", "right"), key.WithHelp("←→", "change"))
+	hintEdit     = key.NewBinding(key.WithKeys("enter"), key.WithHelp("enter", "edit"))
+	hintCalc     = key.NewBinding(key.WithKeys("enter"), key.WithHelp("enter", "calculate"))
+	hintViews    = key.NewBinding(key.WithKeys("c", "r", "l", "f"), key.WithHelp("c/r/l/f", "views"))
+	hintConfirm  = key.NewBinding(key.WithKeys("enter"), key.WithHelp("enter", "confirm"))
+	hintCancel   = key.NewBinding(key.WithKeys("esc"), key.WithHelp("esc", "cancel"))
+	hintType     = key.NewBinding(key.WithHelp("type", "to filter"))
+)
+
 func (k globalKeyMap) ShortHelp() []key.Binding {
-	return []key.Binding{k.Help, k.Quit}
+	return []key.Binding{hintViews, k.Help, k.Quit}
 }
 
 func (k globalKeyMap) FullHelp() [][]key.Binding {

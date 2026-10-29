@@ -13,8 +13,6 @@ type viewTab struct {
 }
 
 const (
-	DEFAULT_WIDTH                 = 60
-	DEFAULT_HEADER_WIDTH          = 20
 	HORIZONTAL_PADDING            = 4
 	HEADER_SEPERATOR              = " | "
 	HEADER_ATTACKER_SHORTCUT_INFO = " (l)"
@@ -33,7 +31,7 @@ func (m model) header() string {
 	w := DEFAULT_WIDTH
 	if m.width > 0 {
 		// subtract horizontal padding
-		w = max(m.width-HORIZONTAL_PADDING, DEFAULT_HEADER_WIDTH)
+		w = max(m.width-HORIZONTAL_PADDING, DEFAULT_MIN_WIDTH)
 	}
 
 	var labels []string

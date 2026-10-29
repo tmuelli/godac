@@ -10,6 +10,7 @@ import (
 	"charm.land/bubbles/v2/key"
 	"charm.land/bubbles/v2/textinput"
 	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 	"github.com/tmuelli/godac/internal/models"
 )
 
@@ -19,6 +20,10 @@ const (
 	CalcView View = iota
 	ConfigView
 	FieldView
+)
+
+const (
+	SHORT_HELP_SEPERATOR = " · "
 )
 
 type model struct {
@@ -43,7 +48,8 @@ type model struct {
 
 	help help.Model
 
-	width int
+	width  int
+	height int
 }
 
 func NewModel(data *models.Data) model {
@@ -60,6 +66,7 @@ func NewModel(data *models.Data) model {
 		help:       help.New(),
 	}
 	m.help.Styles = s.help
+	m.help.ShortSeparator = SHORT_HELP_SEPERATOR
 
 	return m
 }
@@ -81,6 +88,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
 		m.width = msg.Width
+		m.height = msg.Height
+		m.help.SetWidth(max(msg.Width-HORIZONTAL_PADDING, DEFAULT_MIN_WIDTH))
 		return m, nil
 
 	case tea.BackgroundColorMsg:
@@ -266,13 +275,15 @@ func (m model) View() tea.View {
 		}
 	}
 
-	// help menu
-	doc.WriteString("\n\n")
-	doc.WriteString(m.help.View(m.KeyMap()))
+	// footer for help menu
+	footer := m.help.View(m.KeyMap())
+	top := doc.String()
 
-	v := tea.NewView(
-		m.styles.doc.Render(doc.String()),
-	)
+	// pin the footer to the bottom
+	pad := max(0, m.height-2-lipgloss.Height(top)-lipgloss.Height(footer))
+	page := top + strings.Repeat("\n", pad) + footer
+
+	v := tea.NewView(m.styles.doc.Render(page))
 	v.AltScreen = true
 	return v
 }
@@ -288,6 +299,10 @@ func (m model) Input() *UserInput {
 }
 
 func (m model) KeyMap() help.KeyMap {
+	if m.editing {
+		return editKeyMap{}
+	}
+
 	switch m.current {
 	case ConfigView:
 		return helpKeyMap{global: globalKeys, view: configKeys}

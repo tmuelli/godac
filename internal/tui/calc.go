@@ -24,7 +24,7 @@ type calcKeyMap struct{}
 var calcKeys = calcKeyMap{}
 
 func (k calcKeyMap) ShortHelp() []key.Binding {
-	return []key.Binding{}
+	return []key.Binding{hintMove, hintCalc}
 }
 
 func (k calcKeyMap) FullHelp() [][]key.Binding {

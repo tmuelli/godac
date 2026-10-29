@@ -66,12 +66,12 @@ type fieldKeyMap struct {
 }
 
 var fieldKeys = fieldKeyMap{
-	General: key.NewBinding(key.WithKeys("g"), key.WithHelp("general", "general settings")),
-	Side:    key.NewBinding(key.WithKeys("s"), key.WithHelp("side", "field side settings")),
+	General: key.NewBinding(key.WithKeys("g"), key.WithHelp("g", "general")),
+	Side:    key.NewBinding(key.WithKeys("s"), key.WithHelp("s", "sides")),
 }
 
 func (k fieldKeyMap) ShortHelp() []key.Binding {
-	return []key.Binding{}
+	return []key.Binding{hintRows, hintChange, k.General, k.Side}
 }
 
 func (k fieldKeyMap) FullHelp() [][]key.Binding {

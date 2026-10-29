@@ -27,7 +27,7 @@ var configKeys = configKeyMap{
 }
 
 func (k configKeyMap) ShortHelp() []key.Binding {
-	return []key.Binding{}
+	return []key.Binding{hintMove, hintEdit, k.NextTab, k.PrevTab}
 }
 
 func (k configKeyMap) FullHelp() [][]key.Binding {

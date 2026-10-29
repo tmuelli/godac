@@ -8,6 +8,9 @@ const (
 	LeftSide Side = iota
 	RightSide
 
+	DEFAULT_WIDTH     = 60
+	DEFAULT_MIN_WIDTH = 20
+
 	DISPLAY_DEFAULT_GENDER = "Female"
 	DISPLAY_DEFAULT_NATURE = "Hardy"
 
