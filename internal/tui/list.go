@@ -62,7 +62,7 @@ func renderList(l list, s *styles) string {
 		cursor := i == l.activeIndex
 		marker := UNSELECTED_MARKER
 		labelStyle := lipgloss.NewStyle()
-		valueStyle := lipgloss.NewStyle()
+		valueStyle := s.valueStyle(l.values[o])
 
 		if cursor {
 			marker = s.selected.Render(SELECTED_MARKER)
@@ -73,9 +73,6 @@ func renderList(l list, s *styles) string {
 		value := l.values[o]
 		if value == "" {
 			value = EMPTY_VALUE
-			if !cursor {
-				valueStyle = s.dimText
-			}
 		}
 
 		rows = append(rows, marker+labelStyle.Width(labelWidth).Render(o)+valueStyle.Render(value))

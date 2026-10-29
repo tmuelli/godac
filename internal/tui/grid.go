@@ -138,8 +138,10 @@ func renderGrid(data gridData, s *styles) string {
 			switch {
 			case ri == data.row && ci == data.col:
 				style = style.Inherit(s.selected)
-			case !c.editable || colVal == "":
+			case !c.editable:
 				style = style.Inherit(s.dimText)
+			default:
+				style = style.Inherit(s.valueStyle(colVal))
 			}
 
 			cells = append(cells, style.Render(orDash(colVal)))

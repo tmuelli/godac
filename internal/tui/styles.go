@@ -108,3 +108,13 @@ func (s *styles) panel(title, rows string, active bool) string {
 		BorderForeground(border).
 		Render(titleStyle.Render(title) + "\n\n" + rows)
 }
+
+func (s *styles) valueStyle(val string) lipgloss.Style {
+	switch val {
+	case DISPLAY_YES, DISPLAY_ON:
+		return s.okText
+	case DISPLAY_NO, DISPLAY_OFF, "":
+		return s.dimText
+	}
+	return lipgloss.NewStyle()
+}
