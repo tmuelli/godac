@@ -81,7 +81,7 @@ func renderGrid(data gridData, s *styles) string {
 
 			style := lipgloss.NewStyle().Width(c.col.Width)
 			if ri == data.row && ci == data.col {
-				style = style.Foreground(s.highlight).Bold(true)
+				style = s.selected.Width(c.col.Width)
 			}
 			cells = append(cells, style.Render(colVal))
 		}

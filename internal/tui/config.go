@@ -168,7 +168,7 @@ func (m configModel) Body(side Side) string {
 	for i, t := range m.tabs {
 		style := m.styles.tab
 		if i == m.activeTab {
-			style = style.BorderForeground(m.styles.highlight).Bold(true)
+			style = style.BorderForeground(m.styles.accent).Bold(true)
 		}
 		renderedTabs = append(renderedTabs, style.Render(t))
 	}

@@ -55,7 +55,7 @@ func (g generalGroup) View() string {
 	for i, s := range g.settings {
 		style := g.styles.tab
 		if i == g.index {
-			style = style.BorderForeground(g.styles.highlight).Bold(true)
+			style = style.BorderForeground(g.styles.accent).Bold(true)
 		}
 		opts = append(opts, style.Render(s))
 	}
@@ -76,9 +76,9 @@ func (m fieldModel) FormatGeneralSettings() string {
 
 	titleStyle := lipgloss.NewStyle()
 	if m.setting == GeneralSetting {
-		titleStyle = titleStyle.Bold(true).Foreground(lipgloss.Color("#FFFF00"))
+		titleStyle = m.styles.title
 	} else {
-		titleStyle.Foreground(lipgloss.NoColor{})
+		titleStyle = m.styles.dimText
 	}
 
 	title = FIELD_GENERAL_TITLE

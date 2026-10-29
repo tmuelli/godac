@@ -95,7 +95,7 @@ func (g sidesGroup) View() string {
 
 	leftStyle := lipgloss.NewStyle().Bold(isGroupFocused)
 	if g.focused == LeftSide {
-		leftStyle = leftStyle.Foreground(g.styles.highlight)
+		leftStyle = leftStyle.Foreground(g.styles.accent)
 	}
 
 	// label
@@ -106,7 +106,7 @@ func (g sidesGroup) View() string {
 
 	rightStyle := lipgloss.NewStyle().Bold(isGroupFocused)
 	if g.focused == RightSide {
-		rightStyle = rightStyle.Foreground(g.styles.highlight)
+		rightStyle = rightStyle.Foreground(g.styles.accent)
 	}
 
 	return lipgloss.JoinHorizontal(
@@ -133,9 +133,9 @@ func (m fieldModel) FormatSideSettings() string {
 
 	titleStyle := lipgloss.NewStyle()
 	if m.setting == SidesSetting {
-		titleStyle = titleStyle.Bold(true).Foreground(lipgloss.Color("#FFFF00"))
+		titleStyle = m.styles.title
 	} else {
-		titleStyle.Foreground(lipgloss.NoColor{})
+		titleStyle = m.styles.dimText
 	}
 
 	title = FIELD_SIDES_TITLE

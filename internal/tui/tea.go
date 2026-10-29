@@ -47,7 +47,7 @@ type model struct {
 func NewModel(data *models.Data) model {
 	s := newStyles(true)
 
-	return model{
+	m := model{
 		current:    CalcView,
 		calc:       newCalcModel(s, data),
 		config:     newConfigModel(s, data),
@@ -57,6 +57,9 @@ func NewModel(data *models.Data) model {
 		inputValid: true,
 		help:       help.New(),
 	}
+	m.help.Styles = s.help
+
+	return m
 }
 
 func Run(data *models.Data) error {
@@ -69,11 +72,17 @@ func Run(data *models.Data) error {
 }
 
 func (m model) Init() tea.Cmd {
-	return nil
+	return tea.RequestBackgroundColor
 }
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case tea.BackgroundColorMsg:
+		// detected background color => set styles accordingly
+		m.styles.apply(msg.IsDark())
+		m.help.Styles = m.styles.help
+		return m, nil
+
 	case setLevelRequestMsg:
 		var cmd tea.Cmd
 		m.config, cmd = m.config.Update(msg, m.configSide)
