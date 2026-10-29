@@ -229,3 +229,16 @@ func (m movesModel) fillMovesDefaults(data *gridData, moveName string) {
 		data.Set(data.row, i, value)
 	}
 }
+
+func (m movesModel) Slots(side Side, settings []moveRowSettings) []string {
+	data := m.tab.Get(side)
+
+	slots := make([]string, len(data.rows))
+	for i, row := range data.rows {
+		if settings[i].isSet {
+			slots[i] = row[MOVE_COL]
+		}
+	}
+
+	return slots
+}

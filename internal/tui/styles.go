@@ -13,6 +13,7 @@ const (
 	UNSELECTED_MARKER = "  "
 	INPUT_MARKER      = " ▸ "
 	HINT_SEPERATOR    = " · "
+	NOT_SET           = "-"
 )
 
 type styles struct {
@@ -91,4 +92,19 @@ func (s *styles) apply(bgIsDark bool) {
 		FullDesc:       lipgloss.NewStyle().Foreground(s.dim),
 		FullSeparator:  lipgloss.NewStyle().Foreground(s.border),
 	}
+}
+
+func (s *styles) panel(title, rows string, active bool) string {
+	titleStyle := s.dimText
+	border := s.border
+
+	if active {
+		titleStyle = s.title
+		border = s.accent
+	}
+
+	return s.window.
+		Padding(0, 1).
+		BorderForeground(border).
+		Render(titleStyle.Render(title) + "\n\n" + rows)
 }

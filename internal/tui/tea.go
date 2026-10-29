@@ -104,10 +104,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return m, cmd
 
 	case calcRequestMsg:
-		moveSettings := m.config.MoveSettings(msg.usedSide)
-		moves := m.config.Moves(msg.usedSide)
-
-		if !moveSettings[msg.usedMoveIndex].isSet {
+		moves := m.config.MoveSlots(msg.usedSide)
+		if moves[msg.usedMoveIndex] == "" {
+			// empty slot => no move set
 			return m, nil
 		}
 
@@ -118,6 +117,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		inputMsg := userInputMsg{
 			input: userInput,
 			move:  m.calcRequestInfo.usedMove,
+			side:  msg.usedSide,
 		}
 
 		var cmd tea.Cmd
@@ -257,8 +257,8 @@ func (m model) View() tea.View {
 		ctx := calcContext{
 			leftName:   m.config.Name(LeftSide),
 			rightName:  m.config.Name(RightSide),
-			leftMoves:  m.config.Moves(LeftSide),
-			rightMoves: m.config.Moves(RightSide),
+			leftMoves:  m.config.MoveSlots(LeftSide),
+			rightMoves: m.config.MoveSlots(RightSide),
 		}
 		content = m.calc.View(ctx)
 

@@ -89,6 +89,11 @@ func (m configModel) MoveSettings(side Side) []moveRowSettings {
 	return moves.MoveRowSettings(side)
 }
 
+func (m configModel) MoveSlots(side Side) []string {
+	moves := m.tabContent[movesTab].(movesModel)
+	return moves.Slots(side, m.MoveSettings(side))
+}
+
 func (m configModel) Types(side Side) []string {
 	basics := m.tabContent[basicsTab].(fieldListModel)
 	values := basics.fields.Get(side).values

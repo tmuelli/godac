@@ -325,18 +325,5 @@ func (m fieldModel) sideRows() string {
 }
 
 func (m fieldModel) panel(title, rows string, active bool) string {
-	s := m.styles
-
-	titleStyle := s.dimText
-	border := s.border
-
-	if active {
-		titleStyle = s.title
-		border = s.accent
-	}
-
-	return s.window.
-		Padding(0, 1).
-		BorderForeground(border).
-		Render(titleStyle.Render(title) + "\n\n" + rows)
+	return m.styles.panel(title, rows, active)
 }

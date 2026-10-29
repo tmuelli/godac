@@ -72,6 +72,8 @@ const (
 
 	DISPLAY_FIELD_SIDE_LEFT  = "Left"
 	DISPLAY_FIELD_SIDE_RIGHT = "Right"
+
+	DISPLAY_MOVE_NOT_SET = "(not set)"
 )
 
 var STATUS_DISPLAY_NAMES = []string{

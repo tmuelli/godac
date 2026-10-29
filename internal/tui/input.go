@@ -67,6 +67,7 @@ type UserInput struct {
 type userInputMsg struct {
 	input *UserInput
 	move  string
+	side  Side
 }
 
 type calcRequestMsg struct {

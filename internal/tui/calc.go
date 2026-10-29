@@ -8,6 +8,7 @@ import (
 	"charm.land/bubbles/v2/key"
 	"charm.land/bubbles/v2/table"
 	tea "charm.land/bubbletea/v2"
+	"charm.land/lipgloss/v2"
 	"github.com/tmuelli/godac/internal/calc"
 	"github.com/tmuelli/godac/internal/models"
 )
@@ -17,6 +18,13 @@ const (
 	statsTab
 	miscTab
 	movesTab
+)
+
+const (
+	CALC_MOVE_WIDTH = 18
+
+	LEFT_PREFIX  = "L"
+	RIGHT_PREFIX = "R"
 )
 
 type calcKeyMap struct{}
@@ -39,30 +47,27 @@ type calcContext struct {
 }
 
 type calcResult struct {
-	r   models.BattleResult
-	err error
+	r        models.BattleResult
+	err      error
+	attacker string
+	defender string
+	move     string
 }
 
 type calcModel struct {
-	grid     gridData
-	styles   *styles
-	data     *models.Data
-	result   calcResult
-	usedMove string
+	grid   gridData
+	styles *styles
+	data   *models.Data
+	result calcResult
 }
 
 func newCalcModel(s *styles, data *models.Data) calcModel {
 	columns := []gridColumn{
-		{col: table.Column{Title: "Pokemon1 [L]", Width: 15}, editable: true, visible: true},
-		{col: table.Column{Title: "Pokemon2 [R]", Width: 15}, editable: true, visible: true},
+		{col: table.Column{}, editable: true, visible: true},
+		{col: table.Column{}, editable: true, visible: true},
 	}
 
-	rows := [][]string{
-		{"Move 1 [L1]", "Move 1 [R1]"},
-		{"Move 2 [L2]", "Move 2 [R2]"},
-		{"Move 3 [L3]", "Move 3 [R3]"},
-		{"Move 4 [L4]", "Move 4 [R4]"},
-	}
+	rows := [][]string{{"", ""}, {"", ""}, {"", ""}, {"", ""}}
 
 	return calcModel{
 		grid: gridData{
@@ -83,7 +88,14 @@ func (m calcModel) Init() tea.Cmd {
 func (m calcModel) Update(msg tea.Msg) (calcModel, tea.Cmd) {
 	switch msg := msg.(type) {
 	case userInputMsg:
-		m.usedMove = msg.move
+		attacker, defender := msg.input.leftInput.Name, msg.input.rightInput.Name
+
+		// swap if right side uses move
+		if msg.side == RightSide {
+			attacker, defender = defender, attacker
+		}
+
+		m.result = calcResult{attacker: attacker, defender: defender, move: msg.move}
 		m.Calculate(msg.input)
 		return m, nil
 	case tea.KeyPressMsg:
@@ -111,12 +123,58 @@ func (m calcModel) View(ctx calcContext) string {
 }
 
 func (m calcModel) Body(ctx calcContext) string {
-	m.fillFromContext(ctx)
+	left := m.sidePanel(ctx.leftName, ctx.leftMoves, LeftSide)
+	right := m.sidePanel(ctx.rightName, ctx.rightMoves, RightSide)
+	panels := lipgloss.JoinHorizontal(lipgloss.Top, left, " ", right)
 
-	body := renderGrid(m.grid, m.styles)
-	body += fmt.Sprintf("\n\n%s\n", CHOOSE_MOVE)
-	body += m.ResultView(ctx)
-	return body
+	parts := []string{panels, ""}
+
+	// add hint to setup pokemon via config view
+	if ctx.leftName == "" && ctx.rightName == "" {
+		parts = append(parts, m.styles.dimText.Render(CALC_SETUP_HINT))
+	}
+	parts = append(parts, m.ResultView(lipgloss.Width(panels)))
+
+	return lipgloss.JoinVertical(lipgloss.Left, parts...)
+}
+
+func (m calcModel) sidePanel(name string, slots []string, side Side) string {
+	s := m.styles
+	active := m.grid.col == int(side)
+
+	prefix := LEFT_PREFIX
+	if side == RightSide {
+		prefix = RIGHT_PREFIX
+	}
+
+	title := name
+	if title == "" {
+		title = DISPLAY_MOVE_NOT_SET
+	}
+	title += " [" + prefix + "]"
+
+	rows := make([]string, len(slots))
+	for i, move := range slots {
+		marker := UNSELECTED_MARKER
+		nameStyle := lipgloss.NewStyle().Width(CALC_MOVE_WIDTH)
+		text := move
+
+		if move == "" {
+			text = NOT_SET
+			nameStyle = s.dimText.Width(CALC_MOVE_WIDTH)
+		}
+
+		if active && i == m.grid.row {
+			marker = s.selected.Render(SELECTED_MARKER)
+			if move != "" {
+				nameStyle = s.selected.Width(CALC_MOVE_WIDTH)
+			}
+		}
+
+		rows[i] = marker + nameStyle.Render(text)
+	}
+
+	return s.panel(title, lipgloss.JoinVertical(lipgloss.Left, rows...), active)
 }
 
 func formatHitDisplayMsg(hitCount int) string {
@@ -135,90 +193,52 @@ func renderDmgRow(row []int) string {
 	return b.String()
 }
 
-func renderDmgMatrix(matrix [][]int) string {
-	result := ""
-	isMultihit := false
+func (m calcModel) dmgRollLines(inner int) []string {
+	matrix := m.result.r.DmgMatrix
+	isMultihit := len(matrix) > 1
 
-	if len(matrix) == 0 {
-		return ERR_INVALID_OUTPUT
-	}
-
-	if len(matrix) > 1 {
-		isMultihit = true
-	}
-
-	// first damage row => always present
-	var prefix string
-	if isMultihit {
-		prefix = formatHitDisplayMsg(1)
-	}
-
-	result += fmt.Sprintf("\n%s\n", DAMAGE_AMOUNTS)
-	result += fmt.Sprintf("%s %s\n", prefix, renderDmgRow(matrix[0]))
-
-	// additional lines (multihit output)
-	if isMultihit {
-		var hitStr strings.Builder
-
-		for i, r := range matrix {
-			if i == 0 {
-				continue
-			}
-
-			fmt.Fprintf(&hitStr, "%s %s\n", formatHitDisplayMsg(i+1), renderDmgRow(r))
+	lines := make([]string, 0, len(matrix))
+	for i, row := range matrix {
+		text := renderDmgRow(row)
+		if isMultihit {
+			text = formatHitDisplayMsg(i+1) + " " + text
 		}
-
-		result += hitStr.String()
+		lines = append(lines, m.styles.dimText.Width(inner).Render(text))
 	}
 
-	return result
+	return lines
 }
 
-func (m calcModel) buildBattleString(ctx calcContext) string {
-	return fmt.Sprintf("\n%s (%s) vs. %s:\n", ctx.leftName, m.usedMove, ctx.rightName)
-}
+func (m calcModel) ResultView(width int) string {
+	s := m.styles
+	r := m.result
+	inner := width - HORIZONTAL_PADDING
 
-func (m calcModel) ResultView(ctx calcContext) string {
-	if m.result.err != nil {
-		return fmt.Sprintf("Error: %v\n", m.result.err)
+	box := func(content string) string {
+		return s.window.Padding(0, 1).BorderForeground(s.border).Width(width).Render(content)
 	}
 
-	if len(m.result.r.DmgMatrix) > 0 {
-		content := m.buildBattleString(ctx)
-		content += fmt.Sprintf("%d - %d (%.2f%% - %.2f%%)\n",
-			m.result.r.Range.Min,
-			m.result.r.Range.Max,
-			m.result.r.Range.MinPerc,
-			m.result.r.Range.MaxPerc,
-		)
-		content += renderDmgMatrix(m.result.r.DmgMatrix)
-		return content
-	}
-	return ""
-}
-
-// FIXME: Move logic into Update rather than View => View should only render and not mutate
-func (m calcModel) fillFromContext(ctx calcContext) {
-	// left
-	m.fillSideFromContext(ctx.leftName, ctx.leftMoves, LeftSide, "L")
-
-	// right
-	m.fillSideFromContext(ctx.rightName, ctx.rightMoves, RightSide, "R")
-}
-
-// FIXME: Move logic into Update rather than View => View should only render and not mutate
-func (m calcModel) fillSideFromContext(sideName string, sideMoves []string, side Side, sidePrefix string) {
-	if sideName != "" {
-		m.grid.columns[side].col.Title = fmt.Sprintf("%s [%s]", sideName, sidePrefix)
+	if r.err != nil {
+		return box(s.errText.Width(inner).Render("Error: " + r.err.Error()))
 	}
 
-	for i, move := range sideMoves {
-		if move == "" {
-			continue
-		}
-
-		m.grid.rows[i][side] = fmt.Sprintf("%s [%s%d]", move, sidePrefix, i+1)
+	if len(r.r.DmgMatrix) == 0 {
+		return s.dimText.Render(CHOOSE_MOVE)
 	}
+
+	heading := lipgloss.NewStyle().Bold(true).
+		Render(fmt.Sprintf("%s (%s) vs. %s", r.attacker, r.move, r.defender))
+
+	dmgRange := lipgloss.NewStyle().Bold(true).
+		Render(fmt.Sprintf("%d - %d", r.r.Range.Min, r.r.Range.Max))
+
+	percRange := s.selected.
+		Render(fmt.Sprintf("(%.2f%% - %.2f%%)", r.r.Range.MinPerc, r.r.Range.MaxPerc))
+
+	lines := []string{heading, "", dmgRange + " " + percRange, "", s.dimText.Render(DAMAGE_AMOUNTS)}
+	lines = append(lines, m.dmgRollLines(inner)...)
+
+	return box(lipgloss.JoinVertical(lipgloss.Left, lines...))
 }
 
 func (m *calcModel) Calculate(input *UserInput) {
