@@ -53,10 +53,10 @@ func newMovesModel(s *styles, data *models.Data) movesModel {
 	}
 
 	rows := [][]string{
-		{DISPLAY_DEFAULT_MOVE1, DISPLAY_DEFAULT_BASEPOWER1, DISPLAY_DEFAULT_MOVE_TYPE1, DISPLAY_NONE, DISPLAY_NO, "0", "0"},
-		{DISPLAY_DEFAULT_MOVE2, DISPLAY_DEFAULT_BASEPOWER2, DISPLAY_DEFAULT_MOVE_TYPE2, DISPLAY_NONE, DISPLAY_NO, "0", "0"},
-		{DISPLAY_DEFAULT_MOVE3, DISPLAY_DEFAULT_BASEPOWER3, DISPLAY_DEFAULT_MOVE_TYPE3, DISPLAY_NONE, DISPLAY_NO, "0", "0"},
-		{DISPLAY_DEFAULT_MOVE4, DISPLAY_DEFAULT_BASEPOWER4, DISPLAY_DEFAULT_MOVE_TYPE4, DISPLAY_NONE, DISPLAY_NO, "0", "0"},
+		{DISPLAY_DEFAULT_MOVE1, "", "", "", "", "", ""},
+		{DISPLAY_DEFAULT_MOVE2, "", "", "", "", "", ""},
+		{DISPLAY_DEFAULT_MOVE3, "", "", "", "", "", ""},
+		{DISPLAY_DEFAULT_MOVE4, "", "", "", "", "", ""},
 	}
 
 	initialColIndex := firstEditableCol(columns)
@@ -226,6 +226,9 @@ func (m movesModel) fillMovesDefaults(data *gridData, moveName string) {
 			if len(moveData.Multihit) > 0 {
 				value = hitLabel(hitOptions, slices.Min(moveData.Multihit))
 			}
+		case METR_HITS_COL:
+			// "Never" as default
+			value = metronomeHitOptions[0].label
 		default:
 			continue
 		}
