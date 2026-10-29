@@ -75,7 +75,7 @@ func (s *styles) apply(bgIsDark bool) {
 
 	s.tab = lipgloss.NewStyle().
 		Border(lipgloss.NormalBorder()).
-		Padding(1, 2).
+		Padding(0, 2).
 		BorderForeground(s.border)
 
 	s.window = lipgloss.NewStyle().

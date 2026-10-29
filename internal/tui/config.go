@@ -151,9 +151,9 @@ func (m configModel) Body(side Side) string {
 	var renderedTabs []string
 
 	for i, t := range m.tabs {
-		style := m.styles.tab
+		style := s.tab.Foreground(s.dim)
 		if i == m.activeTab {
-			style = style.BorderForeground(m.styles.accent).Bold(true)
+			style = s.tab.BorderForeground(s.accent).Foreground(s.accent).Bold(true)
 		}
 		renderedTabs = append(renderedTabs, style.Render(t))
 	}
