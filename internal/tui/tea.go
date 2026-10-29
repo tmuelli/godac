@@ -42,6 +42,8 @@ type model struct {
 	calcRequestInfo calcRequestInfo
 
 	help help.Model
+
+	width int
 }
 
 func NewModel(data *models.Data) model {
@@ -77,6 +79,10 @@ func (m model) Init() tea.Cmd {
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case tea.WindowSizeMsg:
+		m.width = msg.Width
+		return m, nil
+
 	case tea.BackgroundColorMsg:
 		// detected background color => set styles accordingly
 		m.styles.apply(msg.IsDark())
@@ -229,7 +235,8 @@ func (m model) View() tea.View {
 	var content string
 
 	doc := strings.Builder{}
-	// s := m.styles
+	doc.WriteString(m.header())
+	doc.WriteString("\n\n")
 
 	switch m.current {
 	case CalcView:
@@ -264,8 +271,7 @@ func (m model) View() tea.View {
 	doc.WriteString(m.help.View(m.KeyMap()))
 
 	v := tea.NewView(
-		// s.doc.Render(doc.String()),
-		doc.String(),
+		m.styles.doc.Render(doc.String()),
 	)
 	v.AltScreen = true
 	return v

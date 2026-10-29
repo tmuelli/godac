@@ -221,14 +221,7 @@ func (m fieldModel) Update(msg tea.Msg) (fieldModel, tea.Cmd) {
 }
 
 func (m fieldModel) View() string {
-	content := m.Title()
-	content += "\n\n"
-	content += m.Body()
-	return content
-}
-
-func (m fieldModel) Title() string {
-	return FIELD_TITLE
+	return m.Body()
 }
 
 func (m fieldModel) Body() string {

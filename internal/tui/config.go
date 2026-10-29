@@ -1,7 +1,6 @@
 package tui
 
 import (
-	"fmt"
 	"strings"
 
 	"charm.land/bubbles/v2/key"
@@ -138,21 +137,7 @@ func (m configModel) Update(msg tea.Msg, side Side) (configModel, tea.Cmd) {
 }
 
 func (m configModel) View(side Side) string {
-	content := m.Title(side)
-	content += "\n\n"
-	content += m.Body(side)
-	return content
-}
-
-func (m configModel) Title(side Side) string {
-	var sideDesc string
-	if side == LeftSide {
-		sideDesc = string(models.Attacker)
-	} else {
-		sideDesc = string(models.Defender)
-	}
-
-	return fmt.Sprintf("%s %s\n", CONFIG_TITLE, sideDesc)
+	return m.Body(side)
 }
 
 func (m configModel) Body(side Side) string {
@@ -179,7 +164,7 @@ func (m configModel) Body(side Side) string {
 
 	content := m.tabContent[m.activeTab].View(side)
 	doc.WriteString(s.window.Width((lipgloss.Width(content))).Render(content))
-	return s.doc.Render(doc.String())
+	return doc.String()
 }
 
 func (m configModel) Input(side Side, reqInfo *calcRequestInfo) *models.UserInput {

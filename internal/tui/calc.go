@@ -107,14 +107,7 @@ func (m calcModel) Update(msg tea.Msg) (calcModel, tea.Cmd) {
 }
 
 func (m calcModel) View(ctx calcContext) string {
-	content := m.Title()
-	content += "\n\n"
-	content += m.Body(ctx)
-	return content
-}
-
-func (m calcModel) Title() string {
-	return CALC_TITLE
+	return m.Body(ctx)
 }
 
 func (m calcModel) Body(ctx calcContext) string {
