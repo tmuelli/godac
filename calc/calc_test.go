@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/tmuelli/godac/internal/models"
+	"github.com/tmuelli/godac/models"
 )
 
 type testCase struct {

@@ -3,8 +3,8 @@ package calc
 import (
 	"math"
 
-	"github.com/tmuelli/godac/internal/models"
 	"github.com/tmuelli/godac/internal/utils"
+	"github.com/tmuelli/godac/models"
 )
 
 func getEVItems() []string {

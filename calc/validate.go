@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/tmuelli/godac/internal/models"
+	"github.com/tmuelli/godac/models"
 )
 
 func (s *StatusCondition) IsValid() bool {

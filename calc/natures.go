@@ -1,7 +1,7 @@
 package calc
 
 import (
-	"github.com/tmuelli/godac/internal/models"
+	"github.com/tmuelli/godac/models"
 )
 
 func getNatureModifier(stat StatKind, nature *models.Nature) float64 {

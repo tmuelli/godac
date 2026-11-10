@@ -3,8 +3,8 @@ package tui
 import (
 	"strings"
 
-	"github.com/tmuelli/godac/internal/models"
 	"github.com/tmuelli/godac/internal/utils"
+	"github.com/tmuelli/godac/models"
 )
 
 type side[T any] struct {
