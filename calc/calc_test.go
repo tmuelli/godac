@@ -24,6 +24,7 @@ type testCase struct {
 	atkBoosts    models.UserInputBoosts
 	atkStatus    string
 	atkHealth    int
+	atkBaseStats *models.BaseStats
 
 	// move
 	atkMove      string
@@ -46,6 +47,7 @@ type testCase struct {
 	defEVs       models.EvStats
 	defBoosts    models.UserInputBoosts
 	defHealth    int
+	defBaseStats *models.BaseStats
 
 	// field
 	fieldType   string
@@ -135,46 +137,48 @@ func calcFor(t *testing.T, data *models.Data, tc testCase) *Calculation {
 	}
 
 	atkInput := &models.UserInput{
-		Name:          tc.atkSpecies,
-		Level:         atkLevel,
-		Ability:       tc.atkAbility,
-		AbilityOn:     tc.atkAbilityOn,
-		Item:          atkItem,
-		Nature:        tc.atkNature,
-		Types:         tc.atkTypes,
-		MoveOverride:  tc.moveOverride,
-		EvSetting:     atkEvSetting,
-		EvCustom:      atkEvCustom,
-		IvSetting:     atkIvSetting,
-		IvCustom:      atkIvCustom,
-		Status:        atkStatus,
-		Hits:          hits,
-		Boosts:        tc.atkBoosts,
-		AttackMove:    tc.atkMove,
-		Moves:         tc.atkMoves,
-		HealthPercent: atkHp,
-		InputSide:     string(models.Attacker),
-		MetronomeHits: nil,
+		Name:              tc.atkSpecies,
+		Level:             atkLevel,
+		Ability:           tc.atkAbility,
+		AbilityOn:         tc.atkAbilityOn,
+		Item:              atkItem,
+		Nature:            tc.atkNature,
+		Types:             tc.atkTypes,
+		MoveOverride:      tc.moveOverride,
+		EvSetting:         atkEvSetting,
+		EvCustom:          atkEvCustom,
+		IvSetting:         atkIvSetting,
+		IvCustom:          atkIvCustom,
+		Status:            atkStatus,
+		Hits:              hits,
+		Boosts:            tc.atkBoosts,
+		AttackMove:        tc.atkMove,
+		Moves:             tc.atkMoves,
+		HealthPercent:     atkHp,
+		InputSide:         string(models.Attacker),
+		MetronomeHits:     nil,
+		BaseStatsOverride: tc.atkBaseStats,
 	}
 
 	defInput := &models.UserInput{
-		Name:          tc.defSpecies,
-		Level:         defLevel,
-		Ability:       tc.defAbility,
-		AbilityOn:     tc.defAbilityOn,
-		Item:          defItem,
-		Nature:        tc.defNature,
-		Types:         tc.defTypes,
-		EvSetting:     defEvSetting,
-		EvCustom:      defEvCustom,
-		IvSetting:     defIvSetting,
-		IvCustom:      defIvCustom,
-		Boosts:        tc.defBoosts,
-		HealthPercent: defHp,
-		AttackMove:    tc.defMove,
-		Moves:         tc.defMoves,
-		InputSide:     string(models.Defender),
-		MetronomeHits: nil,
+		Name:              tc.defSpecies,
+		Level:             defLevel,
+		Ability:           tc.defAbility,
+		AbilityOn:         tc.defAbilityOn,
+		Item:              defItem,
+		Nature:            tc.defNature,
+		Types:             tc.defTypes,
+		EvSetting:         defEvSetting,
+		EvCustom:          defEvCustom,
+		IvSetting:         defIvSetting,
+		IvCustom:          defIvCustom,
+		Boosts:            tc.defBoosts,
+		HealthPercent:     defHp,
+		AttackMove:        tc.defMove,
+		Moves:             tc.defMoves,
+		InputSide:         string(models.Defender),
+		MetronomeHits:     nil,
+		BaseStatsOverride: tc.defBaseStats,
 	}
 
 	terrain := tc.weather
@@ -806,6 +810,60 @@ func TestMoveOverrideValidation(t *testing.T) {
 		"base power out of range": {BasePower: &tooHigh},
 		"unknown type":            {Type: "nope"},
 		"unknown category":        {Category: "Mystic"},
+	} {
+		if _, err := validateInput(data, input(o)); err == nil {
+			t.Errorf("%s should be invalid", desc)
+		}
+	}
+}
+
+func TestBaseStatsOverride(t *testing.T) {
+	runTests(t, []testCase{
+		{
+			desc:       "Poochyena vs Poochyena",
+			atkSpecies: "Poochyena", atkNature: "Hardy", atkMove: "Bite", atkMoves: []string{"Bite"},
+			atkBaseStats: &models.BaseStats{Hp: 35, Atk: 70, Def: 35, Spa: 30, Spd: 30, Spe: 35},
+			defSpecies:   "Poochyena", defNature: "Hardy", defMove: "Bite", defMoves: []string{"Bite"},
+			wantMin: 54, wantMax: 63,
+		},
+	})
+}
+
+func TestBaseStatsOverrideValidation(t *testing.T) {
+	data := loadTestData(t)
+
+	tooHigh := models.BASE_MAX + 1
+	tooLow := models.BASE_MIN - 1
+	validMin := models.BASE_MIN
+	validMax := models.BASE_MAX
+
+	input := func(o *models.BaseStats) *models.UserInput {
+		return &models.UserInput{
+			Name: "Poochyena", Level: 100, Nature: "Hardy",
+			AttackMove: "Bite", Moves: []string{"Bite"}, BaseStatsOverride: o,
+			EvSetting: "worstCase", IvSetting: "optimal", HealthPercent: 100,
+			InputSide: string(models.Attacker),
+		}
+	}
+
+	for desc, o := range map[string]*models.BaseStats{
+		"no override":      nil,
+		"atk min override": {Hp: 35, Atk: validMin, Def: 35, Spa: 30, Spd: 30, Spe: 35},
+		"atk max override": {Hp: 35, Atk: validMax, Def: 35, Spa: 30, Spd: 30, Spe: 35},
+		"hp min override":  {Hp: validMin, Atk: 55, Def: 35, Spa: 30, Spd: 30, Spe: 35},
+		"hp max override":  {Hp: validMax, Atk: 55, Def: 35, Spa: 30, Spd: 30, Spe: 35},
+	} {
+		if _, err := validateInput(data, input(o)); err != nil {
+			t.Errorf("%s should be valid: %v", desc, err)
+		}
+	}
+
+	for desc, o := range map[string]*models.BaseStats{
+		"atk max out of range": {Hp: 35, Atk: tooHigh, Def: 35, Spa: 30, Spd: 30, Spe: 35},
+		"atk min out of range": {Hp: 35, Atk: tooLow, Def: 35, Spa: 30, Spd: 30, Spe: 35},
+		"hp too high":          {Hp: tooHigh, Atk: 55, Def: 35, Spa: 30, Spd: 30, Spe: 35},
+		"hp too low":           {Hp: tooLow, Atk: 55, Def: 35, Spa: 30, Spd: 30, Spe: 35},
+		"empty":                {},
 	} {
 		if _, err := validateInput(data, input(o)); err == nil {
 			t.Errorf("%s should be invalid", desc)

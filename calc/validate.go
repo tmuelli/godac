@@ -406,6 +406,15 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	// boosts
 	boosts := models.NewBoosts(&input.Boosts)
 
+	// base stats overrides
+	if o := input.BaseStatsOverride; o != nil {
+		if !models.IsValidStats(models.BASE, *o) {
+			return nil, fmt.Errorf("invalid input: base stats out of range")
+		}
+
+		specie.BaseStats = *o
+	}
+
 	// successful validation of user input
 	calcData := CalcData{
 		specie:        specie,

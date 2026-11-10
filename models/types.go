@@ -30,27 +30,28 @@ type UserMoveOverride struct {
 
 /* User input */
 type UserInput struct {
-	Name          string            `json:"name"`
-	Level         int               `json:"level"`
-	Nature        string            `json:"nature"`
-	AttackMove    string            `json:"attackMove"`
-	Moves         []string          `json:"moves"`
-	HealthPercent int               `json:"healthPercent"`
-	IvSetting     string            `json:"ivSetting"`
-	IvCustom      *IvStats          `json:"ivCustom"`
-	EvSetting     string            `json:"evSetting"`
-	EvCustom      *EvStats          `json:"evCustom"`
-	Types         []string          `json:"types"`
-	MoveOverride  *UserMoveOverride `json:"moveOverride"`
-	Ability       string            `json:"ability"`
-	AbilityOn     *bool             `json:"abilityOn"`
-	Item          *string           `json:"item"`
-	Status        *string           `json:"status"`
-	Gender        *string           `json:"gender"`
-	Hits          *int              `json:"hits"`
-	MetronomeHits *int              `json:"metronomeHits"`
-	Boosts        UserInputBoosts   `json:"boosts"`
-	InputSide     string            `json:"inputSide"`
+	Name              string            `json:"name"`
+	Level             int               `json:"level"`
+	Nature            string            `json:"nature"`
+	AttackMove        string            `json:"attackMove"`
+	Moves             []string          `json:"moves"`
+	HealthPercent     int               `json:"healthPercent"`
+	IvSetting         string            `json:"ivSetting"`
+	IvCustom          *IvStats          `json:"ivCustom"`
+	EvSetting         string            `json:"evSetting"`
+	EvCustom          *EvStats          `json:"evCustom"`
+	Types             []string          `json:"types"`
+	MoveOverride      *UserMoveOverride `json:"moveOverride"`
+	Ability           string            `json:"ability"`
+	AbilityOn         *bool             `json:"abilityOn"`
+	Item              *string           `json:"item"`
+	Status            *string           `json:"status"`
+	Gender            *string           `json:"gender"`
+	Hits              *int              `json:"hits"`
+	MetronomeHits     *int              `json:"metronomeHits"`
+	Boosts            UserInputBoosts   `json:"boosts"`
+	InputSide         string            `json:"inputSide"`
+	BaseStatsOverride *BaseStats        `json:"baseStatsOverride"`
 }
 
 /* User field input */
@@ -95,21 +96,12 @@ type BattleResult struct {
 /* Types: core data */
 /********************/
 
-/* BaseStats */
-type BaseStats struct {
-	Hp  int `json:"hp"`
-	Atk int `json:"atk"`
-	Def int `json:"def"`
-	Spa int `json:"spa"`
-	Spd int `json:"spd"`
-	Spe int `json:"spe"`
-}
-
 type StatType string
 
 const (
-	IV StatType = "iv"
-	EV StatType = "ev"
+	IV   StatType = "iv"
+	EV   StatType = "ev"
+	BASE StatType = "base"
 
 	IV_MIN = 0
 	IV_MAX = 31
@@ -138,9 +130,27 @@ func IsValidStats(statType StatType, stats BaseStats) bool {
 			}
 		}
 		return true
+	case BASE:
+		values = append(values, stats.Hp)
+		for _, v := range values {
+			if v < BASE_MIN || v > BASE_MAX {
+				return false
+			}
+		}
+		return true
 	default:
 		return false
 	}
+}
+
+/* BaseStats */
+type BaseStats struct {
+	Hp  int `json:"hp"`
+	Atk int `json:"atk"`
+	Def int `json:"def"`
+	Spa int `json:"spa"`
+	Spd int `json:"spd"`
+	Spe int `json:"spe"`
 }
 
 /* IvStats */
