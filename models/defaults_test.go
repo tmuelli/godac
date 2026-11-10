@@ -33,20 +33,23 @@ type defaultsCase struct {
 
 // wantFor builds the full expected input: the shared baseline plus the row's values
 func wantFor(tc defaultsCase) UserInput {
+	baseStats := testData.Species[tc.species].BaseStats
+
 	return UserInput{
-		Name:          tc.species,
-		Level:         int(Level100),
-		Nature:        "Hardy",
-		HealthPercent: 100,
-		IvSetting:     "custom",
-		IvCustom:      &IvStats{BaseStats: BaseStats{Hp: 31, Atk: 31, Def: 31, Spa: 31, Spd: 31, Spe: 31}},
-		EvSetting:     "custom",
-		EvCustom:      &EvStats{},
-		Ability:       tc.ability,
-		AbilityOn:     tc.abilityOn,
-		Status:        ptr("healthy"),
-		Gender:        ptr(tc.gender),
-		Types:         tc.types,
+		Name:              tc.species,
+		Level:             int(Level100),
+		Nature:            "Hardy",
+		HealthPercent:     100,
+		IvSetting:         "custom",
+		IvCustom:          &IvStats{BaseStats: BaseStats{Hp: 31, Atk: 31, Def: 31, Spa: 31, Spd: 31, Spe: 31}},
+		EvSetting:         "custom",
+		EvCustom:          &EvStats{},
+		Ability:           tc.ability,
+		AbilityOn:         tc.abilityOn,
+		Status:            ptr("healthy"),
+		Gender:            ptr(tc.gender),
+		Types:             tc.types,
+		BaseStatsOverride: &baseStats,
 	}
 }
 
@@ -62,8 +65,8 @@ func jsonOf(t *testing.T, v any) string {
 func TestDefaultUserInput(t *testing.T) {
 	tests := []defaultsCase{
 		{species: "Poochyena", ability: "Run Away", gender: "F", types: []string{"dark"}},
-		{species: "Gyarados", ability: "Intimidate", gender: "F", abilityOn: ptr(true), types: []string{"water", "fyling"}},
-		{species: "Regigigas", ability: "Slow Start", gender: "F", abilityOn: ptr(true), types: []string{"normal"}},
+		{species: "Gyarados", ability: "Intimidate", gender: "F", abilityOn: ptr(true), types: []string{"water", "flying"}},
+		{species: "Regigigas", ability: "Slow Start", gender: "N", abilityOn: ptr(true), types: []string{"normal"}},
 		{species: "Flareon", ability: "Flash Fire", gender: "F", abilityOn: ptr(false), types: []string{"fire"}},
 		{species: "Magnemite", ability: "Magnet Pull", gender: "N", types: []string{"electric", "steel"}},
 		{species: "Nidoking", ability: "Poison Point", gender: "M", types: []string{"poison", "ground"}},
@@ -106,7 +109,7 @@ func TestDefaultUserInput_NoSharedState(t *testing.T) {
 	}
 
 	firstInput := testData.DefaultUserInput(&specie)
-	if firstInput.IvCustom == nil || firstInput.Gender == nil {
+	if firstInput.IvCustom == nil || firstInput.Gender == nil || firstInput.BaseStatsOverride == nil {
 		t.Fatal("IvCustom and Gender must be set for this test")
 	}
 
@@ -117,6 +120,7 @@ func TestDefaultUserInput_NoSharedState(t *testing.T) {
 	firstInput.IvCustom.Atk = 0
 	*firstInput.Gender = "M"
 	firstInput.Types[0] = "water"
+	firstInput.BaseStatsOverride.Atk = 1
 
 	secondInput := testData.DefaultUserInput(&specie)
 
@@ -128,10 +132,6 @@ func TestDefaultUserInput_NoSharedState(t *testing.T) {
 
 	if !reflect.DeepEqual(secondInput, want) {
 		t.Errorf("\n got: %s\nwant: %s", jsonOf(t, secondInput), jsonOf(t, want))
-	}
-
-	if secondInput.Types[0] != want.Types[0] {
-		t.Errorf("invalid type: %q want %q", secondInput.Types[0], want.Types[0])
 	}
 }
 
@@ -166,8 +166,12 @@ func TestDefaultUserInput_AllSpecies(t *testing.T) {
 			if !reflect.DeepEqual(got.Types, specie.Types) {
 				t.Errorf("\n got: %s\nwant: %s", jsonOf(t, got.Types), jsonOf(t, specie.Types))
 			}
+
+			if got.BaseStatsOverride == nil {
+				t.Error("BaseStatsOverride is nil")
+			} else if !reflect.DeepEqual(*got.BaseStatsOverride, specie.BaseStats) {
+				t.Errorf("\n got: %s\nwant: %s", jsonOf(t, got.BaseStatsOverride), jsonOf(t, specie.BaseStats))
+			}
 		})
 	}
 }
-
-func TestDefaultUserInput_BaseStats(t *testing.T) {}
