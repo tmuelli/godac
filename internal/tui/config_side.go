@@ -142,6 +142,20 @@ func (m configModel) MoveOverride(side Side, move string) *models.UserMoveOverri
 	return nil
 }
 
+func (m configModel) BaseStatsOverride(side Side) *models.BaseStats {
+	stats := m.tabContent[statsTab].(statsModel)
+	data := stats.tab.Get(side)
+
+	return &models.BaseStats{
+		Hp:  atoiOrZero(data.rows[HP_ROW][BASE_COL]),
+		Atk: atoiOrZero(data.rows[ATK_ROW][BASE_COL]),
+		Def: atoiOrZero(data.rows[DEF_ROW][BASE_COL]),
+		Spa: atoiOrZero(data.rows[SPA_ROW][BASE_COL]),
+		Spd: atoiOrZero(data.rows[SPD_ROW][BASE_COL]),
+		Spe: atoiOrZero(data.rows[SPE_ROW][BASE_COL]),
+	}
+}
+
 func (m configModel) Hits(side Side, move string) *int {
 	moves := m.tabContent[movesTab].(movesModel)
 	data := moves.tab.Get(side)
