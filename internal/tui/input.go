@@ -2,7 +2,7 @@ package tui
 
 import (
 	tea "charm.land/bubbletea/v2"
-	"github.com/tmuelli/godac/internal/models"
+	"github.com/tmuelli/godac/models"
 )
 
 type EditMode int

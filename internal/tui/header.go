@@ -4,7 +4,7 @@ import (
 	"strings"
 
 	"charm.land/lipgloss/v2"
-	"github.com/tmuelli/godac/internal/models"
+	"github.com/tmuelli/godac/models"
 )
 
 type viewTab struct {

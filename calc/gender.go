@@ -1,6 +1,6 @@
 package calc
 
-import "github.com/tmuelli/godac/internal/models"
+import "github.com/tmuelli/godac/models"
 
 func (g *Gender) isValid(input *string) bool {
 	if input == nil {

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"slices"
 
-	"github.com/tmuelli/godac/internal/models"
+	"github.com/tmuelli/godac/models"
 )
 
 func getAbilityFromSpecie(data *models.Data, s *models.Specie) (*models.Ability, error) {

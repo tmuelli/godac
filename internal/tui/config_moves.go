@@ -7,7 +7,7 @@ import (
 	"charm.land/bubbles/v2/key"
 	"charm.land/bubbles/v2/table"
 	tea "charm.land/bubbletea/v2"
-	"github.com/tmuelli/godac/internal/models"
+	"github.com/tmuelli/godac/models"
 )
 
 type MoveColumnType int

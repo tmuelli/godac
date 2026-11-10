@@ -1,6 +1,6 @@
 package calc
 
-import "github.com/tmuelli/godac/internal/models"
+import "github.com/tmuelli/godac/models"
 
 func (c *Calculation) weatherModifier() float64 {
 	if c.attacker.usedMove.ID == "solarbeam" {

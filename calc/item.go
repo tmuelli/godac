@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"slices"
 
-	"github.com/tmuelli/godac/internal/models"
+	"github.com/tmuelli/godac/models"
 )
 
 func metronomeMultiplier(hits int) float64 {

@@ -5,7 +5,7 @@ import (
 	"math"
 	"slices"
 
-	"github.com/tmuelli/godac/internal/models"
+	"github.com/tmuelli/godac/models"
 )
 
 type CalcData struct {
