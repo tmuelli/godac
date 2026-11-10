@@ -48,47 +48,47 @@ type UserInput struct {
 	Status        *string           `json:"status"`
 	Gender        *string           `json:"gender"`
 	Hits          *int              `json:"hits"`
-	MetronomeHits *int              `json:"metronome_hits"`
+	MetronomeHits *int              `json:"metronomeHits"`
 	Boosts        UserInputBoosts   `json:"boosts"`
 	InputSide     string            `json:"inputSide"`
 }
 
 /* User field input */
 type UserFieldSideInput struct {
-	StealthRocks bool `json:"stealth_rocks"`
+	StealthRocks bool `json:"stealthRocks"`
 	Spikes       int  `json:"spikes"`
 	Reflect      bool `json:"reflect"`
-	LightScreen  bool `json:"light_screen"`
+	LightScreen  bool `json:"lightScreen"`
 	Protect      bool `json:"protect"`
-	LeechSeed    bool `json:"leech_seed"`
+	LeechSeed    bool `json:"leechSeed"`
 	Foresight    bool `json:"foresight"`
-	HelpingHand  bool `json:"helping_hand"`
+	HelpingHand  bool `json:"helpingHand"`
 	Tailwind     bool `json:"tailwind"`
-	FlowerGift   bool `json:"flower_gift"`
-	PowerTrick   bool `json:"power_trick"`
-	SwitchingOut bool `json:"switching_out"`
+	FlowerGift   bool `json:"flowerGift"`
+	PowerTrick   bool `json:"powerTrick"`
+	SwitchingOut bool `json:"switchingOut"`
 }
 
 type UserFieldInput struct {
 	Type      string             `json:"type"`
 	Level     int                `json:"level"`
 	Terrain   string             `json:"terrain"`
-	IsGravity bool               `json:"is_gravity"`
+	IsGravity bool               `json:"isGravity"`
 	Left      UserFieldSideInput `json:"left"`
 	Right     UserFieldSideInput `json:"right"`
 }
 
 /* Calculation result */
 type BattleResultRange struct {
-	Min     int
-	MinPerc float64
-	Max     int
-	MaxPerc float64
+	Min     int     `json:"min"`
+	MinPerc float64 `json:"minPerc"`
+	Max     int     `json:"max"`
+	MaxPerc float64 `json:"maxPerc"`
 }
 
 type BattleResult struct {
-	Range     BattleResultRange
-	DmgMatrix [][]int
+	Range     BattleResultRange `json:"range"`
+	DmgMatrix [][]int           `json:"dmgMatrix"`
 }
 
 /********************/
