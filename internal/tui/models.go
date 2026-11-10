@@ -16,7 +16,6 @@ const (
 	DEFAULT_EDIT_HINTS = 6
 
 	DISPLAY_DEFAULT_GENDER = "Female"
-	DISPLAY_DEFAULT_NATURE = "Hardy"
 
 	DISPLAY_FEMALE_NAME     = "Female"
 	DISPLAY_MALE_NAME       = "Male"

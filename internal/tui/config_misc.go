@@ -159,20 +159,22 @@ func fillMiscDefaults(data *list, specie *models.Specie, d *models.Data) {
 		return
 	}
 
+	defaults := d.DefaultUserInput(specie)
+
 	for k := range data.values {
 		var value string
 		switch k {
 		case ABILITY:
-			value = specie.Abilities["0"]
+			value = defaults.Ability
 		case ABILITY_ON:
-			setAbilityOn(data, d, specie.Abilities["0"])
+			setAbilityOn(data, d, defaults.Ability)
 			continue
 		case STATUS:
 			value = DISPLAY_STATUS_HEALTHY
 		case HEALTH_PERCENT:
-			value = fmt.Sprintf("%d%%", 100)
+			value = fmt.Sprintf("%d%%", defaults.HealthPercent)
 		case NATURE:
-			value = DISPLAY_DEFAULT_NATURE
+			value = defaults.Nature
 		}
 
 		data.SetValue(k, value)
