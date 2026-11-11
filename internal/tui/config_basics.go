@@ -70,6 +70,8 @@ func fillBasicDefaults(data *list, specie *models.Specie, calcData *models.Data)
 		return
 	}
 
+	defaults := calcData.DefaultUserInput(specie)
+
 	for k := range data.values {
 		if k == NAME {
 			// specie name was already set in update from editConfirmMsg
@@ -79,17 +81,14 @@ func fillBasicDefaults(data *list, specie *models.Specie, calcData *models.Data)
 		var value string
 		switch k {
 		case GENDER:
-			value = specie.Gender
-
-			// if no value is given => default to female
-			if value == "" {
-				value = DISPLAY_DEFAULT_GENDER
-			}
+			value = genderDisplay(*defaults.Gender)
 		case TYPE1:
-			value = calcData.TypeName(specie.Types[0])
+			if len(defaults.Types) > 0 {
+				value = calcData.TypeName(defaults.Types[0])
+			}
 		case TYPE2:
-			if len(specie.Types) > 1 {
-				value = calcData.TypeName(specie.Types[1])
+			if len(defaults.Types) > 1 {
+				value = calcData.TypeName(defaults.Types[1])
 			}
 		case LEVEL:
 			if data.values[LEVEL] != "" {
@@ -97,7 +96,7 @@ func fillBasicDefaults(data *list, specie *models.Specie, calcData *models.Data)
 				continue
 			}
 
-			value = fmt.Sprintf("%d", models.Level100)
+			value = fmt.Sprintf("%d", defaults.Level)
 		}
 
 		data.SetValue(k, value)

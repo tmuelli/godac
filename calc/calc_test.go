@@ -870,3 +870,46 @@ func TestBaseStatsOverrideValidation(t *testing.T) {
 		}
 	}
 }
+
+func TestDefaultUserInputIsValid(t *testing.T) {
+	for name, specie := range testData.Species {
+		t.Run(name, func(t *testing.T) {
+			input := testData.DefaultUserInput(&specie)
+
+			input.AttackMove = "Bite"
+			input.Moves = []string{"Bite"}
+			input.InputSide = string(models.Attacker)
+
+			if _, err := validateInput(testData, &input); err != nil {
+				t.Errorf("%s should be valid: %v", name, err)
+			}
+		})
+	}
+}
+
+func TestDefaultMoveInputIsValid(t *testing.T) {
+	specie, ok := testData.Species["Poochyena"]
+	if !ok {
+		t.Fatal("Specie must be given for this test")
+	}
+
+	for name, move := range testData.Moves {
+		t.Run(name, func(t *testing.T) {
+			input := testData.DefaultUserInput(&specie)
+
+			input.AttackMove = move.Name
+			input.Moves = []string{move.Name}
+			input.InputSide = string(models.Attacker)
+
+			moveDefaults := testData.DefaultMoveInput(&move)
+
+			input.MoveOverride = moveDefaults.Override
+			input.Hits = moveDefaults.Hits
+			input.MetronomeHits = moveDefaults.MetronomeHits
+
+			if _, err := validateInput(testData, &input); err != nil {
+				t.Errorf("%s should be valid: %v", name, err)
+			}
+		})
+	}
+}

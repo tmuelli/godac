@@ -39,6 +39,19 @@ func (m configModel) Name(side Side) string {
 	return basics.fields.Get(side).values[NAME]
 }
 
+func genderDisplay(code string) string {
+	switch code {
+	case "M":
+		return DISPLAY_MALE_NAME
+	case "F":
+		return DISPLAY_FEMALE_NAME
+	case "N":
+		return DISPLAY_GENDERLESS_NAME
+	}
+
+	return ""
+}
+
 func (m configModel) Gender(side Side) *string {
 	basics := m.tabContent[basicsTab].(fieldListModel)
 	gender := basics.fields.Get(side).values[GENDER]

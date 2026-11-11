@@ -182,31 +182,43 @@ func (m statsModel) fillStatsDefaults(data *gridData, specie *models.Specie) {
 		return
 	}
 
+	defaults := m.data.DefaultUserInput(specie)
+
 	baseStats := specie.BaseStats
+	if defaults.BaseStatsOverride != nil {
+		baseStats = *defaults.BaseStatsOverride
+	}
 
 	for rowIndex := range data.rows {
 		// set base stats
 		var value string
+		var iv string
 		switch data.rows[rowIndex][STAT_COL] {
 		case DISPLAY_HP:
 			value = fmt.Sprintf("%d", baseStats.Hp)
+			iv = fmt.Sprintf("%d", defaults.IvCustom.Hp)
 		case DISPLAY_ATK:
 			value = fmt.Sprintf("%d", baseStats.Atk)
+			iv = fmt.Sprintf("%d", defaults.IvCustom.Atk)
 		case DISPLAY_DEF:
 			value = fmt.Sprintf("%d", baseStats.Def)
+			iv = fmt.Sprintf("%d", defaults.IvCustom.Def)
 		case DISPLAY_SPA:
 			value = fmt.Sprintf("%d", baseStats.Spa)
+			iv = fmt.Sprintf("%d", defaults.IvCustom.Spa)
 		case DISPLAY_SPD:
 			value = fmt.Sprintf("%d", baseStats.Spd)
+			iv = fmt.Sprintf("%d", defaults.IvCustom.Spd)
 		case DISPLAY_SPE:
 			value = fmt.Sprintf("%d", baseStats.Spe)
+			iv = fmt.Sprintf("%d", defaults.IvCustom.Spe)
 		default:
 			continue
 		}
 
-		data.Set(rowIndex, 1, value)
+		data.Set(rowIndex, BASE_COL, value)
 
 		// default to max iv
-		data.Set(rowIndex, 2, fmt.Sprintf("%d", models.IV_MAX))
+		data.Set(rowIndex, IV_COL, iv)
 	}
 }
