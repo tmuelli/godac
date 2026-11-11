@@ -1,4 +1,3 @@
-// Package calc implements the Generation 4 damaga formula
 package calc
 
 import (
