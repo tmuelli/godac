@@ -1,4 +1,6 @@
 # godac
+[![CI](https://github.com/tmuelli/godac/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/tmuelli/godac/actions/workflows/ci.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/tmuelli/godac.svg)](https://pkg.go.dev/github.com/tmuelli/godac)
 
 A terminal damage calculator for Pokémon battles for Generation 4 written in Go.
 
