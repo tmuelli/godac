@@ -2,24 +2,24 @@ package calc
 
 import "github.com/tmuelli/godac/models"
 
-func (g *Gender) isValid(input *string) bool {
+func (g *gender) isValid(input *string) bool {
 	if input == nil {
 		// no gender was specified => this is not an error => but gender logic can not be active than
 		return true
 	}
 
-	*g = Gender(*input)
+	*g = gender(*input)
 
-	switch Gender(*input) {
-	case Male, Female, Neutral:
+	switch gender(*input) {
+	case male, female, neutral:
 		return true
 	default:
 		return false
 	}
 }
 
-func (g *Gender) isValidForSpecie(s *models.Specie) bool {
-	if s.Gender == "" && *g != Neutral {
+func (g *gender) isValidForSpecie(s *models.Specie) bool {
+	if s.Gender == "" && *g != neutral {
 		// if no specific gender is set => means female and male are valid but not neutral
 		return true
 	}

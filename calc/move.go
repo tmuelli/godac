@@ -14,11 +14,11 @@ func (c *Calculation) checkMultihitBoost(usedItems *models.MultihitItemUsage) {
 		atkSimple = 2
 	}
 
-	var stat StatKind
-	if c.attacker.usedMove.Kind == string(Physical) {
-		stat = StatAtk
+	var stat statKind
+	if c.attacker.usedMove.Kind == string(physical) {
+		stat = statAtk
 	} else {
-		stat = StatSpa
+		stat = statSpa
 	}
 
 	if c.attacker.usedMove.DropsStats() {
@@ -33,7 +33,7 @@ func (c *Calculation) checkMultihitBoost(usedItems *models.MultihitItemUsage) {
 				usedItems.HasAtkUsedItem = true
 			}
 
-			if stat == StatAtk {
+			if stat == statAtk {
 				c.attacker.boosts.Atk.Set(effectiveBoosts)
 			} else {
 				c.attacker.boosts.Spa.Set(effectiveBoosts)
@@ -53,10 +53,10 @@ func (c *Calculation) moveBasePower(hitCount int) int {
 	case "eruption", "waterspout":
 		basePower = int(math.Max(1, math.Floor(float64(basePower*c.attacker.currentHealth)/float64(c.attacker.maxHealth))))
 	case "facade":
-		if c.attacker.status == BadlyPoisoned ||
-			c.attacker.status == Burned ||
-			c.attacker.status == Paralyzed ||
-			c.attacker.status == Poisoned {
+		if c.attacker.status == badlyPoisoned ||
+			c.attacker.status == burned ||
+			c.attacker.status == paralyzed ||
+			c.attacker.status == poisoned {
 			basePower *= 2
 		}
 	case "flail", "reversal":
@@ -112,7 +112,7 @@ func (c *Calculation) moveBasePower(hitCount int) int {
 			basePower *= 2
 		}
 	case "wakeupslap":
-		if c.defender.status == Asleep {
+		if c.defender.status == asleep {
 			basePower *= 2
 		}
 	case "naturepower":
@@ -132,12 +132,12 @@ func (c *Calculation) moveBasePower(hitCount int) int {
 }
 
 func (c *Calculation) modifiedMovePower(basePower float64) (float64, error) {
-	var kind StatKind
+	var kind statKind
 
-	if MoveCategory(c.attacker.usedMove.Category) == Special {
-		kind = StatSpa
-	} else if MoveCategory(c.attacker.usedMove.Category) == Physical {
-		kind = StatAtk
+	if moveCategory(c.attacker.usedMove.Category) == special {
+		kind = statSpa
+	} else if moveCategory(c.attacker.usedMove.Category) == physical {
+		kind = statAtk
 	} else {
 		return 0.0, fmt.Errorf("invalid move category %v", c.attacker.usedMove.Category)
 	}
@@ -191,7 +191,7 @@ func (c *Calculation) modifiedMovePower(basePower float64) (float64, error) {
 	if c.attacker.gender != nil && c.defender.gender != nil {
 		atkGender := *c.attacker.gender
 		defGender := *c.defender.gender
-		if c.attacker.hasAbility("rivalry") && atkGender != Neutral && defGender != Neutral {
+		if c.attacker.hasAbility("rivalry") && atkGender != neutral && defGender != neutral {
 			if atkGender == defGender {
 				basePower = math.Floor(basePower * 1.25)
 			} else {

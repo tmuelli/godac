@@ -1,3 +1,4 @@
+// Package calc implements the Generation 4 damaga formula
 package calc
 
 import (
@@ -8,7 +9,7 @@ import (
 	"github.com/tmuelli/godac/models"
 )
 
-type CalcData struct {
+type calcData struct {
 	specie        *models.Specie
 	specieTypes   []*models.Type
 	nature        *models.Nature
@@ -22,21 +23,28 @@ type CalcData struct {
 	currentHealth int
 	maxHealth     int
 	dataType      models.CalcDataType
-	status        StatusCondition
+	status        statusCondition
 	boosts        *models.Boosts
-	gender        *Gender
+	gender        *gender
 	metrHits      int
 }
 
+// Calculation holds information about the current calculation
+//
+// After a successful call to Calc(), Result holds the calculations result
 type Calculation struct {
 	data     *models.Data
-	attacker *CalcData
-	defender *CalcData
+	attacker *calcData
+	defender *calcData
 	field    *models.Field
-	typeEff  TypeEffectivness
-	Result   models.BattleResult
+	typeEff  typeEffectivness
+	// Result holds calculation results
+	Result models.BattleResult
 }
 
+// NewCalc creates and prepares a new calculation while validating each sides input, both input sides must be set
+//
+// Errors are caused by invalid input
 func NewCalc(data *models.Data, atkInput *models.UserInput, defInput *models.UserInput, fieldInput *models.UserFieldInput) (*Calculation, error) {
 	// validate inputs
 	attacker, err := validateInput(data, atkInput)
@@ -72,7 +80,7 @@ func NewCalc(data *models.Data, atkInput *models.UserInput, defInput *models.Use
 }
 
 func (c *Calculation) needCalc() bool {
-	if (c.attacker.usedMove.Category == string(Status) && c.attacker.usedMove.ID != "naturepower") ||
+	if (c.attacker.usedMove.Category == string(status) && c.attacker.usedMove.ID != "naturepower") ||
 		(c.field.Right.Protect && !c.attacker.usedMove.BreaksProtect) {
 		return false
 	}
@@ -80,6 +88,7 @@ func (c *Calculation) needCalc() bool {
 	return true
 }
 
+// Calc runs the calculation and fills the Result field on Calculation type
 func (c *Calculation) Calc() error {
 	// setup calculation
 	err := c.setup()
@@ -131,7 +140,7 @@ func (c *Calculation) Calc() error {
 	}
 
 	// calculate base damage
-	baseDmg, err := c.calcBaseDamage(DEFAULT_HIT_COUNT)
+	baseDmg, err := c.calcBaseDamage(defaultHitCount)
 	if err != nil {
 		return err
 	}
@@ -163,7 +172,7 @@ func (c *Calculation) Calc() error {
 	c.Result.Range.MinPerc = minPerc
 	c.Result.Range.MaxPerc = maxPerc
 
-	if c.attacker.usedMove.Hits > DEFAULT_HIT_COUNT {
+	if c.attacker.usedMove.Hits > defaultHitCount {
 		usedItems := models.MultihitItemUsage{
 			HasAtkUsedItem: false,
 			HasDefUsedItem: false,
@@ -204,10 +213,10 @@ func (c *Calculation) handleFixedDamage() int {
 		return c.attacker.level
 
 	case "dragonrage":
-		return FIXED_DMG_DRAGON_RAGE
+		return fixedDmgDragonRage
 
 	case "sonicboom":
-		return FIXED_DMG_SONIC_BOOM
+		return fixedDmgSonicBoom
 	}
 
 	return 0
@@ -217,19 +226,19 @@ func (c *Calculation) calcBaseDamage(hitCount int) (float64, error) {
 	// get attack and Defense stat based on category
 	var attackStat int
 	var defenseStat int
-	var atkStat StatKind
-	var defStat StatKind
+	var atkStat statKind
+	var defStat statKind
 
 	atkCategory := c.attacker.usedMove.Category
 	atkMove := c.attacker.usedMove
 
-	switch MoveCategory(atkCategory) {
-	case Physical:
-		atkStat = StatAtk
-		defStat = StatDef
-	case Special:
-		atkStat = StatSpa
-		defStat = StatSpd
+	switch moveCategory(atkCategory) {
+	case physical:
+		atkStat = statAtk
+		defStat = statDef
+	case special:
+		atkStat = statSpa
+		defStat = statSpd
 	default:
 		return 0.0, fmt.Errorf("invalid attack move category")
 	}
@@ -254,13 +263,13 @@ func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 	flashFireMod := 1.0
 	targetsMod := 1.0
 
-	if c.attacker.status == Burned && c.attacker.usedMove.Category == string(Physical) && !c.attacker.hasAbility("guts") {
+	if c.attacker.status == burned && c.attacker.usedMove.Category == string(physical) && !c.attacker.hasAbility("guts") {
 		burnMod = 0.5
 	}
 
 	// check light screen or reflect
-	if (c.attacker.usedMove.Category == string(Physical) && c.field.Right.Reflect) ||
-		(c.attacker.usedMove.Category == string(Special) && c.field.Right.LightScreen) {
+	if (c.attacker.usedMove.Category == string(physical) && c.field.Right.Reflect) ||
+		(c.attacker.usedMove.Category == string(special) && c.field.Right.LightScreen) {
 		if c.field.Type == models.Doubles {
 			screenMod = 2.0 / 3.0
 		} else {
@@ -286,7 +295,7 @@ func (c *Calculation) calcConditionalDamage(baseDmg float64) (float64, error) {
 
 func (c *Calculation) calcModificationDamage(condDmg float64) ([]int, error) {
 	resultDmg := condDmg
-	resultDmgSlice := make([]int, RESULT_DAMAGE_SLICE_SIZE)
+	resultDmgSlice := make([]int, resultDamageSliceSize)
 
 	// modifiers which get applied before random multiplier
 	critMod := 1.0

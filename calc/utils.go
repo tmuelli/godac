@@ -3,16 +3,16 @@ package calc
 import "math"
 
 const (
-	MAX_UNSIGNED_INT_16 = 65535
-	MAX_UNSIGNED_INT_32 = 4294967295
+	maxUnsignedInt16 = 65535
+	maxUnsignedInt32 = 4294967295
 )
 
 func combineMods(mods []int, lowerBound, upperBound int) float64 {
-	mod := FIXED_POINT_SCALE_BASE
+	mod := fixedPointScaleBase
 
 	for _, m := range mods {
-		if m != FIXED_POINT_SCALE_BASE {
-			mod = ((mod * m) + HALF_POINT_SCALE_BASE) >> 12
+		if m != fixedPointScaleBase {
+			mod = ((mod * m) + halfPointScaleBase) >> 12
 		}
 	}
 
@@ -32,19 +32,19 @@ func pokeRound(number float64) int {
 	return int(roundedValue)
 }
 
-func OF16(v float64) float64 {
+func of16(v float64) float64 {
 	value := int(v)
 
-	if value > MAX_UNSIGNED_INT_16 {
-		value = value % MAX_UNSIGNED_INT_16
+	if value > maxUnsignedInt16 {
+		value = value % maxUnsignedInt16
 	}
 
 	return float64(value)
 }
 
-func OF32(v int) int {
-	if v > MAX_UNSIGNED_INT_32 {
-		return v % MAX_UNSIGNED_INT_32
+func of32(v int) int {
+	if v > maxUnsignedInt32 {
+		return v % maxUnsignedInt32
 	}
 
 	return v

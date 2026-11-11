@@ -4,7 +4,7 @@ import (
 	"github.com/tmuelli/godac/models"
 )
 
-func getNatureModifier(stat StatKind, nature *models.Nature) float64 {
+func getNatureModifier(stat statKind, nature *models.Nature) float64 {
 	if nature.Plus == nature.Minus {
 		return 1.0
 	}
