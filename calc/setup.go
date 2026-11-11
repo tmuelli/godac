@@ -16,7 +16,7 @@ func (c *Calculation) isWeatherActive() bool {
 	return true
 }
 
-func (c *Calculation) handleForecast(side *CalcData) error {
+func (c *Calculation) handleForecast(side *calcData) error {
 	if side.specie.ID == "castform" && side.hasAbility("forecast") {
 		side.specieTypes = nil
 		var new string
@@ -39,7 +39,7 @@ func (c *Calculation) handleForecast(side *CalcData) error {
 	return nil
 }
 
-func (c *Calculation) handleItem(source *CalcData, target *CalcData) error {
+func (c *Calculation) handleItem(source *calcData, target *calcData) error {
 	blockAbilities := []string{"clearbody", "whitesmoke", "hypercutter"}
 
 	if source.hasAbilityOn("intimidate") && !target.hasAbility(blockAbilities...) {
@@ -53,7 +53,7 @@ func (c *Calculation) handleItem(source *CalcData, target *CalcData) error {
 	return nil
 }
 
-func (c *Calculation) handleDownload(source *CalcData, target *CalcData) error {
+func (c *Calculation) handleDownload(source *calcData, target *calcData) error {
 	if source.hasAbility("download") {
 		def := target.specie.BaseStats.Def
 		spd := target.specie.BaseStats.Spd

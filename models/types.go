@@ -102,12 +102,12 @@ type BattleResult struct {
 /* Types: core data */
 /********************/
 
-type StatType string
+type statType string
 
 const (
-	IV   StatType = "iv"
-	EV   StatType = "ev"
-	BASE StatType = "base"
+	IV   statType = "iv"
+	EV   statType = "ev"
+	BASE statType = "base"
 
 	IV_MIN = 0
 	IV_MAX = 31
@@ -119,7 +119,8 @@ const (
 	BASE_MAX = 255
 )
 
-func IsValidStats(statType StatType, stats BaseStats) bool {
+// engine internals, not a stable API
+func IsValidStats(statType statType, stats BaseStats) bool {
 	values := []int{stats.Atk, stats.Def, stats.Spa, stats.Spd, stats.Spe}
 	switch statType {
 	case IV:
@@ -179,37 +180,39 @@ func (e *EvStats) Valid() bool {
 
 /* Boosts */
 const (
-	MAX_STAT_BOOST = 6
-	MIN_STAT_BOOST = -6
+	maxStatBoost = 6
+	minStatBoost = -6
 )
 
-type StatBoost struct {
+type statBoost struct {
 	value int
 }
 
-func (sb *StatBoost) Set(mod int) {
+func (sb *statBoost) Set(mod int) {
 	if mod == 0 {
 		return
 	}
 
 	newValue := sb.value + mod
-	if newValue < MIN_STAT_BOOST {
-		sb.value = MIN_STAT_BOOST
-	} else if newValue > MAX_STAT_BOOST {
-		sb.value = MAX_STAT_BOOST
+	if newValue < minStatBoost {
+		sb.value = minStatBoost
+	} else if newValue > maxStatBoost {
+		sb.value = maxStatBoost
 	} else {
 		sb.value = newValue
 	}
 }
 
+// engine internals, not a stable API
 type Boosts struct {
-	Atk StatBoost
-	Def StatBoost
-	Spa StatBoost
-	Spd StatBoost
-	Spe StatBoost
+	Atk statBoost
+	Def statBoost
+	Spa statBoost
+	Spd statBoost
+	Spe statBoost
 }
 
+// engine internals, not a stable API
 func NewBoosts(input *UserInputBoosts) Boosts {
 	boosts := Boosts{}
 	boosts.Atk.Set(input.Atk)
@@ -256,7 +259,7 @@ type Ability struct {
 	On     bool
 }
 
-func (a Ability) Key() string {
+func (a Ability) key() string {
 	return a.Name
 }
 
@@ -283,42 +286,57 @@ func (a *Ability) IsPreventingDamage(move *Move, defItem *Item, typeEffectivness
 }
 
 /* Item */
+// engine internals, not a stable API
 type ItemEffect string
+
+// engine internals, not a stable API
 type ItemConditionFlag uint16
-type ItemDamageSubStage int
+type itemDamageSubStage int
 
 const (
-	StatEffect   ItemEffect = "stat"
+	// engine internals, not a stable API
+	StatEffect ItemEffect = "stat"
+	// engine internals, not a stable API
 	DamageEffect ItemEffect = "damage"
-	MoveEffect   ItemEffect = "move"
+	// engine internals, not a stable API
+	MoveEffect ItemEffect = "move"
 )
 
 const (
+	// engine internals, not a stable API
 	ItemConSuperEffective ItemConditionFlag = 1 << iota
+	// engine internals, not a stable API
 	ItemConNotTransformed
 	ItemConPhysical
+	// engine internals, not a stable API
 	ItemConSpecial
+	// engine internals, not a stable API
 	ItemConMetronome
+	// engine internals, not a stable API
 	ItemConLifeOrb
+	// engine internals, not a stable API
 	ItemConTypeReduction
 )
 
 const (
-	DamagePreLoop    ItemDamageSubStage = iota // life orb, metronome => applied before final loop in calcModificationDamage
-	DamageExpertBelt                           // expert belt applied before tinted lens modifier (inside loop)
-	DamageBerry                                // berry mod applied after tinted lens modifier (inside loop)
+	// engine internals, not a stable API
+	DamagePreLoop itemDamageSubStage = iota // life orb, metronome => applied before final loop in calcModificationDamage
+	// engine internals, not a stable API
+	DamageExpertBelt // expert belt applied before tinted lens modifier (inside loop)
+	// engine internals, not a stable API
+	DamageBerry // berry mod applied after tinted lens modifier (inside loop)
 )
 
-type NaturalGiftItem struct {
+type naturalGiftItem struct {
 	BasePower int    `json:"basePower"`
 	Type      string `json:"type"`
 }
 
-type ItemRestriction struct {
+type itemRestriction struct {
 	Species []string `json:"species"`
 }
 
-type ItemCondition struct {
+type itemCondition struct {
 	SuperEffective bool
 	NotTransformed bool
 	Physical       bool
@@ -328,10 +346,11 @@ type ItemCondition struct {
 	TypeReduction  bool
 }
 
+// engine internals, not a stable API
 type ItemModifierOptions struct {
 	MoveType string
 	TypeMod  float64
-	SubStage ItemDamageSubStage
+	SubStage itemDamageSubStage
 }
 
 type Item struct {
@@ -339,21 +358,21 @@ type Item struct {
 	Id           string           `json:"id"`
 	Name         string           `json:"name"`
 	IsBerry      bool             `json:"isBerry"`
-	NaturalGift  NaturalGiftItem  `json:"naturalGift"`
+	NaturalGift  naturalGiftItem  `json:"naturalGift"`
 	Effect       ItemEffect       `json:"effect"`
 	Stats        []string         `json:"stats"`
 	Types        []string         `json:"types"`
 	Multiplier   float64          `json:"multiplier"`
-	Restrictions *ItemRestriction `json:"restrictions"`
-	Condition    *ItemCondition   `json:"condition"`
+	Restrictions *itemRestriction `json:"restrictions"`
+	Condition    *itemCondition   `json:"condition"`
 	FlingPower   int              `json:"flingPower"`
 }
 
-func (i Item) Key() string {
+func (i Item) key() string {
 	return i.Name
 }
 
-func (c *ItemCondition) ToFlag() ItemConditionFlag {
+func (c *itemCondition) ToFlag() ItemConditionFlag {
 	var flag ItemConditionFlag
 
 	if c.SuperEffective {
@@ -426,7 +445,7 @@ const (
 	MOVE_BASE_POWER_MAX = 1000
 )
 
-type MoveFlags struct {
+type moveFlags struct {
 	Contact int `json:"contact"`
 	Bite    int `json:"bite"`
 	Sound   int `json:"sound"`
@@ -438,7 +457,7 @@ type MoveFlags struct {
 	Wind    int `json:"wind"`
 }
 
-type MoveSelf struct {
+type moveSelf struct {
 	Atk int `json:"atk"`
 	Def int `json:"def"`
 	Spa int `json:"spa"`
@@ -450,7 +469,7 @@ type Move struct {
 	Kind           string    `json:"kind"`
 	ID             string    `json:"id"`
 	Name           string    `json:"name"`
-	Flags          MoveFlags `json:"flags"`
+	Flags          moveFlags `json:"flags"`
 	Category       string    `json:"category"`
 	Type           string    `json:"type"`
 	BasePower      int       `json:"basePower"`
@@ -463,12 +482,12 @@ type Move struct {
 	HasCrashDamage bool      `json:"hasCrashDamage,omitempty"`
 	StruggleRecoil bool      `json:"struggleRecoil,omitempty"`
 	Multiaccuracy  bool      `json:"multiaccuracy,omitempty"`
-	Self           MoveSelf  `json:"self,omitempty"`
+	Self           moveSelf  `json:"self,omitempty"`
 	BreaksProtect  bool      `json:"breaksProtect,omitempty"`
 	Critical       bool      `json:"critical"`
 }
 
-func (m Move) Key() string {
+func (m Move) key() string {
 	return m.Name
 }
 
@@ -516,6 +535,7 @@ func (m *Move) GetBoostDrop(stat string) int {
 	}
 }
 
+// engine internals, not a stable API
 type MultihitItemUsage struct {
 	HasAtkUsedItem bool
 	HasDefUsedItem bool
@@ -537,7 +557,7 @@ type Nature struct {
 	Minus string `json:"minus"`
 }
 
-func (n Nature) Key() string {
+func (n Nature) key() string {
 	return n.Name
 }
 
@@ -549,7 +569,7 @@ type Type struct {
 	Effectiveness map[string]float64 `json:"effectiveness"`
 }
 
-func (t Type) Key() string {
+func (t Type) key() string {
 	return t.ID
 }
 
@@ -568,7 +588,7 @@ type Specie struct {
 	Abilities   map[string]string `json:"abilities"`
 }
 
-func (s Specie) Key() string {
+func (s Specie) key() string {
 	return s.Name
 }
 
@@ -635,8 +655,10 @@ func (d *Data) TypeName(id string) string {
 }
 
 /* Field */
+// engine internals, not a stable API
 type FieldType string
 
+// engine internals, not a stable API
 func (ft *FieldType) IsValid() bool {
 	switch *ft {
 	case Singles, Doubles:
@@ -646,8 +668,10 @@ func (ft *FieldType) IsValid() bool {
 	}
 }
 
+// engine internals, not a stable API
 type FieldTerrain string
 
+// engine internals, not a stable API
 func (ft *FieldTerrain) IsValid() bool {
 	switch *ft {
 	case Clear, Sun, Rain, Sand, Hail:
@@ -657,8 +681,10 @@ func (ft *FieldTerrain) IsValid() bool {
 	}
 }
 
+// engine internals, not a stable API
 type FieldSpikesStack int
 
+// engine internals, not a stable API
 func (fss *FieldSpikesStack) IsValid() bool {
 	switch *fss {
 	case Spikes0, Spikes1, Spikes2, Spikes3:
@@ -668,8 +694,10 @@ func (fss *FieldSpikesStack) IsValid() bool {
 	}
 }
 
+// engine internals, not a stable API
 type FieldLevel int
 
+// engine internals, not a stable API
 func (fl *FieldLevel) IsValid() bool {
 	switch *fl {
 	case Level5, Level50, Level100:
@@ -700,6 +728,7 @@ const (
 	Level100 FieldLevel = 100
 )
 
+// engine internals, not a stable API
 type FieldSide struct {
 	Spikes       FieldSpikesStack
 	StealthRocks bool
@@ -715,6 +744,7 @@ type FieldSide struct {
 	SwitchingOut bool
 }
 
+// engine internals, not a stable API
 type Field struct {
 	Type      FieldType
 	Level     FieldLevel

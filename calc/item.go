@@ -28,7 +28,7 @@ func metronomeMultiplier(hits int) float64 {
 // flags (SuperEffective, TypeReduction) are intentionally not checked here —
 // see berryModifier/finalItemModifier. Metronome is also resolved separately
 // (see metronomeMultiplier) and is not evaluated here.
-func (d *CalcData) validItemCondition(cond models.ItemConditionFlag) bool {
+func (d *calcData) validItemCondition(cond models.ItemConditionFlag) bool {
 	if (cond & models.ItemConNotTransformed) != 0 {
 		// only applies to ditto specie
 		// for now assume ditto is always transformed when calculation is done
@@ -38,13 +38,13 @@ func (d *CalcData) validItemCondition(cond models.ItemConditionFlag) bool {
 	}
 
 	if (cond & models.ItemConPhysical) != 0 {
-		if d.usedMove.Category != string(Physical) {
+		if d.usedMove.Category != string(physical) {
 			return false
 		}
 	}
 
 	if (cond & models.ItemConSpecial) != 0 {
-		if d.usedMove.Category != string(Special) {
+		if d.usedMove.Category != string(special) {
 			return false
 		}
 	}
@@ -52,7 +52,7 @@ func (d *CalcData) validItemCondition(cond models.ItemConditionFlag) bool {
 	return true
 }
 
-func (d *CalcData) baseItemModifier(kind StatKind) float64 {
+func (d *calcData) baseItemModifier(kind statKind) float64 {
 	if d.item == nil {
 		// no item => nothing to do
 		return 1.0
@@ -88,7 +88,7 @@ func (d *CalcData) baseItemModifier(kind StatKind) float64 {
 }
 
 // checks if calc data has item, if no ids are passed and item != nil it counts as true
-func (d *CalcData) hasItem(ids ...string) bool {
+func (d *calcData) hasItem(ids ...string) bool {
 	if d.item == nil {
 		return false
 	}
@@ -100,7 +100,7 @@ func (d *CalcData) hasItem(ids ...string) bool {
 	return slices.Contains(ids, d.item.Id)
 }
 
-func (d *CalcData) moveItemModifier() (float64, error) {
+func (d *calcData) moveItemModifier() (float64, error) {
 	if d.item == nil {
 		// no item => nothing to do
 		return 1.0, nil
@@ -133,7 +133,7 @@ func (d *CalcData) moveItemModifier() (float64, error) {
 	return d.item.Multiplier, nil
 }
 
-func (d *CalcData) berryModifier(options models.ItemModifierOptions) (float64, error) {
+func (d *calcData) berryModifier(options models.ItemModifierOptions) (float64, error) {
 	if options.MoveType == "" {
 		return 1.0, fmt.Errorf("unknown move type for berry item mod calc")
 	}
@@ -165,7 +165,7 @@ func (d *CalcData) berryModifier(options models.ItemModifierOptions) (float64, e
 	return d.item.Multiplier, nil
 }
 
-func (d *CalcData) finalItemModifier(options models.ItemModifierOptions) (float64, error) {
+func (d *calcData) finalItemModifier(options models.ItemModifierOptions) (float64, error) {
 	if d.item == nil {
 		// no item => nothing to do
 		return 1.0, nil
@@ -220,7 +220,7 @@ func (d *CalcData) finalItemModifier(options models.ItemModifierOptions) (float6
 	}
 }
 
-func (d *CalcData) itemModifier(kind *StatKind, stage models.ItemEffect, options *models.ItemModifierOptions) (float64, error) {
+func (d *calcData) itemModifier(kind *statKind, stage models.ItemEffect, options *models.ItemModifierOptions) (float64, error) {
 	if d.item == nil {
 		return 1.0, nil
 	}

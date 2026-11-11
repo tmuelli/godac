@@ -1,69 +1,69 @@
 package calc
 
-type StatKind string
-type MoveCategory string
-type IvOption string
-type EvOption string
-type StatusCondition string
-type Gender string
+type statKind string
+type moveCategory string
+type ivOption string
+type evOption string
+type statusCondition string
+type gender string
 
 const (
 	// move category
-	Physical MoveCategory = "Physical"
-	Special  MoveCategory = "Special"
-	Status   MoveCategory = "Status"
+	physical moveCategory = "Physical"
+	special  moveCategory = "Special"
+	status   moveCategory = "Status"
 
 	// stat kind
-	StatHp  StatKind = "hp"
-	StatAtk StatKind = "atk"
-	StatDef StatKind = "def"
-	StatSpa StatKind = "spa"
-	StatSpd StatKind = "spd"
-	StatSpe StatKind = "spe"
+	statHp  statKind = "hp"
+	statAtk statKind = "atk"
+	statDef statKind = "def"
+	statSpa statKind = "spa"
+	statSpd statKind = "spd"
+	statSpe statKind = "spe"
 
 	// iv option
-	IvOptimal   IvOption = "optimal"
-	IvWorstCase IvOption = "worstCase"
-	IvCustom    IvOption = "custom"
+	ivOptimal   ivOption = "optimal"
+	ivWorstCase ivOption = "worstCase"
+	ivCustom    ivOption = "custom"
 
 	// ev option
-	EvOptimal   EvOption = "optimal"
-	EvWorstCase EvOption = "worstCase"
-	EvCustom    EvOption = "custom"
+	evOptimal   evOption = "optimal"
+	evWorstCase evOption = "worstCase"
+	evCustom    evOption = "custom"
 
 	// status condition
-	NoneStatus    StatusCondition = "none"
-	Healthy       StatusCondition = "healthy"
-	Poisoned      StatusCondition = "poisoned"
-	BadlyPoisoned StatusCondition = "badly poisoned"
-	Burned        StatusCondition = "burned"
-	Paralyzed     StatusCondition = "paralyzed"
-	Asleep        StatusCondition = "asleep"
-	Frozen        StatusCondition = "frozen"
+	noneStatus    statusCondition = "none"
+	healthy       statusCondition = "healthy"
+	poisoned      statusCondition = "poisoned"
+	badlyPoisoned statusCondition = "badly poisoned"
+	burned        statusCondition = "burned"
+	paralyzed     statusCondition = "paralyzed"
+	asleep        statusCondition = "asleep"
+	frozen        statusCondition = "frozen"
 
 	// gender
-	Male    Gender = "M"
-	Female  Gender = "F"
-	Neutral Gender = "N"
+	male    gender = "M"
+	female  gender = "F"
+	neutral gender = "N"
 
 	// fixed damage
-	FIXED_DMG_DRAGON_RAGE = 40
-	FIXED_DMG_SONIC_BOOM  = 20
+	fixedDmgDragonRage = 40
+	fixedDmgSonicBoom  = 20
 
 	// speed modifiers
-	COMBINE_MODS_MIN       = 410
-	COMBINE_MODS_MAX       = 131172
-	FIXED_POINT_SCALE_BASE = 4096
-	HALF_POINT_SCALE_BASE  = 2048
+	combineModsMin      = 410
+	combineModsMax      = 131172
+	fixedPointScaleBase = 4096
+	halfPointScaleBase  = 2048
 
-	SPEED_MOD_1X   = FIXED_POINT_SCALE_BASE
-	SPEED_MOD_2X   = 2 * FIXED_POINT_SCALE_BASE
-	SPEED_MOD_1_5X = 6144
-	SPEED_MOD_0_5X = HALF_POINT_SCALE_BASE
+	speedMod1X   = fixedPointScaleBase
+	speedMod2X   = 2 * fixedPointScaleBase
+	speedMod1_5X = 6144
+	speedMod0_5X = halfPointScaleBase
 
-	MAX_SPEED = 10000
+	maxSpeed = 10000
 
-	RESULT_DAMAGE_SLICE_SIZE = 16
+	resultDamageSliceSize = 16
 
-	DEFAULT_HIT_COUNT = 1
+	defaultHitCount = 1
 )

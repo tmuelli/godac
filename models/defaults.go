@@ -29,7 +29,7 @@ func (d *Data) DefaultUserInput(s *Specie) UserInput {
 	return UserInput{
 		Name:              s.Name,
 		Level:             int(Level100),
-		Nature:            DEFAULT_NATURE,
+		Nature:            defaultNature,
 		HealthPercent:     100,
 		Ability:           abilityName,
 		AbilityOn:         abilityOn,

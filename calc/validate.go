@@ -7,16 +7,16 @@ import (
 	"github.com/tmuelli/godac/models"
 )
 
-func (s *StatusCondition) IsValid() bool {
-	condMap := map[string]StatusCondition{
-		"none":           NoneStatus,
-		"healthy":        Healthy,
-		"poisoned":       Poisoned,
-		"badly poisoned": BadlyPoisoned,
-		"burned":         Burned,
-		"paralyzed":      Paralyzed,
-		"asleep":         Asleep,
-		"frozen":         Frozen,
+func (s *statusCondition) IsValid() bool {
+	condMap := map[string]statusCondition{
+		"none":           noneStatus,
+		"healthy":        healthy,
+		"poisoned":       poisoned,
+		"badly poisoned": badlyPoisoned,
+		"burned":         burned,
+		"paralyzed":      paralyzed,
+		"asleep":         asleep,
+		"frozen":         frozen,
 	}
 
 	con, ok := condMap[string(*s)]
@@ -105,7 +105,7 @@ func validateFieldInput(input *models.UserFieldInput) (*models.Field, error) {
 	return &field, nil
 }
 
-func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error) {
+func validateInput(data *models.Data, input *models.UserInput) (*calcData, error) {
 	if data == nil {
 		return nil, fmt.Errorf("internal error: Invalid base data")
 	}
@@ -137,7 +137,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	}
 
 	// specie gender
-	var gender Gender
+	var gender gender
 	if input.Gender != nil {
 		if !gender.isValid(input.Gender) {
 			return nil, fmt.Errorf("invalid input: Unknown gender %s", *input.Gender)
@@ -184,7 +184,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 		}
 
 		// check for multiple hits or multihit move
-		usedMove.Hits = DEFAULT_HIT_COUNT
+		usedMove.Hits = defaultHitCount
 
 		if input.Hits != nil {
 			if *input.Hits == 0 {
@@ -223,8 +223,8 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 
 			// changed category
 			if o.Category != "" {
-				switch MoveCategory(o.Category) {
-				case Physical, Special, Status:
+				switch moveCategory(o.Category) {
+				case physical, special, status:
 					usedMove.Category = o.Category
 				default:
 					return nil, fmt.Errorf("invalid input: Unknown move category %s", o.Category)
@@ -250,8 +250,8 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 
 	// iv settings
 	var ivSettings *models.IvStats
-	switch IvOption(input.IvSetting) {
-	case IvOptimal:
+	switch ivOption(input.IvSetting) {
+	case ivOptimal:
 		ivSettings = &models.IvStats{
 			BaseStats: models.BaseStats{
 				Hp:  31,
@@ -262,7 +262,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 				Spe: 31,
 			},
 		}
-	case IvWorstCase:
+	case ivWorstCase:
 		ivSettings = &models.IvStats{
 			BaseStats: models.BaseStats{
 				Hp:  0,
@@ -273,7 +273,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 				Spe: 0,
 			},
 		}
-	case IvCustom:
+	case ivCustom:
 		if input.IvCustom == nil {
 			return nil, fmt.Errorf("invalid input: Custom iv settings only supported when custom values are given")
 		}
@@ -288,8 +288,8 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 
 	// ev settings
 	var evSettings *models.EvStats
-	switch EvOption(input.EvSetting) {
-	case EvOptimal:
+	switch evOption(input.EvSetting) {
+	case evOptimal:
 		evSettings = &models.EvStats{
 			BaseStats: models.BaseStats{
 				Hp:  31,
@@ -300,7 +300,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 				Spe: 31,
 			},
 		}
-	case EvWorstCase:
+	case evWorstCase:
 		evSettings = &models.EvStats{
 			BaseStats: models.BaseStats{
 				Hp:  0,
@@ -311,7 +311,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 				Spe: 0,
 			},
 		}
-	case EvCustom:
+	case evCustom:
 		if input.EvCustom == nil {
 			return nil, fmt.Errorf("invalid input: Custom ev settings only supported when custom values are given")
 		}
@@ -394,10 +394,10 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	}
 
 	// status condition
-	statusCon := NoneStatus
+	statusCon := noneStatus
 
 	if input.Status != nil {
-		statusCon = StatusCondition(*input.Status)
+		statusCon = statusCondition(*input.Status)
 		if !statusCon.IsValid() {
 			return nil, fmt.Errorf("invalid input: Unknown status condition")
 		}
@@ -416,7 +416,7 @@ func validateInput(data *models.Data, input *models.UserInput) (*CalcData, error
 	}
 
 	// successful validation of user input
-	calcData := CalcData{
+	calcData := calcData{
 		specie:        specie,
 		specieTypes:   specieTypes,
 		level:         input.Level,

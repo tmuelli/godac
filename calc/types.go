@@ -7,7 +7,7 @@ import (
 	"github.com/tmuelli/godac/models"
 )
 
-type TypeEffectivness struct {
+type typeEffectivness struct {
 	typeMod1    float64
 	typeMod2    float64
 	activeValue float64
@@ -41,7 +41,7 @@ func (c *Calculation) setTypeModifier() error {
 	// get used move type
 	atkType, err := getTypeFromID(c.data, c.attacker.usedMove.Type)
 	if err != nil {
-		c.typeEff = TypeEffectivness{
+		c.typeEff = typeEffectivness{
 			typeMod1:    0.0,
 			typeMod2:    0.0,
 			activeValue: 0.0,
@@ -80,7 +80,7 @@ func (c *Calculation) setTypeModifier() error {
 		}
 	}
 
-	c.typeEff = TypeEffectivness{
+	c.typeEff = typeEffectivness{
 		typeMod1: typeMod1,
 		typeMod2: typeMod2,
 	}
@@ -90,7 +90,7 @@ func (c *Calculation) setTypeModifier() error {
 	return nil
 }
 
-func (d *CalcData) stabModifier() (float64, error) {
+func (d *calcData) stabModifier() (float64, error) {
 	if d.hasType(d.usedMove.Type) {
 		if d.hasAbility("adaptability") {
 			return 2.0, nil
@@ -161,7 +161,7 @@ func getTypesFromIDs(data *models.Data, ids []string) ([]*models.Type, error) {
 	return types, nil
 }
 
-func (d *CalcData) hasType(ids ...string) bool {
+func (d *calcData) hasType(ids ...string) bool {
 	for _, t := range d.specieTypes {
 		if slices.Contains(ids, t.ID) {
 			return true

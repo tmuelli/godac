@@ -45,4 +45,4 @@ var ignoredAbilities = map[string]struct{}{
 	"wonderguard":  {},
 }
 
-var DEFAULT_NATURE = "Hardy"
+var defaultNature = "Hardy"
