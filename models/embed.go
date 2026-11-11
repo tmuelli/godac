@@ -23,32 +23,32 @@ var rawSpecies []byte
 //go:embed types.json
 var rawTypes []byte
 
-func LoadAbilities() ([]Ability, error) {
+func loadAbilities() ([]Ability, error) {
 	var abilities []Ability
 	return abilities, json.Unmarshal(rawAbilities, &abilities)
 }
 
-func LoadItems() ([]Item, error) {
+func loadItems() ([]Item, error) {
 	var items []Item
 	return items, json.Unmarshal(rawItems, &items)
 }
 
-func LoadMoves() ([]Move, error) {
+func loadMoves() ([]Move, error) {
 	var moves []Move
 	return moves, json.Unmarshal(rawMoves, &moves)
 }
 
-func LoadNatures() ([]Nature, error) {
+func loadNatures() ([]Nature, error) {
 	var natures []Nature
 	return natures, json.Unmarshal(rawNatures, &natures)
 }
 
-func LoadSpecies() ([]Specie, error) {
+func loadSpecies() ([]Specie, error) {
 	var species []Specie
 	return species, json.Unmarshal(rawSpecies, &species)
 }
 
-func LoadTypes() ([]Type, error) {
+func loadTypes() ([]Type, error) {
 	var types []Type
 	return types, json.Unmarshal(rawTypes, &types)
 }

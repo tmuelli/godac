@@ -3,43 +3,43 @@ package models
 import "github.com/tmuelli/godac/internal/utils"
 
 func NewData() (*Data, error) {
-	abilities, err := LoadAbilities()
+	abilities, err := loadAbilities()
 	if err != nil {
 		return nil, err
 	}
 
-	items, err := LoadItems()
+	items, err := loadItems()
 	if err != nil {
 		return nil, err
 	}
 
-	moves, err := LoadMoves()
+	moves, err := loadMoves()
 	if err != nil {
 		return nil, err
 	}
 
-	natures, err := LoadNatures()
+	natures, err := loadNatures()
 	if err != nil {
 		return nil, err
 	}
 
-	species, err := LoadSpecies()
+	species, err := loadSpecies()
 	if err != nil {
 		return nil, err
 	}
 
-	types, err := LoadTypes()
+	types, err := loadTypes()
 	if err != nil {
 		return nil, err
 	}
 
 	data := Data{
-		Abilities: utils.SliceToMap(abilities, Ability.Key),
-		Items:     utils.SliceToMap(items, Item.Key),
-		Moves:     utils.SliceToMap(moves, Move.Key),
-		Natures:   utils.SliceToMap(natures, Nature.Key),
-		Species:   utils.SliceToMap(species, Specie.Key),
-		Types:     utils.SliceToMap(types, Type.Key),
+		Abilities: utils.SliceToMap(abilities, Ability.key),
+		Items:     utils.SliceToMap(items, Item.key),
+		Moves:     utils.SliceToMap(moves, Move.key),
+		Natures:   utils.SliceToMap(natures, Nature.key),
+		Species:   utils.SliceToMap(species, Specie.key),
+		Types:     utils.SliceToMap(types, Type.key),
 	}
 	return &data, nil
 }
