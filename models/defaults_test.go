@@ -1,26 +1,9 @@
 package models
 
 import (
-	"encoding/json"
-	"fmt"
-	"os"
 	"reflect"
 	"testing"
 )
-
-var testData *Data
-
-func TestMain(m *testing.M) {
-	var err error
-	testData, err = NewData()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to load test data: %v\n", err)
-		os.Exit(1)
-	}
-	os.Exit(m.Run())
-}
-
-func ptr[T any](v T) *T { return &v }
 
 // only what differs between species; everything else comes from wantFor
 type defaultsCase struct {
@@ -46,28 +29,19 @@ func wantFor(tc defaultsCase) UserInput {
 		EvCustom:          &EvStats{},
 		Ability:           tc.ability,
 		AbilityOn:         tc.abilityOn,
-		Status:            ptr("healthy"),
-		Gender:            ptr(tc.gender),
+		Status:            new("healthy"),
+		Gender:            new(tc.gender),
 		Types:             tc.types,
 		BaseStatsOverride: &baseStats,
 	}
 }
 
-func jsonOf(t *testing.T, v any) string {
-	t.Helper()
-	b, err := json.Marshal(v)
-	if err != nil {
-		t.Fatalf("marshal: %v", err)
-	}
-	return string(b)
-}
-
 func TestDefaultUserInput(t *testing.T) {
 	tests := []defaultsCase{
 		{species: "Poochyena", ability: "Run Away", gender: "F", types: []string{"dark"}},
-		{species: "Gyarados", ability: "Intimidate", gender: "F", abilityOn: ptr(true), types: []string{"water", "flying"}},
-		{species: "Regigigas", ability: "Slow Start", gender: "N", abilityOn: ptr(true), types: []string{"normal"}},
-		{species: "Flareon", ability: "Flash Fire", gender: "F", abilityOn: ptr(false), types: []string{"fire"}},
+		{species: "Gyarados", ability: "Intimidate", gender: "F", abilityOn: new(true), types: []string{"water", "flying"}},
+		{species: "Regigigas", ability: "Slow Start", gender: "N", abilityOn: new(true), types: []string{"normal"}},
+		{species: "Flareon", ability: "Flash Fire", gender: "F", abilityOn: new(false), types: []string{"fire"}},
 		{species: "Magnemite", ability: "Magnet Pull", gender: "N", types: []string{"electric", "steel"}},
 		{species: "Nidoking", ability: "Poison Point", gender: "M", types: []string{"poison", "ground"}},
 		{species: "Chansey", ability: "Natural Cure", gender: "F", types: []string{"normal"}},

@@ -28,6 +28,12 @@ type UserMoveOverride struct {
 	Critical  *bool  `json:"critical"`
 }
 
+type MoveDefaults struct {
+	Override      *UserMoveOverride
+	Hits          *int
+	MetronomeHits *int
+}
+
 /* User input */
 type UserInput struct {
 	Name              string            `json:"name"`

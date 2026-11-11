@@ -52,3 +52,29 @@ func (d *Data) DefaultUserInput(s *Specie) UserInput {
 		EvCustom: &EvStats{},
 	}
 }
+
+// DefaultMoveInput returns the starting values for a move.
+func (d *Data) DefaultMoveInput(m *Move) MoveDefaults {
+	if m == nil {
+		return MoveDefaults{}
+	}
+
+	basePower := m.BasePower
+	critical := m.Critical
+
+	hits := 1
+	if len(m.Multihit) > 0 {
+		hits = slices.Min(m.Multihit)
+	}
+
+	return MoveDefaults{
+		Override: &UserMoveOverride{
+			BasePower: &basePower,
+			Type:      m.Type,
+			Category:  m.Category,
+			Critical:  &critical,
+		},
+		Hits:          &hits,
+		MetronomeHits: new(0),
+	}
+}
