@@ -2,7 +2,6 @@ package tui
 
 import (
 	"fmt"
-	"slices"
 
 	"charm.land/bubbles/v2/key"
 	"charm.land/bubbles/v2/table"
@@ -202,6 +201,8 @@ func (m movesModel) fillMovesDefaults(data *gridData, moveName string) {
 		return
 	}
 
+	defaults := m.data.DefaultMoveInput(&moveData)
+
 	for i := range data.columns {
 		if i == int(MOVE_COL) {
 			// new move was already set in Update
@@ -211,24 +212,20 @@ func (m movesModel) fillMovesDefaults(data *gridData, moveName string) {
 		var value string
 		switch MoveColumnType(i) {
 		case BP_COL:
-			value = fmt.Sprintf("%d", moveData.BasePower)
+			value = fmt.Sprintf("%d", *defaults.Override.BasePower)
 		case MOVE_TYPE_COL:
-			value = m.data.TypeName(moveData.Type)
+			value = m.data.TypeName(defaults.Override.Type)
 		case CATEGORY_COL:
-			value = moveData.Category
+			value = defaults.Override.Category
 		case CRIT_COL:
 			value = DISPLAY_NO
-			if moveData.Critical {
+			if *defaults.Override.Critical {
 				value = DISPLAY_YES
 			}
 		case HITS_COL:
-			value = DEFAULT_HITS
-			if len(moveData.Multihit) > 0 {
-				value = hitLabel(hitOptions, slices.Min(moveData.Multihit))
-			}
+			value = hitLabel(hitOptions, *defaults.Hits)
 		case METR_HITS_COL:
-			// "Never" as default
-			value = metronomeHitOptions[0].label
+			value = hitLabel(metronomeHitOptions, *defaults.MetronomeHits)
 		default:
 			continue
 		}
