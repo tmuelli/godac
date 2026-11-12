@@ -22,16 +22,16 @@ type UserInputBoosts struct {
 
 /* Users custom overrides for moves */
 type UserMoveOverride struct {
-	BasePower *int   `json:"basePower"`
+	BasePower *int   `json:"basePower,omitempty"`
 	Type      string `json:"type"`
 	Category  string `json:"category"`
-	Critical  *bool  `json:"critical"`
+	Critical  *bool  `json:"critical,omitempty"`
 }
 
 type MoveDefaults struct {
-	Override      *UserMoveOverride
-	Hits          *int
-	MetronomeHits *int
+	Override      *UserMoveOverride `json:"override"`
+	Hits          *int              `json:"hits"`
+	MetronomeHits *int              `json:"metronomeHits"`
 }
 
 /* User input */
@@ -43,21 +43,21 @@ type UserInput struct {
 	Moves             []string          `json:"moves"`
 	HealthPercent     int               `json:"healthPercent"`
 	IvSetting         string            `json:"ivSetting"`
-	IvCustom          *IvStats          `json:"ivCustom"`
+	IvCustom          *IvStats          `json:"ivCustom,omitempty"`
 	EvSetting         string            `json:"evSetting"`
-	EvCustom          *EvStats          `json:"evCustom"`
+	EvCustom          *EvStats          `json:"evCustom,omitempty"`
 	Types             []string          `json:"types"`
-	MoveOverride      *UserMoveOverride `json:"moveOverride"`
+	MoveOverride      *UserMoveOverride `json:"moveOverride,omitempty"`
 	Ability           string            `json:"ability"`
-	AbilityOn         *bool             `json:"abilityOn"`
-	Item              *string           `json:"item"`
-	Status            *string           `json:"status"`
-	Gender            *string           `json:"gender"`
-	Hits              *int              `json:"hits"`
-	MetronomeHits     *int              `json:"metronomeHits"`
+	AbilityOn         *bool             `json:"abilityOn,omitempty"`
+	Item              *string           `json:"item,omitempty"`
+	Status            *string           `json:"status,omitempty"`
+	Gender            *string           `json:"gender,omitempty"`
+	Hits              *int              `json:"hits,omitempty"`
+	MetronomeHits     *int              `json:"metronomeHits,omitempty"`
 	Boosts            UserInputBoosts   `json:"boosts"`
-	InputSide         string            `json:"inputSide"`
-	BaseStatsOverride *BaseStats        `json:"baseStatsOverride"`
+	InputSide         string            `json:"inputSide,omitempty"`
+	BaseStatsOverride *BaseStats        `json:"baseStatsOverride,omitempty"`
 }
 
 /* User field input */
